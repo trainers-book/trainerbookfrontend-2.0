@@ -39,7 +39,7 @@ const TimerPanel: React.FC <TimerPanel> = ({onChange}) => {
           </Typography>
         </Grid>
         <Grid size={4}>
-          <Typography>{currentTime.toLocaleDateString()}</Typography>
+          <Typography>{currentTime.toLocaleDateString('en-GB', { day: 'numeric', month: 'numeric', year: 'numeric' })}</Typography>
         </Grid>
       </Grid>
 
@@ -54,6 +54,7 @@ const TimerPanel: React.FC <TimerPanel> = ({onChange}) => {
             {currentTime.toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
+              hour12: false,
             })}
           </Typography>
         </Grid>
