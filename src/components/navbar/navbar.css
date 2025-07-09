@@ -1,0 +1,15 @@
+.active-route {
+  background: #2f73ff;
+  background: linear-gradient(
+    150deg,
+    #2f73ff 0%,
+    #63a2ff 30%,
+    #96c6fa 70%,
+    #c4e4ff 100%
+  );
+  color: #ffffff;
+}
+
+.text {
+  color: #000000;
+}

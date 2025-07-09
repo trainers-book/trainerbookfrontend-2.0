@@ -1,0 +1,23 @@
+.active {
+  background: #c46666c2;
+}
+
+.closed {
+  background: #6bb63c87;
+}
+
+.maintenance {
+  background: #906ea5a3;
+}
+
+.maav {
+  background: #98c5e5d0;
+}
+
+.elbit {
+  background: #efe14183;
+}
+
+.waiting {
+  background: #bb7d3783;
+}

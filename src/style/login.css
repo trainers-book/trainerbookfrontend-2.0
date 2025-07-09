@@ -1,0 +1,27 @@
+.login-container {
+    direction: rtl;
+    max-width: 320px;
+    margin: 100px auto;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    background: white;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.login-container input {
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #aaa;
+}
+
+.login-container button {
+    padding: 0.5rem;
+    background-color: #6499ff;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+}
