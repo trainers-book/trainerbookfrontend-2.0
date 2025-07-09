@@ -14,7 +14,6 @@ import { useIssues } from "../context/issueContext";
 import { Severity } from "../types/issuesSeverity";
 import FilterSearchControl from "../components/filterControl/filterSearchControl";
 import FilterDate from "../components/Dynamics/filterDate";
-import { data } from "react-router-dom";
 
 const ManageIssues: React.FC = () => {
   const { t } = useTranslation();
@@ -116,7 +115,7 @@ const ManageIssues: React.FC = () => {
       </Box>
       <GenericTable
         properties={new IssueData()}
-        data={filterData()}
+        data={filterData().sort((currentValue, nextValue) => nextValue.dateTime.getTime() - currentValue.dateTime.getTime())} //(a, b) => b.flightNumber - a.flightNumber
         getRowClass={getRowClass}
         color={true}
       ></GenericTable>
