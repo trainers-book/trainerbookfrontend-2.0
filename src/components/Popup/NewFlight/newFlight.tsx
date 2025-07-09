@@ -23,7 +23,8 @@ const NewFlightModel: React.FC = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const { t } = useTranslation();
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
-  const [dynamicTextFieldValue, setDynamicTextFieldValue] = useState<string>("");
+  const [dynamicTextFieldValue, setDynamicTextFieldValue] =
+    useState<string>("");
   const [timerPanelValue, setTimerPanelValue] = useState<string>("");
   const [hasChanges, setHasChanges] = useState(false);
 
@@ -44,10 +45,9 @@ const NewFlightModel: React.FC = () => {
   };
 
   const handleClose = () => {
-    if(hasChanges){
+    if (hasChanges) {
       setShowConfirm(true);
-    }
-    else {
+    } else {
       setShow(false);
       setShowConfirm(false);
     }
@@ -58,6 +58,7 @@ const NewFlightModel: React.FC = () => {
   const handleConfirmClose = () => {
     setShow(false);
     setShowConfirm(false);
+    setSelectedPlatforms([]);
   };
 
   const handleCancelClose = () => {
@@ -124,7 +125,9 @@ const NewFlightModel: React.FC = () => {
               </Stack>
             </Grid>
             <Grid size={4}>
-              <TimerPanel onChange={(e) => setTimerPanelValue(e.target.value)}/>
+              <TimerPanel
+                onChange={(e) => setTimerPanelValue(e.target.value)}
+              />
             </Grid>
           </Grid>
           <NewMalfModel />
