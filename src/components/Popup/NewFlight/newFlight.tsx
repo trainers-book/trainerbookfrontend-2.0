@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import TimerPanel from "./TimerPanel";
 import { useTranslation } from "react-i18next";
-import DynamicTextField from "../../Dynamics/DynamicTextField";
 import CloseIcon from "@mui/icons-material/Close";
 import FilterDropdown from "../../Dynamics/filterDropdown";
 import { platformTypes } from "../../../types/platformTypes";
@@ -24,16 +23,15 @@ const NewFlightModel: React.FC = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const { t } = useTranslation();
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
-  const [dynamicTextFieldValue, setDynamicTextFieldValue] =
-    useState<string>("");
-  const [timerPanelValue, setTimerPanelValue] = useState<string>("");
+  const [dynamicTextFieldValue, setDynamicTextFieldValue] = useState<string>("");
+  const [timerPanelValue, setTimerPanelValue] = useState<boolean>(false);
   const [hasChanges, setHasChanges] = useState(false);
 
   useEffect(() => {
     if (
       selectedPlatforms.length > 0 ||
       dynamicTextFieldValue !== "" ||
-      timerPanelValue !== ""
+      timerPanelValue
     ) {
       setHasChanges(true);
     } else {
@@ -56,7 +54,7 @@ const NewFlightModel: React.FC = () => {
       setShowConfirm(false);
     }
     setDynamicTextFieldValue("");
-    setTimerPanelValue("");
+    setTimerPanelValue(false);
   };
 
   const handleConfirmClose = () => {
@@ -131,9 +129,7 @@ const NewFlightModel: React.FC = () => {
               </Stack>
             </Grid>
             <Grid size={4}>
-              <TimerPanel
-                onChange={(e) => setTimerPanelValue(e.target.value)}
-              />
+              <TimerPanel onChange={(e) => setTimerPanelValue(e.target.checked)}/>
             </Grid>
           </Grid>
           <NewMalfModel />
