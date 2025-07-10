@@ -17,13 +17,15 @@ import FilterDropdown from "../../Dynamics/filterDropdown";
 import { platformTypes } from "../../../types/platformTypes";
 import NewMalfModel from "../newMalf/newMalf";
 import ClickedOutside from "../clickedOutside";
+import { fieldError } from "../../../types/errors/fields";
 
 const NewFlightModel: React.FC = () => {
   const [show, setShow] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const { t } = useTranslation();
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
-  const [dynamicTextFieldValue, setDynamicTextFieldValue] = useState<string>("");
+  const [dynamicTextFieldValue, setDynamicTextFieldValue] =
+    useState<string>("");
   const [timerPanelValue, setTimerPanelValue] = useState<string>("");
   const [hasChanges, setHasChanges] = useState(false);
 
@@ -40,14 +42,16 @@ const NewFlightModel: React.FC = () => {
   }, [selectedPlatforms, dynamicTextFieldValue, timerPanelValue]);
 
   const handleShow = () => {
+    if (Object.keys(fieldError).length > 0) {
+      setShow(false);
+    }
     setShow(true);
   };
 
   const handleClose = () => {
-    if(hasChanges){
+    if (hasChanges) {
       setShowConfirm(true);
-    }
-    else {
+    } else {
       setShow(false);
       setShowConfirm(false);
     }
@@ -101,30 +105,35 @@ const NewFlightModel: React.FC = () => {
         </DialogTitle>
 
         <DialogContent>
-          <Grid container justifyContent="center" padding={1}>
+          <Grid container spacing={2}>
             <Grid size={8}>
-              <FilterDropdown
-                label={t("choosePlatform")}
-                options={platformTypes}
-                selected={selectedPlatforms}
-                setSelected={setSelectedPlatforms}
-                isMultiple={false}
-                width="100%"
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={2} padding={1}>
-            <Grid size={8}>
-              <Stack spacing={2}>
-                <DynamicTextField
-                  label={t("flightName")}
+              <Stack spacing={2} padding={1}>
+                <FilterDropdown
+                  label={t("choosePlatform")}
+                  options={platformTypes}
+                  selected={selectedPlatforms}
+                  setSelected={setSelectedPlatforms}
+                  isMultiple={false}
                   width="100%"
-                  onChange={(e) => setDynamicTextFieldValue(e.target.value)}
+                  error={fieldError.platform}
+                />
+              </Stack>
+              <Stack spacing={2} padding={1}>
+                <FilterDropdown
+                  label={t("flightName")}
+                  options={platformTypes}
+                  selected={selectedPlatforms}
+                  setSelected={setSelectedPlatforms}
+                  isMultiple={false}
+                  width="100%"
+                  error={fieldError.platform}
                 />
               </Stack>
             </Grid>
             <Grid size={4}>
-              <TimerPanel onChange={(e) => setTimerPanelValue(e.target.value)}/>
+              <TimerPanel
+                onChange={(e) => setTimerPanelValue(e.target.value)}
+              />
             </Grid>
           </Grid>
           <NewMalfModel />
