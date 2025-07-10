@@ -1,6 +1,6 @@
 ﻿import "./table.css";
 import "../../i18n";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   TableContainer,
   TableHead,
@@ -10,6 +10,7 @@ import {
   Table,
   TableBody,
   Typography,
+  Box,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import FlightData from "../../types/tables/flight";
@@ -35,6 +36,30 @@ const GenericTable: React.FC<TableProps> = ({
     columns.push("");
   }
 
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const limit = 15; // Number of rows to fetch at a time
+  const [dataToShow, setdataToShow] = useState(data.slice(offset, limit * offset));
+
+  useEffect(() => {
+    fetchMoreData();
+  }, [offset]);
+
+  const fetchMoreData = async () => {
+    const newData = data.slice(offset * limit, (offset + 1) * limit)
+    setdataToShow([...dataToShow, ...newData]);
+    setHasMore(offset + limit < 100); // Assuming there are 100 items in total
+  };
+
+  const handleScroll = (e) => {
+
+    const target = e.target;
+
+    if ((target.scrollTop + target.offsetHeight) >= (83 * (document.getElementById("table")?.childElementCount)) && hasMore) {
+      setOffset(offset + 1);
+    }    
+  };  
+
   const valueToMultipleLines = (value: Date | string | number | Status) => {
     let valueArray: string[] = [value.toString()];
 
@@ -53,7 +78,13 @@ const GenericTable: React.FC<TableProps> = ({
   };
 
   return (
-    <TableContainer component={Paper}>
+    <Box sx={{
+      height: "85vh",
+      overflowY: 'auto',
+    }}
+    onScroll={handleScroll}>
+
+    <TableContainer component={Paper} >
       <Table sx={{ minWidth: 650 }}>
         <TableHead sx={{ background: "#dadada" }}>
           <TableRow>
@@ -62,8 +93,8 @@ const GenericTable: React.FC<TableProps> = ({
             ))}
           </TableRow>
         </TableHead>
-        <TableBody>
-          {data.map((dataSet) => (
+        <TableBody id="table">
+          {dataToShow.map((dataSet) => (
             <TableRow
               sx={{
                 ":hover": { background: "#d4edff1a" },
@@ -97,6 +128,7 @@ const GenericTable: React.FC<TableProps> = ({
         </TableBody>
       </Table>
     </TableContainer>
+    </Box>
   );
 };
 
