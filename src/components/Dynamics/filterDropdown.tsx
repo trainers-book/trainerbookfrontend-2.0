@@ -70,6 +70,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
           <FormControl
             sx={{
               width: width,
+              mr:".5rem"
             }}
           >
             <InputLabel
