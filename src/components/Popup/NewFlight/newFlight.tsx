@@ -60,6 +60,7 @@ const NewFlightModel: React.FC = () => {
   const handleConfirmClose = () => {
     setShow(false);
     setShowConfirm(false);
+    setSelectedPlatforms([]);
   };
 
   const handleCancelClose = () => {
