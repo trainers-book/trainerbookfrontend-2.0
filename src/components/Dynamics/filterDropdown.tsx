@@ -33,6 +33,7 @@ interface FilterDropdownProps {
   setSelected: (values: string[]) => void;
   isMultiple: boolean;
   width?: string;
+  error?: string;
 }
 
 const cacheRtl = createCache({
@@ -46,7 +47,8 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   selected,
   setSelected,
   isMultiple,
-  width
+  width,
+  error
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -71,6 +73,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
             sx={{
               width: width,
             }}
+            error={!!error}
           >
             <InputLabel
               id="dropdown-select-label"

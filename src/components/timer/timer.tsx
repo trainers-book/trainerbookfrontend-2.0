@@ -21,7 +21,7 @@ const TimerModel: React.FC<TimerModelProps> = ({ onTick, label, onChange }) => {
       onChange?.({
         target: { checked: true },
       } as ChangeEvent<HTMLInputElement>);
-    } else if (!isRunning && seconds > 0) {
+    } else if ((isReset)) {
       onChange?.({
         target: { checked: false },
       } as ChangeEvent<HTMLInputElement>);
@@ -49,7 +49,7 @@ const TimerModel: React.FC<TimerModelProps> = ({ onTick, label, onChange }) => {
   const reset = () => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     setIsRunning(false);
-    setReset(false);
+    setReset(true);
     setPause(false);
     setSeconds(0);
     onTick?.(0);
