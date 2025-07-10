@@ -69,7 +69,11 @@ const NewFlightModel: React.FC = () => {
       <Button
         variant="contained"
         onClick={handleShow}
-        sx={{ background: "rgb(114, 156, 240)" }}
+        sx={{ background: "rgb(114, 156, 240)" ,
+          mr:1,
+          mt:1,
+          mb:1
+        }}
       >
         {t("newFlight")}
       </Button>
