@@ -39,6 +39,7 @@ const NewFlightModel: React.FC = () => {
       selectedPlatforms.length > 0 ||
       timerPanelValue
     ) {
+      setHasChanges(true);
     } else {
       setHasChanges(false);
     }
@@ -60,12 +61,13 @@ const NewFlightModel: React.FC = () => {
       platform: false,
       flight: false,
     });
-    setSelectedPlatforms([]);
   };
 
   const handleConfirmClose = () => {
     setShow(false);
     setShowConfirm(false);
+    setSelectedPlatforms([]);
+    setSelectedFlight([]);
   };
 
   const handleCancelClose = () => {
