@@ -23,26 +23,28 @@ const NewFlightModel: React.FC = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const { t } = useTranslation();
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
-  const [dynamicTextFieldValue, setDynamicTextFieldValue] = useState<string>("");
+  const [selectedFlight, setSelectedFlight] = useState<string[]>([]);
   const [timerPanelValue, setTimerPanelValue] = useState<boolean>(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const [touched, setTouched] = useState({
+    platform: false,
+    flight: false,
+  });
 
   useEffect(() => {
-    if (
+    if (selectedFlight.length > 0 && selectedPlatforms.length > 0) {
+      setHasChanges(false);
+    } else if (
+      selectedFlight.length > 0 ||
       selectedPlatforms.length > 0 ||
-      dynamicTextFieldValue !== "" ||
       timerPanelValue
     ) {
-      setHasChanges(true);
     } else {
       setHasChanges(false);
     }
-  }, [selectedPlatforms, dynamicTextFieldValue, timerPanelValue]);
+  }, [selectedPlatforms, selectedFlight, timerPanelValue]);
 
   const handleShow = () => {
-    if (Object.keys(fieldError).length > 0) {
-      setShow(false);
-    }
     setShow(true);
   };
 
@@ -53,14 +55,17 @@ const NewFlightModel: React.FC = () => {
       setShow(false);
       setShowConfirm(false);
     }
-    setDynamicTextFieldValue("");
     setTimerPanelValue(false);
+    setTouched({
+      platform: false,
+      flight: false,
+    });
+    setSelectedPlatforms([]);
   };
 
   const handleConfirmClose = () => {
     setShow(false);
     setShowConfirm(false);
-    setSelectedPlatforms([]);
   };
 
   const handleCancelClose = () => {
@@ -72,11 +77,7 @@ const NewFlightModel: React.FC = () => {
       <Button
         variant="contained"
         onClick={handleShow}
-        sx={{ background: "rgb(114, 156, 240)" ,
-          mr:1,
-          mt:1,
-          mb:1
-        }}
+        sx={{ background: "rgb(114, 156, 240)", mr: 1, mt: 1, mb: 1 }}
       >
         {t("newFlight")}
       </Button>
@@ -118,28 +119,34 @@ const NewFlightModel: React.FC = () => {
                   setSelected={setSelectedPlatforms}
                   isMultiple={false}
                   width="100%"
+                  touched={touched.platform}
                   error={fieldError.platform}
+                  onBlur={() => setTouched({ ...touched, platform: true })}
                 />
               </Stack>
               <Stack spacing={2} padding={1}>
                 <FilterDropdown
                   label={t("flightName")}
                   options={platformTypes}
-                  selected={selectedPlatforms}
-                  setSelected={setSelectedPlatforms}
+                  selected={selectedFlight}
+                  setSelected={setSelectedFlight}
                   isMultiple={false}
                   width="100%"
-                  error={fieldError.platform}
+                  error={fieldError.flightName}
+                  touched={touched.flight}
+                  onBlur={() => setTouched({ ...touched, flight: true })}
                 />
               </Stack>
             </Grid>
             <Grid size={4}>
-              <TimerPanel onChange={(e) => setTimerPanelValue(e.target.checked)}/>
+              <TimerPanel
+                onChange={(e) => setTimerPanelValue(e.target.checked)}
+              />
             </Grid>
           </Grid>
           <NewMalfModel />
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ paddingLeft: 5 }}>
           <Button
             onClick={handleClose}
             variant="contained"

@@ -33,6 +33,8 @@ interface FilterDropdownProps {
   setSelected: (values: string[]) => void;
   isMultiple: boolean;
   width?: string;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  touched?: boolean;
   error?: string;
 }
 
@@ -48,6 +50,8 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   setSelected,
   isMultiple,
   width,
+  onBlur,
+  touched,
   error
 }) => {
   const theme = useTheme();
@@ -73,7 +77,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
             sx={{
               width: width,
             }}
-            error={!!error}
+            error={touched && selected.length === 0}
           >
             <InputLabel
               id="dropdown-select-label"
@@ -84,13 +88,18 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
                 },
               }}
             >
-              {label}
+              {touched && selected.length === 0 ? error : label}
             </InputLabel>
             <Select
               labelId="dropdown-select-label"
               multiple={isMultiple}
               value={selected}
               onChange={handleChange}
+              onBlur={(event) => {
+                if (onBlur) {
+                  onBlur(event);
+                }
+              }}
               input={<OutlinedInput label={label} />}
               renderValue={(selected) =>
                 selected.length === 1
