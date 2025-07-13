@@ -41,7 +41,7 @@ export const IssueProvider = ({ children }: { children: React.ReactNode }) => {
       temp.push(
         new IssueData(
           getDate(),
-          index * 2,
+          index * 5,
           "רגיל",
           "מדריכה 1",
           "אין",
@@ -53,7 +53,43 @@ export const IssueProvider = ({ children }: { children: React.ReactNode }) => {
       temp.push(
         new IssueData(
           getDate(),
-          index * 2 + 1,
+          index * 5 + 1,
+          "רגיל",
+          "מדריכה 1",
+          "אין",
+          t(platform),
+          getSeverity(),
+          getStatus()
+        )
+      );
+      temp.push(
+        new IssueData(
+          getDate(),
+          index * 5 + 2,
+          "רגיל",
+          "מדריכה 1",
+          "אין",
+          t(platform),
+          getSeverity(),
+          getStatus()
+        )
+      );
+      temp.push(
+        new IssueData(
+          getDate(),
+          index * 5 + 3,
+          "רגיל",
+          "מדריכה 1",
+          "אין",
+          t(platform),
+          getSeverity(),
+          getStatus()
+        )
+      );
+      temp.push(
+        new IssueData(
+          getDate(),
+          index * 5 + 4,
           "רגיל",
           "מדריכה 1",
           "אין",

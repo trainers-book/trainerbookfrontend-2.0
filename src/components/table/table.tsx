@@ -1,6 +1,6 @@
 ﻿import "./table.css";
 import "../../i18n";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TableContainer,
   TableHead,
@@ -30,6 +30,11 @@ const GenericTable: React.FC<TableProps> = ({
   getRowClass,
   color,
 }) => {
+  const tableHeightPercent = 85;
+  const tableRowHeight = 82;
+  const tableFetchExtra = 4;
+  const tableHeadHeight = 56.5;
+
   const { t } = useTranslation();
   const columns = Object.keys(properties);
   if (color != undefined) {
@@ -37,8 +42,7 @@ const GenericTable: React.FC<TableProps> = ({
   }
 
   const [offset, setOffset] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const limit = 15; // Number of rows to fetch at a time
+  const limit = Math.round(((window.innerHeight * (tableHeightPercent / 100)) / tableRowHeight) + tableFetchExtra);
   const [dataToShow, setdataToShow] = useState(data.slice(offset, limit * offset));
 
   useEffect(() => {
@@ -48,15 +52,14 @@ const GenericTable: React.FC<TableProps> = ({
   const fetchMoreData = async () => {
     const newData = data.slice(offset * limit, (offset + 1) * limit)
     setdataToShow([...dataToShow, ...newData]);
-    setHasMore(offset + limit < 100); // Assuming there are 100 items in total
   };
 
   const handleScroll = (e) => {
-
+    
     const target = e.target;
 
-    if ((target.scrollTop + target.offsetHeight) >= (83 * (document.getElementById("table")?.childElementCount)) && hasMore) {
-      setOffset(offset + 1);
+    if ((target.scrollTop + target.offsetHeight + tableHeadHeight) >= (tableRowHeight * (document.getElementById("table")?.childElementCount))) {
+      setTimeout(() => {setOffset(offset + 1)}, 100); // timeout to simulate fetch time from server
     }    
   };  
 
@@ -79,7 +82,7 @@ const GenericTable: React.FC<TableProps> = ({
 
   return (
     <Box sx={{
-      height: "85vh",
+      height: tableHeightPercent + "vh",
       overflowY: 'auto',
     }}
     onScroll={handleScroll}>
@@ -100,7 +103,6 @@ const GenericTable: React.FC<TableProps> = ({
                 ":hover": { background: "#d4edff1a" },
                 "&:last-child td, &:last-child th": { border: 0 },
               }}
-              key={dataSet.flightNumber}
             >
               {Object.values(dataSet)
                 .map((rowValue) => valueToMultipleLines(rowValue))
