@@ -1,5 +1,5 @@
 export default class FlightData {
-  date: string;
+  dateTime: Date;
   flightNumber: number;
   flightName: string;
   instructorName: string;
@@ -23,7 +23,7 @@ export default class FlightData {
     flightTime = 0,
     platform = ""
   ) {
-    this.date = dateTime.toLocaleDateString("en-GB");
+    this.dateTime = dateTime;
     this.flightNumber = flightNumber;
     this.flightName = flightName;
     this.instructorName = instructorName;

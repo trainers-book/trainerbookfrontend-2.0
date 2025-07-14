@@ -58,7 +58,12 @@ const GenericTable: React.FC<TableProps> = ({
         <TableHead sx={{ background: "#dadada" }}>
           <TableRow>
             {columns.map((column) => (
-              <TableCell sx={{ fontWeight: "bold", fontSize: "1.3rem" }} align="center">{t(column)}</TableCell>
+              <TableCell
+                sx={{ fontWeight: "bold", fontSize: "1.3rem" }}
+                align="center"
+              >
+                {t(column)}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
