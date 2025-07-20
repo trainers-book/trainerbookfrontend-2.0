@@ -79,5 +79,9 @@
   "Very disturbing": "מאוד מפריע ",
   "severity": "חומרת תקלה",
   "dateTime": "תאריך ושעה",
-  "search": "חיפוש"
+  "search": "חיפוש",
+  "firstName": "שם פרטי",
+  "lastName": "שם משפחה",
+  "personalNumber": "מספר אישי",
+  "add": "הוסף"
 }
