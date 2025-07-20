@@ -45,7 +45,7 @@ const AppRoutes = () => {
         path="/usersManagment"
         element={
           <ProtectedRoute>
-            <ReviewFlights />
+            <ManageUsers />
           </ProtectedRoute>
         }
       />
