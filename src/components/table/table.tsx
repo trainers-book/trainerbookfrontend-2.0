@@ -12,14 +12,12 @@ import {
   Typography,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import FlightData from "../../types/tables/flight";
 import { Status } from "../../types/statuses";
-import type IssueData from "../../types/tables/issues";
 
 interface TableProps {
-  properties: FlightData | IssueData;
-  data: FlightData[] | IssueData[];
-  getRowClass?: (row: IssueData) => string;
+  properties: any;
+  data: any[];
+  getRowClass?: (row: any) => string;
   color?: boolean;
 }
 
@@ -72,7 +70,7 @@ const GenericTable: React.FC<TableProps> = ({
               key={dataSet.flightNumber}
             >
               {Object.values(dataSet)
-                .map((rowValue) => valueToMultipleLines(rowValue))
+                .map((rowValue) => valueToMultipleLines(rowValue as string | number | Date))
                 .map((linesValues) => (
                   <TableCell align="center">
                     {linesValues.map((value) => (
