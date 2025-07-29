@@ -14,12 +14,6 @@ const ReviewFlights: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<string>("");
 
-  // const getRowClass = (row: FlightData) => {
-  //   return Object.keys(Status)
-  //     .filter((value) => Status[value as keyof typeof Status] === row.status)[0]
-  //     .toLocaleLowerCase();
-  // };
-
   const changePlatform = (selected: string[]) => {
     setSelectedPlatforms(selected);
     filterData();
@@ -92,8 +86,6 @@ const ReviewFlights: React.FC = () => {
       <GenericTable
         properties={new FlightData()}
         data={filterData()}
-        // getRowClass={getRowClass}
-        // color={true}
       ></GenericTable>
     </PageWrapper>
   );
