@@ -64,7 +64,7 @@ const Navbar: React.FC = () => {
 
   return (
     !isLogin && (
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, mb: 1 }}>
         <AppBar
           sx={{ backgroundColor: "#ffffff", borderRadius: 5 }}
           position="static"
