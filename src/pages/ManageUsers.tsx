@@ -28,7 +28,7 @@ const ManageUsers: React.FC = () => {
             test3: <MailIcon />,
             test4: <InboxIcon />,
           }}
-          activeTitle="hello"
+          activeTitle="test2"
         />
         <Box sx={{ flexGrow: 1 }}>
           <Box
