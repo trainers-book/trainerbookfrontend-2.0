@@ -8,7 +8,7 @@ export default class UsersData {
       firstName="",
       lastName="",
       personalNumber="",
-      platforms=""
+      platforms=[""]
     ) {
       this.firstName = firstName;
       this.lastName = lastName;
