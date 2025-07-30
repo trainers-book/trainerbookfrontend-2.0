@@ -15,6 +15,7 @@ import rtlPlugin from "@mui/stylis-plugin-rtl";
 import { prefixer } from "stylis";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
+import { useEffect } from "react";
 
 const ITEM_HEIGHT = 36;
 const ITEM_PADDING_TOP = 1;
@@ -46,10 +47,16 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   selected,
   setSelected,
   isMultiple,
-  width
+  width,
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (options.length == 1 && selected.length == 0) {
+        setSelected(options);
+    }
+  });
 
   const handleChange = (event: SelectChangeEvent<typeof selected>) => {
     const {
@@ -97,8 +104,10 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
                     : ""
               }
               MenuProps={MenuProps}
+              disabled={options.length == 1}
               sx={{
                 height: 36,
+                mr: 1,
                 borderRadius: 2,
                 boxShadow: "0 1px 2px rgba(0, 0, 0, 0.2)",
               }}
