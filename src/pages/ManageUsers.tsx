@@ -1,30 +1,122 @@
 import { useTranslation } from "react-i18next";
 import PageWrapper from "../components/pageWrapper/PageWrapper";
 import GenericTable from "../components/table/table";
-import UsersData from "../types/tables/users";
-import { Box } from "@mui/material";
+import {
+  FlightData,
+  platformData,
+  UsersData,
+} from "../types/tables/manageTypes";
+import { Box, SvgIcon } from "@mui/material";
 import FilterSearchControl from "../components/filterControl/filterSearchControl";
 import { useEffect, useState } from "react";
-import MailIcon from "@mui/icons-material/Mail";
-import InboxIcon from "@mui/icons-material/Inbox";
+import SchoolIcon from "@mui/icons-material/School";
+import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
+import PregnantWomanIcon from "@mui/icons-material/PregnantWoman";
+import AccessibleIcon from "@mui/icons-material/Accessible";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
 import SideBar from "../components/sidebar/sidebar";
 import NewUser from "../components/Dynamics/newUserForm";
+import NewFlight from "../components/Dynamics/newFlightForm";
+import NewPlatform from "../components/Dynamics/newPlatformForm";
+
+const sunglassesIcon: React.ReactNode = (
+  <SvgIcon>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 12">
+      <path
+        d="M 5, 5 m -2, 0 a 2,2 0 1,0 12,0"
+        fill="#000000"
+        stroke="black"
+        stroke-width="1"
+      />
+      <path
+        d="M 22, 5 m -2, 0 a 2,2 0 1,0 12,0"
+        fill="#000000"
+        stroke="black"
+        stroke-width="1"
+      />
+      <rect x="0.5" y="4" width="34" height="1.5" fill="#000000" />
+    </svg>
+  </SvgIcon>
+);
+
+type Tab = {
+  label: string;
+  icon: React.ReactNode;
+  entityType: any;
+  deleteEntity: boolean;
+};
 
 const ManageUsers: React.FC = () => {
   const { t } = useTranslation();
   const [search, setSearch] = useState<string>("");
+  const tabs: Tab[] = [
+    // { label: t("airCrew1"), icon: sunglassesIcon },
+    {
+      label: t("airCrew1"),
+      icon: <PregnantWomanIcon />,
+      entityType: UsersData,
+      deleteEntity: false,
+    },
+    // { label: t("airCrew2"), icon: <MenuBookIcon /> },
+    {
+      label: t("airCrew2"),
+      icon: <AccessibleIcon />,
+      entityType: UsersData,
+      deleteEntity: true,
+    },
+    {
+      label: t("platform"),
+      icon: <AirplanemodeActiveIcon />,
+      entityType: platformData,
+      deleteEntity: false, // based on permissions
+    },
+    {
+      label: t("instructor"),
+      icon: <SchoolIcon />,
+      entityType: UsersData,
+      deleteEntity: true,
+    },
+    {
+      label: t("flight"),
+      icon: <AirplaneTicketIcon />,
+      entityType: FlightData,
+      deleteEntity: true,
+    },
+  ];
+  const [currentTab, setCurrentTab] = useState<Tab>(tabs[0]);
+
+  const createEntity = (index: number) => {
+    const keys = Object.keys(new currentTab.entityType());
+
+    return new currentTab.entityType(...keys.map((val) => t(val) + index));
+  };
+
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    setData(
+      [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        // new UsersData("the first", "xbox", "מספר אישי 1", [t("raam")]),
+        // new UsersData("xbox", "360", "מספר אישי 2", [t("baz")]),
+        // new UsersData("xbox", "one", "מספר אישי 3", [t("baz")]),
+        // new UsersData("xbox", "one s", "מספר אישי 4", [t("baz")]),
+        // new UsersData("xbox", "one x", "מספר אישי 5", [t("raam")]),
+        // new UsersData("xbox", "series x", "מספר אישי 6", [t("raam")]),
+      ].map((i) => createEntity(i))
+    );
+  }, [currentTab]);
 
   return (
     <PageWrapper>
       <Box sx={{ display: "flex" }}>
         <SideBar
-          titlesIcons={{
-            test1: <MailIcon />,
-            test2: <InboxIcon />,
-            test3: <MailIcon />,
-            test4: <InboxIcon />,
+          titlesIcons={tabs}
+          activeTab={currentTab}
+          changeTab={(newtabLable) => {
+            setCurrentTab(tabs.filter((tab) => tab.label == newtabLable)[0]);
           }}
-          activeTitle="test2"
         />
         <Box sx={{ flexGrow: 1 }}>
           <Box
@@ -36,22 +128,50 @@ const ManageUsers: React.FC = () => {
             }}
           >
             <FilterSearchControl label={t("search")} setSearch={setSearch} />
-            <NewUser
-              callback={(user: UsersData) => {
-                console.log(user);
-              }}
-            />
+            {currentTab.entityType == UsersData && (
+              <NewUser
+                callback={(entity: any) => {
+                  console.log(entity);
+                }}
+              />
+            )}
+            {currentTab.entityType == FlightData && (
+              <NewFlight
+                callback={(entity: any) => {
+                  console.log(entity);
+                }}
+              />
+            )}
+            {currentTab.entityType == platformData && (
+              <NewPlatform
+                callback={(entity: any) => {
+                  console.log(entity);
+                }}
+              />
+            )}
           </Box>
           <GenericTable
-            properties={new UsersData()}
-            data={[
-              new UsersData("the first", "xbox", "מספר אישי 1", [t("raam")]),
-              new UsersData("xbox", "360", "מספר אישי 2", [t("baz")]),
-              new UsersData("xbox", "one", "מספר אישי 3", [t("baz")]),
-              new UsersData("xbox", "one s", "מספר אישי 4", [t("baz")]),
-              new UsersData("xbox", "one x", "מספר אישי 5", [t("raam")]),
-              new UsersData("xbox", "series x", "מספר אישי 6", [t("raam")]),
-            ]}
+            properties={new currentTab.entityType()}
+            data={data.filter((value) =>
+              Object.values(value)
+                .map(String)
+                .reduce(
+                  (accumulator, value) => accumulator || value.includes(search),
+                  false
+                )
+            )}
+            deleteRow={
+              currentTab.deleteEntity
+                ? (row) => {
+                    setData(
+                      data.filter((val) => {
+                        setSearch(search + "");
+                        return JSON.stringify(val) != JSON.stringify(row);
+                      })
+                    );
+                  }
+                : undefined
+            }
           />
         </Box>
       </Box>
