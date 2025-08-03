@@ -10,15 +10,19 @@ import {
   Table,
   TableBody,
   Typography,
+  IconButton,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Status } from "../../types/statuses";
+
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface TableProps {
   properties: any;
   data: any[];
   getRowClass?: (row: any) => string;
   color?: boolean;
+  deleteRow?: (row: any) => void;
 }
 
 const GenericTable: React.FC<TableProps> = ({
@@ -26,11 +30,15 @@ const GenericTable: React.FC<TableProps> = ({
   data,
   getRowClass,
   color,
+  deleteRow,
 }) => {
   const { t } = useTranslation();
   const columns = Object.keys(properties);
   if (color != undefined) {
-    columns.push("");
+    columns.push("!color");
+  }
+  if (deleteRow != undefined) {
+    columns.push("!delete");
   }
 
   const valueToMultipleLines = (value: Date | string | number | Status) => {
@@ -55,9 +63,19 @@ const GenericTable: React.FC<TableProps> = ({
       <Table sx={{ minWidth: 650 }}>
         <TableHead sx={{ background: "#dadada" }}>
           <TableRow>
-            {columns.map((column) => (
-              <TableCell sx={{ fontWeight: "bold", fontSize: "1.3rem" }} align="center">{t(column)}</TableCell>
-            ))}
+            {columns.map((column) => {
+              if (column.includes("!")) {
+                column = "";
+              }
+              return (
+                <TableCell
+                  sx={{ fontWeight: "bold", fontSize: "1.3rem" }}
+                  align="center"
+                >
+                  {t(column)}
+                </TableCell>
+              );
+            })}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -70,7 +88,9 @@ const GenericTable: React.FC<TableProps> = ({
               key={dataSet.flightNumber}
             >
               {Object.values(dataSet)
-                .map((rowValue) => valueToMultipleLines(rowValue as string | number | Date))
+                .map((rowValue) =>
+                  valueToMultipleLines(rowValue as string | number | Date)
+                )
                 .map((linesValues) => (
                   <TableCell align="center">
                     {linesValues.map((value) => (
@@ -89,6 +109,12 @@ const GenericTable: React.FC<TableProps> = ({
                     getRowClass != undefined ? getRowClass(dataSet) : ""
                   }
                 />
+              )}
+              {deleteRow != undefined && (
+                <TableCell
+                  sx={{ width: 0 }}
+                  align="center"
+                ><IconButton onClick={() => deleteRow(dataSet)}><DeleteIcon/></IconButton></TableCell>
               )}
             </TableRow>
           ))}
