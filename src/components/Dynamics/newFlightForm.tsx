@@ -4,42 +4,38 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import NewEntity from "./newEntityForm";
-import { UsersData } from "../../types/tables/manageTypes";
+import { FlightData, UsersData } from "../../types/tables/manageTypes";
 import { platformTypes } from "../../types/platformTypes";
 
-interface NewUserProps {
-  callback: (user: UsersData) => void;
+interface NewFlightProps {
+  callback: (user: FlightData) => void;
 }
 
-const NewUser: React.FC<NewUserProps> = ({ callback }) => {
+const NewFlight: React.FC<NewFlightProps> = ({ callback }) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [name, setName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [personalNumber, setPersonalNumber] = useState<string>("");
   const [platforms, setPlatforms] = useState<string[]>([]);
 
   return (
     <NewEntity
       textInputs={[
-        { label: t("firstName"), setter: setName },
-        { label: t("lastName"), setter: setLastName },
-        { label: t("personalNumber"), setter: setPersonalNumber },
+        { label: t("flightName"), setter: setName },
       ]}
       dropdownInputs={[
         {
-          label: t("platforms"),
+          label: t("platform"),
           options: platformTypes,
           selected: platforms,
           setter: setPlatforms,
-          multiple: true
+          multiple: false
         },
       ]}
       callback={() => {
-        callback(new UsersData(name, lastName, personalNumber, platforms));
+        callback(new FlightData(name, platforms[0]));
       }}
     />
   );
 };
 
-export default NewUser;
+export default NewFlight;

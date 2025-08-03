@@ -18,6 +18,7 @@ interface NewEntityProps {
     options: string[];
     selected: string[];
     setter: (fields: string[]) => void;
+    multiple: boolean;
   }[];
   callback: () => void;
   width?: string;
@@ -59,7 +60,7 @@ const NewEntity: React.FC<NewEntityProps> = ({
               options={dropdown.options}
               selected={dropdown.selected}
               setSelected={dropdown.setter}
-              isMultiple={true}
+              isMultiple={dropdown.multiple}
               width="9rem"
             />
           ))}
