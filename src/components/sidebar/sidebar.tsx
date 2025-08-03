@@ -1,11 +1,20 @@
 import { Box, MenuItem, Typography } from "@mui/material";
 
+type Tab = {label: string, icon: React.ReactNode};
+
 interface SideBarProps {
-  titlesIcons: Record<string, React.ReactNode>;
-  activeTitle: string;
+  titlesIcons: Tab[];
+  activeTab: Tab;
+  changeTab: (newTab: string) => void;
 }
 
-const SideBar: React.FC<SideBarProps> = ({ titlesIcons, activeTitle }) => {
+const SideBar: React.FC<SideBarProps> = ({ titlesIcons, activeTab, changeTab }) => {
+  const handleClick = (tabClicked: string) => {
+    if (tabClicked != activeTab.label) {
+      changeTab(tabClicked);
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -20,7 +29,7 @@ const SideBar: React.FC<SideBarProps> = ({ titlesIcons, activeTitle }) => {
         height: "88vh" // this value is the best looking for regular sized page but needs to be checked according to a full table and different size screens
       }}
     >
-      {Object.entries(titlesIcons).map(([key, value]) => (
+      {titlesIcons.map((titleIcon) => (
         <MenuItem
           sx={{
             display: "flex",
@@ -28,12 +37,13 @@ const SideBar: React.FC<SideBarProps> = ({ titlesIcons, activeTitle }) => {
             ":hover": { bgcolor: "#00309a36" },
             borderRadius: 2,
             mb: 2,
-            bgcolor: activeTitle == key ? "#00309a26" : "#00000000",
+            bgcolor: activeTab.label == titleIcon.label ? "#00309a26" : "#00000000",
           }}
+          onClick={() => handleClick(titleIcon.label)}
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            {value}
-            <Typography sx={{ mr: 1 }}>{key}</Typography>
+            {titleIcon.icon}
+            <Typography sx={{ mr: 1 }}>{titleIcon.label}</Typography>
           </Box>
         </MenuItem>
       ))}
