@@ -84,7 +84,9 @@ const ReviewFlights: React.FC = () => {
         <NewFlightModel />
       </Box>
       <GenericTable
-        properties={new FlightData()}
+        properties={Object.keys(new FlightData()).filter(
+          (col) => col != "dateTime"
+        )}
         data={filterData()}
       ></GenericTable>
     </PageWrapper>

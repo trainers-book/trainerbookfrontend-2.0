@@ -94,7 +94,7 @@ const ManageIssues: React.FC = () => {
         />
       </Box>
       <GenericTable
-        properties={new IssueData()}
+        properties={Object.keys(new IssueData()).filter((col) => true)}
         data={filterData()}
         getRowClass={getRowClass}
         color={true}

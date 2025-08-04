@@ -1,4 +1,6 @@
-import { Box } from "@mui/material";
+import { useState } from "react";
+import { Box, Button } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import FilterDropdown from "../Dynamics/filterDropdown";
 import FilterSearchBar from "../Dynamics/filterSearchBar";
 import FilterDate from "../Dynamics/filterDate";
@@ -31,6 +33,9 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
   setDate,
 }) => {
   const { t } = useTranslation();
+
+  const [isReset, setIsReset] = useState(false);
+
   return (
     <Box sx={{ mr: 1, display: "flex" }}>
       <FilterDropdown
@@ -40,6 +45,7 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
         setSelected={setSelectedPlatform}
         isMultiple={true}
         width="9rem"
+        isReset={isReset}
       />
       <FilterDropdown
         label={t("status")}
@@ -48,6 +54,7 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
         setSelected={setSelectedStatuses}
         isMultiple={true}
         width="9rem"
+        isReset={isReset}
       />
       <FilterDropdown
         label={t("severity")}
@@ -56,9 +63,25 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
         setSelected={setSelectedSeverities}
         isMultiple={true}
         width="9rem"
+        isReset={isReset}
       />
-      <FilterSearchBar label={t("search")} setSearch={setSearch} />
-      <FilterDate setDate={setDate} />
+      <FilterSearchBar
+        label={t("search")}
+        setSearch={setSearch}
+        isReset={isReset}
+      />
+      <FilterDate setDate={setDate} isReset={isReset} />
+      <Button
+        sx={{
+          color: "black",
+        }}
+        onClick={() => {
+          setIsReset(true);
+          setTimeout(() => setIsReset(false), 100);
+        }}
+      >
+        <DeleteIcon></DeleteIcon>
+      </Button>
     </Box>
   );
 };

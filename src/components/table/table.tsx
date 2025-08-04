@@ -15,9 +15,10 @@ import { useTranslation } from "react-i18next";
 import FlightData from "../../types/tables/flight";
 import { Status } from "../../types/statuses";
 import type IssueData from "../../types/tables/issues";
+import { Severity } from "../../types/issuesSeverity";
 
 interface TableProps {
-  properties: FlightData | IssueData;
+  properties: string[];
   data: FlightData[] | IssueData[];
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
@@ -30,12 +31,13 @@ const GenericTable: React.FC<TableProps> = ({
   color,
 }) => {
   const { t } = useTranslation();
-  const columns = Object.keys(properties);
+  const columns = properties.slice()
   if (color != undefined) {
     columns.push("");
   }
 
-  const valueToMultipleLines = (value: Date | string | number | Status) => {
+  const valueToMultipleLines = (
+    value: Date | string | number | Status | Severity) => {
     let valueArray: string[] = [value.toString()];
 
     if (value instanceof Date) {
@@ -76,8 +78,8 @@ const GenericTable: React.FC<TableProps> = ({
               }}
               key={dataSet.flightNumber}
             >
-              {Object.values(dataSet)
-                .map((rowValue) => valueToMultipleLines(rowValue))
+              {properties
+                .map((col) => valueToMultipleLines(dataSet[col]))
                 .map((linesValues) => (
                   <TableCell align="center">
                     {linesValues.map((value) => (
