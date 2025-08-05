@@ -27,9 +27,11 @@ import "../../i18n";
 import "./navbar.css";
 import "../../types/routeTypes";
 import OfekUnit from "../../assets/OfekUnit.png";
+import { useLocalStorage } from "../../context/localStorageContext";
 
 const Navbar: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const { ls } = useLocalStorage();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -41,8 +43,9 @@ const Navbar: React.FC = () => {
   const notificationsCount = 2;
 
   const handleLogout = () => {
-    localStorage.removeItem("isAuthenticated");
-    localStorage.removeItem("username");
+    ls.deleteValue("isAuthenticated");
+    ls.deleteValue("userName");
+
     setAnchorEl(null);
     setUsername("");
     navigate("/");
