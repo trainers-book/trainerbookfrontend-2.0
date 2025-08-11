@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Box, Button } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import FilterDropdown from "../Dynamics/filterDropdown";
 import FilterSearchBar from "../Dynamics/filterSearchBar";
 import FilterDate from "../Dynamics/filterDate";
@@ -18,7 +17,9 @@ interface FilterIssuesProps {
   setSelectedStatuses: (values: string[]) => void;
   selectedSeverities: string[];
   setSelectedSeverities: (values: string[]) => void;
+  search: string;
   setSearch: (value: string) => void;
+  dateSelected: string;
   setDate: (value: string) => void;
 }
 
@@ -29,12 +30,21 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
   setSelectedStatuses,
   selectedSeverities,
   setSelectedSeverities,
+  search,
   setSearch,
+  dateSelected,
   setDate,
 }) => {
   const { t } = useTranslation();
 
   const [isReset, setIsReset] = useState(false);
+
+  const isFilterSelected =
+    selectedPlatform.length != 0 ||
+    selectedStatuses.length != 0 ||
+    selectedSeverities.length != 0 ||
+    search != "" ||
+    dateSelected != "";
 
   return (
     <Box sx={{ mr: 1, display: "flex" }}>
@@ -71,17 +81,25 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
         isReset={isReset}
       />
       <FilterDate setDate={setDate} isReset={isReset} />
-      <Button
-        sx={{
-          color: "black",
-        }}
-        onClick={() => {
-          setIsReset(true);
-          setTimeout(() => setIsReset(false), 100);
-        }}
-      >
-        <DeleteIcon></DeleteIcon>
-      </Button>
+      <div>
+        {isFilterSelected && (
+          <Button
+            sx={{
+              color: "black",
+              background: "rgba(250, 119, 119, 0.58)",
+              mr: 1,
+              borderRadius: 2,
+              boxShadow: "0 1px 2px rgba(0, 0, 0, 0.2)",
+            }}
+            onClick={() => {
+              setIsReset(true);
+              setTimeout(() => setIsReset(false), 100);
+            }}
+          >
+            {t("clear")}
+          </Button>
+        )}
+      </div>
     </Box>
   );
 };

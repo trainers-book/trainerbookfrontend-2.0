@@ -89,7 +89,9 @@ const ManageIssues: React.FC = () => {
           setSelectedStatuses={changeStatus}
           selectedSeverities={selectedSeverity}
           setSelectedSeverities={changeSeverity}
+          search={searchQuery}
           setSearch={changeSearch}
+          dateSelected={selectedDate}
           setDate={changedate}
         />
       </Box>

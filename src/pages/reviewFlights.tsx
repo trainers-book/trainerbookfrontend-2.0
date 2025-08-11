@@ -78,7 +78,9 @@ const ReviewFlights: React.FC = () => {
         <FilterFlights
           selectedPlatform={selectedPlatforms}
           setSelectedPlatform={changePlatform}
+          search={searchQuery}
           setSearch={changeSearch}
+          dateSelected={selectedDate}
           setDate={changedate}
         />
         <NewFlightModel />
