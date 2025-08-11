@@ -89,12 +89,14 @@ const ManageIssues: React.FC = () => {
           setSelectedStatuses={changeStatus}
           selectedSeverities={selectedSeverity}
           setSelectedSeverities={changeSeverity}
+          search={searchQuery}
           setSearch={changeSearch}
+          dateSelected={selectedDate}
           setDate={changedate}
         />
       </Box>
       <GenericTable
-        properties={new IssueData()}
+        properties={Object.keys(new IssueData()).filter((col) => true)}
         data={filterData().sort((currentValue, nextValue) => nextValue.dateTime.getTime() - currentValue.dateTime.getTime())} //(a, b) => b.flightNumber - a.flightNumber
         getRowClass={getRowClass}
         color={true}

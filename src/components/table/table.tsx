@@ -16,9 +16,10 @@ import { useTranslation } from "react-i18next";
 import FlightData from "../../types/tables/flight";
 import { Status } from "../../types/statuses";
 import type IssueData from "../../types/tables/issues";
+import { Severity } from "../../types/issuesSeverity";
 
 interface TableProps {
-  properties: FlightData | IssueData;
+  properties: string[];
   data: FlightData[] | IssueData[];
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
@@ -36,7 +37,7 @@ const GenericTable: React.FC<TableProps> = ({
   const tableHeadHeight = 56.5;
 
   const { t } = useTranslation();
-  const columns = Object.keys(properties);
+  const columns = properties.slice()
   if (color != undefined) {
     columns.push("");
   }
@@ -63,7 +64,9 @@ const GenericTable: React.FC<TableProps> = ({
     }    
   };  
 
-  const valueToMultipleLines = (value: Date | string | number | Status) => {
+  const valueToMultipleLines = (
+    value: Date | string | number | Status | Severity
+  ) => {
     let valueArray: string[] = [value.toString()];
 
     if (value instanceof Date) {
@@ -109,8 +112,8 @@ const GenericTable: React.FC<TableProps> = ({
                 "&:last-child td, &:last-child th": { border: 0 },
               }}
             >
-              {Object.values(dataSet)
-                .map((rowValue) => valueToMultipleLines(rowValue))
+              {properties
+                .map((col) => valueToMultipleLines(dataSet[col]))
                 .map((linesValues) => (
                   <TableCell align="center">
                     {linesValues.map((value) => (
