@@ -46,7 +46,6 @@ const FilterFlights: React.FC<FilterFlightsProps> = ({
         isReset={isReset}
       />
       <FilterDate setDate={setDate} isReset={isReset} />
-      <div>
         {isFilterSelected && (
           <Button
             sx={{
@@ -64,7 +63,6 @@ const FilterFlights: React.FC<FilterFlightsProps> = ({
             {t("clear")}
           </Button>
         )}
-      </div>
     </Box>
   );
 };

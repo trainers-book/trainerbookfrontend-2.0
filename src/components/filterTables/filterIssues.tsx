@@ -81,7 +81,6 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
         isReset={isReset}
       />
       <FilterDate setDate={setDate} isReset={isReset} />
-      <div>
         {isFilterSelected && (
           <Button
             sx={{
@@ -99,7 +98,6 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
             {t("clear")}
           </Button>
         )}
-      </div>
     </Box>
   );
 };
