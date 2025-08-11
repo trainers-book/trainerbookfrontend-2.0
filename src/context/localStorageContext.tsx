@@ -13,15 +13,32 @@ class LocalStorage {
     return btoa(unescape(encodeURIComponent(toEncode)));
   }
 
-  decodeString(toDecode: string) {
-    return decodeURIComponent(escape(atob(toDecode)));
+  decodeString(toDecode: string | null) {
+    return toDecode ? decodeURIComponent(escape(atob(toDecode))) : null;
   }
 
   getValue(key: string) {
+    const localstorageProblem = () => {
+      // probably not the best to be in prod. suggestions are welcome for the prod verion. 
+      // and it doesnt work for all changes to the localstorage
+      console.log("problem with decoding localstorage. reseting all values");
+      // and might need to redirect to login page
+      localStorage.clear();
+    };
+
     const value = localStorage.getItem(this.encodeString(key));
-    console.log(this.decodeString(value));
-    
-    return value ? this.decodeString(value) : null;
+    if (!value) {
+      localstorageProblem();
+    }
+
+    try {
+      let decoded = this.decodeString(value);
+      
+      return value ? decoded : null;
+    } catch (err) {
+      localstorageProblem();
+      return null;
+    }
   }
 
   setValue(key: string, value: string) {
@@ -33,14 +50,17 @@ class LocalStorage {
   }
 }
 
-
 interface LocalStorageContextType {
   ls: LocalStorage;
 }
 
 const LocalStorageContext = createContext<LocalStorageContextType | null>(null);
 
-export const LocalStorageProvider = ({ children }: { children: React.ReactNode }) => {
+export const LocalStorageProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [ls, setLocalStorage] = useState(new LocalStorage());
 
   return (
@@ -52,6 +72,9 @@ export const LocalStorageProvider = ({ children }: { children: React.ReactNode }
 
 export const useLocalStorage = () => {
   const context = useContext(LocalStorageContext);
-  if (!context) throw new Error("useLocalStorage must be used within a LocalStorageProvider");
+  if (!context)
+    throw new Error(
+      "useLocalStorage must be used within a LocalStorageProvider"
+    );
   return context;
 };

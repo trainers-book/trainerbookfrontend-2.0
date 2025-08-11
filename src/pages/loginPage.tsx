@@ -28,7 +28,7 @@ const LoginPage: React.FC = () => {
     fetch("http://localhost:3002/Authentication/" + username + "/" + password)
       .then((res) => res.json())
       .then((data) => {
-        loginSuccess(data[0]);
+        if (data != 404) loginSuccess(data[0]);
       })
       .catch((error) => {
         alert("error: " + error);
@@ -50,13 +50,10 @@ const LoginPage: React.FC = () => {
         borderRadius: 3,
         boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)",
         pr: 2,
-        pl: 2
+        pl: 2,
       }}
     >
-      <Typography
-        sx={{ fontSize: "2rem", m: 2, mb: 4, fontWeight: "bold" }}
-        // component="h2"
-      >
+      <Typography sx={{ fontSize: "2rem", m: 2, mb: 4, fontWeight: "bold" }}>
         {t("login")}
       </Typography>
       <TextField
