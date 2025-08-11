@@ -121,6 +121,7 @@ const NewFlightModel: React.FC = () => {
                   setSelected={setSelectedPlatforms}
                   isMultiple={false}
                   width="100%"
+                isReset={false}
                   touched={touched.platform}
                   error={fieldError.platform}
                   onBlur={() => setTouched({ ...touched, platform: true })}

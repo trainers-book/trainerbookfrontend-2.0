@@ -6,6 +6,7 @@ import {
   Select,
 } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material/Select";
+import { useEffect } from "react";
 
 import "../../i18n";
 import { useTranslation } from "react-i18next";
@@ -33,6 +34,7 @@ interface FilterDropdownProps {
   setSelected: (values: string[]) => void;
   isMultiple: boolean;
   width?: string;
+  isReset: boolean;
   onBlur?: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   touched?: boolean;
   error?: string;
@@ -50,12 +52,19 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   setSelected,
   isMultiple,
   width,
+  isReset,
   onBlur,
   touched,
   error
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (selected.length > 0 && isReset) {
+      setSelected([]);
+    }
+  }, [isReset, selected]);
 
   const handleChange = (event: SelectChangeEvent<typeof selected>) => {
     const {
@@ -76,6 +85,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
           <FormControl
             sx={{
               width: width,
+              mr: ".5rem",
             }}
             error={touched && selected.length === 0}
           >
