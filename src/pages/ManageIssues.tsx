@@ -23,31 +23,6 @@ const ManageIssues: React.FC = () => {
       .toLocaleLowerCase();
   };
 
-  const changePlatform = (selected: string[]) => {
-    setSelectedPlatforms(selected);
-    filterData();
-  };
-
-  const changeStatus = (selected: string[]) => {
-    setSelectedStatuses(selected);
-    filterData();
-  };
-
-  const changeSeverity = (selected: string[]) => {
-    setSelectedSeverity(selected);
-    filterData();
-  };
-
-  const changeSearch = (search: string) => {
-    setSearchQuery(search);
-    filterData();
-  };
-
-  const changedate = (selected: string) => {
-    setSelectedDate(selected);
-    filterData();
-  };
-
   const filterData = () => {
     return issueData.filter((dataSet) => {
       const getDate = (date: Date) => {
@@ -84,20 +59,23 @@ const ManageIssues: React.FC = () => {
       >
         <FilterIssues
           selectedPlatform={selectedPlatforms}
-          setSelectedPlatform={changePlatform}
+          setSelectedPlatform={setSelectedPlatforms}
           selectedStatuses={selectedStatuses}
-          setSelectedStatuses={changeStatus}
+          setSelectedStatuses={setSelectedStatuses}
           selectedSeverities={selectedSeverity}
-          setSelectedSeverities={changeSeverity}
+          setSelectedSeverities={setSelectedSeverity}
           search={searchQuery}
-          setSearch={changeSearch}
+          setSearch={setSearchQuery}
           dateSelected={selectedDate}
-          setDate={changedate}
+          setDate={setSelectedDate}
         />
       </Box>
       <GenericTable
         properties={Object.keys(new IssueData()).filter((col) => true)}
-        data={filterData().sort((currentValue, nextValue) => nextValue.dateTime.getTime() - currentValue.dateTime.getTime())} //(a, b) => b.flightNumber - a.flightNumber
+        data={filterData()}
+        sortFunction={(currentValue, nextValue) =>
+          nextValue.dateTime.getTime() - currentValue.dateTime.getTime()
+        }
         getRowClass={getRowClass}
         color={true}
       ></GenericTable>

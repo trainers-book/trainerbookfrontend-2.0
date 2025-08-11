@@ -21,6 +21,7 @@ import { Severity } from "../../types/issuesSeverity";
 interface TableProps {
   properties: string[];
   data: FlightData[] | IssueData[];
+  sortFunction: (val: any, nexVal: any) => number;
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
 }
@@ -28,6 +29,7 @@ interface TableProps {
 const GenericTable: React.FC<TableProps> = ({
   properties,
   data,
+  sortFunction,
   getRowClass,
   color,
 }) => {
@@ -43,16 +45,24 @@ const GenericTable: React.FC<TableProps> = ({
   }
 
   const [offset, setOffset] = useState(0);
+  const [sortedData, setSortedData] = useState(data.sort(sortFunction));
   const limit = Math.round(((window.innerHeight * (tableHeightPercent / 100)) / tableRowHeight) + tableFetchExtra);
-  const [dataToShow, setdataToShow] = useState(data.slice(offset, limit * offset));
+  const [dataToShow, setdataToShow] = useState(sortedData.slice(offset, limit * offset));
 
   useEffect(() => {
     fetchMoreData();
   }, [offset]);
+  
+  useEffect(() => {
+    setOffset(0);
+    const sorted = data.sort(sortFunction);
+    setSortedData(sorted);
+    setdataToShow(sorted.slice(0, limit));
+  }, [data]);
 
   const fetchMoreData = async () => {
-    const newData = data.slice(offset * limit, (offset + 1) * limit)
-    setdataToShow([...dataToShow, ...newData]);
+    const newData = sortedData.slice(offset * limit, (offset + 1) * limit)
+    setdataToShow([...new Set([...dataToShow, ...newData])]);
   };
 
   const handleScroll = (e) => {

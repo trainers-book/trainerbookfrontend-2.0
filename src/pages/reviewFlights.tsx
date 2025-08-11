@@ -97,6 +97,9 @@ const ReviewFlights: React.FC = () => {
           (col) => col != "dateTime"
         )}
         data={filterData()}
+        sortFunction={(currentValue, nextValue) =>
+          nextValue.dateTime.getTime() - currentValue.dateTime.getTime()
+        }
       ></GenericTable>
     </PageWrapper>
   );
