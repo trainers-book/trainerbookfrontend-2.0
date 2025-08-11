@@ -77,8 +77,8 @@ const ManageIssues: React.FC = () => {
     <PageWrapper>
       <Box
         sx={{
-          mt: 2,
-          mb: 2,
+          mt: 1,
+          mb: 1,
           display: "flex",
         }}
       >
