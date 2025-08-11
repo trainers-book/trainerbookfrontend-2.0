@@ -110,6 +110,7 @@ const NewFlightModel: React.FC = () => {
                 setSelected={setSelectedPlatforms}
                 isMultiple={false}
                 width="100%"
+                isReset={false}
               />
             </Grid>
           </Grid>

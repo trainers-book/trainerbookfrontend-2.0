@@ -78,13 +78,17 @@ const ReviewFlights: React.FC = () => {
         <FilterFlights
           selectedPlatform={selectedPlatforms}
           setSelectedPlatform={changePlatform}
+          search={searchQuery}
           setSearch={changeSearch}
+          dateSelected={selectedDate}
           setDate={changedate}
         />
         <NewFlightModel />
       </Box>
       <GenericTable
-        properties={new FlightData()}
+        properties={Object.keys(new FlightData()).filter(
+          (col) => col != "dateTime"
+        )}
         data={filterData()}
       ></GenericTable>
     </PageWrapper>
