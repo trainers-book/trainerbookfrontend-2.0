@@ -11,53 +11,63 @@ import {
 } from "@mui/material";
 import TimerPanel from "./TimerPanel";
 import { useTranslation } from "react-i18next";
-import DynamicTextField from "../../Dynamics/DynamicTextField";
 import CloseIcon from "@mui/icons-material/Close";
 import FilterDropdown from "../../Dynamics/filterDropdown";
 import { platformTypes } from "../../../types/platformTypes";
 import NewMalfModel from "../newMalf/newMalf";
 import ClickedOutside from "../clickedOutside";
+import { fieldError } from "../../../types/errors/fields";
 
 const NewFlightModel: React.FC = () => {
   const [show, setShow] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const { t } = useTranslation();
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
-  const [dynamicTextFieldValue, setDynamicTextFieldValue] = useState<string>("");
-  const [timerPanelValue, setTimerPanelValue] = useState<string>("");
+  const [selectedFlight, setSelectedFlight] = useState<string[]>([]);
+  const [timerPanelValue, setTimerPanelValue] = useState<boolean>(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const [touched, setTouched] = useState({
+    platform: false,
+    flight: false,
+  });
 
   useEffect(() => {
-    if (
+    if (selectedFlight.length > 0 && selectedPlatforms.length > 0) {
+      setHasChanges(false);
+    } else if (
+      selectedFlight.length > 0 ||
       selectedPlatforms.length > 0 ||
-      dynamicTextFieldValue !== "" ||
-      timerPanelValue !== ""
+      timerPanelValue
     ) {
       setHasChanges(true);
     } else {
       setHasChanges(false);
     }
-  }, [selectedPlatforms, dynamicTextFieldValue, timerPanelValue]);
+  }, [selectedPlatforms, selectedFlight, timerPanelValue]);
 
   const handleShow = () => {
     setShow(true);
   };
 
   const handleClose = () => {
-    if(hasChanges){
+    if (hasChanges) {
       setShowConfirm(true);
-    }
-    else {
+    } else {
       setShow(false);
       setShowConfirm(false);
     }
-    setDynamicTextFieldValue("");
-    setTimerPanelValue("");
+    setTimerPanelValue(false);
+    setTouched({
+      platform: false,
+      flight: false,
+    });
   };
 
   const handleConfirmClose = () => {
     setShow(false);
     setShowConfirm(false);
+    setSelectedPlatforms([]);
+    setSelectedFlight([]);
   };
 
   const handleCancelClose = () => {
@@ -69,7 +79,7 @@ const NewFlightModel: React.FC = () => {
       <Button
         variant="contained"
         onClick={handleShow}
-        sx={{ background: "rgb(114, 156, 240)" }}
+        sx={{ background: "rgb(114, 156, 240)", mr: 1, mt: 1, mb: 1 }}
       >
         {t("newFlight")}
       </Button>
@@ -101,35 +111,44 @@ const NewFlightModel: React.FC = () => {
         </DialogTitle>
 
         <DialogContent>
-          <Grid container justifyContent="center" padding={1}>
+          <Grid container spacing={2}>
             <Grid size={8}>
-              <FilterDropdown
-                label={t("choosePlatform")}
-                options={platformTypes}
-                selected={selectedPlatforms}
-                setSelected={setSelectedPlatforms}
-                isMultiple={false}
-                width="100%"
-              />
-            </Grid>
-          </Grid>
-          <Grid container spacing={2} padding={1}>
-            <Grid size={8}>
-              <Stack spacing={2}>
-                <DynamicTextField
-                  label={t("flightName")}
+              <Stack spacing={2} padding={1}>
+                <FilterDropdown
+                  label={t("choosePlatform")}
+                  options={platformTypes}
+                  selected={selectedPlatforms}
+                  setSelected={setSelectedPlatforms}
+                  isMultiple={false}
                   width="100%"
-                  onChange={(e) => setDynamicTextFieldValue(e.target.value)}
+                  touched={touched.platform}
+                  error={fieldError.platform}
+                  onBlur={() => setTouched({ ...touched, platform: true })}
+                />
+              </Stack>
+              <Stack spacing={2} padding={1}>
+                <FilterDropdown
+                  label={t("flightName")}
+                  options={platformTypes}
+                  selected={selectedFlight}
+                  setSelected={setSelectedFlight}
+                  isMultiple={false}
+                  width="100%"
+                  error={fieldError.flightName}
+                  touched={touched.flight}
+                  onBlur={() => setTouched({ ...touched, flight: true })}
                 />
               </Stack>
             </Grid>
             <Grid size={4}>
-              <TimerPanel onChange={(e) => setTimerPanelValue(e.target.value)}/>
+              <TimerPanel
+                onChange={(e) => setTimerPanelValue(e.target.checked)}
+              />
             </Grid>
           </Grid>
           <NewMalfModel />
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ paddingLeft: 5 }}>
           <Button
             onClick={handleClose}
             variant="contained"

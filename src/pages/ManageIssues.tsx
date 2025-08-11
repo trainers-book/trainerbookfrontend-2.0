@@ -95,7 +95,7 @@ const ManageIssues: React.FC = () => {
       </Box>
       <GenericTable
         properties={new IssueData()}
-        data={filterData()}
+        data={filterData().sort((currentValue, nextValue) => nextValue.dateTime.getTime() - currentValue.dateTime.getTime())} //(a, b) => b.flightNumber - a.flightNumber
         getRowClass={getRowClass}
         color={true}
       ></GenericTable>
