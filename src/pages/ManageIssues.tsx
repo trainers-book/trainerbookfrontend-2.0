@@ -32,27 +32,22 @@ const ManageIssues: React.FC = () => {
 
   const changePlatform = (selected: string[]) => {
     setSelectedPlatforms(selected);
-    filterData();
   };
 
   const changeStatus = (selected: string[]) => {
     setSelectedStatuses(selected);
-    filterData();
   };
 
   const changeSeverity = (selected: string[]) => {
     setSelectedSeverity(selected);
-    filterData();
   };
 
   const changeSearch = (search: string) => {
     setSearchQuery(search);
-    filterData();
   };
 
   const changedate = (selected: string) => {
     setSelectedDate(selected);
-    filterData();
   };
 
   const filterData = () => {
@@ -115,7 +110,8 @@ const ManageIssues: React.FC = () => {
       </Box>
       <GenericTable
         properties={new IssueData()}
-        data={filterData().sort((currentValue, nextValue) => nextValue.dateTime.getTime() - currentValue.dateTime.getTime())} //(a, b) => b.flightNumber - a.flightNumber
+        data={filterData()}
+        sortFunction={(currentValue, nextValue) => nextValue.dateTime.getTime() - currentValue.dateTime.getTime()}
         getRowClass={getRowClass}
         color={true}
       ></GenericTable>

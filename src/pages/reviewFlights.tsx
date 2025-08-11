@@ -27,7 +27,13 @@ const ReviewFlights: React.FC = () => {
   return (
     <PageWrapper>
       <NewFlightModel />
-      <GenericTable properties={new FlightData()} data={data} />
+      <GenericTable
+        properties={new FlightData()}
+        data={data}
+        sortFunction={(currentValue, nextValue) =>
+          nextValue.dateTime.getTime() - currentValue.dateTime.getTime()
+        }
+      />
     </PageWrapper>
   );
 };
