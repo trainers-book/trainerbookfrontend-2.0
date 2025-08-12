@@ -36,7 +36,6 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
   setDate,
 }) => {
   const { t } = useTranslation();
-
   const [isReset, setIsReset] = useState(false);
 
   const isFilterSelected =

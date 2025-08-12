@@ -13,14 +13,13 @@ import {
   Box,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import FlightData from "../../types/tables/flight";
 import { Status } from "../../types/statuses";
 import type IssueData from "../../types/tables/issues";
 import { Severity } from "../../types/issuesSeverity";
 
 interface TableProps {
   properties: string[];
-  data: FlightData[] | IssueData[];
+  data: any[];
   sortFunction: (val: any, nexVal: any) => number;
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
@@ -65,11 +64,12 @@ const GenericTable: React.FC<TableProps> = ({
     setdataToShow([...new Set([...dataToShow, ...newData])]);
   };
 
-  const handleScroll = (e) => {
-    
-    const target = e.target;
+  const handleScroll = (event: any) => {
+    const children = document.getElementById("table")?.childElementCount;
+    const target = event.target;
 
-    if ((target.scrollTop + target.offsetHeight + tableHeadHeight) >= (tableRowHeight * (document.getElementById("table")?.childElementCount))) {
+
+    if ((target.scrollTop + target.offsetHeight + tableHeadHeight) >= (tableRowHeight * (children ? children : 1))) {
       setTimeout(() => {setOffset(offset + 1)}, 100); // timeout to simulate fetch time from server
     }    
   };  

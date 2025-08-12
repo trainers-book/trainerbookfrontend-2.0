@@ -12,13 +12,11 @@
   MenuItem,
   Menu,
 } from "@mui/material";
-
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
@@ -29,12 +27,10 @@ import "../../types/routeTypes";
 import OfekUnit from "../../assets/OfekUnit.png";
 
 const Navbar: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-
   const { username, setUsername } = useUser();
-  const [isHover, setIsHover] = useState(false);
 
   const isLogin = location.pathname == "/";
   const isTechnician = true; // placeholder for future premissions

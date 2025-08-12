@@ -71,7 +71,7 @@ const ManageIssues: React.FC = () => {
         />
       </Box>
       <GenericTable
-        properties={Object.keys(new IssueData()).filter((col) => true)}
+        properties={Object.keys(new IssueData()).filter(() => true)}
         data={filterData()}
         sortFunction={(currentValue, nextValue) =>
           nextValue.dateTime.getTime() - currentValue.dateTime.getTime()

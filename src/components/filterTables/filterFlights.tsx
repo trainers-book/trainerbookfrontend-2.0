@@ -5,7 +5,6 @@ import "../../i18n";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { platformTypes } from "../../types/platformTypes";
-
 import { Box } from "@mui/material";
 import { Button } from "@mui/material";
 
