@@ -26,7 +26,7 @@ const SideBar: React.FC<SideBarProps> = ({ titlesIcons, activeTab, changeTab }) 
         pt: 2,
         pb: 2,
         border: "1px solid #aaa",
-        height: "88vh" // this value is the best looking for regular sized page but needs to be checked according to a full table and different size screens
+        height: "86vh" // this value is the best looking for regular sized page but needs to be checked according to a full table and different size screens
       }}
     >
       {titlesIcons.map((titleIcon) => (
