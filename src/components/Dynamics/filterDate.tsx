@@ -2,6 +2,7 @@ import { FormControl, TextField } from "@mui/material";
 
 import "../../i18n";
 import { useTranslation } from "react-i18next";
+import { useState, useEffect } from "react";
 
 import { ThemeProvider, useTheme } from "@mui/material/styles";
 import rtlPlugin from "@mui/stylis-plugin-rtl";
@@ -10,8 +11,9 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 
 interface FilterDateProps {
-    setDate: (value: string) => void;
-    width?: string;
+  setDate: (value: string) => void;
+  width?: string;
+  isReset: boolean;
 }
 
 const cacheRtl = createCache({
@@ -19,17 +21,26 @@ const cacheRtl = createCache({
   stylisPlugins: [prefixer, rtlPlugin],
 });
 
-const FilterDate: React.FC<FilterDateProps> = ({ width, setDate }) => {
+const FilterDate: React.FC<FilterDateProps> = ({ width, setDate, isReset }) => {
   const theme = useTheme();
   const { t } = useTranslation();
+
+  const [dateValue, setDateValue] = useState("");
 
   const handleChange = (event) => {
     const {
       target: { value },
-    } = event;    
-
+    } = event;
+    setDateValue(value);
     setDate(value);
   };
+
+  useEffect(() => {
+    if (isReset) {
+      setDateValue("");
+      setDate("");
+    }
+  }, [isReset, handleChange]);
 
   return (
     <CacheProvider value={cacheRtl}>
@@ -41,6 +52,7 @@ const FilterDate: React.FC<FilterDateProps> = ({ width, setDate }) => {
           }}
         >
           <TextField
+            value={dateValue}
             sx={{
               "& .MuiInputBase-input": {
                 padding: "6.5px",

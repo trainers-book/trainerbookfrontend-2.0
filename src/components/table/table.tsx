@@ -1,6 +1,6 @@
 ﻿import "./table.css";
 import "../../i18n";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   TableContainer,
   TableHead,
@@ -11,16 +11,20 @@ import {
   TableBody,
   Typography,
   IconButton,
+  Box,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Status } from "../../types/statuses";
-
+import type IssueData from "../../types/tables/issues";
+import { Severity } from "../../types/issuesSeverity";
+import { FlightData } from "../../types/tables/manageTypes";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface TableProps {
-  properties: any;
+  properties: any[];
   data: any[];
-  getRowClass?: (row: any) => string;
+  sortFunction: (val: any, nexVal: any) => number;
+  getRowClass?: (row: IssueData) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
 }
@@ -28,12 +32,18 @@ interface TableProps {
 const GenericTable: React.FC<TableProps> = ({
   properties,
   data,
+  sortFunction,
   getRowClass,
   color,
   deleteRow,
 }) => {
+  const tableHeightPercent = 85;
+  const tableRowHeight = 82;
+  const tableFetchExtra = 4;
+  const tableHeadHeight = 56.5;
+
   const { t } = useTranslation();
-  const columns = Object.keys(properties);
+  const columns = properties.slice()
   if (color != undefined) {
     columns.push("!color");
   }
@@ -41,7 +51,42 @@ const GenericTable: React.FC<TableProps> = ({
     columns.push("!delete");
   }
 
-  const valueToMultipleLines = (value: Date | string | number | Status) => {
+  const [offset, setOffset] = useState(0);
+  const [sortedData, setSortedData] = useState(data.sort(sortFunction));
+  const limit = Math.round(((window.innerHeight * (tableHeightPercent / 100)) / tableRowHeight) + tableFetchExtra);
+  const [dataToShow, setdataToShow] = useState(sortedData.slice(offset, limit * offset));
+
+  useEffect(() => {
+    fetchMoreData();
+  }, [offset]);
+  
+  useEffect(() => {
+    setOffset(0);
+    const sorted = data.sort(sortFunction);
+    setSortedData(sorted);
+    setdataToShow(sorted.slice(0, limit));
+  }, [data]);
+
+  const fetchMoreData = async () => {
+    const newData = sortedData.slice(offset * limit, (offset + 1) * limit)
+    setdataToShow([...new Set([...dataToShow, ...newData])]);
+  };
+
+  const handleScroll = (e) => {
+    
+    const target = e.target;
+
+    if ((target.scrollTop + target.offsetHeight + tableHeadHeight) >= (tableRowHeight * (document.getElementById("table")?.childElementCount))) {
+      setTimeout(() => {setOffset(offset + 1)}, 100); // timeout to simulate fetch time from server
+    }    
+  };  
+
+  const valueToMultipleLines = (
+    value: Date | string | number | Status | Severity
+  ) => {
+    if (!value) {
+      return [null];
+    }
     let valueArray: string[] = [value.toString()];
 
     if (value instanceof Date) {
@@ -59,7 +104,13 @@ const GenericTable: React.FC<TableProps> = ({
   };
 
   return (
-    <TableContainer component={Paper}>
+    <Box sx={{
+      height: tableHeightPercent + "vh",
+      overflowY: 'auto',
+    }}
+    onScroll={handleScroll}>
+
+    <TableContainer component={Paper} >
       <Table sx={{ minWidth: 650 }}>
         <TableHead sx={{ background: "#dadada" }}>
           <TableRow>
@@ -78,19 +129,16 @@ const GenericTable: React.FC<TableProps> = ({
             })}
           </TableRow>
         </TableHead>
-        <TableBody>
-          {data.map((dataSet) => (
+        <TableBody id="table">
+          {dataToShow.map((dataSet) => (
             <TableRow
               sx={{
                 ":hover": { background: "#d4edff1a" },
                 "&:last-child td, &:last-child th": { border: 0 },
               }}
-              key={dataSet.flightNumber}
             >
-              {Object.values(dataSet)
-                .map((rowValue) =>
-                  valueToMultipleLines(rowValue as string | number | Date)
-                )
+              {properties
+                .map((col) => valueToMultipleLines(dataSet[col]))
                 .map((linesValues) => (
                   <TableCell align="center">
                     {linesValues.map((value) => (
@@ -121,6 +169,7 @@ const GenericTable: React.FC<TableProps> = ({
         </TableBody>
       </Table>
     </TableContainer>
+    </Box>
   );
 };
 

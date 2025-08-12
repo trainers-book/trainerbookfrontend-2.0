@@ -1,11 +1,6 @@
-import {
-  FormControl,
-  TextField,
-} from "@mui/material";
+import { useEffect, useState } from "react";
 
-import "../../i18n";
-import { useTranslation } from "react-i18next";
-
+import { FormControl, TextField } from "@mui/material";
 import { ThemeProvider, useTheme } from "@mui/material/styles";
 import rtlPlugin from "@mui/stylis-plugin-rtl";
 import { prefixer } from "stylis";
@@ -16,6 +11,7 @@ interface FilterSearchBarProps {
   label: string;
   setSearch: (value: string) => void;
   width?: string;
+  isReset: boolean;
 }
 
 const cacheRtl = createCache({
@@ -27,33 +23,43 @@ const FilterSearchBar: React.FC<FilterSearchBarProps> = ({
   label,
   setSearch,
   width,
+  isReset,
 }) => {
   const theme = useTheme();
-  const { t } = useTranslation();
+  const [searchValue, setSearchValue] = useState("");
 
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
+    setSearchValue(value);
     setSearch(value);
   };
+
+  useEffect(() => {
+    if (isReset) {
+      setSearchValue("");
+      setSearch("");
+    }
+  }, [isReset, handleChange]);
 
   return (
     <CacheProvider value={cacheRtl}>
       <ThemeProvider theme={theme}>
         <FormControl
           sx={{
-            width: width
+            width: width,
           }}
         >
           <TextField
+            value={searchValue}
             sx={{
               mr: 1,
-              '& .MuiInputBase-root': {
+              "& .MuiInputBase-root": {
                 borderRadius: 2,
               },
               "&.MuiInputLabel": {
-                top: ".1rem"
+                top: ".1rem",
               },
               "& .MuiInputBase-input": {
                 padding: "6.5px",

@@ -6,6 +6,7 @@ import {
   Select,
 } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material/Select";
+import { useEffect } from "react";
 
 import "../../i18n";
 import { useTranslation } from "react-i18next";
@@ -15,7 +16,6 @@ import rtlPlugin from "@mui/stylis-plugin-rtl";
 import { prefixer } from "stylis";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-import { useEffect } from "react";
 
 const ITEM_HEIGHT = 36;
 const ITEM_PADDING_TOP = 1;
@@ -34,6 +34,10 @@ interface FilterDropdownProps {
   setSelected: (values: string[]) => void;
   isMultiple: boolean;
   width?: string;
+  isReset: boolean;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  touched?: boolean;
+  error?: string;
 }
 
 const cacheRtl = createCache({
@@ -48,6 +52,10 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   setSelected,
   isMultiple,
   width,
+  isReset,
+  touched,
+  error,
+  onBlur
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -57,6 +65,12 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
         setSelected(options);
     }
   });
+
+  useEffect(() => {
+    if (selected.length > 0 && isReset) {
+      setSelected([]);
+    }
+  }, [isReset, selected]);
 
   const handleChange = (event: SelectChangeEvent<typeof selected>) => {
     const {
@@ -77,7 +91,9 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
           <FormControl
             sx={{
               width: width,
+              mr: ".5rem",
             }}
+            error={touched && selected.length === 0}
           >
             <InputLabel
               id="dropdown-select-label"
@@ -88,13 +104,18 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
                 },
               }}
             >
-              {label}
+              {touched && selected.length === 0 ? error : label}
             </InputLabel>
             <Select
               labelId="dropdown-select-label"
               multiple={isMultiple}
               value={selected}
               onChange={handleChange}
+              onBlur={(event) => {
+                if (onBlur) {
+                  onBlur(event);
+                }
+              }}
               input={<OutlinedInput label={label} />}
               renderValue={(selected) =>
                 selected.length === 1

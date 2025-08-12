@@ -7,7 +7,6 @@ import {
   UsersData,
 } from "../types/tables/manageTypes";
 import { Box, SvgIcon } from "@mui/material";
-import FilterSearchControl from "../components/filterControl/filterSearchControl";
 import { useEffect, useState } from "react";
 import SchoolIcon from "@mui/icons-material/School";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
@@ -19,6 +18,7 @@ import SideBar from "../components/sidebar/sidebar";
 import NewUser from "../components/Dynamics/newUserForm";
 import NewFlight from "../components/Dynamics/newFlightForm";
 import NewPlatform from "../components/Dynamics/newPlatformForm";
+import FilterSearchBar from "../components/Dynamics/filterSearchBar";
 
 const sunglassesIcon: React.ReactNode = (
   <SvgIcon>
@@ -45,6 +45,7 @@ type Tab = {
   icon: React.ReactNode;
   entityType: any;
   deleteEntity: boolean;
+  sort: (value: any, nextValue: any) => number;
 };
 
 const ManageUsers: React.FC = () => {
@@ -57,6 +58,8 @@ const ManageUsers: React.FC = () => {
       icon: <PregnantWomanIcon />,
       entityType: UsersData,
       deleteEntity: false,
+      sort: (currentValue: UsersData, nextValue: UsersData) =>
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
     },
     // { label: t("airCrew2"), icon: <MenuBookIcon /> },
     {
@@ -64,32 +67,51 @@ const ManageUsers: React.FC = () => {
       icon: <AccessibleIcon />,
       entityType: UsersData,
       deleteEntity: true,
+      sort: (currentValue: UsersData, nextValue: UsersData) =>
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
     },
     {
       label: t("platform"),
       icon: <AirplanemodeActiveIcon />,
       entityType: platformData,
       deleteEntity: false, // based on permissions
+      sort: (currentValue: platformData, nextValue: platformData) =>
+        Number(nextValue.id) - Number(currentValue.id)
     },
     {
       label: t("instructor"),
       icon: <SchoolIcon />,
       entityType: UsersData,
       deleteEntity: true,
+      sort: (currentValue: UsersData, nextValue: UsersData) =>
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
     },
     {
       label: t("flight"),
       icon: <AirplaneTicketIcon />,
       entityType: FlightData,
       deleteEntity: true,
+      sort: (currentValue: FlightData, nextValue: FlightData) => {
+        if (currentValue instanceof FlightData) {          
+          return nextValue.date.getTime() - currentValue.date.getTime()
+        }
+        return -1;
+        
+      }
     },
   ];
   const [currentTab, setCurrentTab] = useState<Tab>(tabs[0]);
 
   const createEntity = (index: number) => {
-    const keys = Object.keys(new currentTab.entityType());
+    const keys = Object.keys(new currentTab.entityType());    
 
-    return new currentTab.entityType(...keys.map((val) => t(val) + index));
+    return new currentTab.entityType(...keys.map((val) => {
+      if (val == "date") {
+        return new Date();
+      } else if (val == "id") {
+        return 1;
+      }
+      return t(val) + index}));
   };
 
   const [data, setData] = useState<any[]>([]);
@@ -127,7 +149,7 @@ const ManageUsers: React.FC = () => {
               justifyContent: "space-between",
             }}
           >
-            <FilterSearchControl label={t("search")} setSearch={setSearch} />
+            <FilterSearchBar label={t("search")} setSearch={setSearch} width="9rem" isReset={false}/>
             {currentTab.entityType == UsersData && (
               <NewUser
                 callback={(entity: any) => {
@@ -151,7 +173,7 @@ const ManageUsers: React.FC = () => {
             )}
           </Box>
           <GenericTable
-            properties={new currentTab.entityType()}
+            properties={Object.keys(new currentTab.entityType()).filter((col) => true)}
             data={data.filter((value) =>
               Object.values(value)
                 .map(String)
@@ -160,6 +182,7 @@ const ManageUsers: React.FC = () => {
                   false
                 )
             )}
+            sortFunction={currentTab.sort}
             deleteRow={
               currentTab.deleteEntity
                 ? (row) => {

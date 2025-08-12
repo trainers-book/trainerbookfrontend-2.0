@@ -23,13 +23,13 @@ export class FlightData {
   platform: string;
 
   constructor(
+    date = new Date(),
     flightName: string,
     platform: string,
-    date = new Date()
   ) {
+    this.date = date;
     this.flightName = flightName;
     this.platform = platform;
-    this.date = date;
   }
 }
 
@@ -45,7 +45,3 @@ export class platformData {
     this.name = name;
   }
 }
-
-// export type AirCrew1 = UsersData;
-// export type AirCrew2 = UsersData;
-// export type Instructor = UsersData;
