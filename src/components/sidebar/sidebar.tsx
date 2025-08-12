@@ -20,7 +20,7 @@ const SideBar: React.FC<SideBarProps> = ({ titlesIcons, activeTab, changeTab }) 
       sx={{
         display: "flex",
         flexDirection: "column",
-        bgcolor: "#ffffff",
+        bgcolor: "rgba(255, 255, 255, 1)",
         ml: ".5rem",
         borderRadius: 2,
         pt: 2,
@@ -34,10 +34,10 @@ const SideBar: React.FC<SideBarProps> = ({ titlesIcons, activeTab, changeTab }) 
           sx={{
             display: "flex",
             alignItems: "center",
-            ":hover": { bgcolor: "#00309a36" },
+            ":hover": { bgcolor: "rgba(0, 48, 154, 0.212)" },
             borderRadius: 2,
             mb: 2,
-            bgcolor: activeTab.label == titleIcon.label ? "#00309a26" : "#00000000",
+            bgcolor: activeTab.label == titleIcon.label ? "rgba(0, 48, 154, 0.149)" : "rgba(0, 0, 0, 1)",
           }}
           onClick={() => handleClick(titleIcon.label)}
         >
