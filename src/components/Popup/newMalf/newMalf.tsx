@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -24,18 +24,48 @@ const NewMalfModel: React.FC = () => {
   const { t } = useTranslation();
   const [seconds, setSeconds] = useState(0);
   const [selectedDisturbance, setSelectedDisturbance] = useState<string[]>([]);
+  const [malfNameValue, setMalfNameValue] = useState<string>("");
+  const [malfDescriptionValue, setMalfDescriptionValue] = useState<string>("");
+  const [timerValue, setTimerValue] = useState<boolean>(false);
+  const [hasChanges, setHasChanges] = useState(false);
+  console.log(seconds);
+  
+  useEffect(() => {
+    if (
+      selectedDisturbance.length > 0 ||
+      malfNameValue !== "" ||
+      malfDescriptionValue !== "" || timerValue ||
+      (selectedDisturbance.length > 0 &&
+        malfNameValue !== "" &&
+        malfDescriptionValue !== "")
+    ) {
+      setHasChanges(true);
+    } else {
+      setHasChanges(false);
+    }
+  }, [selectedDisturbance, malfNameValue, malfDescriptionValue, timerValue]);
 
   const handleShow = () => {
     setShow(true);
   };
 
   const handleClose = () => {
-    setShowConfirm(true);
+    if(hasChanges){
+      setShowConfirm(true);
+    }
+    else {
+      setShow(false);
+      setShowConfirm(false);
+    }
+    setMalfNameValue("");
+    setMalfDescriptionValue("");
+    setTimerValue(false);
   };
 
   const handleConfirmClose = () => {
     setShow(false);
     setShowConfirm(false);
+    setSeconds(0);
   };
 
   const handleCancelClose = () => {
@@ -94,12 +124,14 @@ const NewMalfModel: React.FC = () => {
                 <DynamicTextField
                   label={t("malfName")}
                   width="100%"
+                  onChange={(e) => setMalfNameValue(e.target.value)}
                 ></DynamicTextField>
                 <DynamicTextField
                   label={t("malfDescription")}
                   width="100%"
                   multiline
                   rows={5}
+                  onChange={(e) => setMalfDescriptionValue(e.target.value)}
                 ></DynamicTextField>
                 <FilterDropdown
                   label={t("flightDisturbances")}
@@ -123,6 +155,7 @@ const NewMalfModel: React.FC = () => {
               <TimerModel
                 onTick={(val) => setSeconds(val)}
                 label={t("startMalfTimer")}
+                onChange={(e) => setTimerValue(e.target.checked)}
               />
             </Grid>
           </Grid>
