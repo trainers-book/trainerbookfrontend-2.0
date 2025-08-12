@@ -15,9 +15,12 @@ import { Severity } from "../types/issuesSeverity";
 import FilterSearchControl from "../components/filterControl/filterSearchControl";
 import FilterDate from "../components/Dynamics/filterDate";
 import { data } from "react-router-dom";
+import { usePlatforms } from "../context/platformsContext";
 
 const ManageIssues: React.FC = () => {
   const { t } = useTranslation();
+  const { platforms } = usePlatforms();
+
   const { issueData } = useIssues();
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
@@ -91,7 +94,7 @@ const ManageIssues: React.FC = () => {
         <FilterTable>
           <FilterControls
             label={t("platforms")}
-            options={platformTypes}
+            options={platforms}
             multiple={true}
             selected={selectedPlatforms}
             setSelected={changePlatform}
