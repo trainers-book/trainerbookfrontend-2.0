@@ -6,6 +6,7 @@ import "../assets/fonts/Alef-Regular.ttf";
 import "../style/login.css";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useLocalStorage } from "../context/localStorageContext";
+import { usePlatforms } from "../context/platformsContext";
 
 type User = {
   userName: string,
@@ -21,6 +22,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { setUsername } = useUser();
+  const { setPlatforms } = usePlatforms();
 
   const loginSuccess = (user: User) => {
     const platforms = Array.isArray(user.platform) ? user.platform : [user.platform];
@@ -30,6 +32,7 @@ const LoginPage: React.FC = () => {
     ls.setValue("displayName", user.name);
     ls.setValue("isAuthenticated", "true");
     setUsername(user.name);
+    setPlatforms(platforms);
     navigate("/reviewFlights");
   };
 

@@ -28,6 +28,7 @@ import "./navbar.css";
 import "../../types/routeTypes";
 import OfekUnit from "../../assets/OfekUnit.png";
 import { useLocalStorage } from "../../context/localStorageContext";
+import { usePlatforms } from "../../context/platformsContext";
 
 const Navbar: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -36,6 +37,8 @@ const Navbar: React.FC = () => {
   const location = useLocation();
 
   const { username, setUsername } = useUser();
+  const { setPlatforms } = usePlatforms();
+
   const [isHover, setIsHover] = useState(false);
 
   const isLogin = location.pathname == "/";
@@ -45,9 +48,13 @@ const Navbar: React.FC = () => {
   const handleLogout = () => {
     ls.deleteValue("isAuthenticated");
     ls.deleteValue("userName");
+    ls.deleteValue("platforms");
+    ls.deleteValue("authorization");
+    ls.deleteValue("displayName");
 
     setAnchorEl(null);
     setUsername("");
+    setPlatforms([]);
     navigate("/");
   };
 
