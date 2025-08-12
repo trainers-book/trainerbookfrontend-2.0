@@ -1,13 +1,13 @@
 .active {
-  background: #c46666c2;
+  background: rgb(255, 108, 95);
 }
 
 .closed {
-  background: #6bb63c87;
+  background: #6bb63cc7;
 }
 
 .maintenance {
-  background: #906ea5a3;
+  background: #906ea5e6;
 }
 
 .maav {
@@ -15,9 +15,9 @@
 }
 
 .elbit {
-  background: #efe14183;
+  background: #efe041b5;
 }
 
 .waiting {
-  background: #bb7d3783;
+  background: #f78f178b;
 }
