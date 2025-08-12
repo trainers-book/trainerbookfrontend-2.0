@@ -102,7 +102,7 @@ const GenericTable: React.FC<TableProps> = ({
 
     <TableContainer component={Paper} >
       <Table sx={{ minWidth: 650 }}>
-        <TableHead sx={{ background: "#dadada" }}>
+        <TableHead sx={{ background: "rgba(218, 218, 218, 1)" }}>
           <TableRow>
             {columns.map((column) => (
               <TableCell
@@ -118,7 +118,7 @@ const GenericTable: React.FC<TableProps> = ({
           {dataToShow.map((dataSet) => (
             <TableRow
               sx={{
-                ":hover": { background: "#d4edff1a" },
+                ":hover": { background: "rgba(212, 237, 255, 0.102)" },
                 "&:last-child td, &:last-child th": { border: 0 },
               }}
             >

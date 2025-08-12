@@ -25,22 +25,31 @@ import "../../i18n";
 import "./navbar.css";
 import "../../types/routeTypes";
 import OfekUnit from "../../assets/OfekUnit.png";
+import { useLocalStorage } from "../../context/localStorageContext";
+import { usePlatforms } from "../../context/platformsContext";
 
 const Navbar: React.FC = () => {
   const { t } = useTranslation();
+  const { ls } = useLocalStorage();
   const navigate = useNavigate();
   const location = useLocation();
   const { username, setUsername } = useUser();
+  const { setPlatforms } = usePlatforms();
 
   const isLogin = location.pathname == "/";
   const isTechnician = true; // placeholder for future premissions
   const notificationsCount = 2;
 
   const handleLogout = () => {
-    localStorage.removeItem("isAuthenticated");
-    localStorage.removeItem("username");
+    ls.deleteValue("isAuthenticated");
+    ls.deleteValue("userName");
+    ls.deleteValue("platforms");
+    ls.deleteValue("authorization");
+    ls.deleteValue("displayName");
+
     setAnchorEl(null);
     setUsername("");
+    setPlatforms([]);
     navigate("/");
   };
 
@@ -62,7 +71,7 @@ const Navbar: React.FC = () => {
     !isLogin && (
       <Box sx={{ flexGrow: 1 }}>
         <AppBar
-          sx={{ backgroundColor: "#ffffff", borderRadius: 5 }}
+          sx={{ backgroundColor: "rgba(255, 255, 255, 1)", borderRadius: 5 }}
           position="static"
         >
           <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -80,7 +89,7 @@ const Navbar: React.FC = () => {
               />
               <Typography
                 sx={{
-                  color: "#7c7c7c",
+                  color: "rgba(124, 124, 124, 1)",
                   fontWeight: "bold",
                   fontSize: "1.5rem",
                 }}
@@ -90,7 +99,7 @@ const Navbar: React.FC = () => {
             </Box>
             <List
               sx={{
-                background: "#f8f8fa",
+                background: "rgba(248, 248, 250, 1)",
                 opacity: "70%",
                 borderRadius: 2,
                 mr: 2,
@@ -106,7 +115,7 @@ const Navbar: React.FC = () => {
                       borderRadius: 2,
                       p: 0,
                       margin: 0.5,
-                      color: "#7c7c7c",
+                      color: "rgba(124, 124, 124, 1)",
                     }}
                     onClick={() => navigate("/" + key)}
                   >
@@ -162,16 +171,16 @@ const Navbar: React.FC = () => {
                 </Typography>
                 {/* <Box component="img" src="https://mi/api/v1/people/image/s8852773"/> */}
                 <Menu
-                  sx={{ "& .MuiPaper-root": { background: "#ffffff" } }}
+                  sx={{ "& .MuiPaper-root": { background: "rgba(255, 255, 255, 1)" } }}
                   anchorEl={anchorEl}
                   open={open}
                   onClose={handleClose}
                 >
                   <MenuItem
                     sx={{
-                      "& .MuiPaper-root": { background: "#ffffff" },
-                      ":focus": { background: "#ffffff" },
-                      ":hover": { background: "#ffffff" },
+                      "& .MuiPaper-root": { background: "rgba(255, 255, 255, 1)" },
+                      ":focus": { background: "rgba(255, 255, 255, 1)" },
+                      ":hover": { background: "rgba(255, 255, 255, 1)" },
                     }}
                   >
                     {t("hello")} {username}
@@ -179,7 +188,7 @@ const Navbar: React.FC = () => {
                     {t("instructor")} {t("shoval")}
                   </MenuItem>
                   <hr></hr>
-                  <MenuItem sx={{ color: "#d32f11" }} onClick={handleLogout}>
+                  <MenuItem sx={{ color: "rgba(211, 47, 17, 1)" }} onClick={handleLogout}>
                     <SvgIcon sx={{ ml: 0.5 }} onClick={() => handleLogout()}>
                       <LogoutIcon />
                     </SvgIcon>
