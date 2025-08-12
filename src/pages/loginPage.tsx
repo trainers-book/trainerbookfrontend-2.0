@@ -7,6 +7,13 @@ import "../style/login.css";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useLocalStorage } from "../context/localStorageContext";
 
+type User = {
+  userName: string,
+  name: string,
+  authenticationLevel: string,
+  platform: string | string[],
+}
+
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
   const { ls } = useLocalStorage();
@@ -15,7 +22,10 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { setUsername } = useUser();
 
-  const loginSuccess = (user) => {
+  const loginSuccess = (user: User) => {
+    const platforms = Array.isArray(user.platform) ? user.platform : [user.platform];
+    ls.setValue("platforms", platforms.join(","));
+    ls.setValue("authorization", user.authenticationLevel);
     ls.setValue("userName", user.userName);
     ls.setValue("displayName", user.name);
     ls.setValue("isAuthenticated", "true");
