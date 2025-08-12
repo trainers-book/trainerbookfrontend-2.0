@@ -8,6 +8,7 @@ import type React from "react";
 import { useState } from "react";
 import { useIssues } from "../context/issueContext";
 import FilterIssues from "../components/filterTables/filterIssues";
+import NewMalfModel from "../components/Popup/newMalf/newMalf";
 
 const ManageIssues: React.FC = () => {
   const { issueData } = useIssues();
@@ -55,6 +56,7 @@ const ManageIssues: React.FC = () => {
           mt: 1,
           mb: 1,
           display: "flex",
+          justifyContent: "space-between"
         }}
       >
         <FilterIssues
@@ -69,6 +71,7 @@ const ManageIssues: React.FC = () => {
           dateSelected={selectedDate}
           setDate={setSelectedDate}
         />
+        <NewMalfModel/>
       </Box>
       <GenericTable
         properties={Object.keys(new IssueData()).filter(() => true)}

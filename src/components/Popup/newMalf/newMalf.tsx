@@ -87,7 +87,7 @@ const NewMalfModel: React.FC = () => {
       <Button
         variant="contained"
         onClick={handleShow}
-        sx={{ background: "rgb(114, 156, 240)" }}
+        sx={{ background: "rgba(255, 125, 113, 0.8)", color: "black", ml: 2.5 }}
       >
         {t("newMalf")}
       </Button>
