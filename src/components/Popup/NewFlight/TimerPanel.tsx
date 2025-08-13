@@ -40,7 +40,7 @@ const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
   const currentTime = React.useMemo(() => new Date(), []);
 
   return (
-    <Stack spacing={2} sx={{border: '1px solid #ccc', padding: 2, borderRadius: 4}}>
+    <Stack spacing={2} sx={{border: '1px solid rgba(204, 204, 204, 1)', padding: 2, borderRadius: 4}}>
       <Grid container spacing={2}>
         <Grid size={6}>
           <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>

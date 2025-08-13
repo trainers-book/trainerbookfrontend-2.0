@@ -32,12 +32,11 @@ const NewFlightModel: React.FC = () => {
   });
 
   useEffect(() => {
-    if (selectedFlight.length > 0 && selectedPlatforms.length > 0) {
-      setHasChanges(false);
-    } else if (
+    if (
       selectedFlight.length > 0 ||
       selectedPlatforms.length > 0 ||
-      timerPanelValue
+      timerPanelValue ||
+      (selectedFlight.length > 0 && selectedPlatforms.length > 0)
     ) {
       setHasChanges(true);
     } else {

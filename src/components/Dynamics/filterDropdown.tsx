@@ -7,10 +7,8 @@ import {
 } from "@mui/material";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import { useEffect } from "react";
-
 import "../../i18n";
 import { useTranslation } from "react-i18next";
-
 import { ThemeProvider, useTheme } from "@mui/material/styles";
 import rtlPlugin from "@mui/stylis-plugin-rtl";
 import { prefixer } from "stylis";
@@ -34,7 +32,7 @@ interface FilterDropdownProps {
   setSelected: (values: string[]) => void;
   isMultiple: boolean;
   width?: string;
-  isReset: boolean;
+  isReset?: boolean;
   onBlur?: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   touched?: boolean;
   error?: string;

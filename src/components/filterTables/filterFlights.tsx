@@ -5,7 +5,6 @@ import "../../i18n";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { platformTypes } from "../../types/platformTypes";
-
 import { Box } from "@mui/material";
 import { Button } from "@mui/material";
 
@@ -49,7 +48,7 @@ const FilterFlights: React.FC<FilterFlightsProps> = ({
         {isFilterSelected && (
           <Button
             sx={{
-              color: "black",
+              color: "rgba(0, 0, 0, 1)",
               background: "rgba(250, 119, 119, 0.58)",
               mr: 1,
               borderRadius: 2,

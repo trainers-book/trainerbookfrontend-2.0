@@ -53,7 +53,7 @@ const LoginPage: React.FC = () => {
       component={"form"}
       onSubmit={handleLogin}
       sx={{
-        bgcolor: "#ffffff",
+        bgcolor: "rgba(255, 255, 255, 1)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -96,8 +96,8 @@ const LoginPage: React.FC = () => {
       ></TextField>
       <Button
         sx={{
-          bgcolor: "#6499ff",
-          color: "#ffffff",
+          bgcolor: "rgba(100, 153, 255, 1)",
+          color: "rgba(255, 255, 255, 1)",
           width: "17vw",
           borderRadius: 3,
           mb: 2,

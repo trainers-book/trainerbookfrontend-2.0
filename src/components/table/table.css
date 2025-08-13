@@ -1,23 +1,23 @@
 .active {
-  background: rgb(255, 108, 95);
+  background: rgba(255, 108, 95, 1);
 }
 
 .closed {
-  background: #6bb63cc7;
+  background: rgba(107, 182, 60, 0.78);
 }
 
 .maintenance {
-  background: #906ea5e6;
+  background: rgba(144, 110, 165, 0.902);
 }
 
 .maav {
-  background: #98c5e5d0;
+  background: rgba(152, 197, 229, 0.816);
 }
 
 .elbit {
-  background: #efe041b5;
+  background: rgba(239, 224, 65, 0.71);
 }
 
 .waiting {
-  background: #f78f178b;
+  background: rgba(247, 143, 23, 0.545);
 }

@@ -86,7 +86,7 @@ const TimerModel: React.FC<TimerModelProps> = ({ onTick, label, onChange }) => {
             <Grid size={7}>
               <Button
                 variant="contained"
-                sx={{ background: "gray" }}
+                sx={{ background: "rgba(128, 128, 128, 1)" }}
                 onClick={reset}
               >
                 {t("clear")}
@@ -99,7 +99,7 @@ const TimerModel: React.FC<TimerModelProps> = ({ onTick, label, onChange }) => {
           <Grid size={5}>
             <Button
               variant="contained"
-              sx={{ background: "#2e2d2d" }}
+              sx={{ background: "rgba(46, 45, 45, 1)" }}
               onClick={isPause ? resume : pause}
             >
               {isPause ? t("resume") : t("stop")}
@@ -108,7 +108,7 @@ const TimerModel: React.FC<TimerModelProps> = ({ onTick, label, onChange }) => {
           <Grid size={4.5}>
             <Button
               variant="contained"
-              sx={{ background: "gray" }}
+              sx={{ background: "rgba(128, 128, 128, 1)" }}
               onClick={reset}
             >
               {t("clear")}
