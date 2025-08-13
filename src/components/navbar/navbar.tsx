@@ -196,17 +196,6 @@ const Navbar: React.FC = () => {
                   </MenuItem>
                 </Menu>
               </Box>
-              {isTechnician && (
-                <IconButton sx={{ mr: 1, ml: 1 }} className="text">
-                  <Badge
-                    badgeContent={notificationsCount}
-                    max={10}
-                    color="warning"
-                  >
-                    <NotificationsNoneIcon />
-                  </Badge>
-                </IconButton>
-              )}
             </Box>
           </Toolbar>
         </AppBar>
