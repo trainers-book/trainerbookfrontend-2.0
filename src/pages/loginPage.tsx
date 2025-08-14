@@ -7,6 +7,7 @@ import "../style/login.css";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useLocalStorage } from "../context/localStorageContext";
 import { usePlatforms } from "../context/platformsContext";
+import { useBackend } from "../context/backendContext";
 
 type User = {
   userName: string,
@@ -20,9 +21,13 @@ const LoginPage: React.FC = () => {
   const { ls } = useLocalStorage();
   const [username, setUsernameInput] = useState("");
   const [password, setPassword] = useState("");
+  const [wrongUser, setWrongUser] = useState(false);
+  const [wrongPass, setWrongPass] = useState(false);
   const navigate = useNavigate();
   const { setUsername } = useUser();
   const { setPlatforms } = usePlatforms();
+  const { connection } = useBackend();
+
 
   const loginSuccess = (user: User) => {
     const platforms = Array.isArray(user.platform) ? user.platform : [user.platform];
@@ -36,16 +41,37 @@ const LoginPage: React.FC = () => {
     navigate("/reviewFlights");
   };
 
-  const handleLogin = (event) => {
+  const loginError = () => {
+    // setUsername("");
+    // setPassword("");
+    // setWrongUser(true);
+    // setWrongPass(true);
+  }
+
+  const handleLogin = async (event: any) => {    
     event.preventDefault();
-    fetch("http://localhost:3002/Authentication/" + username + "/" + password)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data != 404) loginSuccess(data[0]);
-      })
-      .catch((error) => {
-        alert("error: " + error);
-      });
+    if (username == "" || password == "") {
+      setWrongUser(username == "");
+      setWrongPass(password == "");
+      return;
+    }
+
+    const loginResponse = await connection.login(username, password);    
+    
+    if (typeof loginResponse == "string") {
+      if (loginResponse == "no user") {
+        setWrongUser(true);
+      } else if (loginResponse == "incorrect") {
+        setWrongPass(true);
+      } else if (loginResponse == "no password") {
+        alert("ask li-am to create a new user for you. \nand also ask him why does he write his name with ע and not א, beacause it's very weird");
+      } else {
+        console.log(loginResponse);
+        
+      }
+    } else {      
+      loginSuccess(loginResponse);
+    }
   };
 
   return (
@@ -70,6 +96,7 @@ const LoginPage: React.FC = () => {
         {t("login")}
       </Typography>
       <TextField
+        error={wrongUser}
         sx={{
           mb: 2,
           borderRadius: 3,
@@ -79,9 +106,10 @@ const LoginPage: React.FC = () => {
           width: "17vw",
         }}
         placeholder={t("userName")}
-        onChange={(e) => setUsernameInput(e.target.value)}
+        onChange={(e) => {setUsernameInput(e.target.value); setWrongUser(false);}}
       ></TextField>
       <TextField
+        error={wrongPass}
         sx={{
           mb: 2,
           borderRadius: 3,
@@ -91,7 +119,7 @@ const LoginPage: React.FC = () => {
           width: "17vw",
         }}
         placeholder={t("password")}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e) => {setPassword(e.target.value); setWrongPass(false);}}
         type="password"
       ></TextField>
       <Button
