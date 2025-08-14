@@ -17,7 +17,6 @@ import { useTranslation } from "react-i18next";
 import { Status } from "../../types/statuses";
 import type IssueData from "../../types/tables/issues";
 import { Severity } from "../../types/issuesSeverity";
-import { FlightData } from "../../types/tables/manageTypes";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface TableProps {
@@ -85,7 +84,7 @@ const GenericTable: React.FC<TableProps> = ({
   const valueToMultipleLines = (
     value: Date | string | number | Status | Severity
   ) => {
-    if (!value) {
+    if (!value && value != 0) {
       return [null];
     }
     let valueArray: string[] = [value.toString()];

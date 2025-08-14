@@ -184,7 +184,6 @@ const ManageUsers: React.FC = () => {
         <Box sx={{ flexGrow: 1 }}>
           <Box
             sx={{
-              mt: 1,
               mb: 1,
               display: "flex",
               justifyContent: "space-between",

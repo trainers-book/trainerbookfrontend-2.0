@@ -7,12 +7,9 @@
   ListItem,
   ListItemButton,
   SvgIcon,
-  IconButton,
-  Badge,
   MenuItem,
   Menu,
 } from "@mui/material";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -38,7 +35,6 @@ const Navbar: React.FC = () => {
 
   const isLogin = location.pathname == "/";
   const isTechnician = true; // placeholder for future premissions
-  const notificationsCount = 2;
 
   const handleLogout = () => {
     ls.deleteValue("isAuthenticated");
