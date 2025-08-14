@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { useLocalStorage } from "./localStorageContext";
 
 interface UserContextType {
   username: string;
@@ -8,11 +9,17 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | null>(null);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+  const { ls } = useLocalStorage();
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    const stored = localStorage.getItem("username");
-    if (stored) setUsername(stored);
+    const stored = ls.getValue("displayName");
+    
+    if (stored) {
+
+      setUsername(stored);
+    }
+
   }, []);
 
   return (

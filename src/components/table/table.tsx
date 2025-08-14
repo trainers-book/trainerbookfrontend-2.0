@@ -21,7 +21,7 @@ import { FlightData } from "../../types/tables/manageTypes";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface TableProps {
-  properties: any[];
+  properties: string[];
   data: any[];
   sortFunction: (val: any, nexVal: any) => number;
   getRowClass?: (row: IssueData) => string;
@@ -72,11 +72,12 @@ const GenericTable: React.FC<TableProps> = ({
     setdataToShow([...new Set([...dataToShow, ...newData])]);
   };
 
-  const handleScroll = (e) => {
-    
-    const target = e.target;
+  const handleScroll = (event: any) => {
+    const children = document.getElementById("table")?.childElementCount;
+    const target = event.target;
 
-    if ((target.scrollTop + target.offsetHeight + tableHeadHeight) >= (tableRowHeight * (document.getElementById("table")?.childElementCount))) {
+
+    if ((target.scrollTop + target.offsetHeight + tableHeadHeight) >= (tableRowHeight * (children ? children : 1))) {
       setTimeout(() => {setOffset(offset + 1)}, 100); // timeout to simulate fetch time from server
     }    
   };  
@@ -112,7 +113,7 @@ const GenericTable: React.FC<TableProps> = ({
 
     <TableContainer component={Paper} >
       <Table sx={{ minWidth: 650 }}>
-        <TableHead sx={{ background: "#dadada" }}>
+        <TableHead sx={{ background: "rgba(218, 218, 218, 1)" }}>
           <TableRow>
             {columns.map((column) => {
               if (column.includes("!")) {
@@ -133,7 +134,7 @@ const GenericTable: React.FC<TableProps> = ({
           {dataToShow.map((dataSet) => (
             <TableRow
               sx={{
-                ":hover": { background: "#d4edff1a" },
+                ":hover": { background: "rgba(212, 237, 255, 0.102)" },
                 "&:last-child td, &:last-child th": { border: 0 },
               }}
             >

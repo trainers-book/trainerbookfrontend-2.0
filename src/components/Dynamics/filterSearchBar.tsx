@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { FormControl, TextField } from "@mui/material";
 import { ThemeProvider, useTheme } from "@mui/material/styles";
 import rtlPlugin from "@mui/stylis-plugin-rtl";
@@ -28,7 +27,7 @@ const FilterSearchBar: React.FC<FilterSearchBarProps> = ({
   const theme = useTheme();
   const [searchValue, setSearchValue] = useState("");
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     const {
       target: { value },
     } = event;

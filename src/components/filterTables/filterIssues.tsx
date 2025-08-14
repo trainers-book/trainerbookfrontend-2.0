@@ -6,9 +6,9 @@ import FilterDate from "../Dynamics/filterDate";
 import "../../i18n";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { platformTypes } from "../../types/platformTypes";
 import { Status } from "../../types/statuses";
 import { Severity } from "../../types/issuesSeverity";
+import { usePlatforms } from "../../context/platformsContext";
 
 interface FilterIssuesProps {
   selectedPlatform: string[];
@@ -36,11 +36,11 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
   setDate,
 }) => {
   const { t } = useTranslation();
-
+  const { platforms } = usePlatforms();
   const [isReset, setIsReset] = useState(false);
 
   const isFilterSelected =
-    selectedPlatform.length != 0 ||
+    (selectedPlatform.length != 0 && platforms.length > 1) ||
     selectedStatuses.length != 0 ||
     selectedSeverities.length != 0 ||
     search != "" ||
@@ -50,7 +50,7 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
     <Box sx={{ mr: 1, display: "flex" }}>
       <FilterDropdown
         label={t("platform")}
-        options={platformTypes}
+        options={platforms}
         selected={selectedPlatform}
         setSelected={setSelectedPlatform}
         isMultiple={true}
@@ -84,7 +84,7 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
         {isFilterSelected && (
           <Button
             sx={{
-              color: "black",
+              color: "rgba(0, 0, 0, 1)",
               background: "rgba(250, 119, 119, 0.58)",
               mr: 1,
               borderRadius: 2,

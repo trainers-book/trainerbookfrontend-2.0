@@ -1,9 +1,6 @@
 import { FormControl, TextField } from "@mui/material";
-
 import "../../i18n";
-import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
-
 import { ThemeProvider, useTheme } from "@mui/material/styles";
 import rtlPlugin from "@mui/stylis-plugin-rtl";
 import { prefixer } from "stylis";
@@ -23,11 +20,9 @@ const cacheRtl = createCache({
 
 const FilterDate: React.FC<FilterDateProps> = ({ width, setDate, isReset }) => {
   const theme = useTheme();
-  const { t } = useTranslation();
-
   const [dateValue, setDateValue] = useState("");
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     const {
       target: { value },
     } = event;

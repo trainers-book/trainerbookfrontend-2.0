@@ -88,5 +88,9 @@
   "commanders": "מפקדים",
   "trainees": "מתאמנים",
   "controllers" : "בקרים",
-  "technicians": "טכנאים"
+  "technicians": "טכנאים",
+  "connect": "התחבר",
+  "userName": "שם משתמש",
+  "password": "סיסמה",
+  "wrongLogin": "שם משתמש או סיסמה שגויים"
 }

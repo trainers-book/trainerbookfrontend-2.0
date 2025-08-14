@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
+import { useLocalStorage } from "../context/localStorageContext";
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
-  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  const { ls } = useLocalStorage();
+  const isAuthenticated = ls.getValue("isAuthenticated") == "true";
   return isAuthenticated ? children : <Navigate to="/" />;
 };
 
