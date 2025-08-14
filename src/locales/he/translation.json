@@ -83,5 +83,10 @@
   "lastName": "שם משפחה",
   "personalNumber": "מספר אישי",
   "add": "הוסף",
-  "flight": "גיחה"
+  "flight": "גיחה",
+  "controllerInstructor": "מדריכות בקרים",
+  "commanders": "מפקדים",
+  "trainees": "מתאמנים",
+  "controllers" : "בקרים",
+  "technicians": "טכנאים"
 }

@@ -37,7 +37,7 @@ const SideBar: React.FC<SideBarProps> = ({ titlesIcons, activeTab, changeTab }) 
             ":hover": { bgcolor: "rgba(0, 48, 154, 0.212)" },
             borderRadius: 2,
             mb: 2,
-            bgcolor: activeTab.label == titleIcon.label ? "rgba(0, 48, 154, 0.149)" : "rgba(0, 0, 0, 1)",
+            bgcolor: activeTab.label == titleIcon.label ? "rgba(0, 48, 154, 0.149)" : "rgba(0, 0, 0, 0)",
           }}
           onClick={() => handleClick(titleIcon.label)}
         >

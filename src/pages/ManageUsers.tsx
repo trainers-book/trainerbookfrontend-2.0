@@ -13,6 +13,9 @@ import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
 import PregnantWomanIcon from "@mui/icons-material/PregnantWoman";
 import AccessibleIcon from "@mui/icons-material/Accessible";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import KeyboardCommandKeyIcon from "@mui/icons-material/KeyboardCommandKey";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import TrainIcon from '@mui/icons-material/Train';
 import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
 import SideBar from "../components/sidebar/sidebar";
 import NewUser from "../components/Dynamics/newUserForm";
@@ -52,24 +55,6 @@ const ManageUsers: React.FC = () => {
   const { t } = useTranslation();
   const [search, setSearch] = useState<string>("");
   const tabs: Tab[] = [
-    // { label: t("airCrew1"), icon: sunglassesIcon },
-    {
-      label: t("airCrew1"),
-      icon: <PregnantWomanIcon />,
-      entityType: UsersData,
-      deleteEntity: false,
-      sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
-    },
-    // { label: t("airCrew2"), icon: <MenuBookIcon /> },
-    {
-      label: t("airCrew2"),
-      icon: <AccessibleIcon />,
-      entityType: UsersData,
-      deleteEntity: true,
-      sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
-    },
     {
       label: t("platform"),
       icon: <AirplanemodeActiveIcon />,
@@ -81,6 +66,62 @@ const ManageUsers: React.FC = () => {
     {
       label: t("instructor"),
       icon: <SchoolIcon />,
+      entityType: UsersData,
+      deleteEntity: true,
+      sort: (currentValue: UsersData, nextValue: UsersData) =>
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+    },
+    {
+      label: t("controllerInstructor"),
+      icon: <SchoolIcon />,
+      entityType: UsersData,
+      deleteEntity: true,
+      sort: (currentValue: UsersData, nextValue: UsersData) =>
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+    },
+    {
+      label: t("commanders"),
+      icon: <KeyboardCommandKeyIcon />, // change here
+      entityType: UsersData,
+      deleteEntity: false,
+      sort: (currentValue: UsersData, nextValue: UsersData) =>
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+    },
+    {
+      label: t("airCrew1"),
+      icon: <PregnantWomanIcon />, // sunglassesIcon
+      entityType: UsersData,
+      deleteEntity: false,
+      sort: (currentValue: UsersData, nextValue: UsersData) =>
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+    },
+    {
+      label: t("airCrew2"),
+      icon: <AccessibleIcon />, // <MenuBookIcon />
+      entityType: UsersData,
+      deleteEntity: true,
+      sort: (currentValue: UsersData, nextValue: UsersData) =>
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+    },
+    {
+      label: t("controllers"),
+      icon: <SportsEsportsIcon />, 
+      entityType: UsersData,
+      deleteEntity: true,
+      sort: (currentValue: UsersData, nextValue: UsersData) =>
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+    },
+    {
+      label: t("trainees"),
+      icon: <TrainIcon />, 
+      entityType: UsersData,
+      deleteEntity: true,
+      sort: (currentValue: UsersData, nextValue: UsersData) =>
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+    },
+    {
+      label: t("technicians"),
+      icon: <AccessibleIcon />, 
       entityType: UsersData,
       deleteEntity: true,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
