@@ -3,21 +3,57 @@ import { createContext, useContext, useState } from "react";
 class Connection {
   async login(username: string, password: string) {
     try {
-        const response = await fetch("http://localhost:3002/Authentication/" + username + "/" + password);
-        const data = await response.json();
-        return data[0];
+      const response = await fetch(
+        "http://localhost:3002/Authentication/" + username + "/" + password
+      );
+      const data = await response.json();
+      return data[0];
     } catch (error) {
-        // console.log(error);
-        return "unexpected error";
+      // console.log(error);
+      return "unexpected error";
     }
-    
+
     //   .then((data) => {
-        // if (data != 404) loginSuccess(data[0];
-        // return isNaN(data) ? data[0] : null;
+    // if (data != 404) loginSuccess(data[0];
+    // return isNaN(data) ? data[0] : null;
     //   })
     //   .catch((error) => {
-        // alert("error: " + error);
+    // alert("error: " + error);
     //   });
+  }
+
+  async getUserHasPassword(username: string) {
+    try {
+      const response = await fetch(
+        "http://localhost:3002/Authentication/" + username
+      );
+      const data = await response.json();
+
+      return data[0];
+    } catch (error) {
+      return "unexpected error";
+    }
+  }
+
+  async setPassword(username: string, password: string) {
+    try {
+      const messageBody = JSON.stringify({
+        userInfo: [{ userName: username, password: password }],
+      });
+
+      const response = await fetch("http://localhost:3002/setPassword", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: messageBody,
+      });
+
+      const data = await response.json();
+      return data[0];
+    } catch (error) {
+      return "unexpected error";
+    }
   }
 }
 
@@ -44,8 +80,6 @@ export const BackendProvider = ({
 export const useBackend = () => {
   const context = useContext(BackendContext);
   if (!context)
-    throw new Error(
-      "useBackend must be used within a BackendProvider"
-    );
+    throw new Error("useBackend must be used within a BackendProvider");
   return context;
 };

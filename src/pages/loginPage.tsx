@@ -10,11 +10,11 @@ import { usePlatforms } from "../context/platformsContext";
 import { useBackend } from "../context/backendContext";
 
 type User = {
-  userName: string,
-  name: string,
-  authenticationLevel: string,
-  platform: string | string[],
-}
+  userName: string;
+  name: string;
+  authenticationLevel: string;
+  platform: string | string[];
+};
 
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
@@ -23,14 +23,17 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState("");
   const [wrongUser, setWrongUser] = useState(false);
   const [wrongPass, setWrongPass] = useState(false);
+  const [createPassword, setcreatePassword] = useState(false);
+  const [noUser, setNoUser] = useState(false);
   const navigate = useNavigate();
   const { setUsername } = useUser();
   const { setPlatforms } = usePlatforms();
   const { connection } = useBackend();
 
-
-  const loginSuccess = (user: User) => {
-    const platforms = Array.isArray(user.platform) ? user.platform : [user.platform];
+  const storeUser = (user: User) => {
+    const platforms = Array.isArray(user.platform)
+      ? user.platform
+      : [user.platform];
     ls.setValue("platforms", platforms.join(","));
     ls.setValue("authorization", user.authenticationLevel);
     ls.setValue("userName", user.userName);
@@ -38,46 +41,77 @@ const LoginPage: React.FC = () => {
     ls.setValue("isAuthenticated", "true");
     setUsername(user.name);
     setPlatforms(platforms);
-    navigate("/reviewFlights");
   };
 
-  const loginError = () => {
-    // setUsername("");
-    // setPassword("");
-    // setWrongUser(true);
-    // setWrongPass(true);
-  }
+  const handleLogin = async () => {
+    const loginResponse = await connection.login(username, password);
 
-  const handleLogin = async (event: any) => {    
-    event.preventDefault();
-    if (username == "" || password == "") {
-      setWrongUser(username == "");
-      setWrongPass(password == "");
-      return;
-    }
-
-    const loginResponse = await connection.login(username, password);    
-    
     if (typeof loginResponse == "string") {
       if (loginResponse == "no user") {
         setWrongUser(true);
       } else if (loginResponse == "incorrect") {
         setWrongPass(true);
       } else if (loginResponse == "no password") {
-        alert("ask li-am to create a new user for you. \nand also ask him why does he write his name with ע and not א, beacause it's very weird");
+        console.log("not supposed to be here");
+
+        setPassword("");
+        setcreatePassword(true);
       } else {
         console.log(loginResponse);
-        
       }
-    } else {      
-      loginSuccess(loginResponse);
+    } else {
+      storeUser(loginResponse);
+      navigate("/reviewFlights");
+    }
+  };
+
+  const handleNewPassword = async () => {
+    const passResponse = await connection.setPassword(username, password);    
+
+    if (passResponse["success"]) {
+      const loginResponse = await connection.login(username, password);    
+      storeUser(loginResponse);
+      navigate("/reviewFlights");
+    } else {
+      alert(t("internalErrorTryAgain"));
+    }
+
+  };
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    if (username == "") {
+      setWrongUser(true);
+      return;
+    } else if (!createPassword) {
+      const passResponse = await connection.getUserHasPassword(username);
+      if (passResponse == "no user") {
+        setNoUser(true);
+        return;
+      } else if (passResponse == "no password") {
+        setcreatePassword(true);
+        setWrongPass(false);
+        setPassword("");
+        return;
+      }
+    }
+
+    if (password == "") {
+      setWrongPass(true);
+      return;
+    }
+
+    if (createPassword) {
+      handleNewPassword();
+    } else {
+      handleLogin();
     }
   };
 
   return (
     <Box
       component={"form"}
-      onSubmit={handleLogin}
+      onSubmit={handleSubmit}
       sx={{
         bgcolor: "rgba(255, 255, 255, 1)",
         display: "flex",
@@ -96,7 +130,6 @@ const LoginPage: React.FC = () => {
         {t("login")}
       </Typography>
       <TextField
-        error={wrongUser}
         sx={{
           mb: 2,
           borderRadius: 3,
@@ -105,29 +138,52 @@ const LoginPage: React.FC = () => {
           },
           width: "17vw",
         }}
+        error={wrongUser}
+        disabled={createPassword}
         placeholder={t("userName")}
-        onChange={(e) => {setUsernameInput(e.target.value); setWrongUser(false);}}
+        value={username}
+        onChange={(e) => {
+          setUsernameInput(e.target.value);
+          setWrongUser(false);
+          setcreatePassword(false);
+          setNoUser(false);
+        }}
       ></TextField>
       <TextField
-        error={wrongPass}
         sx={{
-          mb: 2,
+          mb: 0.5,
           borderRadius: 3,
           "& .MuiOutlinedInput-root": {
             borderRadius: 3,
           },
           width: "17vw",
         }}
+        error={wrongPass}
         placeholder={t("password")}
-        onChange={(e) => {setPassword(e.target.value); setWrongPass(false);}}
+        value={password}
+        onChange={(e) => {
+          setPassword(e.target.value);
+          setWrongPass(false);
+        }}
         type="password"
       ></TextField>
+      {createPassword && (
+        <Typography sx={{ fontSize: "0.7rem" }} color="primary">
+          {t("enterYourNewPassword")}
+        </Typography>
+      )}
+      {noUser && (
+        <Typography sx={{ fontSize: "0.7rem" }} color="error">
+          {t("thereIsNoUserAskYourCommander")}
+        </Typography>
+      )}
       <Button
         sx={{
           bgcolor: "rgba(100, 153, 255, 1)",
           color: "rgba(255, 255, 255, 1)",
           width: "17vw",
           borderRadius: 3,
+          mt: 2,
           mb: 2,
         }}
         type="submit"
