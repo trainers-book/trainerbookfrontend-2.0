@@ -72,7 +72,7 @@ const ManageUsers: React.FC = () => {
         Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
     },
     {
-      label: t("controllerInstructor"),
+      label: t("inspectorInstructor"),
       icon: <SchoolIcon />,
       entityType: UsersData,
       deleteEntity: true,
@@ -104,7 +104,7 @@ const ManageUsers: React.FC = () => {
         Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
     },
     {
-      label: t("controllers"),
+      label: t("inspectors"),
       icon: <SportsEsportsIcon />, 
       entityType: UsersData,
       deleteEntity: true,
