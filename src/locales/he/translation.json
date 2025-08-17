@@ -5,8 +5,7 @@
   "usersManagment": "ניהול אנשים",
   "signCockpit": "חתימה על תאים",
   "liam": "לי-עם",
-  "logout": "התנתק",
-  "logout1": "התנתקות",
+  "logout": "להתנתק",
   "trainerBook": "ספר מאמן",
   "instructorName": "שם מדריכה",
   "flightNumber": "מספר גיחה",
@@ -82,5 +81,11 @@
   "connect": "התחבר",
   "userName": "שם משתמש",
   "password": "סיסמה",
-  "wrongLogin": "שם משתמש או סיסמה שגויים"
+  "wrongLogin": "שם משתמש או סיסמה שגויים",
+  "admin": "מנהל",
+  "Instructor": "מדריכה",
+  "Trainer": "מתאמן",
+  "Technician": "טכנאי",
+  "Navigator": "נווט",
+  "Commander": "מפקד"
 }

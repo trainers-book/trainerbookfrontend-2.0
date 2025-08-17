@@ -45,23 +45,24 @@ const FilterFlights: React.FC<FilterFlightsProps> = ({
         isReset={isReset}
       />
       <FilterDate setDate={setDate} isReset={isReset} />
-        {isFilterSelected && (
-          <Button
-            sx={{
-              color: "rgba(0, 0, 0, 1)",
-              background: "rgba(250, 119, 119, 0.58)",
-              mr: 1,
-              borderRadius: 2,
-              boxShadow: "0 1px 2px rgba(0, 0, 0, 0.2)",
-            }}
-            onClick={() => {
-              setIsReset(true);
-              setTimeout(() => setIsReset(false), 100);
-            }}
-          >
-            {t("clear")}
-          </Button>
-        )}
+      {isFilterSelected && (
+        <Button
+          variant="contained"
+          sx={{
+            color: "rgba(0, 0, 0, 1)",
+            background: "rgba(250, 119, 119, 0.58)",
+            mr: 1,
+            borderRadius: 2,
+            boxShadow: "0 1px 2px rgba(0, 0, 0, 0.2)",
+          }}
+          onClick={() => {
+            setIsReset(true);
+            setTimeout(() => setIsReset(false), 100);
+          }}
+        >
+          {t("clear")}
+        </Button>
+      )}
     </Box>
   );
 };

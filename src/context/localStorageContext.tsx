@@ -19,7 +19,7 @@ class LocalStorage {
 
   getValue(key: string) {
     const localstorageProblem = () => {
-      // probably not the best to be in prod. suggestions are welcome for the prod verion. 
+      // probably not the best to be in prod. suggestions are welcome for the prod verion.
       // and it doesnt work for all changes to the localstorage
       console.log("problem with decoding localstorage. reseting all values");
       // and might need to redirect to login page
@@ -33,12 +33,19 @@ class LocalStorage {
 
     try {
       let decoded = this.decodeString(value);
-      
+
       return value ? decoded : null;
     } catch (err) {
       localstorageProblem();
       return null;
     }
+  }
+
+  getAuthData() {
+    const authDataKey = "authorization"; 
+    const storedAuthData = this.getValue(authDataKey);
+    const values = storedAuthData ? storedAuthData.split(",") : null;
+    return values ? values[0] : null;
   }
 
   setValue(key: string, value: string) {

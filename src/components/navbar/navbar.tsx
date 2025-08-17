@@ -6,16 +6,8 @@
   List,
   ListItem,
   ListItemButton,
-  SvgIcon,
-  IconButton,
-  Badge,
-  MenuItem,
-  Menu,
+  Button,
 } from "@mui/material";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import LogoutIcon from "@mui/icons-material/Logout";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -37,8 +29,6 @@ const Navbar: React.FC = () => {
   const { setPlatforms } = usePlatforms();
 
   const isLogin = location.pathname == "/";
-  const isTechnician = true; // placeholder for future premissions
-  const notificationsCount = 2;
 
   const handleLogout = () => {
     ls.deleteValue("isAuthenticated");
@@ -66,6 +56,12 @@ const Navbar: React.FC = () => {
     return route != "usersManagment";
   }); // for future permissions
   // const possibleRoutes = routeItems.filter((route) => {return true;}); // for future permissions
+
+  const authData = ls.getAuthData();
+
+  if (!authData) {
+    return null;
+  }
 
   return (
     !isLogin && (
@@ -138,7 +134,7 @@ const Navbar: React.FC = () => {
                   </ListItemButton>
                 </ListItem>
               ))}
-            </List> 
+            </List>
             <Box
               sx={{
                 display: "flex",
@@ -159,42 +155,25 @@ const Navbar: React.FC = () => {
                   className="text"
                   onClick={handleClick}
                 >
-                  {!open && <ArrowDropDownIcon />}
-                  {open && <ArrowDropUpIcon />}
+                  {t("hello")},{username} - {t(authData)}
                 </Typography>
-                <Typography
-                  sx={{ opacity: "70%", cursor: "pointer" }}
+                <Button
+                  variant="contained"
+                  sx={{
+                    color: "black",
+                    background: "rgb(231, 231, 231)",
+                    mr: 1.5,
+                    pr: 2,
+                    pl: 2,
+                    pt: 0.5,
+                    pb: 0.5,
+                    borderRadius: 3,
+                  }}
                   className="text"
-                  onClick={handleClick}
+                  onClick={handleLogout}
                 >
-                  {username}
-                </Typography>
-                {/* <Box component="img" src="https://mi/api/v1/people/image/s8852773"/> */}
-                <Menu
-                  sx={{ "& .MuiPaper-root": { background: "rgba(255, 255, 255, 1)" } }}
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                >
-                  <MenuItem
-                    sx={{
-                      "& .MuiPaper-root": { background: "rgba(255, 255, 255, 1)" },
-                      ":focus": { background: "rgba(255, 255, 255, 1)" },
-                      ":hover": { background: "rgba(255, 255, 255, 1)" },
-                    }}
-                  >
-                    {t("hello")} {username}
-                    <br></br>
-                    {t("instructor")} {t("shoval")}
-                  </MenuItem>
-                  <hr></hr>
-                  <MenuItem sx={{ color: "rgba(211, 47, 17, 1)" }} onClick={handleLogout}>
-                    <SvgIcon sx={{ ml: 0.5 }} onClick={() => handleLogout()}>
-                      <LogoutIcon />
-                    </SvgIcon>
-                    {t("logout")}
-                  </MenuItem>
-                </Menu>
+                  {t("logout")}
+                </Button>
               </Box>
             </Box>
           </Toolbar>
