@@ -19,16 +19,16 @@ export class UsersData {
 
 export class FlightData {
   date: Date;
-  flightName: string;
+  name: string;
   platform: string;
 
   constructor(
     date: Date,
-    flightName: string,
+    name: string,
     platform: string,
   ) {
     this.date = date;
-    this.flightName = flightName;
+    this.name = name;
     this.platform = platform;
   }
 }

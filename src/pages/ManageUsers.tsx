@@ -82,9 +82,15 @@ const ManageUsers: React.FC = () => {
       entityType: UsersData,
       deleteEntity: true,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
-      getData: () => {
-        return [];
+        Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
+      getData: async () => {
+        const data = await connection.getAllInspectors();
+        data.forEach((inspectorValue) => {
+          inspectorValue["personalNumber"] = inspectorValue["_id"];
+          delete inspectorValue["_id"];
+          inspectorValue["platforms"] = inspectorValue["platform"].map((val) => val).join(", ");          
+        });
+        return data;
       },
     },
     {
@@ -93,20 +99,32 @@ const ManageUsers: React.FC = () => {
       entityType: UsersData,
       deleteEntity: true,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
-      getData: () => {
-        return [];
+        Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
+      getData: async () => {
+        const data = await connection.getAllInspectorInstructor();
+        data.forEach((inspectorValue) => {
+          inspectorValue["personalNumber"] = inspectorValue["_id"];
+          delete inspectorValue["_id"];
+          inspectorValue["platforms"] = inspectorValue["platform"].map((val) => val).join(", ");          
+        });
+        return data;
       },
     },
     {
       label: t("commanders"),
-      icon: <KeyboardCommandKeyIcon />, // change here
+      icon: <KeyboardCommandKeyIcon />,
       entityType: UsersData,
       deleteEntity: false,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
-      getData: () => {
-        return [];
+        Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
+      getData: async () => {
+        const data = await connection.getAllCommander();
+        data.forEach((commanderValue) => {
+          commanderValue["personalNumber"] = commanderValue["_id"];
+          delete commanderValue["_id"];
+          commanderValue["platforms"] = commanderValue["platform"].map((val) => val).join(", ");                    
+        });
+        return data;
       },
     },
     {
@@ -115,9 +133,15 @@ const ManageUsers: React.FC = () => {
       entityType: UsersData,
       deleteEntity: true,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
-      getData: () => {
-        return [];
+        Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
+      getData: async () => {
+        const data = await connection.getAllPilot();
+        data.forEach((pilotValue) => {
+          pilotValue["personalNumber"] = pilotValue["_id"];
+          delete pilotValue["_id"];
+          pilotValue["platforms"] = pilotValue["platform"].map((val) => val).join(", ");                    
+        });
+        return data;
       },
     },
     {
@@ -126,9 +150,15 @@ const ManageUsers: React.FC = () => {
       entityType: UsersData,
       deleteEntity: true,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
-      getData: () => {
-        return [];
+        Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
+      getData: async () => {
+        const data = await connection.getAllNavigator();
+        data.forEach((navigatorValue) => {
+          navigatorValue["personalNumber"] = navigatorValue["_id"];
+          delete navigatorValue["_id"];
+          navigatorValue["platforms"] = navigatorValue["platform"].map((val) => val).join(", ");                    
+        });
+        return data;
       },
     },
     {
@@ -137,9 +167,15 @@ const ManageUsers: React.FC = () => {
       entityType: UsersData,
       deleteEntity: true,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
-      getData: () => {
-        return [];
+        Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
+      getData: async () => {
+        const data = await connection.getAllInspector();
+        data.forEach((inspectorValue) => {
+          inspectorValue["personalNumber"] = inspectorValue["_id"];
+          delete inspectorValue["_id"];
+          inspectorValue["platforms"] = inspectorValue["platform"].map((val) => val).join(", ");                    
+        });
+        return data;
       },
     },
     {
@@ -148,9 +184,15 @@ const ManageUsers: React.FC = () => {
       entityType: UsersData,
       deleteEntity: true,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
-      getData: () => {
-        return [];
+        Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
+      getData: async () => {
+        const data = await connection.getAllTrainer();
+        data.forEach((trainerValue) => {
+          trainerValue["personalNumber"] = trainerValue["_id"];
+          delete trainerValue["_id"];
+          trainerValue["platforms"] = trainerValue["platform"].map((val) => val).join(", ");                    
+        });
+        return data;
       },
     },
     {
@@ -159,9 +201,15 @@ const ManageUsers: React.FC = () => {
       entityType: UsersData,
       deleteEntity: false,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
-      getData: () => {
-        return [];
+        Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
+      getData: async () => {
+        const data = await connection.getAllTechnician();
+        data.forEach((technicianValue) => {
+          technicianValue["personalNumber"] = technicianValue["_id"];
+          delete technicianValue["_id"];
+          technicianValue["platforms"] = technicianValue["platform"].map((val) => val).join(", ");                    
+        });
+        return data;
       },
     },
     {
@@ -171,35 +219,25 @@ const ManageUsers: React.FC = () => {
       deleteEntity: true,
       sort: (currentValue: FlightData, nextValue: FlightData) => {
         if (currentValue instanceof FlightData) {
-          return nextValue.date.getTime() - currentValue.date.getTime();
+          return currentValue.date.getTime() - nextValue.date.getTime();
         }
         return -1;
       },
-      getData: () => {
-        return [];
+      getData: async () => {
+        const data = await connection.getAllPreservedFlightNames();
+        data.forEach((preservedFlightNameValue) => {
+          delete preservedFlightNameValue["_id"];
+          preservedFlightNameValue["date"] = new Date(Math.random() * new Date().getTime());
+        });
+        return data;
       },
     },
   ];
   const [currentTab, setCurrentTab] = useState<Tab>(tabs[0]);
-
-  const createEntity = (index: number) => {
-    const keys = Object.keys(new currentTab.entityType());
-
-    return new currentTab.entityType(
-      ...keys.map((val) => {
-        if (val == "date") {
-          return new Date(Math.random() * new Date().getTime());
-        } else if (val == "id") {
-          return 1;
-        }
-        return t(val) + index;
-      })
-    );
-  };
-
   const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
+    setData([]);
     currentTab.getData().then((fetchedData) => {
       setData(fetchedData);
     });
