@@ -19,6 +19,25 @@ class Connection {
         // alert("error: " + error);
     //   });
   }
+
+  async getAllPlatforms() {
+    try {
+        const response = await fetch("http://localhost:3002/Aircraft");
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        // console.log(error);
+        return "unexpected error";
+    }
+    
+    //   .then((data) => {
+        // if (data != 404) loginSuccess(data[0];
+        // return isNaN(data) ? data[0] : null;
+    //   })
+    //   .catch((error) => {
+        // alert("error: " + error);
+    //   });
+  }
 }
 
 interface BackendContextType {

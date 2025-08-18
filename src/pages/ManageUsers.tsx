@@ -15,7 +15,7 @@ import AccessibleIcon from "@mui/icons-material/Accessible";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import KeyboardCommandKeyIcon from "@mui/icons-material/KeyboardCommandKey";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
-import TrainIcon from '@mui/icons-material/Train';
+import TrainIcon from "@mui/icons-material/Train";
 import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
 import SideBar from "../components/sidebar/sidebar";
 import NewUser from "../components/Dynamics/newUserForm";
@@ -23,6 +23,7 @@ import NewFlight from "../components/Dynamics/newFlightForm";
 import NewPlatform from "../components/Dynamics/newPlatformForm";
 import FilterSearchBar from "../components/Dynamics/filterSearchBar";
 import { useLocalStorage } from "../context/localStorageContext";
+import { useBackend } from "../context/backendContext";
 
 const sunglassesIcon: React.ReactNode = (
   <SvgIcon>
@@ -50,20 +51,30 @@ type Tab = {
   entityType: any;
   deleteEntity: boolean;
   sort: (value: any, nextValue: any) => number;
+  getData: () => Promise<any[]>;
 };
 
 const ManageUsers: React.FC = () => {
   const { t } = useTranslation();
   const [search, setSearch] = useState<string>("");
-  const { ls } = useLocalStorage()
+  const { ls } = useLocalStorage();
+  const { connection } = useBackend();
   const tabs: Tab[] = [
     {
       label: t("platform"),
       icon: <AirplanemodeActiveIcon />,
       entityType: platformData,
-      deleteEntity: ls.getAuthorization() == "admin", // based on permissions
+      deleteEntity: ls.getAuthorization() == "admin",
       sort: (currentValue: platformData, nextValue: platformData) =>
-        Number(nextValue.id) - Number(currentValue.id)
+        Number(currentValue.id) - Number(nextValue.id),
+      getData: async () => {
+        const data = await connection.getAllPlatforms();
+        data.map((platformValue) => {
+          platformValue["id"] = platformValue["_id"];
+          delete platformValue["_id"];
+        });
+        return data;
+      },
     },
     {
       label: t("instructor"),
@@ -71,7 +82,10 @@ const ManageUsers: React.FC = () => {
       entityType: UsersData,
       deleteEntity: true,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
+      getData: () => {
+        return [];
+      },
     },
     {
       label: t("inspectorInstructor"),
@@ -79,7 +93,10 @@ const ManageUsers: React.FC = () => {
       entityType: UsersData,
       deleteEntity: true,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
+      getData: () => {
+        return [];
+      },
     },
     {
       label: t("commanders"),
@@ -87,7 +104,10 @@ const ManageUsers: React.FC = () => {
       entityType: UsersData,
       deleteEntity: false,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
+      getData: () => {
+        return [];
+      },
     },
     {
       label: t("airCrew1"),
@@ -95,7 +115,10 @@ const ManageUsers: React.FC = () => {
       entityType: UsersData,
       deleteEntity: true,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
+      getData: () => {
+        return [];
+      },
     },
     {
       label: t("airCrew2"),
@@ -103,31 +126,43 @@ const ManageUsers: React.FC = () => {
       entityType: UsersData,
       deleteEntity: true,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
+      getData: () => {
+        return [];
+      },
     },
     {
       label: t("inspectors"),
-      icon: <SportsEsportsIcon />, 
+      icon: <SportsEsportsIcon />,
       entityType: UsersData,
       deleteEntity: true,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
+      getData: () => {
+        return [];
+      },
     },
     {
       label: t("trainees"),
-      icon: <TrainIcon />, 
+      icon: <TrainIcon />,
       entityType: UsersData,
       deleteEntity: true,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
+      getData: () => {
+        return [];
+      },
     },
     {
       label: t("technicians"),
-      icon: <AccessibleIcon />, 
+      icon: <AccessibleIcon />,
       entityType: UsersData,
       deleteEntity: false,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
+      getData: () => {
+        return [];
+      },
     },
     {
       label: t("flight"),
@@ -135,42 +170,39 @@ const ManageUsers: React.FC = () => {
       entityType: FlightData,
       deleteEntity: true,
       sort: (currentValue: FlightData, nextValue: FlightData) => {
-        if (currentValue instanceof FlightData) {          
-          return nextValue.date.getTime() - currentValue.date.getTime()
+        if (currentValue instanceof FlightData) {
+          return nextValue.date.getTime() - currentValue.date.getTime();
         }
         return -1;
-        
-      }
+      },
+      getData: () => {
+        return [];
+      },
     },
   ];
   const [currentTab, setCurrentTab] = useState<Tab>(tabs[0]);
 
   const createEntity = (index: number) => {
-    const keys = Object.keys(new currentTab.entityType());    
+    const keys = Object.keys(new currentTab.entityType());
 
-    return new currentTab.entityType(...keys.map((val) => {
-      if (val == "date") {
-        return new Date();
-      } else if (val == "id") {
-        return 1;
-      }
-      return t(val) + index}));
+    return new currentTab.entityType(
+      ...keys.map((val) => {
+        if (val == "date") {
+          return new Date(Math.random() * new Date().getTime());
+        } else if (val == "id") {
+          return 1;
+        }
+        return t(val) + index;
+      })
+    );
   };
 
   const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
-    setData(
-      [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-        // new UsersData("the first", "xbox", "מספר אישי 1", [t("raam")]),
-        // new UsersData("xbox", "360", "מספר אישי 2", [t("baz")]),
-        // new UsersData("xbox", "one", "מספר אישי 3", [t("baz")]),
-        // new UsersData("xbox", "one s", "מספר אישי 4", [t("baz")]),
-        // new UsersData("xbox", "one x", "מספר אישי 5", [t("raam")]),
-        // new UsersData("xbox", "series x", "מספר אישי 6", [t("raam")]),
-      ].map((i) => createEntity(i))
-    );
+    currentTab.getData().then((fetchedData) => {
+      setData(fetchedData);
+    });
   }, [currentTab]);
 
   return (
@@ -191,7 +223,12 @@ const ManageUsers: React.FC = () => {
               justifyContent: "space-between",
             }}
           >
-            <FilterSearchBar label={t("search")} setSearch={setSearch} width="9rem" isReset={false}/>
+            <FilterSearchBar
+              label={t("search")}
+              setSearch={setSearch}
+              width="9rem"
+              isReset={false}
+            />
             {currentTab.entityType == UsersData && (
               <NewUser
                 callback={(entity: any) => {
@@ -215,7 +252,9 @@ const ManageUsers: React.FC = () => {
             )}
           </Box>
           <GenericTable
-            properties={Object.keys(new currentTab.entityType()).filter((col) => true)}
+            properties={Object.keys(new currentTab.entityType()).filter(
+              (col) => true
+            )}
             data={data.filter((value) =>
               Object.values(value)
                 .map(String)
