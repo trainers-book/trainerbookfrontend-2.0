@@ -7,12 +7,9 @@
   ListItem,
   ListItemButton,
   SvgIcon,
-  IconButton,
-  Badge,
   MenuItem,
   Menu,
 } from "@mui/material";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -38,14 +35,13 @@ const Navbar: React.FC = () => {
 
   const isLogin = location.pathname == "/";
   const isTechnician = true; // placeholder for future premissions
-  const notificationsCount = 2;
 
   const handleLogout = () => {
-    ls.deleteValue("isAuthenticated");
-    ls.deleteValue("userName");
-    ls.deleteValue("platforms");
-    ls.deleteValue("authorization");
-    ls.deleteValue("displayName");
+    ls.delPlatforms();
+    ls.delAuthorization();
+    ls.delUserName();
+    ls.delDisplayName();
+    ls.delIsAuthenticated()
 
     setAnchorEl(null);
     setUsername("");
@@ -62,14 +58,14 @@ const Navbar: React.FC = () => {
     setAnchorEl(null);
   };
 
-  const possibleRoutes = routeItems.filter((route) => {
-    return route != "usersManagment";
-  }); // for future permissions
-  // const possibleRoutes = routeItems.filter((route) => {return true;}); // for future permissions
+  // const possibleRoutes = routeItems.filter((route) => {
+  //   return route != "usersManagment";
+  // }); // for future permissions
+  const possibleRoutes = routeItems.filter((route) => {return true;}); // for future permissions
 
   return (
     !isLogin && (
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, mb: 2 }}>
         <AppBar
           sx={{ backgroundColor: "rgba(255, 255, 255, 1)", borderRadius: 5 }}
           position="static"

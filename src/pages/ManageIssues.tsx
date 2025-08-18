@@ -53,7 +53,6 @@ const ManageIssues: React.FC = () => {
     <PageWrapper>
       <Box
         sx={{
-          mt: 1,
           mb: 1,
           display: "flex",
           justifyContent: "space-between"

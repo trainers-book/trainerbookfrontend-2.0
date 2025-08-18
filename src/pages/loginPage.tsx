@@ -26,11 +26,11 @@ const LoginPage: React.FC = () => {
 
   const loginSuccess = (user: User) => {
     const platforms = Array.isArray(user.platform) ? user.platform : [user.platform];
-    ls.setValue("platforms", platforms.join(","));
-    ls.setValue("authorization", user.authenticationLevel);
-    ls.setValue("userName", user.userName);
-    ls.setValue("displayName", user.name);
-    ls.setValue("isAuthenticated", "true");
+    ls.setPlatforms(platforms.join(","));
+    ls.setAuthorization(user.authenticationLevel);
+    ls.setUserName(user.userName);
+    ls.setDisplayName(user.name);
+    ls.setIsAuthenticated("true");
     setUsername(user.name);
     setPlatforms(platforms);
     navigate("/reviewFlights");

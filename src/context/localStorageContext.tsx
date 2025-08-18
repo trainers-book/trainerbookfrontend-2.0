@@ -3,10 +3,20 @@ import { createContext, useContext, useState } from "react";
 class LocalStorage {
   encoder: TextEncoder;
   decoder: TextDecoder;
+  platforms: string;
+  authorization: string;
+  userName: string;
+  displayName: string;
+  isAuthenticated: string;
 
   constructor() {
     this.encoder = new TextEncoder();
     this.decoder = new TextDecoder();
+    this.platforms = "platforms";
+    this.authorization = "authorization";
+    this.userName = "userName";
+    this.displayName = "displayName";
+    this.isAuthenticated = "isAuthenticated";
   }
 
   encodeString(toEncode: string) {
@@ -48,6 +58,67 @@ class LocalStorage {
   deleteValue(key: string) {
     localStorage.removeItem(this.encodeString(key));
   }
+
+  setPlatforms(platforms: string) {
+    this.setValue(this.platforms, platforms);
+  }
+
+  setAuthorization(authorization: string) {
+    this.setValue(this.authorization, authorization);
+  }
+
+  setUserName(userName: string) {
+    this.setValue(this.userName, userName);
+  }
+
+  setDisplayName(displayName: string) {
+    this.setValue(this.displayName, displayName);
+  }
+
+  setIsAuthenticated(isAuthenticated: string) {
+    this.setValue(this.isAuthenticated, isAuthenticated);
+  }
+
+  getPlatforms() {
+    return this.getValue(this.platforms);
+  }
+
+  getAuthorization() {
+    return this.getValue(this.authorization);
+  }
+
+  getUserName() {
+    return this.getValue(this.userName);
+  }
+
+  getDisplayName() {
+    return this.getValue(this.displayName);
+  }
+  
+  getIsAuthenticated() {
+    return this.getValue(this.isAuthenticated);
+  }
+
+  delPlatforms() {
+    this.deleteValue(this.platforms);
+  }
+
+  delAuthorization() {
+    this.deleteValue(this.authorization);
+  }
+
+  delUserName() {
+    this.deleteValue(this.userName);
+  }
+
+  delDisplayName() {
+    this.deleteValue(this.displayName);
+  }
+
+  delIsAuthenticated() {
+    this.deleteValue(this.isAuthenticated);
+  }
+
 }
 
 interface LocalStorageContextType {

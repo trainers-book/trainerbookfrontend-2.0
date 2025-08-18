@@ -4,9 +4,9 @@ import FilterDate from "../Dynamics/filterDate";
 import "../../i18n";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { platformTypes } from "../../types/platformTypes";
 import { Box } from "@mui/material";
 import { Button } from "@mui/material";
+import { usePlatforms } from "../../context/platformsContext";
 
 interface FilterFlightsProps {
   selectedPlatform: string[];
@@ -26,13 +26,14 @@ const FilterFlights: React.FC<FilterFlightsProps> = ({
   setDate,
 }) => {
   const [isReset, setIsReset] = useState(false);
-  const isFilterSelected = selectedPlatform.length != 0 || search != "" || dateSelected != "";
+  const { platforms } = usePlatforms();
+  const isFilterSelected = (selectedPlatform.length != 0 && platforms.length > 1) || search != "" || dateSelected != "";
   const { t } = useTranslation();
   return (
     <Box sx={{ mr: 1, display: "flex" }}>
       <FilterDropdown
         label={t("platform")}
-        options={platformTypes}
+        options={platforms}
         selected={selectedPlatform}
         setSelected={setSelectedPlatform}
         isMultiple={true}
