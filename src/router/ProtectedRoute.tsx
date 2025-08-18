@@ -4,7 +4,7 @@ import { useLocalStorage } from "../context/localStorageContext";
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const { ls } = useLocalStorage();
-  const isAuthenticated = ls.getValue("isAuthenticated") == "true";
+  const isAuthenticated = ls.getIsAuthenticated() == "true";
   return isAuthenticated ? children : <Navigate to="/" />;
 };
 

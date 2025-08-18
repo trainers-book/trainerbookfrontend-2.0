@@ -22,6 +22,7 @@ import NewUser from "../components/Dynamics/newUserForm";
 import NewFlight from "../components/Dynamics/newFlightForm";
 import NewPlatform from "../components/Dynamics/newPlatformForm";
 import FilterSearchBar from "../components/Dynamics/filterSearchBar";
+import { useLocalStorage } from "../context/localStorageContext";
 
 const sunglassesIcon: React.ReactNode = (
   <SvgIcon>
@@ -54,12 +55,13 @@ type Tab = {
 const ManageUsers: React.FC = () => {
   const { t } = useTranslation();
   const [search, setSearch] = useState<string>("");
+  const { ls } = useLocalStorage()
   const tabs: Tab[] = [
     {
       label: t("platform"),
       icon: <AirplanemodeActiveIcon />,
       entityType: platformData,
-      deleteEntity: false, // based on permissions
+      deleteEntity: ls.getAuthorization() == "admin", // based on permissions
       sort: (currentValue: platformData, nextValue: platformData) =>
         Number(nextValue.id) - Number(currentValue.id)
     },

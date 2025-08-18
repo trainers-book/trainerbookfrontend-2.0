@@ -37,11 +37,11 @@ const Navbar: React.FC = () => {
   const isTechnician = true; // placeholder for future premissions
 
   const handleLogout = () => {
-    ls.deleteValue("isAuthenticated");
-    ls.deleteValue("userName");
-    ls.deleteValue("platforms");
-    ls.deleteValue("authorization");
-    ls.deleteValue("displayName");
+    ls.delPlatforms();
+    ls.delAuthorization();
+    ls.delUserName();
+    ls.delDisplayName();
+    ls.delIsAuthenticated()
 
     setAnchorEl(null);
     setUsername("");

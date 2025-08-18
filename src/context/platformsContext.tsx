@@ -17,7 +17,7 @@ export const PlatformsProvider = ({
   const [platforms, setPlatforms] = useState<string[]>([]);
 
   useEffect(() => {
-    const stored = ls.getValue("platforms");
+    const stored = ls.getPlatforms();
 
     if (stored) {
       setPlatforms(stored.split(","));
