@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import NewEntity from "./newEntityForm";
-import { FlightData, UsersData } from "../../types/tables/manageTypes";
-import { platformTypes } from "../../types/platformTypes";
+import { FlightData } from "../../types/tables/manageTypes";
+import { usePlatforms } from "../../context/platformsContext";
 
 interface NewFlightProps {
   callback: (user: FlightData) => void;
@@ -15,7 +15,8 @@ const NewFlight: React.FC<NewFlightProps> = ({ callback }) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [name, setName] = useState<string>("");
-  const [platforms, setPlatforms] = useState<string[]>([]);
+  const { platforms } = usePlatforms();
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
 
   return (
     <NewEntity
@@ -25,14 +26,14 @@ const NewFlight: React.FC<NewFlightProps> = ({ callback }) => {
       dropdownInputs={[
         {
           label: t("platform"),
-          options: platformTypes,
-          selected: platforms,
-          setter: setPlatforms,
+          options: platforms,
+          selected: selectedPlatforms,
+          setter: setSelectedPlatforms,
           multiple: false
         },
       ]}
       callback={() => {
-        callback(new FlightData(name, platforms[0]));
+        callback(new FlightData(new Date(), name, selectedPlatforms[0]));
       }}
     />
   );

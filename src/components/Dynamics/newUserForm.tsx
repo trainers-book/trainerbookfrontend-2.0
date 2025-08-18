@@ -5,7 +5,7 @@ import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import NewEntity from "./newEntityForm";
 import { UsersData } from "../../types/tables/manageTypes";
-import { platformTypes } from "../../types/platformTypes";
+import { usePlatforms } from "../../context/platformsContext";
 
 interface NewUserProps {
   callback: (user: UsersData) => void;
@@ -14,10 +14,11 @@ interface NewUserProps {
 const NewUser: React.FC<NewUserProps> = ({ callback }) => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const { platforms } = usePlatforms();
   const [name, setName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [personalNumber, setPersonalNumber] = useState<string>("");
-  const [platforms, setPlatforms] = useState<string[]>([]);
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
 
   return (
     <NewEntity
@@ -29,14 +30,14 @@ const NewUser: React.FC<NewUserProps> = ({ callback }) => {
       dropdownInputs={[
         {
           label: t("platforms"),
-          options: platformTypes,
-          selected: platforms,
-          setter: setPlatforms,
+          options: platforms,
+          selected: selectedPlatforms,
+          setter: setSelectedPlatforms,
           multiple: true
         },
       ]}
       callback={() => {
-        callback(new UsersData(name, lastName, personalNumber, platforms));
+        callback(new UsersData(name, lastName, personalNumber, selectedPlatforms));
       }}
     />
   );

@@ -23,7 +23,7 @@ export class FlightData {
   platform: string;
 
   constructor(
-    date = new Date(),
+    date: Date,
     flightName: string,
     platform: string,
   ) {

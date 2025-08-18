@@ -91,7 +91,7 @@ const ManageUsers: React.FC = () => {
       label: t("airCrew1"),
       icon: <PregnantWomanIcon />, // sunglassesIcon
       entityType: UsersData,
-      deleteEntity: false,
+      deleteEntity: true,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
     },
@@ -123,7 +123,7 @@ const ManageUsers: React.FC = () => {
       label: t("technicians"),
       icon: <AccessibleIcon />, 
       entityType: UsersData,
-      deleteEntity: true,
+      deleteEntity: false,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
     },
