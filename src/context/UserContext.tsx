@@ -14,8 +14,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const stored = ls.getDisplayName();
-    console.log(stored);
-    
     
     if (stored) {
 
