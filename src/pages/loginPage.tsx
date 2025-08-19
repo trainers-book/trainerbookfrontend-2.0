@@ -87,7 +87,7 @@ const LoginPage: React.FC = () => {
         mt: "10vh",
         maxWidth: "22vw",
         borderRadius: 3,
-        boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)",
+        boxShadow: "0 0 15px rgba(0, 0, 0, 0.2)",
         pr: 2,
         pl: 2,
       }}

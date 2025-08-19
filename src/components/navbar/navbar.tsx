@@ -58,10 +58,7 @@ const Navbar: React.FC = () => {
     setAnchorEl(null);
   };
 
-  // const possibleRoutes = routeItems.filter((route) => {
-  //   return route != "usersManagment";
-  // }); // for future permissions
-  const possibleRoutes = routeItems.filter((route) => {return true;}); // for future permissions
+  const possibleRoutes = routeItems.filter((route) => {return true;});
 
   return (
     !isLogin && (
