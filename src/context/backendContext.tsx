@@ -9,17 +9,8 @@ class Connection {
       const data = await response.json();
       return data[0];
     } catch (error) {
-      // console.log(error);
       return "unexpected error";
     }
-
-    //   .then((data) => {
-    // if (data != 404) loginSuccess(data[0];
-    // return isNaN(data) ? data[0] : null;
-    //   })
-    //   .catch((error) => {
-    // alert("error: " + error);
-    //   });
   }
 
   async getUserHasPassword(username: string) {

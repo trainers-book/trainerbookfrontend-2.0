@@ -2,7 +2,6 @@ import { createContext, useContext, useState, useEffect } from "react";
 import IssueData from "../types/tables/issues";
 import { Status } from "../types/statuses";
 import { Severity } from "../types/issuesSeverity";
-import { platformTypes } from "../types/platformTypes";
 import { useTranslation } from "react-i18next";
 import { usePlatforms } from "./platformsContext";
 
@@ -16,9 +15,7 @@ const IssueContext = createContext<IssueContextType | null>(null);
 export const IssueProvider = ({ children }: { children: React.ReactNode }) => {
   const { t } = useTranslation();
   const { platforms } = usePlatforms();
-  // console.log(platforms);
   
-
   const getTempData = () => {
     const temp: IssueData[] = [];
     const getStatus = () => {

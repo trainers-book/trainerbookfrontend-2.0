@@ -16,6 +16,12 @@ type User = {
   platform: string | string[];
 };
 
+enum LoginResponses {
+  NO_USER = "no user",
+  INCORRECT = "incorrect",
+  NO_PASSWORD = "no password"
+};
+
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
   const { ls } = useLocalStorage();
@@ -47,17 +53,13 @@ const LoginPage: React.FC = () => {
     const loginResponse = await connection.login(username, password);
 
     if (typeof loginResponse == "string") {
-      if (loginResponse == "no user") {
+      if (loginResponse == LoginResponses.NO_USER) {
         setWrongUser(true);
-      } else if (loginResponse == "incorrect") {
+      } else if (loginResponse == LoginResponses.INCORRECT) {
         setWrongPass(true);
-      } else if (loginResponse == "no password") {
-        console.log("not supposed to be here");
-
+      } else if (loginResponse == LoginResponses.NO_PASSWORD) {
         setPassword("");
         setcreatePassword(true);
-      } else {
-        console.log(loginResponse);
       }
     } else {
       storeUser(loginResponse);
@@ -68,7 +70,7 @@ const LoginPage: React.FC = () => {
   const handleNewPassword = async () => {
     const passResponse = await connection.setPassword(username, password);    
 
-    if (passResponse["success"]) {
+    if (passResponse.success) {
       const loginResponse = await connection.login(username, password);    
       storeUser(loginResponse);
       navigate("/reviewFlights");
