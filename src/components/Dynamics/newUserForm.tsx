@@ -4,11 +4,10 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import NewEntity from "./newEntityForm";
-import { UsersData } from "../../types/tables/manageTypes";
 import { usePlatforms } from "../../context/platformsContext";
 
 interface NewUserProps {
-  callback: (user: UsersData) => void;
+  callback: (user: any) => void;
 }
 
 const NewUser: React.FC<NewUserProps> = ({ callback }) => {
@@ -33,11 +32,17 @@ const NewUser: React.FC<NewUserProps> = ({ callback }) => {
           options: platforms,
           selected: selectedPlatforms,
           setter: setSelectedPlatforms,
-          multiple: true
+          multiple: true,
         },
       ]}
       callback={() => {
-        callback(new UsersData(name, lastName, personalNumber, selectedPlatforms));
+        callback({
+          firstName: name,
+          lastName: lastName,
+          displayName: name + " " + lastName,
+          platform: selectedPlatforms,
+          personalNumber: personalNumber,
+        });
       }}
     />
   );

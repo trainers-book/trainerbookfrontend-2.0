@@ -45,3 +45,16 @@ export class platformData {
     this.name = name;
   }
 }
+
+export enum Collections {
+  PLATFORM              = "Aircraft",
+  INSTRUCTOR            = "Instructor",
+  INSPECTOR_INSTRUCTOR  = "InspectorInstructor",
+  COMMANDER             = "Commander",
+  PILOT                 = "Pilot",
+  NAVIGATOR             = "Navigator",
+  INSPECTOR             = "Inspector",
+  TRAINER               = "Trainer",
+  TECHNICIAN            = "Technician",
+  PRESERVED_FLIGHTNAME  = "PreservedFlightNames",
+}

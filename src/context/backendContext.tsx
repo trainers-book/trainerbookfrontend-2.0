@@ -3,111 +3,40 @@ import { createContext, useContext, useState } from "react";
 class Connection {
   async login(username: string, password: string) {
     try {
-        const response = await fetch("http://localhost:3002/Authentication/" + username + "/" + password);
-        const data = await response.json();
-        return data[0];
+      const response = await fetch(
+        "http://localhost:3002/Authentication/" + username + "/" + password
+      );
+      const data = await response.json();
+      return data[0];
     } catch (error) {
-        return "unexpected error";
+      return "unexpected error";
     }
   }
 
-  async getAllPlatforms() {
+  async getAllEntities(collectionName: string) {
     try {
-        const response = await fetch("http://localhost:3002/Aircraft");
-        const data = await response.json();
-        return data;
+      const response = await fetch(`http://localhost:3002/${collectionName}`);
+      const data = await response.json();
+      return data;
     } catch (error) {
-        return "unexpected error";
+      return "unexpected error";
     }
   }
-  
-  async getAllInspectors() {
+
+  async addEntity(dbEntity: any, collection: string) {
+    const messageBody = JSON.stringify(dbEntity);
     try {
-        const response = await fetch("http://localhost:3002/Instructor");
-        const data = await response.json();
-        return data;
+      const response = await fetch(`http://localhost:3002/${collection}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: messageBody,
+      });
+      const data = await response.json();
+      return data;
     } catch (error) {
-        return "unexpected error";
-    }
-  }
-  
-  async getAllInspectorInstructor() {
-    try {
-        const response = await fetch("http://localhost:3002/InspectorInstructor");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        return "unexpected error";
-    }
-  }
-  
-  async getAllCommander() {
-    try {
-        const response = await fetch("http://localhost:3002/Commander");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        return "unexpected error";
-    }
-  }
-  
-  async getAllPilot() {
-    try {
-        const response = await fetch("http://localhost:3002/Pilot");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        return "unexpected error";
-    }
-  }
-  
-  async getAllNavigator() {
-    try {
-        const response = await fetch("http://localhost:3002/Navigator");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        return "unexpected error";
-    }
-  }
-  
-  async getAllInspector() {
-    try {
-        const response = await fetch("http://localhost:3002/Inspector");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        return "unexpected error";
-    }
-  }
-  
-  async getAllTrainer() {
-    try {
-        const response = await fetch("http://localhost:3002/Trainer");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        return "unexpected error";
-    }
-  }
-  
-  async getAllTechnician() {
-    try {
-        const response = await fetch("http://localhost:3002/Technician");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        return "unexpected error";
-    }
-  }
-  
-  async getAllPreservedFlightNames() {
-    try {
-        const response = await fetch("http://localhost:3002/PreservedFlightNames");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        return "unexpected error";
+      return "unexpected error";
     }
   }
 }
@@ -135,8 +64,6 @@ export const BackendProvider = ({
 export const useBackend = () => {
   const context = useContext(BackendContext);
   if (!context)
-    throw new Error(
-      "useBackend must be used within a BackendProvider"
-    );
+    throw new Error("useBackend must be used within a BackendProvider");
   return context;
 };

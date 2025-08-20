@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import PageWrapper from "../components/pageWrapper/PageWrapper";
 import GenericTable from "../components/table/table";
 import {
+  Collections,
   FlightData,
   platformData,
   UsersData,
@@ -48,10 +49,28 @@ const sunglassesIcon: React.ReactNode = (
 type Tab = {
   label: string;
   icon: React.ReactNode;
-  entityType: any;
+  collection: string;
   deleteEntity: boolean;
+  entityType: any;
   sort: (value: any, nextValue: any) => number;
-  getData: () => Promise<any[]>;
+  dataManipulation: (value: any) => void;
+  entityToDbEntity: (entity: any) => any;
+};
+
+const userToDbEntity = (user: {
+  personalNumber: string;
+  firstName: string;
+  lastName: string;
+  platform: string;
+  displayName: string;
+}) => {
+  return {
+    _id: user.personalNumber,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    platform: user.platform,
+    name: user.displayName,
+  };
 };
 
 const ManageUsers: React.FC = () => {
@@ -59,189 +78,222 @@ const ManageUsers: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const { ls } = useLocalStorage();
   const { connection } = useBackend();
+  const [data, setData] = useState<any[]>([]);
+  const [newData, setNewData] = useState<boolean>(false);
   const tabs: Tab[] = [
     {
       label: t("platform"),
       icon: <AirplanemodeActiveIcon />,
-      entityType: platformData,
+      collection: Collections.PLATFORM,
       deleteEntity: ls.getAuthorization() == "admin",
+      entityType: platformData,
       sort: (currentValue: platformData, nextValue: platformData) =>
         Number(currentValue.id) - Number(nextValue.id),
-      getData: async () => {
-        const data = await connection.getAllPlatforms();
-        data.map((platformValue) => {
-          platformValue["id"] = platformValue["_id"];
-          delete platformValue["_id"];
-        });
-        return data;
+      dataManipulation: (platformValue) => {
+        platformValue["id"] = platformValue["_id"];
+        delete platformValue["_id"];
+      },
+      entityToDbEntity: (platform: { name: string }) => {
+        return {
+          name: platform.name,
+        };
       },
     },
     {
       label: t("instructor"),
       icon: <SchoolIcon />,
-      entityType: UsersData,
+      collection: Collections.INSTRUCTOR,
       deleteEntity: true,
+      entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
-      getData: async () => {
-        const data = await connection.getAllInspectors();
-        data.forEach((inspectorValue) => {
-          inspectorValue["personalNumber"] = inspectorValue["_id"];
-          delete inspectorValue["_id"];
-          inspectorValue["platforms"] = inspectorValue["platform"].map((val) => val).join(", ");          
-        });
-        return data;
+      dataManipulation: (instructorValue) => {
+        instructorValue["personalNumber"] = instructorValue["_id"];
+        delete instructorValue["_id"];
+        instructorValue["platforms"] = instructorValue["platform"].join(", ");
       },
+      entityToDbEntity: userToDbEntity,
     },
     {
       label: t("inspectorInstructor"),
       icon: <SchoolIcon />,
-      entityType: UsersData,
+      collection: Collections.INSPECTOR_INSTRUCTOR,
       deleteEntity: true,
+      entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
-      getData: async () => {
-        const data = await connection.getAllInspectorInstructor();
-        data.forEach((inspectorValue) => {
-          inspectorValue["personalNumber"] = inspectorValue["_id"];
-          delete inspectorValue["_id"];
-          inspectorValue["platforms"] = inspectorValue["platform"].map((val) => val).join(", ");          
-        });
-        return data;
+      dataManipulation: (inspectorValue) => {
+        inspectorValue["personalNumber"] = inspectorValue["_id"];
+        delete inspectorValue["_id"];
+        inspectorValue["platforms"] = inspectorValue["platform"].join(", ");
       },
+      entityToDbEntity: userToDbEntity,
     },
     {
       label: t("commanders"),
       icon: <KeyboardCommandKeyIcon />,
-      entityType: UsersData,
+      collection: Collections.COMMANDER,
       deleteEntity: false,
+      entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
-      getData: async () => {
-        const data = await connection.getAllCommander();
-        data.forEach((commanderValue) => {
-          commanderValue["personalNumber"] = commanderValue["_id"];
-          delete commanderValue["_id"];
-          commanderValue["platforms"] = commanderValue["platform"].map((val) => val).join(", ");                    
-        });
-        return data;
+      dataManipulation: (commanderValue) => {
+        commanderValue["personalNumber"] = commanderValue["_id"];
+        delete commanderValue["_id"];
+        commanderValue["platforms"] = commanderValue["platform"].join(", ");
       },
+      entityToDbEntity: userToDbEntity,
     },
     {
       label: t("airCrew1"),
       icon: <PregnantWomanIcon />, // sunglassesIcon
-      entityType: UsersData,
+      collection: Collections.PILOT,
       deleteEntity: true,
+      entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
-      getData: async () => {
-        const data = await connection.getAllPilot();
-        data.forEach((pilotValue) => {
-          pilotValue["personalNumber"] = pilotValue["_id"];
-          delete pilotValue["_id"];
-          pilotValue["platforms"] = pilotValue["platform"].map((val) => val).join(", ");                    
-        });
-        return data;
+      dataManipulation: (pilotValue) => {
+        pilotValue["personalNumber"] = pilotValue["_id"];
+        delete pilotValue["_id"];
+        pilotValue["platforms"] = pilotValue["platform"].join(", ");
       },
+      entityToDbEntity: userToDbEntity,
     },
     {
       label: t("airCrew2"),
       icon: <AccessibleIcon />, // <MenuBookIcon />
-      entityType: UsersData,
+      collection: Collections.NAVIGATOR,
       deleteEntity: true,
+      entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
-      getData: async () => {
-        const data = await connection.getAllNavigator();
-        data.forEach((navigatorValue) => {
-          navigatorValue["personalNumber"] = navigatorValue["_id"];
-          delete navigatorValue["_id"];
-          navigatorValue["platforms"] = navigatorValue["platform"].map((val) => val).join(", ");                    
-        });
-        return data;
+      dataManipulation: (navigatorValue) => {
+        navigatorValue["personalNumber"] = navigatorValue["_id"];
+        delete navigatorValue["_id"];
+        navigatorValue["platforms"] = navigatorValue["platform"].join(", ");
       },
+      entityToDbEntity: userToDbEntity,
     },
     {
       label: t("inspectors"),
       icon: <SportsEsportsIcon />,
-      entityType: UsersData,
+      collection: Collections.INSPECTOR,
       deleteEntity: true,
+      entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
-      getData: async () => {
-        const data = await connection.getAllInspector();
-        data.forEach((inspectorValue) => {
-          inspectorValue["personalNumber"] = inspectorValue["_id"];
-          delete inspectorValue["_id"];
-          inspectorValue["platforms"] = inspectorValue["platform"].map((val) => val).join(", ");                    
-        });
-        return data;
+      dataManipulation: (inspectorValue) => {
+        inspectorValue["personalNumber"] = inspectorValue["_id"];
+        delete inspectorValue["_id"];
+        inspectorValue["platforms"] = inspectorValue["platform"].join(", ");
       },
+      entityToDbEntity: userToDbEntity,
     },
     {
       label: t("trainees"),
       icon: <TrainIcon />,
-      entityType: UsersData,
+      collection: Collections.TRAINER,
       deleteEntity: true,
+      entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
-      getData: async () => {
-        const data = await connection.getAllTrainer();
-        data.forEach((trainerValue) => {
-          trainerValue["personalNumber"] = trainerValue["_id"];
-          delete trainerValue["_id"];
-          trainerValue["platforms"] = trainerValue["platform"].map((val) => val).join(", ");                    
-        });
-        return data;
+      dataManipulation: (trainerValue) => {
+        trainerValue["personalNumber"] = trainerValue["_id"];
+        delete trainerValue["_id"];
+        trainerValue["platforms"] = trainerValue["platform"].join(", ");
       },
+      entityToDbEntity: userToDbEntity,
     },
     {
       label: t("technicians"),
       icon: <AccessibleIcon />,
-      entityType: UsersData,
+      collection: Collections.TECHNICIAN,
       deleteEntity: false,
+      entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
-      getData: async () => {
-        const data = await connection.getAllTechnician();
-        data.forEach((technicianValue) => {
-          technicianValue["personalNumber"] = technicianValue["_id"];
-          delete technicianValue["_id"];
-          technicianValue["platforms"] = technicianValue["platform"].map((val) => val).join(", ");                    
-        });
-        return data;
+      dataManipulation: (technicianValue) => {
+        technicianValue["personalNumber"] = technicianValue["_id"];
+        delete technicianValue["_id"];
+        technicianValue["platforms"] = technicianValue["platform"].join(", ");
       },
+      entityToDbEntity: userToDbEntity,
     },
     {
-      label: t("flight"),
+      label: t("flights"),
       icon: <AirplaneTicketIcon />,
-      entityType: FlightData,
+      collection: Collections.PRESERVED_FLIGHTNAME,
       deleteEntity: true,
+      entityType: FlightData,
       sort: (currentValue: FlightData, nextValue: FlightData) => {
         if (currentValue instanceof FlightData) {
           return currentValue.date.getTime() - nextValue.date.getTime();
         }
         return -1;
       },
-      getData: async () => {
-        const data = await connection.getAllPreservedFlightNames();
-        data.forEach((preservedFlightNameValue) => {
-          delete preservedFlightNameValue["_id"];
-          preservedFlightNameValue["date"] = new Date(Math.random() * new Date().getTime());
-        });
-        return data;
+      dataManipulation: (flightNameValue) => {
+        delete flightNameValue["_id"];
+        flightNameValue["date"] = new Date(flightNameValue["date"]);
+      },
+      entityToDbEntity: (flight: {
+        name: string;
+        platform: string;
+        date: Date;
+      }) => {
+        return {
+          name: flight.name,
+          platform: flight.platform,
+          date: flight.date.getTime(),
+        };
       },
     },
   ];
-  const [currentTab, setCurrentTab] = useState<Tab>(tabs[0]);
-  const [data, setData] = useState<any[]>([]);
+  const [currentTab, setCurrentTab] = useState<Tab>(tabs[tabs.length - 1]);
+
+  const fetchData = async (
+    collection: string,
+    dataManipulation: (value: any) => void
+  ) => {
+    const data: any[] = await connection.getAllEntities(collection);
+    data.map(dataManipulation);
+    return data;
+  };
+
+  const addData = async (
+    collection: string,
+    entity: any,
+    entityToDbEntity: (entity: any) => any
+  ) => {
+    const data = await connection.addEntity(
+      entityToDbEntity(entity),
+      collection
+    );
+    if (data.success) {
+      setNewData(!newData);
+    }
+  };
+
+  const fetchServerData = () => {
+    setData([]);
+
+    fetchData(currentTab.collection, currentTab.dataManipulation).then(
+      (fetchedData) => {
+        setData(fetchedData);
+      }
+    );
+  };
+
+  const submitEntity = (entity: any) => {
+    addData(currentTab.collection, entity, currentTab.entityToDbEntity);
+  };
 
   useEffect(() => {
-    setData([]);
-    currentTab.getData().then((fetchedData) => {
-      setData(fetchedData);
-    });
+    fetchServerData();
   }, [currentTab]);
+
+  useEffect(() => {
+    fetchServerData();
+  }, [newData]);
 
   return (
     <PageWrapper>
@@ -268,25 +320,13 @@ const ManageUsers: React.FC = () => {
               isReset={false}
             />
             {currentTab.entityType == UsersData && (
-              <NewUser
-                callback={(entity: any) => {
-                  console.log(entity);
-                }}
-              />
+              <NewUser callback={submitEntity} />
             )}
             {currentTab.entityType == FlightData && (
-              <NewFlight
-                callback={(entity: any) => {
-                  console.log(entity);
-                }}
-              />
+              <NewFlight callback={submitEntity} />
             )}
             {currentTab.entityType == platformData && (
-              <NewPlatform
-                callback={(entity: any) => {
-                  console.log(entity);
-                }}
-              />
+              <NewPlatform callback={submitEntity} />
             )}
           </Box>
           <GenericTable
