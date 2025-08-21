@@ -151,7 +151,7 @@ const Navbar: React.FC = () => {
                 }}
               >
                 <Typography
-                  sx={{ opacity: "70%", cursor: "pointer" }}
+                  sx={{ opacity: "70%" }}
                   className="text"
                   onClick={handleClick}
                 >
