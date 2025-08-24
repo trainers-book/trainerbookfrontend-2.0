@@ -31,11 +31,11 @@ const Navbar: React.FC = () => {
   const isLogin = location.pathname == "/";
 
   const handleLogout = () => {
-    ls.deleteValue("isAuthenticated");
-    ls.deleteValue("userName");
-    ls.deleteValue("platforms");
-    ls.deleteValue("authorization");
-    ls.deleteValue("displayName");
+    ls.delPlatforms();
+    ls.delAuthorization();
+    ls.delUserName();
+    ls.delDisplayName();
+    ls.delIsAuthenticated();
 
     setAnchorEl(null);
     setUsername("");
@@ -52,20 +52,16 @@ const Navbar: React.FC = () => {
     setAnchorEl(null);
   };
 
+  // const possibleRoutes = routeItems.filter((route) => {
+  //   return route != "usersManagment";
+  // }); // for future permissions
   const possibleRoutes = routeItems.filter((route) => {
-    return route != "usersManagment";
+    return true;
   }); // for future permissions
-  // const possibleRoutes = routeItems.filter((route) => {return true;}); // for future permissions
-
-  const authData = ls.getAuthData();
-
-  if (!authData) {
-    return null;
-  }
 
   return (
     !isLogin && (
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, mb: 2 }}>
         <AppBar
           sx={{ backgroundColor: "rgba(255, 255, 255, 1)", borderRadius: 5 }}
           position="static"
@@ -155,7 +151,7 @@ const Navbar: React.FC = () => {
                   className="text"
                   onClick={handleClick}
                 >
-                  {t("hello")},{username} - {t(authData)}
+                  {t("hello")},{username} - {t(ls.getAuthorization())}
                 </Typography>
                 <Button
                   variant="contained"
