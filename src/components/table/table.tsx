@@ -18,6 +18,7 @@ import { Status } from "../../types/statuses";
 import type IssueData from "../../types/tables/issues";
 import { Severity } from "../../types/issuesSeverity";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 interface TableProps {
   properties: string[];
@@ -25,6 +26,7 @@ interface TableProps {
   sortFunction: (val: any, nexVal: any) => number;
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
+  editRow?: (row: any) => void;
   deleteRow?: (row: any) => void;
 }
 
@@ -34,6 +36,7 @@ const GenericTable: React.FC<TableProps> = ({
   sortFunction,
   getRowClass,
   color,
+  editRow,
   deleteRow,
 }) => {
   const tableHeightPercent = 85;
@@ -45,6 +48,9 @@ const GenericTable: React.FC<TableProps> = ({
   const columns = properties.slice();
   if (color != undefined) {
     columns.push("!color");
+  }
+  if (editRow != undefined) {
+    columns.push("!edit");
   }
   if (deleteRow != undefined) {
     columns.push("!delete");
@@ -191,6 +197,14 @@ const GenericTable: React.FC<TableProps> = ({
                       getRowClass != undefined ? getRowClass(dataSet) : ""
                     }
                   />
+                )}
+                {editRow != undefined && (
+                  <TableCell sx={{ width: 0 }} align="center">
+                    {/* TODO: add logic to editRow */}
+                    <IconButton onClick={() => editRow}>
+                      <EditIcon />
+                    </IconButton>
+                  </TableCell>
                 )}
                 {deleteRow != undefined && (
                   <TableCell sx={{ width: 0 }} align="center">

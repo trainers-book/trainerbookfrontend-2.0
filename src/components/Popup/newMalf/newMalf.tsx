@@ -29,12 +29,13 @@ const NewMalfModel: React.FC = () => {
   const [timerValue, setTimerValue] = useState<boolean>(false);
   const [hasChanges, setHasChanges] = useState(false);
   console.log(seconds);
-  
+
   useEffect(() => {
     if (
       selectedDisturbance.length > 0 ||
       malfNameValue !== "" ||
-      malfDescriptionValue !== "" || timerValue ||
+      malfDescriptionValue !== "" ||
+      timerValue ||
       (selectedDisturbance.length > 0 &&
         malfNameValue !== "" &&
         malfDescriptionValue !== "")
@@ -50,10 +51,9 @@ const NewMalfModel: React.FC = () => {
   };
 
   const handleClose = () => {
-    if(hasChanges){
+    if (hasChanges) {
       setShowConfirm(true);
-    }
-    else {
+    } else {
       setShow(false);
       setShowConfirm(false);
     }
@@ -87,7 +87,10 @@ const NewMalfModel: React.FC = () => {
       <Button
         variant="contained"
         onClick={handleShow}
-        sx={{ background: "rgba(255, 125, 113, 0.8)", color: "rgba(0, 0, 0, 1)", ml: 2.5 }}
+        sx={{
+          background: "rgba(255, 125, 113, 0.8)",
+          color: "rgba(0, 0, 0, 1)",
+        }}
       >
         {t("newMalf")}
       </Button>
