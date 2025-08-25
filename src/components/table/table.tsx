@@ -180,7 +180,8 @@ const GenericTable: React.FC<TableProps> = ({
                 )}
                 {editRow != undefined && (
                   <TableCell sx={{ width: 0 }} align="center">
-                    <IconButton>
+                    {/* TODO: add logic to editRow */}
+                    <IconButton onClick={() => editRow}>
                       <EditIcon />
                     </IconButton>
                   </TableCell>
