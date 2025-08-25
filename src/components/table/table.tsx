@@ -107,7 +107,7 @@ const GenericTable: React.FC<TableProps> = ({
           minute: "2-digit",
         }),
       ];
-    } else if (typeof value == "string" && value.length > 30) {
+    } else if (typeof value == "string" && value.length > 20) {
       const words = value.split(" ");
       valueArray = [];
 
@@ -115,7 +115,7 @@ const GenericTable: React.FC<TableProps> = ({
       let count = 0;
       let currentRow = "";
       for (let i = 0; i < 2; i++) {
-        while (index < words.length - 1 && count + words[index].length <= 30) {
+        while (index < words.length - 1 && count + words[index].length <= 20) {
           currentRow += words[index] + " ";
           index++;
           count = currentRow.length;
