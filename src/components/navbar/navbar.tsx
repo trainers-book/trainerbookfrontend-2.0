@@ -61,7 +61,7 @@ const Navbar: React.FC = () => {
   // const possibleRoutes = routeItems.filter((route) => {
   //   return route != "usersManagment";
   // }); // for future permissions
-  const possibleRoutes = routeItems.filter((route) => {return true;}); // for future permissions
+  const possibleRoutes = routeItems.filter((route) => !(route == "usersManagment" && ls.getAuthorization() == "Technician")); // for future permissions
 
   return (
     !isLogin && (
