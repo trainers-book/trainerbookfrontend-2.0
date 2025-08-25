@@ -10,8 +10,10 @@ import { useIssues } from "../context/issueContext";
 import FilterIssues from "../components/filterTables/filterIssues";
 import NewMalfModel from "../components/Popup/newMalf/newMalf";
 import ExcelExport from "../components/excel/excelExport";
+import { useTranslation } from "react-i18next";
 
 const ManageIssues: React.FC = () => {
+  const { t } = useTranslation();
   const { issueData } = useIssues();
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
@@ -73,7 +75,7 @@ const ManageIssues: React.FC = () => {
         />
         <Box>
           <NewMalfModel />
-          <ExcelExport dataObject={new IssueData()} data={issueData} />
+          <ExcelExport dataObject={new IssueData()} data={issueData} tableDataName={t("manageIssues")} />
         </Box>
       </Box>
       <GenericTable

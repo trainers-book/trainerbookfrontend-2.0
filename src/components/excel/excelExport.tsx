@@ -56,33 +56,53 @@ const excelImage = (
 interface ExcelExportProps {
   dataObject: any;
   data: any[];
+  tableDataName: string;
 }
 
-const ExcelExport: React.FC<ExcelExportProps> = ({ data, dataObject }) => {
+const ExcelExport: React.FC<ExcelExportProps> = ({ data, dataObject, tableDataName }) => {
   const { t } = useTranslation();
   const objectKeys = Object.keys(dataObject);
 
+  const splitPlatformData = (data: any[]) => {
+    return Object.values(
+      data.reduce((acc, obj) => {
+        const key = obj[t("platform")];
+        if (!acc[key]) {
+          acc[key] = { [key]: [] };
+        }
+        acc[key][key].push(obj);
+        return acc;
+      }, {})
+    );
+  };
+
   const excelExport = () => {
-    const copiedArray = JSON.parse(JSON.stringify(data));
-    copiedArray.forEach((value) => {
+    const copiedData = JSON.parse(JSON.stringify(data));
+    copiedData.forEach((value) => {
       objectKeys.forEach((key) => {
         value[t(key)] = value[key];
         if (key == "dateTime") {
-          value[t(key)] = new Date(value[key]).toLocaleString("en-GB");            
+          value[t(key)] = new Date(value[key]).toLocaleString("en-GB");
         }
 
         delete value[key];
       });
     });
 
-    const worksheet = XLSX.utils.json_to_sheet(copiedArray, {
-      header: objectKeys.map((val) => t(val)),
-      skipHeader: false,
+    const workbook = XLSX.utils.book_new();
+
+    const platfromsData = splitPlatformData(copiedData);
+    platfromsData.forEach((platform) => {
+      const platformName = Object.keys(platform)[0];
+      
+      const worksheet = XLSX.utils.json_to_sheet(platform[platformName], {
+        header: objectKeys.map((val) => t(val)),
+        skipHeader: false,
+      });
+      XLSX.utils.book_append_sheet(workbook, worksheet, platformName);
     });
 
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "sheet1");
-    XLSX.writeFile(workbook, "test.xlsx");
+    XLSX.writeFile(workbook, tableDataName);
   };
 
   return (
