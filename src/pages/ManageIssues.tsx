@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useIssues } from "../context/issueContext";
 import FilterIssues from "../components/filterTables/filterIssues";
 import NewMalfModel from "../components/Popup/newMalf/newMalf";
+import ExcelExport from "../components/excel/excelExport";
 
 const ManageIssues: React.FC = () => {
   const { issueData } = useIssues();
@@ -55,7 +56,7 @@ const ManageIssues: React.FC = () => {
         sx={{
           mb: 1,
           display: "flex",
-          justifyContent: "space-between"
+          justifyContent: "space-between",
         }}
       >
         <FilterIssues
@@ -70,7 +71,10 @@ const ManageIssues: React.FC = () => {
           dateSelected={selectedDate}
           setDate={setSelectedDate}
         />
-        <NewMalfModel/>
+        <Box>
+          <NewMalfModel />
+          <ExcelExport dataObject={new IssueData()} data={issueData} />
+        </Box>
       </Box>
       <GenericTable
         properties={Object.keys(new IssueData()).filter(() => true)}
