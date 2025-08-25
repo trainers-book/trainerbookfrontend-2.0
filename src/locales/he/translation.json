@@ -92,6 +92,7 @@
   "userName": "שם משתמש",
   "password": "סיסמה",
   "wrongLogin": "שם משתמש או סיסמה שגויים",
+  "issueNumber": "מספר תקלה",
   "admin": "מנהל",
   "Instructor": "מדריכה",
   "Trainer": "מתאמן",
