@@ -31,7 +31,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ year, month, rangeDate }) => {
   useEffect(() => {
     setDaysGrid(getDaysGrid());
   }, [month]);
-  
+
   useEffect(() => {
     setDaysGrid(getDaysGrid());
   }, [year]);
@@ -104,6 +104,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ year, month, rangeDate }) => {
   };
 
   const styleOverride = true;
+  const today = new Date();
 
   return (
     <CacheProvider value={cacheRtl}>
@@ -156,7 +157,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ year, month, rangeDate }) => {
                       pl: 2,
                       ":hover": {
                         background:
-                        gridDayValue == dateHover &&
+                          gridDayValue == dateHover &&
                           pickedDate?.getDate() != gridDayValue &&
                           secondPickedDate?.getDate() != gridDayValue
                             ? "rgba(117, 180, 227, 0.4)"
@@ -171,24 +172,36 @@ const DatePicker: React.FC<DatePickerProps> = ({ year, month, rangeDate }) => {
                           secondPickedDate.getMonth() + 1 == month &&
                           secondPickedDate.getFullYear() == year)
                           ? "rgb(88, 149, 195)"
-                          : checkDateRange(gridDayValue)
-                            ? "rgba(88, 151, 199, 0.58)"
-                            : "",
+                          : today.getDate() == gridDayValue &&
+                              today.getMonth() + 1 == month &&
+                              today.getFullYear() == year
+                            ? "rgba(65, 163, 238, 0.79)"
+                            : checkDateRange(gridDayValue)
+                              ? "rgba(88, 151, 199, 0.58)"
+                              : "",
                       borderRadius: 16,
                       borderTopLeftRadius:
-                        !styleOverride && rangeDate && checkDateRange(gridDayValue - 1)
+                        !styleOverride &&
+                        rangeDate &&
+                        checkDateRange(gridDayValue - 1)
                           ? 0
                           : 16,
                       borderBottomLeftRadius:
-                        !styleOverride && rangeDate && checkDateRange(gridDayValue - 1)
+                        !styleOverride &&
+                        rangeDate &&
+                        checkDateRange(gridDayValue - 1)
                           ? 0
                           : 16,
                       borderTopRightRadius:
-                        !styleOverride && rangeDate && checkDateRange(gridDayValue + 1)
+                        !styleOverride &&
+                        rangeDate &&
+                        checkDateRange(gridDayValue + 1)
                           ? 0
                           : 16,
                       borderBottomRightRadius:
-                        !styleOverride && rangeDate && checkDateRange(gridDayValue + 1)
+                        !styleOverride &&
+                        rangeDate &&
+                        checkDateRange(gridDayValue + 1)
                           ? 0
                           : 16,
                     }}
