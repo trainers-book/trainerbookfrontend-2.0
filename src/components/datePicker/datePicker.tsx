@@ -133,7 +133,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ year, month, rangeDate }) => {
                 <Typography>{t(day)}</Typography>
               </Grid>
             ))}
-            {daysGrid.map((v) => (
+            {daysGrid.map((gridDayValue) => (
               <Grid
                 size={12 / 7}
                 sx={{
@@ -143,11 +143,11 @@ const DatePicker: React.FC<DatePickerProps> = ({ year, month, rangeDate }) => {
                   pt: 0.5,
                   pb: 0.5,
                 }}
-                onMouseEnter={() => setDateHover(Number(v))}
+                onMouseEnter={() => setDateHover(gridDayValue)}
                 onMouseLeave={() => setDateHover(0)}
-                onClick={() => onDateClick(v)}
+                onClick={() => onDateClick(gridDayValue)}
               >
-                {v != 0 && (
+                {gridDayValue != 0 && (
                   <Typography
                     sx={{
                       cursor: "pointer",
@@ -156,44 +156,44 @@ const DatePicker: React.FC<DatePickerProps> = ({ year, month, rangeDate }) => {
                       pl: 2,
                       ":hover": {
                         background:
-                          v == dateHover &&
-                          pickedDate?.getDate() != v &&
-                          secondPickedDate?.getDate() != v
+                        gridDayValue == dateHover &&
+                          pickedDate?.getDate() != gridDayValue &&
+                          secondPickedDate?.getDate() != gridDayValue
                             ? "rgba(117, 180, 227, 0.4)"
                             : "",
                         borderRadius: 16,
                       },
                       background:
-                        (pickedDate?.getDate() == v &&
+                        (pickedDate?.getDate() == gridDayValue &&
                           pickedDate?.getMonth() + 1 == month &&
                           pickedDate.getFullYear() == year) ||
-                        (secondPickedDate?.getDate() == v &&
+                        (secondPickedDate?.getDate() == gridDayValue &&
                           secondPickedDate.getMonth() + 1 == month &&
                           secondPickedDate.getFullYear() == year)
                           ? "rgb(88, 149, 195)"
-                          : checkDateRange(v)
+                          : checkDateRange(gridDayValue)
                             ? "rgba(88, 151, 199, 0.58)"
                             : "",
                       borderRadius: 16,
                       borderTopLeftRadius:
-                        !styleOverride && rangeDate && checkDateRange(v - 1)
+                        !styleOverride && rangeDate && checkDateRange(gridDayValue - 1)
                           ? 0
                           : 16,
                       borderBottomLeftRadius:
-                        !styleOverride && rangeDate && checkDateRange(v - 1)
+                        !styleOverride && rangeDate && checkDateRange(gridDayValue - 1)
                           ? 0
                           : 16,
                       borderTopRightRadius:
-                        !styleOverride && rangeDate && checkDateRange(v + 1)
+                        !styleOverride && rangeDate && checkDateRange(gridDayValue + 1)
                           ? 0
                           : 16,
                       borderBottomRightRadius:
-                        !styleOverride && rangeDate && checkDateRange(v + 1)
+                        !styleOverride && rangeDate && checkDateRange(gridDayValue + 1)
                           ? 0
                           : 16,
                     }}
                   >
-                    {v}
+                    {gridDayValue}
                   </Typography>
                 )}
               </Grid>
