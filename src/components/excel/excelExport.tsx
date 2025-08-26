@@ -1,8 +1,9 @@
-import { IconButton, SvgIcon } from "@mui/material";
+import { Box, IconButton, SvgIcon } from "@mui/material";
 import "../../i18n";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import * as XLSX from "xlsx";
+import ExcelExportOptions from "../Popup/excelExports/excelExportOptions";
 
 const excelImage = (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
@@ -59,9 +60,14 @@ interface ExcelExportProps {
   tableDataName: string;
 }
 
-const ExcelExport: React.FC<ExcelExportProps> = ({ data, dataObject, tableDataName }) => {
+const ExcelExport: React.FC<ExcelExportProps> = ({
+  data,
+  dataObject,
+  tableDataName,
+}) => {
   const { t } = useTranslation();
   const objectKeys = Object.keys(dataObject);
+  const [showPopup, setShowPopup] = useState<boolean>(false);
 
   const splitPlatformData = (data: any[]) => {
     return Object.values(
@@ -94,21 +100,26 @@ const ExcelExport: React.FC<ExcelExportProps> = ({ data, dataObject, tableDataNa
     const platfromsData = splitPlatformData(copiedData);
     platfromsData.forEach((platform) => {
       const platformName = Object.keys(platform)[0];
-      
+
       const worksheet = XLSX.utils.json_to_sheet(platform[platformName], {
         header: objectKeys.map((val) => t(val)),
         skipHeader: false,
       });
       XLSX.utils.book_append_sheet(workbook, worksheet, platformName);
-    });
+    });                                                                                                                                                                                                                                                                                                                                                               
 
-    XLSX.writeFile(workbook, tableDataName);
+    XLSX.writeFile(workbook, tableDataName + ".xlsx");
   };
 
   return (
-    <IconButton sx={{ p: 0 }} onClick={excelExport}>
-      <SvgIcon sx={{ width: "2.5rem", height: "2.5rem" }}>{excelImage}</SvgIcon>
-    </IconButton>
+    <Box>
+      <IconButton sx={{ p: 0 }} onClick={() => setShowPopup(true)}>
+        <SvgIcon sx={{ width: "2.5rem", height: "2.5rem" }}>
+          {excelImage}
+        </SvgIcon>
+      </IconButton>
+      <ExcelExportOptions show={showPopup} setShow={setShowPopup} exportFunction={excelExport} />
+    </Box>
   );
 };
 
