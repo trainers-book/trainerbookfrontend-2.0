@@ -88,7 +88,8 @@ const ExcelExportOptions: React.FC<ExcelExportOptionsProps> = ({
             />
           </Box>
 
-          <DatePicker year={year} month={month} rangeDate={true} />
+          <DatePicker year={year} month={month} rangeDate={true} pickCallback={(picked) => {console.log(picked);
+          }}/>
         </Box>
       </DialogContent>
       <DialogActions

@@ -16,9 +16,17 @@ interface DatePickerProps {
   year: number;
   month: number;
   rangeDate: boolean;
+  pickCallback: (
+    picked: { date: Date } | { minDate: Date; maxDate: Date }
+  ) => void;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ year, month, rangeDate }) => {
+const DatePicker: React.FC<DatePickerProps> = ({
+  year,
+  month,
+  rangeDate,
+  pickCallback,
+}) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [dateHover, setDateHover] = useState<number>();
@@ -45,13 +53,22 @@ const DatePicker: React.FC<DatePickerProps> = ({ year, month, rangeDate }) => {
       if (pickedDate == null) {
         setPickedDate(new Date(year, month - 1, day));
       } else if (secondPickedDate == null) {
-        setSecondPickedDate(new Date(year, month - 1, day));
+        const selected = new Date(year, month - 1, day);
+        setSecondPickedDate(selected);
+        pickCallback({
+          minDate:
+            pickedDate.getTime() <= selected.getTime() ? pickedDate : selected,
+          maxDate:
+            pickedDate.getTime() > selected.getTime() ? pickedDate : selected,
+        });
       } else {
         setPickedDate(null);
         setSecondPickedDate(null);
       }
     } else {
-      setPickedDate(new Date(year, month - 1, day));
+      const selected = new Date(year, month - 1, day);
+      setPickedDate(selected);
+      pickCallback({ date: selected });
     }
   };
 
