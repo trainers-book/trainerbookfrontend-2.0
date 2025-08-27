@@ -4,7 +4,7 @@ import { prefixer } from "stylis";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import NumberInput from "../Dynamics/numberFieldInput";
 import GridDatePicker from "./gridDatePicker";
@@ -32,6 +32,8 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
   const currentYear = new Date().getFullYear();
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
   const [year, setYears] = useState<number>(currentYear);
+  const [resetPick, setResetPick] = useState<boolean>(false);
+  const [isDatePicked, setIsDatePicked] = useState<boolean>(false);
 
   return (
     <CacheProvider value={cacheRtl}>
@@ -60,7 +62,7 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
                 }
               }}
               value={month}
-              sx={{ minWidth: "105px", maxWidth: "5.5vw", pr: 1 }}
+              sx={{ minWidth: "90px", maxWidth: "5vw" }}
             />
             <NumberInput
               label={t("year")}
@@ -70,14 +72,35 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
                 }
               }}
               value={year}
-              sx={{ minWidth: "105px", maxWidth: "5.5vw", pl: 1 }}
+              sx={{ minWidth: "90px", maxWidth: "5vw", pl: 1, pr: 1 }}
             />
+            <Button
+              disabled={!isDatePicked}
+              onClick={() => {
+                setResetPick(!resetPick);
+                setIsDatePicked(false);
+              }}
+              sx={{
+                minWidth: "20px",
+                maxWidth: "2vw",
+                bgcolor: "rgba(255, 255, 255, 0)",
+                color: "rgb(0, 0, 0)",
+                ":hover": { bgcolor: "rgba(213, 212, 212, 0.32)" },
+              }}
+            >
+              X
+            </Button>
           </Box>
           <GridDatePicker
             year={year}
             month={month}
             rangeDate={rangeDate}
             pickCallback={pickCallback}
+            reset={resetPick}
+            onClick={(isPicked: boolean) => {
+              console.log(isPicked);
+              setIsDatePicked(isPicked);
+            }}
           />
         </Box>
       </ThemeProvider>

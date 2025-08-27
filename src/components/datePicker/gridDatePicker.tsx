@@ -19,6 +19,8 @@ interface GridDatePickerProps {
   pickCallback: (
     picked: { date: Date } | { minDate: Date; maxDate: Date }
   ) => void;
+  reset?: boolean;
+  onClick?: (isPicked: boolean) => void;
 }
 
 const GridDatePicker: React.FC<GridDatePickerProps> = ({
@@ -26,6 +28,8 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
   month,
   rangeDate,
   pickCallback,
+  reset,
+  onClick,
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -44,6 +48,11 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
     setDaysGrid(getDaysGrid());
   }, [year]);
 
+  useEffect(() => {
+    setPickedDate(null);
+    setSecondPickedDate(null);
+  }, [reset]);
+
   const onDateClick = (day: number) => {
     if (day == 0) {
       return;
@@ -52,6 +61,7 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
     if (rangeDate) {
       if (pickedDate == null) {
         setPickedDate(new Date(year, month - 1, day));
+        onClick ? onClick(true) : undefined;
       } else if (secondPickedDate == null) {
         const selected = new Date(year, month - 1, day);
         setSecondPickedDate(selected);
@@ -61,15 +71,21 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
           maxDate:
             pickedDate.getTime() > selected.getTime() ? pickedDate : selected,
         });
+        onClick ? onClick(true) : undefined;
       } else {
-        setPickedDate(null);
+        setPickedDate(new Date(year, month - 1, day));
         setSecondPickedDate(null);
+        onClick ? onClick(true) : undefined;
       }
     } else {
       const selected = new Date(year, month - 1, day);
       setPickedDate(selected);
       pickCallback({ date: selected });
+      onClick ? onClick(true) : undefined;
     }
+
+    // if (onClick)
+    //   onClick(pickedDate != null || secondPickedDate != null);
   };
 
   const getDaysGrid = () => {
