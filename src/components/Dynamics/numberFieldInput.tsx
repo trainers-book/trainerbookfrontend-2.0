@@ -10,6 +10,7 @@ interface NumberInputProps {
   setValue: (value: number) => void;
   value: number;
   width?: string;
+  sx?: any;
 }
 
 const cacheRtl = createCache({
@@ -22,6 +23,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
   setValue,
   value,
   width,
+  sx,
 }) => {
   const theme = useTheme();
 
@@ -35,16 +37,11 @@ const NumberInput: React.FC<NumberInputProps> = ({
   return (
     <CacheProvider value={cacheRtl}>
       <ThemeProvider theme={theme}>
-        <FormControl
-          sx={{
-            width: width,
-          }}
-        >
+        <FormControl sx={{ ...sx, width: width }}>
           <TextField
             type="number"
             value={value}
             sx={{
-              mr: 1,
               "& .MuiInputBase-root": {
                 borderRadius: 2,
               },

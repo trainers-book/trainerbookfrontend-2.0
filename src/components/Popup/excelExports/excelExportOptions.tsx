@@ -11,7 +11,8 @@ import {
 import { useTranslation } from "react-i18next";
 import CloseIcon from "@mui/icons-material/Close";
 import NumberInput from "../../Dynamics/numberFieldInput";
-import DatePicker from "../../datePicker/datePicker";
+import GridDatePicker from "../../datePicker/gridDatePicker";
+import FullDatePicker from "../../datePicker/fullDatePicker";
 
 interface ExcelExportOptionsProps {
   show: boolean;
@@ -25,9 +26,6 @@ const ExcelExportOptions: React.FC<ExcelExportOptionsProps> = ({
   exportFunction,
 }) => {
   const { t } = useTranslation();
-  const currentYear = new Date().getFullYear();
-  const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
-  const [year, setYears] = useState<number>(currentYear);
 
   const handleClose = () => {
     setShow(false);
@@ -57,40 +55,13 @@ const ExcelExportOptions: React.FC<ExcelExportOptionsProps> = ({
         {t("excelExport")}
       </DialogTitle>
       <DialogContent>
-        <Box
-          sx={{
-            pt: 2,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+        <FullDatePicker
+          rangeDate={true}
+          pickCallback={(picked) => {
+            console.log(picked);
           }}
-        >
-          <Box sx={{ display: "flex", justifyContent: "space-around", mb: 2 }}>
-            <NumberInput
-              label={t("month")}
-              setValue={(value: number) => {
-                if (value >= 1 && value <= 12) {
-                  setMonth(value);
-                }
-              }}
-              width="9rem"
-              value={month}
-            />
-            <NumberInput
-              label={t("year")}
-              setValue={(value: number) => {
-                if (value >= 2019 && value <= currentYear) {
-                  setYears(value);
-                }
-              }}
-              width="9rem"
-              value={year}
-            />
-          </Box>
-
-          <DatePicker year={year} month={month} rangeDate={true} pickCallback={(picked) => {console.log(picked);
-          }}/>
-        </Box>
+          minYear={2019}
+        />
       </DialogContent>
       <DialogActions
         sx={{

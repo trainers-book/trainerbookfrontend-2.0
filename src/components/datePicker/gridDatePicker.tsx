@@ -12,7 +12,7 @@ const cacheRtl = createCache({
   stylisPlugins: [prefixer, rtlPlugin],
 });
 
-interface DatePickerProps {
+interface GridDatePickerProps {
   year: number;
   month: number;
   rangeDate: boolean;
@@ -21,7 +21,7 @@ interface DatePickerProps {
   ) => void;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({
+const GridDatePicker: React.FC<GridDatePickerProps> = ({
   year,
   month,
   rangeDate,
@@ -130,10 +130,10 @@ const DatePicker: React.FC<DatePickerProps> = ({
           sx={{
             flexGrow: 1,
             borderRadius: 2,
-            maxWidth: "30vw",
-            minWidth: "25vw",
-            minHeight: "30vh",
-            maxHeight: "30vh",
+            maxWidth: "12vw",
+            minWidth: "230px",
+            maxHeight: "230px",
+            height: "20vh",
           }}
         >
           <Grid container spacing={0} sx={{ borderRadius: 2 }}>
@@ -143,12 +143,12 @@ const DatePicker: React.FC<DatePickerProps> = ({
                 sx={{
                   display: "flex",
                   justifyContent: "center",
-                  background: "rgba(195, 195, 195, 0.9)",
-                  pt: 2,
-                  pb: 2,
+                  background: "rgba(212, 212, 212, 0.9)",
+                  pt: 1,
+                  pb: 1,
                 }}
               >
-                <Typography>{t(day)}</Typography>
+                <Typography sx={{ fontSize: "0.85rem" }}>{t(day)}</Typography>
               </Grid>
             ))}
             {daysGrid.map((gridDayValue) => (
@@ -157,7 +157,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
                 sx={{
                   display: "flex",
                   justifyContent: "center",
-                  background: "rgb(244, 240, 240)",
+                  background: "rgb(236, 236, 236)",
                   pt: 0.5,
                   pb: 0.5,
                 }}
@@ -168,10 +168,11 @@ const DatePicker: React.FC<DatePickerProps> = ({
                 {gridDayValue != 0 && (
                   <Typography
                     sx={{
+                      fontSize: "0.85rem",
                       cursor: "pointer",
-                      p: 1,
-                      pr: 2,
-                      pl: 2,
+                      p: "0.12rem",
+                      pr: "0.25rem",
+                      pl: "0.25rem",
                       ":hover": {
                         background:
                           gridDayValue == dateHover &&
@@ -188,13 +189,13 @@ const DatePicker: React.FC<DatePickerProps> = ({
                         (secondPickedDate?.getDate() == gridDayValue &&
                           secondPickedDate.getMonth() + 1 == month &&
                           secondPickedDate.getFullYear() == year)
-                          ? "rgb(88, 149, 195)"
+                          ? "rgba(57, 152, 224, 0.98)"
                           : today.getDate() == gridDayValue &&
                               today.getMonth() + 1 == month &&
                               today.getFullYear() == year
                             ? "rgba(65, 163, 238, 0.79)"
                             : checkDateRange(gridDayValue)
-                              ? "rgba(88, 151, 199, 0.58)"
+                              ? "rgba(131, 187, 230, 0.73)"
                               : "",
                       borderRadius: 16,
                       borderTopLeftRadius:
@@ -235,4 +236,4 @@ const DatePicker: React.FC<DatePickerProps> = ({
   );
 };
 
-export default DatePicker;
+export default GridDatePicker;
