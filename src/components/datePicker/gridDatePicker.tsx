@@ -16,9 +16,8 @@ interface GridDatePickerProps {
   year: number;
   month: number;
   rangeDate: boolean;
-  pickCallback: (
-    picked: { date: Date } | { minDate: Date; maxDate: Date }
-  ) => void;
+  pickCallback: (picked: { minDate: Date; maxDate: Date }) => void;
+  invokeCallback: boolean;
   reset?: boolean;
   onClick?: (isPicked: boolean) => void;
 }
@@ -28,6 +27,7 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
   month,
   rangeDate,
   pickCallback,
+  invokeCallback,
   reset,
   onClick,
 }) => {
@@ -53,6 +53,47 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
     setSecondPickedDate(null);
   }, [reset]);
 
+  useEffect(() => {
+    setPickedDate(null);
+    setSecondPickedDate(null);
+  }, [rangeDate]);
+
+  useEffect(() => {
+    if (rangeDate) {
+      if (pickedDate != null && secondPickedDate != null) {
+        const maxTime = Math.max(pickedDate.getTime(), secondPickedDate.getTime())
+        pickCallback({
+          minDate:
+            pickedDate.getTime() <= secondPickedDate.getTime()
+              ? pickedDate
+              : secondPickedDate,
+          maxDate: new Date((maxTime + 24 * 60 * 60 * 1000) - 1)
+        });
+      }
+    } else {
+      if (pickedDate != null) {
+        pickCallback({
+          minDate: new Date(
+            pickedDate.getFullYear(),
+            pickedDate.getMonth(),
+            pickedDate.getDate(),
+            0,
+            0,
+            0
+          ),
+          maxDate: new Date(
+            pickedDate.getFullYear(),
+            pickedDate.getMonth(),
+            pickedDate.getDate(),
+            23,
+            59,
+            59
+          ),
+        });
+      }
+    }
+  }, [invokeCallback]);
+
   const onDateClick = (day: number) => {
     if (day == 0) {
       return;
@@ -63,14 +104,7 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
         setPickedDate(new Date(year, month - 1, day));
         onClick ? onClick(true) : undefined;
       } else if (secondPickedDate == null) {
-        const selected = new Date(year, month - 1, day);
-        setSecondPickedDate(selected);
-        pickCallback({
-          minDate:
-            pickedDate.getTime() <= selected.getTime() ? pickedDate : selected,
-          maxDate:
-            pickedDate.getTime() > selected.getTime() ? pickedDate : selected,
-        });
+        setSecondPickedDate(new Date(year, month - 1, day));
         onClick ? onClick(true) : undefined;
       } else {
         setPickedDate(new Date(year, month - 1, day));
@@ -78,14 +112,9 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
         onClick ? onClick(true) : undefined;
       }
     } else {
-      const selected = new Date(year, month - 1, day);
-      setPickedDate(selected);
-      pickCallback({ date: selected });
+      setPickedDate(new Date(year, month - 1, day));
       onClick ? onClick(true) : undefined;
     }
-
-    // if (onClick)
-    //   onClick(pickedDate != null || secondPickedDate != null);
   };
 
   const getDaysGrid = () => {
@@ -136,7 +165,6 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
     return false;
   };
 
-  const styleOverride = true;
   const today = new Date();
 
   return (
@@ -191,6 +219,7 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
                       pl: "0.25rem",
                       ":hover": {
                         background:
+                          dateHover != 0 &&
                           gridDayValue == dateHover &&
                           pickedDate?.getDate() != gridDayValue &&
                           secondPickedDate?.getDate() != gridDayValue
@@ -199,45 +228,24 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
                         borderRadius: 16,
                       },
                       background:
-                        (pickedDate?.getDate() == gridDayValue &&
-                          pickedDate?.getMonth() + 1 == month &&
+                        (pickedDate != null &&
+                          pickedDate.getDate() == gridDayValue &&
+                          pickedDate.getMonth() + 1 == month &&
                           pickedDate.getFullYear() == year) ||
                         (secondPickedDate?.getDate() == gridDayValue &&
                           secondPickedDate.getMonth() + 1 == month &&
                           secondPickedDate.getFullYear() == year)
                           ? "rgba(57, 152, 224, 0.98)"
-                          : today.getDate() == gridDayValue &&
-                              today.getMonth() + 1 == month &&
-                              today.getFullYear() == year
-                            ? "rgba(65, 163, 238, 0.79)"
-                            : checkDateRange(gridDayValue)
-                              ? "rgba(131, 187, 230, 0.73)"
-                              : "",
+                          : checkDateRange(gridDayValue)
+                            ? "rgba(131, 187, 230, 0.73)"
+                            : "",
                       borderRadius: 16,
-                      borderTopLeftRadius:
-                        !styleOverride &&
-                        rangeDate &&
-                        checkDateRange(gridDayValue - 1)
-                          ? 0
-                          : 16,
-                      borderBottomLeftRadius:
-                        !styleOverride &&
-                        rangeDate &&
-                        checkDateRange(gridDayValue - 1)
-                          ? 0
-                          : 16,
-                      borderTopRightRadius:
-                        !styleOverride &&
-                        rangeDate &&
-                        checkDateRange(gridDayValue + 1)
-                          ? 0
-                          : 16,
-                      borderBottomRightRadius:
-                        !styleOverride &&
-                        rangeDate &&
-                        checkDateRange(gridDayValue + 1)
-                          ? 0
-                          : 16,
+                      textDecoration:
+                        today.getDate() == gridDayValue &&
+                        today.getMonth() + 1 == month &&
+                        today.getFullYear() == year
+                          ? "underline"
+                          : "none",
                     }}
                   >
                     {gridDayValue}

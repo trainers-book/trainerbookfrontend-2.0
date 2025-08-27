@@ -20,12 +20,14 @@ interface FullDatePickerProps {
     picked: { date: Date } | { minDate: Date; maxDate: Date }
   ) => void;
   minYear: number;
+  invokeCallback: boolean;
 }
 
 const FullDatePicker: React.FC<FullDatePickerProps> = ({
   rangeDate,
   pickCallback,
   minYear,
+  invokeCallback
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -91,6 +93,7 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
               X
             </Button>
           </Box>
+
           <GridDatePicker
             year={year}
             month={month}
@@ -98,9 +101,9 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
             pickCallback={pickCallback}
             reset={resetPick}
             onClick={(isPicked: boolean) => {
-              console.log(isPicked);
               setIsDatePicked(isPicked);
             }}
+            invokeCallback={invokeCallback}
           />
         </Box>
       </ThemeProvider>

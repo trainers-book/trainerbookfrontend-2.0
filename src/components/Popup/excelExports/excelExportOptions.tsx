@@ -6,18 +6,27 @@ import {
   DialogActions,
   Button,
   IconButton,
-  Box,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+  Typography,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import CloseIcon from "@mui/icons-material/Close";
-import NumberInput from "../../Dynamics/numberFieldInput";
-import GridDatePicker from "../../datePicker/gridDatePicker";
 import FullDatePicker from "../../datePicker/fullDatePicker";
+import FullMonthPicker from "../../datePicker/monthPicker";
 
 interface ExcelExportOptionsProps {
   show: boolean;
   setShow: (value: boolean) => void;
   exportFunction: () => void;
+}
+
+enum ExportTypes {
+  Date = "Date",
+  DateRange = "DateRange",
+  Month = "Month",
+  MonthRange = "MonthRange",
 }
 
 const ExcelExportOptions: React.FC<ExcelExportOptionsProps> = ({
@@ -26,6 +35,15 @@ const ExcelExportOptions: React.FC<ExcelExportOptionsProps> = ({
   exportFunction,
 }) => {
   const { t } = useTranslation();
+  const [exportChoice, setExportChoice] = useState<ExportTypes>(
+    ExportTypes.Date
+  );
+  const [getMonth, setGetMonth] = useState<boolean>(false);
+
+
+  const handleChange = (event) => {
+    setExportChoice(event.target.value);    
+  };
 
   const handleClose = () => {
     setShow(false);
@@ -55,13 +73,30 @@ const ExcelExportOptions: React.FC<ExcelExportOptionsProps> = ({
         {t("excelExport")}
       </DialogTitle>
       <DialogContent>
-        <FullDatePicker
-          rangeDate={true}
+        <RadioGroup row value={exportChoice} onChange={handleChange}>
+          {Object.values(ExportTypes).map((exportName) => <FormControlLabel
+            value={exportName}
+            control={<Radio />}
+            label={t("export" + exportName)}
+            sx={{ "& .MuiTypography-root": { fontSize: "0.8rem" } }}
+          />)}
+        </RadioGroup>
+        {(exportChoice == ExportTypes.Date || exportChoice == ExportTypes.DateRange) && <FullDatePicker
+          rangeDate={exportChoice == ExportTypes.DateRange}
           pickCallback={(picked) => {
             console.log(picked);
           }}
           minYear={2019}
-        />
+          invokeCallback={getMonth}
+        />}
+        {(exportChoice == ExportTypes.Month || exportChoice == ExportTypes.MonthRange) && <FullMonthPicker
+          rangeMonth={exportChoice == ExportTypes.MonthRange}
+          pickCallback={(picked) => {            
+            console.log(picked);
+          }}
+          minYear={2019}
+          invokeCallback={getMonth}
+        />}
       </DialogContent>
       <DialogActions
         sx={{
@@ -70,7 +105,7 @@ const ExcelExportOptions: React.FC<ExcelExportOptionsProps> = ({
         }}
       >
         <Button
-          onClick={exportFunction}
+          onClick={() => {setGetMonth(!getMonth)}}
           variant="contained"
           sx={{ background: "rgb(114, 156, 240)" }}
         >

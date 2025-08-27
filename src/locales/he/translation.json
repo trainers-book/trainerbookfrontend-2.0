@@ -103,5 +103,9 @@
   "wen": "ד'",
   "thu": "ה'",
   "fri": "ו'",
-  "sat": "ש'"
+  "sat": "ש'",
+  "exportDate": "ייצא לפי תאריך",
+  "exportDateRange": "ייצא לפי תאריכים",
+  "exportMonth": "ייצא לפי חודש",
+  "exportMonthRange": "ייצא לפי חודשים"
 }
