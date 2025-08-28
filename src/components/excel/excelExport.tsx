@@ -114,7 +114,7 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
 
   return (
     <Box>
-      <IconButton sx={{ p: 0 }} onClick={() => setShowPopup(true)}>
+      <IconButton sx={{ p: 0, mr: 1 }} onClick={() => setShowPopup(true)}>
         <SvgIcon sx={{ width: "2.5rem", height: "2.5rem" }}>
           {excelImage}
         </SvgIcon>

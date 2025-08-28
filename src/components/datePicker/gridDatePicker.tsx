@@ -218,6 +218,8 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
                       flexGrow: 1,
                       display: "flex",
                       justifyContent: "center",
+                      cursor: "pointer",
+                      borderRadius: 16,
                       ":hover": {
                         background:
                           dateHover != 0 &&
@@ -226,30 +228,35 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
                           secondPickedDate?.getDate() != gridDayValue
                             ? "rgba(117, 180, 227, 0.4)"
                             : "",
-                        borderRadius: 16,
                       },
+                      background:
+                        (pickedDate != null &&
+                          pickedDate.getDate() == gridDayValue &&
+                          pickedDate.getMonth() + 1 == month &&
+                          pickedDate.getFullYear() == year) ||
+                        (secondPickedDate?.getDate() == gridDayValue &&
+                          secondPickedDate.getMonth() + 1 == month &&
+                          secondPickedDate.getFullYear() == year)
+                          ? "rgba(57, 152, 224, 0.98)"
+                          : checkDateRange(gridDayValue)
+                            ? "rgba(131, 187, 230, 0.73)"
+                            : "",
+                      borderTopLeftRadius:
+                        rangeDate && checkDateRange(gridDayValue - 1) ? 0 : 16,
+                      borderBottomLeftRadius:
+                        rangeDate && checkDateRange(gridDayValue - 1) ? 0 : 16,
+                      borderTopRightRadius:
+                        rangeDate && checkDateRange(gridDayValue + 1) ? 0 : 16,
+                      borderBottomRightRadius:
+                        rangeDate && checkDateRange(gridDayValue + 1) ? 0 : 16,
                     }}
                   >
                     <Typography
                       sx={{
                         fontSize: "0.85rem",
-                        cursor: "pointer",
                         p: "0.12rem",
                         pr: "0.25rem",
                         pl: "0.25rem",
-
-                        background:
-                          (pickedDate != null &&
-                            pickedDate.getDate() == gridDayValue &&
-                            pickedDate.getMonth() + 1 == month &&
-                            pickedDate.getFullYear() == year) ||
-                          (secondPickedDate?.getDate() == gridDayValue &&
-                            secondPickedDate.getMonth() + 1 == month &&
-                            secondPickedDate.getFullYear() == year)
-                            ? "rgba(57, 152, 224, 0.98)"
-                            : checkDateRange(gridDayValue)
-                              ? "rgba(131, 187, 230, 0.73)"
-                              : "",
                         borderRadius: 16,
                         textDecoration:
                           today.getDate() == gridDayValue &&
