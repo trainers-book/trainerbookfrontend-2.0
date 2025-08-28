@@ -61,13 +61,16 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
   useEffect(() => {
     if (rangeDate) {
       if (pickedDate != null && secondPickedDate != null) {
-        const maxTime = Math.max(pickedDate.getTime(), secondPickedDate.getTime())
+        const maxTime = Math.max(
+          pickedDate.getTime(),
+          secondPickedDate.getTime()
+        );
         pickCallback({
           minDate:
             pickedDate.getTime() <= secondPickedDate.getTime()
               ? pickedDate
               : secondPickedDate,
-          maxDate: new Date((maxTime + 24 * 60 * 60 * 1000) - 1)
+          maxDate: new Date(maxTime + 24 * 60 * 60 * 1000 - 1),
         });
       }
     } else {
@@ -210,13 +213,11 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
                 onClick={() => onDateClick(gridDayValue)}
               >
                 {gridDayValue != 0 && (
-                  <Typography
+                  <Box
                     sx={{
-                      fontSize: "0.85rem",
-                      cursor: "pointer",
-                      p: "0.12rem",
-                      pr: "0.25rem",
-                      pl: "0.25rem",
+                      flexGrow: 1,
+                      display: "flex",
+                      justifyContent: "center",
                       ":hover": {
                         background:
                           dateHover != 0 &&
@@ -227,29 +228,40 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
                             : "",
                         borderRadius: 16,
                       },
-                      background:
-                        (pickedDate != null &&
-                          pickedDate.getDate() == gridDayValue &&
-                          pickedDate.getMonth() + 1 == month &&
-                          pickedDate.getFullYear() == year) ||
-                        (secondPickedDate?.getDate() == gridDayValue &&
-                          secondPickedDate.getMonth() + 1 == month &&
-                          secondPickedDate.getFullYear() == year)
-                          ? "rgba(57, 152, 224, 0.98)"
-                          : checkDateRange(gridDayValue)
-                            ? "rgba(131, 187, 230, 0.73)"
-                            : "",
-                      borderRadius: 16,
-                      textDecoration:
-                        today.getDate() == gridDayValue &&
-                        today.getMonth() + 1 == month &&
-                        today.getFullYear() == year
-                          ? "underline"
-                          : "none",
                     }}
                   >
-                    {gridDayValue}
-                  </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: "0.85rem",
+                        cursor: "pointer",
+                        p: "0.12rem",
+                        pr: "0.25rem",
+                        pl: "0.25rem",
+
+                        background:
+                          (pickedDate != null &&
+                            pickedDate.getDate() == gridDayValue &&
+                            pickedDate.getMonth() + 1 == month &&
+                            pickedDate.getFullYear() == year) ||
+                          (secondPickedDate?.getDate() == gridDayValue &&
+                            secondPickedDate.getMonth() + 1 == month &&
+                            secondPickedDate.getFullYear() == year)
+                            ? "rgba(57, 152, 224, 0.98)"
+                            : checkDateRange(gridDayValue)
+                              ? "rgba(131, 187, 230, 0.73)"
+                              : "",
+                        borderRadius: 16,
+                        textDecoration:
+                          today.getDate() == gridDayValue &&
+                          today.getMonth() + 1 == month &&
+                          today.getFullYear() == year
+                            ? "underline"
+                            : "none",
+                      }}
+                    >
+                      {gridDayValue}
+                    </Typography>
+                  </Box>
                 )}
               </Grid>
             ))}
