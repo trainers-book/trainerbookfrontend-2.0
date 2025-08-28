@@ -82,7 +82,7 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
     );
   };
 
-  const excelExport = () => {
+  const excelExport = (pickedDates: {minDate: Date, maxDate: Date}) => {
     const copiedData = JSON.parse(JSON.stringify(data));
     copiedData.forEach((value) => {
       objectKeys.forEach((key) => {
@@ -96,7 +96,8 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
     });
 
     const workbook = XLSX.utils.book_new();
-
+    console.log(pickedDates);
+    
     const platfromsData = splitPlatformData(copiedData);
     platfromsData.forEach((platform) => {
       const platformName = Object.keys(platform)[0];

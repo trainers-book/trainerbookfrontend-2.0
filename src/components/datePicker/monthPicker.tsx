@@ -15,7 +15,7 @@ const cacheRtl = createCache({
 
 interface FullMonthPickerProps {
   rangeMonth: boolean;
-  pickCallback: (picked: { minMonthDate: Date; maxMonthDate: Date }) => void;
+  pickCallback: (picked: { minDate: Date; maxDate: Date }) => void;
   minYear: number;
   invokeCallback: boolean;
 }
@@ -41,16 +41,16 @@ const FullMonthPicker: React.FC<FullMonthPickerProps> = ({
       isInitialRender.current = false;
       return;
     }
-    
+
     if (rangeMonth) {
       pickCallback({
-        minMonthDate: new Date(year, Math.min(month, secondMonth) - 1, 1),
-        maxMonthDate: new Date(year, Math.max(month, secondMonth), 0),
+        minDate: new Date(year, Math.min(month, secondMonth) - 1, 1),
+        maxDate: new Date(year, Math.max(month, secondMonth), 0),
       });
     } else {
       pickCallback({
-        minMonthDate: new Date(year, month - 1, 1),
-        maxMonthDate: new Date(year, month, 0),
+        minDate: new Date(year, month - 1, 1),
+        maxDate: new Date(year, month, 0),
       });
     }
   }, [invokeCallback]);

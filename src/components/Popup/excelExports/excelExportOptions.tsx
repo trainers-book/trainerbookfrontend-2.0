@@ -9,7 +9,6 @@ import {
   RadioGroup,
   Radio,
   FormControlLabel,
-  Typography,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import CloseIcon from "@mui/icons-material/Close";
@@ -19,7 +18,7 @@ import FullMonthPicker from "../../datePicker/monthPicker";
 interface ExcelExportOptionsProps {
   show: boolean;
   setShow: (value: boolean) => void;
-  exportFunction: () => void;
+  exportFunction: (pickedDates: {minDate: Date, maxDate: Date}) => void;
 }
 
 enum ExportTypes {
@@ -48,6 +47,10 @@ const ExcelExportOptions: React.FC<ExcelExportOptionsProps> = ({
   const handleClose = () => {
     setShow(false);
   };
+
+  const handleExport = (pickedDates: {minDate: Date, maxDate: Date}) => {
+    exportFunction(pickedDates);
+  }
 
   return (
     <Dialog
@@ -83,17 +86,13 @@ const ExcelExportOptions: React.FC<ExcelExportOptionsProps> = ({
         </RadioGroup>
         {(exportChoice == ExportTypes.Date || exportChoice == ExportTypes.DateRange) && <FullDatePicker
           rangeDate={exportChoice == ExportTypes.DateRange}
-          pickCallback={(picked) => {
-            console.log(picked);
-          }}
+          pickCallback={handleExport}
           minYear={2019}
           invokeCallback={getMonth}
         />}
         {(exportChoice == ExportTypes.Month || exportChoice == ExportTypes.MonthRange) && <FullMonthPicker
           rangeMonth={exportChoice == ExportTypes.MonthRange}
-          pickCallback={(picked) => {            
-            console.log(picked);
-          }}
+          pickCallback={handleExport}
           minYear={2019}
           invokeCallback={getMonth}
         />}

@@ -17,7 +17,7 @@ const cacheRtl = createCache({
 interface FullDatePickerProps {
   rangeDate: boolean;
   pickCallback: (
-    picked: { date: Date } | { minDate: Date; maxDate: Date }
+    picked: { minDate: Date; maxDate: Date }
   ) => void;
   minYear: number;
   invokeCallback: boolean;
