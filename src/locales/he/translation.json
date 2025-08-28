@@ -5,8 +5,7 @@
   "usersManagment": "ניהול",
   "signCockpit": "חתימה על תאים",
   "liam": "לי-עם",
-  "logout": "התנתק",
-  "logout1": "התנתקות",
+  "logout": "להתנתק",
   "trainerBook": "ספר מאמן",
   "instructorName": "שם מדריכה",
   "flightNumber": "מספר גיחה",
@@ -65,7 +64,7 @@
   "selected": "נבחרו",
   "noNewNotifications": "אין התראות חדשות",
   "hello": "שלום",
-  "instructor": "מדריכת",
+  "instructors": "מדריכות",
   "save": "שמור",
   "startMalfTimer": "התחל למדוד זמן תקלה",
   "confirm": "אישור",
@@ -107,5 +106,12 @@
   "exportDate": "ייצא לפי תאריך",
   "exportDateRange": "ייצא לפי תאריכים",
   "exportMonth": "ייצא לפי חודש",
-  "exportMonthRange": "ייצא לפי חודשים"
+  "exportMonthRange": "ייצא לפי חודשים",
+  "issueNumber": "מספר תקלה",
+  "admin": "מנהל",
+  "Instructor": "מדריכה",
+  "Trainer": "מתאמן",
+  "Technician": "טכנאי",
+  "Navigator": "נווט",
+  "Commander": "מפקד"
 }

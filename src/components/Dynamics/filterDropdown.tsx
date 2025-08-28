@@ -33,7 +33,9 @@ interface FilterDropdownProps {
   isMultiple: boolean;
   width?: string;
   isReset?: boolean;
-  onBlur?: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onBlur?: (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   touched?: boolean;
   error?: string;
 }
@@ -53,22 +55,22 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   isReset,
   touched,
   error,
-  onBlur
+  onBlur,
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
   useEffect(() => {
     if (options.length == 1 && selected.length == 0) {
-        setSelected(options);
+      setSelected(options);
     }
   });
 
   useEffect(() => {
-    if (selected.length > 0 && isReset) {
+    if (isReset) {
       setSelected([]);
     }
-  }, [isReset, selected]);
+  }, [isReset]);
 
   const handleChange = (event: SelectChangeEvent<typeof selected>) => {
     const {
@@ -89,7 +91,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
           <FormControl
             sx={{
               width: width,
-              mr: ".5rem",
+              mr: .2,
             }}
             error={touched && selected.length === 0}
           >

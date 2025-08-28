@@ -9,11 +9,11 @@ import { useLocalStorage } from "../context/localStorageContext";
 import { usePlatforms } from "../context/platformsContext";
 
 type User = {
-  userName: string,
-  name: string,
-  authenticationLevel: string,
-  platform: string | string[],
-}
+  userName: string;
+  name: string;
+  authenticationLevel: string;
+  platform: string | string[];
+};
 
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
@@ -25,14 +25,16 @@ const LoginPage: React.FC = () => {
   const { setPlatforms } = usePlatforms();
 
   const loginSuccess = (user: User) => {
-    const platforms = Array.isArray(user.platform) ? user.platform : [user.platform];
-    ls.setPlatforms(platforms.join(","));
+    ls.setPlatforms(user.platform);
     ls.setAuthorization(user.authenticationLevel);
     ls.setUserName(user.userName);
     ls.setDisplayName(user.name);
     ls.setIsAuthenticated("true");
     setUsername(user.name);
-    setPlatforms(platforms);
+    //TODO: if the user have only one platform convert to array with one value
+    setPlatforms(
+      Array.isArray(user.platform) ? user.platform : [user.platform]
+    );
     navigate("/reviewFlights");
   };
 
