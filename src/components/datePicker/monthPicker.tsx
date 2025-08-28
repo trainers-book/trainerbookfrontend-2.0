@@ -3,7 +3,7 @@ import rtlPlugin from "@mui/stylis-plugin-rtl";
 import { prefixer } from "stylis";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import NumberInput from "../Dynamics/numberFieldInput";
@@ -28,6 +28,7 @@ const FullMonthPicker: React.FC<FullMonthPickerProps> = ({
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const isInitialRender = useRef(true);
   const currentYear = new Date().getFullYear();
   const [year, setYears] = useState<number>(currentYear);
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
@@ -36,14 +37,16 @@ const FullMonthPicker: React.FC<FullMonthPickerProps> = ({
   );
 
   useEffect(() => {
-    // there is an issue with this useEffect, the pickCallback is being called on initialization, and that is kinda bad. still dont know how to fix it
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    
     if (rangeMonth) {
-      if (month != secondMonth) {
-        pickCallback({
-          minMonthDate: new Date(year, Math.min(month, secondMonth) - 1, 1),
-          maxMonthDate: new Date(year, Math.max(month, secondMonth), 0),
-        });
-      }
+      pickCallback({
+        minMonthDate: new Date(year, Math.min(month, secondMonth) - 1, 1),
+        maxMonthDate: new Date(year, Math.max(month, secondMonth), 0),
+      });
     } else {
       pickCallback({
         minMonthDate: new Date(year, month - 1, 1),
