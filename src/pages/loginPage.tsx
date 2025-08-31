@@ -70,9 +70,6 @@ const LoginPage: React.FC = () => {
 
   const handleNewPassword = async () => {
     const newPassResponse = await connection.setPassword(username, password);
-    console.log(newPassResponse);
-    
-
 
     if (newPassResponse.status == HttpStatusCode.Ok) {
       const loginResponse = await connection.login(username, password);
