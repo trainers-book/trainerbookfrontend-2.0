@@ -8,6 +8,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { useLocalStorage } from "../context/localStorageContext";
 import { usePlatforms } from "../context/platformsContext";
 import { useBackend } from "../context/backendContext";
+import { HttpStatusCode } from "axios";
 
 type User = {
   userName: string,
@@ -58,19 +59,22 @@ const LoginPage: React.FC = () => {
 
     const loginResponse = await connection.login(username, password);    
     
-    if (typeof loginResponse == "string") {
-      if (loginResponse == "no user") {
+    if (loginResponse.status == HttpStatusCode.Accepted) {
+      loginSuccess(loginResponse.data);
+    } else {
+      if (loginResponse.status == HttpStatusCode.NotFound) {
         setWrongUser(true);
-      } else if (loginResponse == "incorrect") {
+      } else if (loginResponse.status == HttpStatusCode.Unauthorized) {
         setWrongPass(true);
-      } else if (loginResponse == "no password") {
+      } else if (loginResponse.status == HttpStatusCode.NoContent) {
         alert("ask li-am to create a new user for you. \nand also ask him why does he write his name with ע and not א, beacause it's very weird");
+        setWrongPass(false);
+        setWrongUser(false);
       } else {
         console.log(loginResponse);
         
       }
-    } else {      
-      loginSuccess(loginResponse);
+      
     }
   };
 

@@ -1,23 +1,15 @@
 import { createContext, useContext, useState } from "react";
+import axios from "axios";
 
 class Connection {
-  async login(username: string, password: string) {
-    try {
-        const response = await fetch("http://localhost:3002/Authentication/" + username + "/" + password);
-        const data = await response.json();
-        return data[0];
-    } catch (error) {
-        // console.log(error);
-        return "unexpected error";
-    }
-    
-    //   .then((data) => {
-        // if (data != 404) loginSuccess(data[0];
-        // return isNaN(data) ? data[0] : null;
-    //   })
-    //   .catch((error) => {
-        // alert("error: " + error);
-    //   });
+  appUrl: string;
+
+  constructor() {
+    this.appUrl = `http://${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/`;
+  }
+
+  async login(username: string, password: string) {    
+    return axios.get(`${this.appUrl}Authentication/${username}/${password}`).then(response => {return {status: response.status, data: response.data[0]}}).catch(error => {return {status: error.response.status, data: error.response.data[0]}});
   }
 }
 
