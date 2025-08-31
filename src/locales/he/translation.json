@@ -93,5 +93,8 @@
   "userName": "שם משתמש",
   "password": "סיסמה",
   "wrongLogin": "שם משתמש או סיסמה שגויים",
+  "enterYourNewPassword": "הכנס סיסמה חדשה",
+  "thereIsNoUserAskYourCommander": "אין חשבון למשתמש זה, בקש מהמפקד להרשם",
+  "internalErrorTryAgain": "שגיאה פנימית, נסו שוב",
   "name": "שם"
 }
