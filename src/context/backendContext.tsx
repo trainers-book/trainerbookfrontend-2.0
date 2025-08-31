@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import axios from "axios";
+import { API_Pathes } from "../types/tables/manageTypes";
 
 class Connection {
   appUrl: string;
@@ -10,7 +11,7 @@ class Connection {
 
   async login(username: string, password: string) {
     return axios
-      .get(`${this.appUrl}Authentication/${username}/${password}`)
+      .get(`${this.appUrl}${API_Pathes.AUTHENTICATION}/${username}/${password}`)
       .then((response) => {
         return { status: response.status, data: response.data[0] };
       })
@@ -21,7 +22,7 @@ class Connection {
 
   async getUserHasPassword(username: string) {
     return axios
-      .get(`${this.appUrl}Authentication/${username}`)
+      .get(`${this.appUrl}${API_Pathes.AUTHENTICATION}/${username}`)
       .then((response) => {
         return { status: response.status, data: response.data[0] };
       })
@@ -32,7 +33,7 @@ class Connection {
 
   async setPassword(username: string, password: string) {
     return axios
-      .put(`${this.appUrl}setPassword`, {
+      .put(`${this.appUrl}${API_Pathes.SET_PASSWORD}`, {
         userInfo: [{ userName: username, password: password }],
       })
       .then((response) => {
@@ -44,30 +45,25 @@ class Connection {
   }
 
   async getAllEntities(collectionName: string) {
-    try {
-      const response = await fetch(`http://localhost:3002/${collectionName}`);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
+    return axios
+      .get(`${this.appUrl}${collectionName}`)
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
   }
 
   async addEntity(dbEntity: any, collection: string) {
-    const messageBody = JSON.stringify(dbEntity);
-    try {
-      const response = await fetch(`http://localhost:3002/${collection}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: messageBody,
+    return axios
+      .post(`${this.appUrl}${collection}`, dbEntity)
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
       });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
   }
 }
 

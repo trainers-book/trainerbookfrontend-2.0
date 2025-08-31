@@ -22,11 +22,7 @@ export class FlightData {
   name: string;
   platform: string;
 
-  constructor(
-    date: Date,
-    name: string,
-    platform: string,
-  ) {
+  constructor(date: Date, name: string, platform: string) {
     this.date = date;
     this.name = name;
     this.platform = platform;
@@ -37,24 +33,23 @@ export class platformData {
   id: number;
   name: string;
 
-  constructor(
-    name: string,
-    id = 0,
-  ) {
+  constructor(name: string, id = 0) {
     this.id = id;
     this.name = name;
   }
 }
 
-export enum Collections {
-  PLATFORM              = "Aircraft",
-  INSTRUCTOR            = "Instructor",
-  INSPECTOR_INSTRUCTOR  = "InspectorInstructor",
-  COMMANDER             = "Commander",
-  PILOT                 = "Pilot",
-  NAVIGATOR             = "Navigator",
-  INSPECTOR             = "Inspector",
-  TRAINER               = "Trainer",
-  TECHNICIAN            = "Technician",
-  PRESERVED_FLIGHTNAME  = "PreservedFlightNames",
+export enum API_Pathes {
+  PLATFORM = "Aircraft",
+  INSTRUCTOR = "Instructor",
+  INSPECTOR_INSTRUCTOR = "InspectorInstructor",
+  COMMANDER = "Commander",
+  PILOT = "Pilot",
+  NAVIGATOR = "Navigator",
+  INSPECTOR = "Inspector",
+  TRAINER = "Trainer",
+  TECHNICIAN = "Technician",
+  PRESERVED_FLIGHTNAME = "PreservedFlightNames",
+  AUTHENTICATION = "Authentication",
+  SET_PASSWORD = "setPassword"
 }

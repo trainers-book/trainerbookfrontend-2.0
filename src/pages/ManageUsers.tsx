@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import PageWrapper from "../components/pageWrapper/PageWrapper";
 import GenericTable from "../components/table/table";
 import {
-  Collections,
+  API_Pathes,
   FlightData,
   platformData,
   UsersData,
@@ -25,6 +25,7 @@ import NewPlatform from "../components/Dynamics/newPlatformForm";
 import FilterSearchBar from "../components/Dynamics/filterSearchBar";
 import { useLocalStorage } from "../context/localStorageContext";
 import { useBackend } from "../context/backendContext";
+import { HttpStatusCode } from "axios";
 
 const sunglassesIcon: React.ReactNode = (
   <SvgIcon>
@@ -84,7 +85,7 @@ const ManageUsers: React.FC = () => {
     {
       label: t("platform"),
       icon: <AirplanemodeActiveIcon />,
-      collection: Collections.PLATFORM,
+      collection: API_Pathes.PLATFORM,
       deleteEntity: ls.getAuthorization() == "admin",
       entityType: platformData,
       sort: (currentValue: platformData, nextValue: platformData) =>
@@ -102,7 +103,7 @@ const ManageUsers: React.FC = () => {
     {
       label: t("instructor"),
       icon: <SchoolIcon />,
-      collection: Collections.INSTRUCTOR,
+      collection: API_Pathes.INSTRUCTOR,
       deleteEntity: true,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
@@ -117,7 +118,7 @@ const ManageUsers: React.FC = () => {
     {
       label: t("inspectorInstructor"),
       icon: <SchoolIcon />,
-      collection: Collections.INSPECTOR_INSTRUCTOR,
+      collection: API_Pathes.INSPECTOR_INSTRUCTOR,
       deleteEntity: true,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
@@ -132,7 +133,7 @@ const ManageUsers: React.FC = () => {
     {
       label: t("commanders"),
       icon: <KeyboardCommandKeyIcon />,
-      collection: Collections.COMMANDER,
+      collection: API_Pathes.COMMANDER,
       deleteEntity: false,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
@@ -147,7 +148,7 @@ const ManageUsers: React.FC = () => {
     {
       label: t("airCrew1"),
       icon: <PregnantWomanIcon />, // sunglassesIcon
-      collection: Collections.PILOT,
+      collection: API_Pathes.PILOT,
       deleteEntity: true,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
@@ -162,7 +163,7 @@ const ManageUsers: React.FC = () => {
     {
       label: t("airCrew2"),
       icon: <AccessibleIcon />, // <MenuBookIcon />
-      collection: Collections.NAVIGATOR,
+      collection: API_Pathes.NAVIGATOR,
       deleteEntity: true,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
@@ -177,7 +178,7 @@ const ManageUsers: React.FC = () => {
     {
       label: t("inspectors"),
       icon: <SportsEsportsIcon />,
-      collection: Collections.INSPECTOR,
+      collection: API_Pathes.INSPECTOR,
       deleteEntity: true,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
@@ -192,7 +193,7 @@ const ManageUsers: React.FC = () => {
     {
       label: t("trainees"),
       icon: <TrainIcon />,
-      collection: Collections.TRAINER,
+      collection: API_Pathes.TRAINER,
       deleteEntity: true,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
@@ -207,7 +208,7 @@ const ManageUsers: React.FC = () => {
     {
       label: t("technicians"),
       icon: <AccessibleIcon />,
-      collection: Collections.TECHNICIAN,
+      collection: API_Pathes.TECHNICIAN,
       deleteEntity: false,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
@@ -222,7 +223,7 @@ const ManageUsers: React.FC = () => {
     {
       label: t("flights"),
       icon: <AirplaneTicketIcon />,
-      collection: Collections.PRESERVED_FLIGHTNAME,
+      collection: API_Pathes.PRESERVED_FLIGHTNAME,
       deleteEntity: true,
       entityType: FlightData,
       sort: (currentValue: FlightData, nextValue: FlightData) => {
@@ -254,9 +255,11 @@ const ManageUsers: React.FC = () => {
     collection: string,
     dataManipulation: (value: any) => void
   ) => {
-    const data: any[] = await connection.getAllEntities(collection);
-    data.map(dataManipulation);
-    return data;
+    const entities: { status: number, data: any } = await connection.getAllEntities(collection);    
+    if (entities.status == HttpStatusCode.Ok) {
+      entities.data.map(dataManipulation);
+      return entities.data;
+    }
   };
 
   const addData = async (
@@ -264,11 +267,12 @@ const ManageUsers: React.FC = () => {
     entity: any,
     entityToDbEntity: (entity: any) => any
   ) => {
-    const data = await connection.addEntity(
+    const data: { status: number, data: any } = await connection.addEntity(
       entityToDbEntity(entity),
       collection
     );
-    if (data.success) {
+    
+    if (data.status == HttpStatusCode.Ok) {
       setNewData(!newData);
     }
   };
