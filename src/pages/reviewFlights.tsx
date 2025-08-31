@@ -76,7 +76,6 @@ const ReviewFlights: React.FC = () => {
         <Box
           sx={
             {
-              mt: 1,
               mb: 1,
             }
           }

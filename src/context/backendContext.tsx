@@ -1,50 +1,46 @@
 import { createContext, useContext, useState } from "react";
+import axios from "axios";
 
 class Connection {
+  appUrl: string;
+
+  constructor() {
+    this.appUrl = `http://${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/`;
+  }
+
   async login(username: string, password: string) {
-    try {
-      const response = await fetch(
-        "http://localhost:3002/Authentication/" + username + "/" + password
-      );
-      const data = await response.json();
-      return data[0];
-    } catch (error) {
-      return "unexpected error";
-    }
+    return axios
+      .get(`${this.appUrl}Authentication/${username}/${password}`)
+      .then((response) => {
+        return { status: response.status, data: response.data[0] };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data[0] };
+      });
   }
 
   async getUserHasPassword(username: string) {
-    try {
-      const response = await fetch(
-        "http://localhost:3002/Authentication/" + username
-      );
-      const data = await response.json();
-
-      return data[0];
-    } catch (error) {
-      return "unexpected error";
-    }
+    return axios
+      .get(`${this.appUrl}Authentication/${username}`)
+      .then((response) => {
+        return { status: response.status, data: response.data[0] };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data[0] };
+      });
   }
 
   async setPassword(username: string, password: string) {
-    try {
-      const messageBody = JSON.stringify({
+    return axios
+      .put(`${this.appUrl}setPassword`, {
         userInfo: [{ userName: username, password: password }],
+      })
+      .then((response) => {
+        return { status: response.status, data: response.data[0] };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data[0] };
       });
-
-      const response = await fetch("http://localhost:3002/setPassword", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: messageBody,
-      });
-
-      const data = await response.json();
-      return data[0];
-    } catch (error) {
-      return "unexpected error";
-    }
   }
 }
 

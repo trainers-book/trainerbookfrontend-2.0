@@ -40,7 +40,7 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
   const [isReset, setIsReset] = useState(false);
 
   const isFilterSelected =
-    selectedPlatform.length != 0 ||
+    (selectedPlatform.length != 0 && platforms.length > 1) ||
     selectedStatuses.length != 0 ||
     selectedSeverities.length != 0 ||
     search != "" ||

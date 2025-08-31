@@ -8,18 +8,13 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { useLocalStorage } from "../context/localStorageContext";
 import { usePlatforms } from "../context/platformsContext";
 import { useBackend } from "../context/backendContext";
+import { HttpStatusCode } from "axios";
 
 type User = {
   userName: string;
   name: string;
   authenticationLevel: string;
   platform: string | string[];
-};
-
-enum LoginResponses {
-  NO_USER = "no user",
-  INCORRECT = "incorrect",
-  NO_PASSWORD = "no password"
 };
 
 const LoginPage: React.FC = () => {
@@ -40,44 +35,52 @@ const LoginPage: React.FC = () => {
     const platforms = Array.isArray(user.platform)
       ? user.platform
       : [user.platform];
-    ls.setValue("platforms", platforms.join(","));
-    ls.setValue("authorization", user.authenticationLevel);
-    ls.setValue("userName", user.userName);
-    ls.setValue("displayName", user.name);
-    ls.setValue("isAuthenticated", "true");
+    ls.setPlatforms(platforms.join(","));
+    ls.setAuthorization(user.authenticationLevel);
+    ls.setUserName(user.userName);
+    ls.setDisplayName(user.name);
+    ls.setIsAuthenticated("true");
     setUsername(user.name);
     setPlatforms(platforms);
   };
 
   const handleLogin = async () => {
+    if (username == "" || password == "") {
+      setWrongUser(username == "");
+      setWrongPass(password == "");
+      return;
+    }
+
     const loginResponse = await connection.login(username, password);
 
-    if (typeof loginResponse == "string") {
-      if (loginResponse == LoginResponses.NO_USER) {
-        setWrongUser(true);
-      } else if (loginResponse == LoginResponses.INCORRECT) {
-        setWrongPass(true);
-      } else if (loginResponse == LoginResponses.NO_PASSWORD) {
-        setPassword("");
-        setcreatePassword(true);
-      }
-    } else {
-      storeUser(loginResponse);
+    if (loginResponse.status == HttpStatusCode.Accepted) {
+      storeUser(loginResponse.data);
       navigate("/reviewFlights");
+    } else if (loginResponse.status == HttpStatusCode.NotFound) {
+      setWrongUser(true);
+    } else if (loginResponse.status == HttpStatusCode.Unauthorized) {
+      setWrongPass(true);
+    } else if (loginResponse.status == HttpStatusCode.NoContent) {
+      setPassword("");
+      setcreatePassword(true);
+    } else {
+      console.log(loginResponse);
     }
   };
 
   const handleNewPassword = async () => {
-    const passResponse = await connection.setPassword(username, password);    
+    const newPassResponse = await connection.setPassword(username, password);
+    console.log(newPassResponse);
+    
 
-    if (passResponse.success) {
-      const loginResponse = await connection.login(username, password);    
-      storeUser(loginResponse);
+
+    if (newPassResponse.status == HttpStatusCode.Ok) {
+      const loginResponse = await connection.login(username, password);
+      storeUser(loginResponse.data);
       navigate("/reviewFlights");
     } else {
       alert(t("internalErrorTryAgain"));
     }
-
   };
 
   const handleSubmit = async (event: any) => {
@@ -87,10 +90,11 @@ const LoginPage: React.FC = () => {
       return;
     } else if (!createPassword) {
       const passResponse = await connection.getUserHasPassword(username);
-      if (passResponse == "no user") {
+      
+      if (passResponse.status == HttpStatusCode.NotFound) { 
         setNoUser(true);
         return;
-      } else if (passResponse == "no password") {
+      } else if (passResponse.status == HttpStatusCode.NoContent) {
         setcreatePassword(true);
         setWrongPass(false);
         setPassword("");
