@@ -8,8 +8,39 @@ class Connection {
     this.appUrl = `http://${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/`;
   }
 
-  async login(username: string, password: string) {    
-    return axios.get(`${this.appUrl}Authentication/${username}/${password}`).then(response => {return {status: response.status, data: response.data[0]}}).catch(error => {return {status: error.response.status, data: error.response.data[0]}});
+  async login(username: string, password: string) {
+    return axios
+      .get(`${this.appUrl}Authentication/${username}/${password}`)
+      .then((response) => {
+        return { status: response.status, data: response.data[0] };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data[0] };
+      });
+  }
+
+  async getUserHasPassword(username: string) {
+    return axios
+      .get(`${this.appUrl}Authentication/${username}`)
+      .then((response) => {
+        return { status: response.status, data: response.data[0] };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data[0] };
+      });
+  }
+
+  async setPassword(username: string, password: string) {
+    return axios
+      .put(`${this.appUrl}setPassword`, {
+        userInfo: [{ userName: username, password: password }],
+      })
+      .then((response) => {
+        return { status: response.status, data: response.data[0] };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data[0] };
+      });
   }
 }
 
@@ -36,8 +67,6 @@ export const BackendProvider = ({
 export const useBackend = () => {
   const context = useContext(BackendContext);
   if (!context)
-    throw new Error(
-      "useBackend must be used within a BackendProvider"
-    );
+    throw new Error("useBackend must be used within a BackendProvider");
   return context;
 };
