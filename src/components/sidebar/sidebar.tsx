@@ -1,6 +1,6 @@
 import { Box, MenuItem, Typography } from "@mui/material";
 
-type Tab = {label: string, icon: React.ReactNode};
+type Tab = { label: string; show: boolean; icon: React.ReactNode };
 
 interface SideBarProps {
   titlesIcons: Tab[];
@@ -8,12 +8,16 @@ interface SideBarProps {
   changeTab: (newTab: string) => void;
 }
 
-const SideBar: React.FC<SideBarProps> = ({ titlesIcons, activeTab, changeTab }) => {
+const SideBar: React.FC<SideBarProps> = ({
+  titlesIcons,
+  activeTab,
+  changeTab,
+}) => {
   const handleClick = (tabClicked: string) => {
     if (tabClicked != activeTab.label) {
       changeTab(tabClicked);
     }
-  }
+  };
 
   return (
     <Box
@@ -30,24 +34,30 @@ const SideBar: React.FC<SideBarProps> = ({ titlesIcons, activeTab, changeTab }) 
         boxShadow: "0 1px 2px rgba(0, 0, 0, 0.2)",
       }}
     >
-      {titlesIcons.map((titleIcon) => (
-        <MenuItem
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            ":hover": { bgcolor: "rgba(0, 48, 154, 0.212)" },
-            borderRadius: 2,
-            mb: 2,
-            bgcolor: activeTab.label == titleIcon.label ? "rgba(0, 48, 154, 0.149)" : "rgba(0, 0, 0, 0)",
-          }}
-          onClick={() => handleClick(titleIcon.label)}
-        >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            {titleIcon.icon}
-            <Typography sx={{ mr: 1 }}>{titleIcon.label}</Typography>
-          </Box>
-        </MenuItem>
-      ))}
+      {titlesIcons.map(
+        (titleIcon) =>
+          titleIcon.show && (
+            <MenuItem
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                ":hover": { bgcolor: "rgba(0, 48, 154, 0.212)" },
+                borderRadius: 2,
+                mb: 2,
+                bgcolor:
+                  activeTab.label == titleIcon.label
+                    ? "rgba(0, 48, 154, 0.149)"
+                    : "rgba(0, 0, 0, 0)",
+              }}
+              onClick={() => handleClick(titleIcon.label)}
+            >
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                {titleIcon.icon}
+                <Typography sx={{ mr: 1 }}>{titleIcon.label}</Typography>
+              </Box>
+            </MenuItem>
+          )
+      )}
     </Box>
   );
 };

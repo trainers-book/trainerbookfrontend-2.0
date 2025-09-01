@@ -9,6 +9,7 @@ import { useLocalStorage } from "../context/localStorageContext";
 import { usePlatforms } from "../context/platformsContext";
 import { useBackend } from "../context/backendContext";
 import { HttpStatusCode } from "axios";
+import { API_Pathes } from "../types/tables/manageTypes";
 
 type User = {
   userName: string;
@@ -31,17 +32,34 @@ const LoginPage: React.FC = () => {
   const { setPlatforms } = usePlatforms();
   const { connection } = useBackend();
 
-  const storeUser = (user: User) => {
-    const platforms = Array.isArray(user.platform)
-      ? user.platform
-      : [user.platform];
-    ls.setPlatforms(platforms.join(","));
+  const storeUser = async (user: User) => {
     ls.setAuthorization(user.authenticationLevel);
+    if (user.authenticationLevel == "admin") {
+      const platforms = await connection.getAllEntities(API_Pathes.PLATFORM);
+      console.log(platforms);
+
+      if (platforms.status == HttpStatusCode.Ok) {
+        const allPlatforms = platforms.data.map(
+          (platform: any) => platform.name
+        );
+        ls.setPlatforms(allPlatforms);
+        setPlatforms(allPlatforms);
+      } else {
+        ls.setPlatforms(user.platform);
+        setPlatforms(
+          Array.isArray(user.platform) ? user.platform : [user.platform]
+        );
+      }
+    } else {
+      ls.setPlatforms(user.platform);
+      setPlatforms(
+        Array.isArray(user.platform) ? user.platform : [user.platform]
+      );
+    }
     ls.setUserName(user.userName);
     ls.setDisplayName(user.name);
     ls.setIsAuthenticated("true");
     setUsername(user.name);
-    setPlatforms(platforms);
   };
 
   const handleLogin = async () => {
@@ -87,8 +105,8 @@ const LoginPage: React.FC = () => {
       return;
     } else if (!createPassword) {
       const passResponse = await connection.getUserHasPassword(username);
-      
-      if (passResponse.status == HttpStatusCode.NotFound) { 
+
+      if (passResponse.status == HttpStatusCode.NotFound) {
         setNoUser(true);
         return;
       } else if (passResponse.status == HttpStatusCode.NoContent) {

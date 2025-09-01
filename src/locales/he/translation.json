@@ -5,8 +5,7 @@
   "usersManagment": "ניהול",
   "signCockpit": "חתימה על תאים",
   "liam": "לי-עם",
-  "logout": "התנתק",
-  "logout1": "התנתקות",
+  "logout": "להתנתק",
   "trainerBook": "ספר מאמן",
   "instructorName": "שם מדריכה",
   "flightNumber": "מספר גיחה",
@@ -65,7 +64,7 @@
   "selected": "נבחרו",
   "noNewNotifications": "אין התראות חדשות",
   "hello": "שלום",
-  "instructor": "מדריכת",
+  "instructors": "מדריכות",
   "save": "שמור",
   "startMalfTimer": "התחל למדוד זמן תקלה",
   "confirm": "אישור",
@@ -96,5 +95,11 @@
   "enterYourNewPassword": "הכנס סיסמה חדשה",
   "thereIsNoUserAskYourCommander": "אין חשבון למשתמש זה, בקש מהמפקד להרשם",
   "internalErrorTryAgain": "שגיאה פנימית, נסו שוב",
-  "name": "שם"
+  "name": "שם",
+  "admin": "מנהל",
+  "Instructor": "מדריכה",
+  "Trainer": "מתאמן",
+  "Technician": "טכנאי",
+  "Navigator": "נווט",
+  "Commander": "מפקד"
 }

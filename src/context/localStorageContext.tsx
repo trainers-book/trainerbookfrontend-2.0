@@ -29,7 +29,7 @@ class LocalStorage {
 
   getValue(key: string) {
     const localstorageProblem = () => {
-      // probably not the best to be in prod. suggestions are welcome for the prod verion. 
+      // probably not the best to be in prod. suggestions are welcome for the prod verion.
       // and it doesnt work for all changes to the localstorage
       console.log("problem with decoding localstorage. reseting all values");
       // and might need to redirect to login page
@@ -43,7 +43,7 @@ class LocalStorage {
 
     try {
       let decoded = this.decodeString(value);
-      
+
       return value ? decoded : null;
     } catch (err) {
       localstorageProblem();
@@ -59,12 +59,19 @@ class LocalStorage {
     localStorage.removeItem(this.encodeString(key));
   }
 
-  setPlatforms(platforms: string) {
-    this.setValue(this.platforms, platforms);
+  setPlatforms(platforms: string | string[]) {
+    const userPlatforms = Array.isArray(platforms) ? platforms : [platforms];
+
+    this.setValue(this.platforms, userPlatforms.join(","));
   }
 
-  setAuthorization(authorization: string) {
-    this.setValue(this.authorization, authorization);
+  // TODO: we should to change it in the backend in order to get only one autherization, and here force to have only one
+  setAuthorization(authorization: string | string[]) {
+    const userAuthorization = Array.isArray(authorization)
+      ? authorization[0]
+      : authorization;
+
+    this.setValue(this.authorization, userAuthorization);
   }
 
   setUserName(userName: string) {
@@ -94,7 +101,7 @@ class LocalStorage {
   getDisplayName() {
     return this.getValue(this.displayName);
   }
-  
+
   getIsAuthenticated() {
     return this.getValue(this.isAuthenticated);
   }
@@ -118,7 +125,6 @@ class LocalStorage {
   delIsAuthenticated() {
     this.deleteValue(this.isAuthenticated);
   }
-
 }
 
 interface LocalStorageContextType {

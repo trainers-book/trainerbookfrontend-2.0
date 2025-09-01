@@ -49,9 +49,11 @@ const sunglassesIcon: React.ReactNode = (
 
 type Tab = {
   label: string;
+  show: boolean;
   icon: React.ReactNode;
   collection: string;
   deleteEntity: boolean;
+  editEntity: boolean;
   entityType: any;
   sort: (value: any, nextValue: any) => number;
   dataManipulation: (value: any) => void;
@@ -81,12 +83,20 @@ const ManageUsers: React.FC = () => {
   const { connection } = useBackend();
   const [data, setData] = useState<any[]>([]);
   const [newData, setNewData] = useState<boolean>(false);
+  const canDelete =
+    ls.getAuthorization() == "admin" || ls.getAuthorization() == "Commander";
+  const showAll =
+    ls.getAuthorization() == "admin" ||
+    ls.getAuthorization() == "Commander" ||
+    ls.getAuthorization() == "Instructor";
   const tabs: Tab[] = [
     {
       label: t("platform"),
+      show: ls.getAuthorization() == "admin",
       icon: <AirplanemodeActiveIcon />,
       collection: API_Pathes.PLATFORM,
       deleteEntity: ls.getAuthorization() == "admin",
+      editEntity: ls.getAuthorization() == "admin",
       entityType: platformData,
       sort: (currentValue: platformData, nextValue: platformData) =>
         Number(currentValue.id) - Number(nextValue.id),
@@ -101,10 +111,12 @@ const ManageUsers: React.FC = () => {
       },
     },
     {
-      label: t("instructor"),
+      label: t("instructors"),
+      show: showAll,
       icon: <SchoolIcon />,
       collection: API_Pathes.INSTRUCTOR,
-      deleteEntity: true,
+      deleteEntity: canDelete,
+      editEntity: ls.getAuthorization() == "admin",
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -116,25 +128,14 @@ const ManageUsers: React.FC = () => {
       entityToDbEntity: userToDbEntity,
     },
     {
-      label: t("inspectorInstructor"),
-      icon: <SchoolIcon />,
-      collection: API_Pathes.INSPECTOR_INSTRUCTOR,
-      deleteEntity: true,
-      entityType: UsersData,
-      sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
-      dataManipulation: (inspectorValue) => {
-        inspectorValue["personalNumber"] = inspectorValue["_id"];
-        delete inspectorValue["_id"];
-        inspectorValue["platforms"] = inspectorValue["platform"].join(", ");
-      },
-      entityToDbEntity: userToDbEntity,
-    },
-    {
       label: t("commanders"),
+      show:
+        ls.getAuthorization() == "admin" ||
+        ls.getAuthorization() == "Commander",
       icon: <KeyboardCommandKeyIcon />,
       collection: API_Pathes.COMMANDER,
-      deleteEntity: false,
+      deleteEntity: ls.getAuthorization() == "admin",
+      editEntity: ls.getAuthorization() == "admin",
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -147,9 +148,11 @@ const ManageUsers: React.FC = () => {
     },
     {
       label: t("airCrew1"),
+      show: showAll,
       icon: <PregnantWomanIcon />, // sunglassesIcon
       collection: API_Pathes.PILOT,
-      deleteEntity: true,
+      deleteEntity: canDelete,
+      editEntity: ls.getAuthorization() == "admin",
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -162,9 +165,11 @@ const ManageUsers: React.FC = () => {
     },
     {
       label: t("airCrew2"),
+      show: showAll,
       icon: <AccessibleIcon />, // <MenuBookIcon />
       collection: API_Pathes.NAVIGATOR,
-      deleteEntity: true,
+      deleteEntity: canDelete,
+      editEntity: ls.getAuthorization() == "admin",
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -176,25 +181,12 @@ const ManageUsers: React.FC = () => {
       entityToDbEntity: userToDbEntity,
     },
     {
-      label: t("inspectors"),
-      icon: <SportsEsportsIcon />,
-      collection: API_Pathes.INSPECTOR,
-      deleteEntity: true,
-      entityType: UsersData,
-      sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
-      dataManipulation: (inspectorValue) => {
-        inspectorValue["personalNumber"] = inspectorValue["_id"];
-        delete inspectorValue["_id"];
-        inspectorValue["platforms"] = inspectorValue["platform"].join(", ");
-      },
-      entityToDbEntity: userToDbEntity,
-    },
-    {
       label: t("trainees"),
+      show: showAll,
       icon: <TrainIcon />,
       collection: API_Pathes.TRAINER,
-      deleteEntity: true,
+      deleteEntity: canDelete,
+      editEntity: ls.getAuthorization() == "admin",
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -207,9 +199,11 @@ const ManageUsers: React.FC = () => {
     },
     {
       label: t("technicians"),
+      show: true,
       icon: <AccessibleIcon />,
       collection: API_Pathes.TECHNICIAN,
-      deleteEntity: false,
+      deleteEntity: canDelete,
+      editEntity: ls.getAuthorization() == "admin",
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -222,9 +216,11 @@ const ManageUsers: React.FC = () => {
     },
     {
       label: t("flights"),
+      show: showAll,
       icon: <AirplaneTicketIcon />,
       collection: API_Pathes.PRESERVED_FLIGHTNAME,
-      deleteEntity: true,
+      deleteEntity: ls.getAuthorization() == "admin",
+      editEntity: ls.getAuthorization() == "admin",
       entityType: FlightData,
       sort: (currentValue: FlightData, nextValue: FlightData) => {
         if (currentValue instanceof FlightData) {
@@ -249,13 +245,14 @@ const ManageUsers: React.FC = () => {
       },
     },
   ];
-  const [currentTab, setCurrentTab] = useState<Tab>(tabs[tabs.length - 1]);
+  const [currentTab, setCurrentTab] = useState<Tab>(tabs[1]);
 
   const fetchData = async (
     collection: string,
     dataManipulation: (value: any) => void
   ) => {
-    const entities: { status: number, data: any } = await connection.getAllEntities(collection);    
+    const entities: { status: number; data: any } =
+      await connection.getAllEntities(collection);
     if (entities.status == HttpStatusCode.Ok) {
       entities.data.map(dataManipulation);
       return entities.data;
@@ -267,11 +264,11 @@ const ManageUsers: React.FC = () => {
     entity: any,
     entityToDbEntity: (entity: any) => any
   ) => {
-    const data: { status: number, data: any } = await connection.addEntity(
+    const data: { status: number; data: any } = await connection.addEntity(
       entityToDbEntity(entity),
       collection
     );
-    
+
     if (data.status == HttpStatusCode.Ok) {
       setNewData(!newData);
     }
@@ -299,6 +296,9 @@ const ManageUsers: React.FC = () => {
     fetchServerData();
   }, [newData]);
 
+  const canAdd =
+    ls.getAuthorization() == "admin" || ls.getAuthorization() == "Commander";
+
   return (
     <PageWrapper>
       <Box sx={{ display: "flex" }}>
@@ -323,7 +323,7 @@ const ManageUsers: React.FC = () => {
               width="9rem"
               isReset={false}
             />
-            {currentTab.entityType == UsersData && (
+            {canAdd && currentTab.entityType == UsersData && (
               <NewUser callback={submitEntity} />
             )}
             {currentTab.entityType == FlightData && (
@@ -355,6 +355,14 @@ const ManageUsers: React.FC = () => {
                         return JSON.stringify(val) != JSON.stringify(row);
                       })
                     );
+                  }
+                : undefined
+            }
+            editRow={
+              currentTab.editEntity
+                ? (row) => {
+                    console.log(row);
+                    
                   }
                 : undefined
             }
