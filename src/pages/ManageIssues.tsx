@@ -74,8 +74,8 @@ const ManageIssues: React.FC = () => {
           setDate={setSelectedDate}
         />
         <Box sx={{ display: "flex" }}>
-          <NewMalfModel />
           <ExcelExport dataObject={new IssueData()} data={issueData} tableDataName={t("manageIssues")} />
+          <NewMalfModel />
         </Box>
       </Box>
       <GenericTable
