@@ -9,6 +9,7 @@ import createCache from "@emotion/cache";
 interface FilterSearchBarProps {
   label: string;
   setSearch: (value: string) => void;
+  value?: string;
   width?: string;
   isReset: boolean;
 }
@@ -23,9 +24,10 @@ const FilterSearchBar: React.FC<FilterSearchBarProps> = ({
   setSearch,
   width,
   isReset,
+  value
 }) => {
   const theme = useTheme();
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState(value ? value : "");
 
   const handleChange = (event: any) => {
     const {
