@@ -87,7 +87,7 @@ class LocalStorage {
   }
 
   getPlatforms() {
-    return this.getValue(this.platforms);
+    return this.getValue(this.platforms)?.split(",");
   }
 
   getAuthorization() {

@@ -20,7 +20,7 @@ export const PlatformsProvider = ({
     const stored = ls.getPlatforms();
 
     if (stored) {
-      setPlatforms(stored.split(","));
+      setPlatforms(stored);
     }
   }, []);
 
