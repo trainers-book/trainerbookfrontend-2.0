@@ -47,13 +47,13 @@ const GenericTable: React.FC<TableProps> = ({
   const { t } = useTranslation();
   const columns = properties.slice();
   if (color != undefined) {
-    columns.push("!color");
+    columns.push("_color");
   }
   if (editRow != undefined) {
-    columns.push("!edit");
+    columns.push("_edit");
   }
   if (deleteRow != undefined) {
-    columns.push("!delete");
+    columns.push("_delete");
   }
 
   const [offset, setOffset] = useState(0);
@@ -131,7 +131,7 @@ const GenericTable: React.FC<TableProps> = ({
           <TableHead sx={{ background: "rgba(218, 218, 218, 1)" }}>
             <TableRow>
               {columns.map((column) => {
-                if (column.includes("!")) {
+                if (column.includes("_")) {
                   column = "";
                 }
                 return (
