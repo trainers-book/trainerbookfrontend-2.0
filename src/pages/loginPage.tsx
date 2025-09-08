@@ -7,9 +7,8 @@ import "../style/login.css";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useLocalStorage } from "../context/localStorageContext";
 import { usePlatforms } from "../context/platformsContext";
-import { useBackend } from "../context/backendContext";
+import { API_Pathes, useBackend } from "../context/backendContext";
 import { HttpStatusCode } from "axios";
-import { API_Pathes } from "../types/tables/manageTypes";
 
 type User = {
   userName: string;
@@ -36,7 +35,6 @@ const LoginPage: React.FC = () => {
     ls.setAuthorization(user.authenticationLevel);
     if (user.authenticationLevel == "admin") {
       const platforms = await connection.getAllEntities(API_Pathes.PLATFORM);
-      console.log(platforms);
 
       if (platforms.status == HttpStatusCode.Ok) {
         const allPlatforms = platforms.data.map(

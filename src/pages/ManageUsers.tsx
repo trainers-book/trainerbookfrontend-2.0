@@ -2,9 +2,9 @@ import { useTranslation } from "react-i18next";
 import PageWrapper from "../components/pageWrapper/PageWrapper";
 import GenericTable from "../components/table/table";
 import {
-  API_Pathes,
   FlightData,
   platformData,
+  UsersAccountData,
   UsersData,
 } from "../types/tables/manageTypes";
 import { Box, SvgIcon } from "@mui/material";
@@ -19,13 +19,14 @@ import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import TrainIcon from "@mui/icons-material/Train";
 import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
 import SideBar from "../components/sidebar/sidebar";
-import NewUser from "../components/Dynamics/newUserForm";
-import NewFlight from "../components/Dynamics/newFlightForm";
-import NewPlatform from "../components/Dynamics/newPlatformForm";
+import NewUser from "../components/forms/newUserForm";
+import NewFlight from "../components/forms/newFlightForm";
+import NewPlatform from "../components/forms/newPlatformForm";
 import FilterSearchBar from "../components/Dynamics/filterSearchBar";
 import { useLocalStorage } from "../context/localStorageContext";
-import { useBackend } from "../context/backendContext";
+import { API_Pathes, useBackend } from "../context/backendContext";
 import { HttpStatusCode } from "axios";
+import ManageEditModel from "../components/Popup/manageUser/manageEdit";
 
 const sunglassesIcon: React.ReactNode = (
   <SvgIcon>
@@ -54,6 +55,7 @@ type Tab = {
   collection: string;
   deleteEntity: boolean;
   editEntity: boolean;
+  addEntity: boolean;
   entityType: any;
   sort: (value: any, nextValue: any) => number;
   dataManipulation: (value: any) => void;
@@ -61,14 +63,14 @@ type Tab = {
 };
 
 const userToDbEntity = (user: {
-  personalNumber: string;
+  idNumber: string;
   firstName: string;
   lastName: string;
   platform: string;
   displayName: string;
 }) => {
   return {
-    _id: user.personalNumber,
+    _id: user.idNumber,
     firstName: user.firstName,
     lastName: user.lastName,
     platform: user.platform,
@@ -83,12 +85,16 @@ const ManageUsers: React.FC = () => {
   const { connection } = useBackend();
   const [data, setData] = useState<any[]>([]);
   const [newData, setNewData] = useState<boolean>(false);
+  const [editPopupObject, setEditPopupObject] = useState<any>(null);
+
   const canDelete =
     ls.getAuthorization() == "admin" || ls.getAuthorization() == "Commander";
   const showAll =
     ls.getAuthorization() == "admin" ||
     ls.getAuthorization() == "Commander" ||
     ls.getAuthorization() == "Instructor";
+  const canAdd =
+    ls.getAuthorization() == "admin" || ls.getAuthorization() == "Commander";
   const tabs: Tab[] = [
     {
       label: t("platform"),
@@ -97,6 +103,7 @@ const ManageUsers: React.FC = () => {
       collection: API_Pathes.PLATFORM,
       deleteEntity: ls.getAuthorization() == "admin",
       editEntity: ls.getAuthorization() == "admin",
+      addEntity: ls.getAuthorization() == "admin",
       entityType: platformData,
       sort: (currentValue: platformData, nextValue: platformData) =>
         Number(currentValue.id) - Number(nextValue.id),
@@ -117,6 +124,7 @@ const ManageUsers: React.FC = () => {
       collection: API_Pathes.INSTRUCTOR,
       deleteEntity: canDelete,
       editEntity: ls.getAuthorization() == "admin",
+      addEntity: canAdd,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -136,6 +144,7 @@ const ManageUsers: React.FC = () => {
       collection: API_Pathes.COMMANDER,
       deleteEntity: ls.getAuthorization() == "admin",
       editEntity: ls.getAuthorization() == "admin",
+      addEntity: canAdd,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -153,6 +162,7 @@ const ManageUsers: React.FC = () => {
       collection: API_Pathes.PILOT,
       deleteEntity: canDelete,
       editEntity: ls.getAuthorization() == "admin",
+      addEntity: true,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -170,6 +180,7 @@ const ManageUsers: React.FC = () => {
       collection: API_Pathes.NAVIGATOR,
       deleteEntity: canDelete,
       editEntity: ls.getAuthorization() == "admin",
+      addEntity: true,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -187,6 +198,7 @@ const ManageUsers: React.FC = () => {
       collection: API_Pathes.TRAINER,
       deleteEntity: canDelete,
       editEntity: ls.getAuthorization() == "admin",
+      addEntity: true,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -204,6 +216,7 @@ const ManageUsers: React.FC = () => {
       collection: API_Pathes.TECHNICIAN,
       deleteEntity: canDelete,
       editEntity: ls.getAuthorization() == "admin",
+      addEntity: canAdd,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -221,6 +234,7 @@ const ManageUsers: React.FC = () => {
       collection: API_Pathes.PRESERVED_FLIGHTNAME,
       deleteEntity: ls.getAuthorization() == "admin",
       editEntity: ls.getAuthorization() == "admin",
+      addEntity: true,
       entityType: FlightData,
       sort: (currentValue: FlightData, nextValue: FlightData) => {
         if (currentValue instanceof FlightData) {
@@ -233,11 +247,13 @@ const ManageUsers: React.FC = () => {
         flightNameValue["date"] = new Date(flightNameValue["date"]);
       },
       entityToDbEntity: (flight: {
+        _id: number;
         name: string;
         platform: string;
         date: Date;
       }) => {
         return {
+          _id: flight._id,
           name: flight.name,
           platform: flight.platform,
           date: flight.date.getTime(),
@@ -296,9 +312,6 @@ const ManageUsers: React.FC = () => {
     fetchServerData();
   }, [newData]);
 
-  const canAdd =
-    ls.getAuthorization() == "admin" || ls.getAuthorization() == "Commander";
-
   return (
     <PageWrapper>
       <Box sx={{ display: "flex" }}>
@@ -323,7 +336,7 @@ const ManageUsers: React.FC = () => {
               width="9rem"
               isReset={false}
             />
-            {canAdd && currentTab.entityType == UsersData && (
+            {currentTab.addEntity && currentTab.entityType == UsersData && (
               <NewUser callback={submitEntity} />
             )}
             {currentTab.entityType == FlightData && (
@@ -360,15 +373,76 @@ const ManageUsers: React.FC = () => {
             }
             editRow={
               currentTab.editEntity
-                ? (row) => {
-                    console.log(row);
-                    
+                ? async (row) => {
+                    if (
+                      currentTab.entityType == UsersData &&
+                      [
+                        t("instructors"),
+                        t("commanders"),
+                        t("technicians"),
+                      ].includes(currentTab.label)
+                    ) {
+                      const user = await connection.getUserbyPersonalNumber(
+                        row.personalNumber
+                      );
+
+                      if (
+                        user.status == HttpStatusCode.Accepted &&
+                        user.data.password != undefined
+                      ) {
+                        setEditPopupObject(
+                          new UsersAccountData(
+                            user.data.userName,
+                            row.firstName,
+                            row.lastName,
+                            user.data.platform,
+                            user.data.password,
+                            user.data.authenticationLevel,
+                            user.data["_id"]
+                          )
+                        );
+                      } else {
+                        setEditPopupObject(
+                          new UsersData(
+                            row.personalNumber,
+                            row.firstName,
+                            row.lastName,
+                            row.platforms.split(", ")
+                          )
+                        );
+                      }
+                    } else if (currentTab.label == t("platform")) {
+                      setEditPopupObject(new platformData(row.name, row.id));
+                    } else if (currentTab.label == t("flights")) {
+                      setEditPopupObject(
+                        new FlightData(row.date, row.name, row.platform)
+                      );
+                    } else {
+                      setEditPopupObject(
+                        new UsersData(
+                          row.personalNumber,
+                          row.firstName,
+                          row.lastName,
+                          row.platforms.split(", ")
+                        )
+                      );
+                    }
                   }
                 : undefined
             }
           />
         </Box>
       </Box>
+      {editPopupObject != null && (
+        <ManageEditModel
+          name={currentTab.label}
+          currentCollection={currentTab.collection}
+          manageObject={editPopupObject}
+          setManageObject={setEditPopupObject}
+          updateData={setNewData}
+          updatedData={newData}
+        />
+      )}
     </PageWrapper>
   );
 };
