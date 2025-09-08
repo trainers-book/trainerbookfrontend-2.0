@@ -97,9 +97,15 @@
   "internalErrorTryAgain": "שגיאה פנימית, נסו שוב",
   "name": "שם",
   "admin": "מנהל",
+  "Admin": "מנהל",
   "Instructor": "מדריכה",
   "Trainer": "מתאמן",
   "Technician": "טכנאי",
   "Navigator": "נווט",
-  "Commander": "מפקד"
+  "Commander": "מפקד",
+  "role": "תפקיד",
+  "changeDetails": "שינוי פרטים",
+  "platformId": "מספר פלטפורמה",
+  "platformName": "שם פלטפורמה",
+  "idNumber": "מספר מזהה"
 }
