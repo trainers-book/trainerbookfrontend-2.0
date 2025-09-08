@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from "react";
 import axios from "axios";
-import { API_Pathes } from "../types/tables/manageTypes";
 
 class Connection {
   appUrl: string;
@@ -65,6 +64,76 @@ class Connection {
         return { status: error.response.status, data: error.response.data };
       });
   }
+
+  async getUserbyPersonalNumber(personalNumber: string) {
+    return axios
+      .get(`${this.appUrl}${API_Pathes.GET_USER}/${personalNumber}`)
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
+  }
+
+  async updateEntity(
+    collectionName: string,
+    object: any,
+    fieldsToRemove = null
+  ) {
+    return axios
+      .put(`${this.appUrl}${collectionName}`, object, {
+        headers: { fieldsToRemove: JSON.stringify(fieldsToRemove) },
+      })
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
+  }
+  
+  async updateAccount(
+    collectionName: string,
+    object: any,
+  ) {
+    return axios
+      .put(`${this.appUrl}Authentication/${collectionName}`, object)
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
+  }
+  
+  async updateAccountRole(
+    collectionNameFrom: string,
+    collectionNameTo: string,
+    object: any,
+  ) {
+    return axios
+      .put(`${this.appUrl}Authentication/${collectionNameFrom}/${collectionNameTo}`, object)
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
+  }
+  
+  async getNextId(
+    collection: string,
+  ) {
+    return axios
+      .get(`${this.appUrl}${API_Pathes.GET_NEXT_ID}/${collection}`)
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
+  }
 }
 
 interface BackendContextType {
@@ -93,3 +162,25 @@ export const useBackend = () => {
     throw new Error("useBackend must be used within a BackendProvider");
   return context;
 };
+
+export enum API_Pathes {
+  PLATFORM = "Aircraft",
+  INSTRUCTOR = "Instructor",
+  INSPECTOR_INSTRUCTOR = "InspectorInstructor",
+  COMMANDER = "Commander",
+  PILOT = "Pilot",
+  NAVIGATOR = "Navigator",
+  INSPECTOR = "Inspector",
+  TRAINER = "Trainer",
+  TECHNICIAN = "Technician",
+  PRESERVED_FLIGHTNAME = "PreservedFlightNames",
+  AUTHENTICATION = "Authentication",
+  SET_PASSWORD = "setPassword",
+  GET_ENTITY_BUT_STRING = "FindEntityByString",
+  GET_USER = "getUser",
+  GET_NEXT_ID = "getNextId"
+}
+
+export enum CollectionIds {
+  PRESERVED_FLIGHT_NAME_ID = "PreservedFlightNameId",
+}
