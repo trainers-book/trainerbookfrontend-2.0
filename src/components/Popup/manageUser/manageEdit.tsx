@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import CloseIcon from "@mui/icons-material/Close";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import {
   FlightData,
   platformData,
@@ -22,6 +23,7 @@ import EditFlight from "../../edit/editFlight";
 import EditPlatform from "../../edit/editPlatform";
 import { useBackend } from "../../../context/backendContext";
 import { HttpStatusCode } from "axios";
+import { useLocalStorage } from "../../../context/localStorageContext";
 
 interface ManageEditModelProps {
   name: string;
@@ -44,7 +46,18 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
 }) => {
   const { t } = useTranslation();
   const { connection } = useBackend();
-  const [submitChanges, setSubmitChanges] = useState(false);  
+  const { ls } = useLocalStorage()
+  const [submitChanges, setSubmitChanges] = useState(false);
+
+  const loginAs = (user: UsersAccountData) => {    
+    ls.clear();
+    ls.setPlatforms(user.platforms);
+    ls.setAuthorization(user.role);
+    ls.setDisplayName(user.firstName + " " + user.lastName);
+    ls.setUserName(user.personalNumber);
+    ls.setIsAuthenticated("true");
+    window.location.reload();
+  };
 
   return (
     <>
@@ -70,6 +83,16 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
           >
             <CloseIcon />
           </IconButton>
+          {manageObject instanceof UsersAccountData && (
+            <IconButton
+              onClick={() => {
+                loginAs(manageObject as UsersAccountData);
+              }}
+              sx={{ position: "absolute", left: 8, top: 8 }}
+            >
+              <ArrowDownwardIcon />
+            </IconButton>
+          )}
           <DialogTitle align="center" variant="h4">
             {t("changeDetails")} - {t(name)}
           </DialogTitle>
@@ -88,7 +111,10 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
                       updateResponse = await connection.updateAccount(
                         currentCollection,
                         {
-                          _id: data.personalNumber.slice(1, data.personalNumber.length),
+                          _id: data.personalNumber.slice(
+                            1,
+                            data.personalNumber.length
+                          ),
                           lastId: data.id,
                           userName: data.personalNumber,
                           firstName: data.firstName,
@@ -103,7 +129,10 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
                         currentCollection,
                         data.role,
                         {
-                          _id: data.personalNumber.slice(1, data.personalNumber.length),
+                          _id: data.personalNumber.slice(
+                            1,
+                            data.personalNumber.length
+                          ),
                           lastId: data.id,
                           userName: data.personalNumber,
                           firstName: data.firstName,
@@ -138,10 +167,10 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
                           firstName: data.firstName,
                           lastName: data.lastName,
                           platform: data.platforms,
-                          name: data.firstName + " " + data.lastName
+                          name: data.firstName + " " + data.lastName,
                         }
                       );
-  
+
                       if (updateResponse.status == HttpStatusCode.Ok) {
                         updateData(!updatedData);
                         setManageObject(null);
@@ -155,8 +184,8 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
                 flightData={manageObject}
                 invokeCallback={submitChanges}
                 objectCallback={async (data: FlightData) => {
-                  console.log(currentCollection); 
-                  
+                  console.log(currentCollection);
+
                   if (!data.isEqual(manageObject)) {
                     const updateResponse = await connection.updateEntity(
                       "PreservedFlightNames",
@@ -164,7 +193,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
                         _id: data._id,
                         name: manageObject.name,
                         platform: data.platform,
-                        date: data.date.getTime()
+                        date: data.date.getTime(),
                       }
                     );
 

@@ -27,13 +27,17 @@ class LocalStorage {
     return toDecode ? decodeURIComponent(escape(atob(toDecode))) : null;
   }
 
+  clear() {
+    localStorage.clear();
+  }
+
   getValue(key: string) {
     const localstorageProblem = () => {
       // probably not the best to be in prod. suggestions are welcome for the prod verion.
       // and it doesnt work for all changes to the localstorage
       console.log("problem with decoding localstorage. reseting all values");
       // and might need to redirect to login page
-      localStorage.clear();
+      this.clear();
     };
 
     const value = localStorage.getItem(this.encodeString(key));
