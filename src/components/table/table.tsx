@@ -151,6 +151,26 @@ const GenericTable: React.FC<TableProps> = ({
           minute: "2-digit",
         }),
       ];
+    } else if (typeof value == "string" && value.length > 20) {
+      const words = value.split(" ");
+      valueArray = [];
+
+      let index = 0;
+      let count = 0;
+      let currentRow = "";
+      for (let i = 0; i < 2; i++) {
+        while (index < words.length - 1 && count + words[index].length <= 20) {
+          currentRow += words[index] + " ";
+          index++;
+          count = currentRow.length;
+        }
+
+        valueArray.push(currentRow);
+        currentRow = "";
+        count = 0;
+      }
+
+      valueArray[1] = valueArray[1].slice(0, -1) + "...";
     }
 
     return valueArray;
