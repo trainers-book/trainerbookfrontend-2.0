@@ -42,6 +42,18 @@ class Connection {
         return { status: error.response.status, data: error.response.data[0] };
       });
   }
+
+  async getObjects(collection: string, index: number, platform: string[]) {        
+    platform = JSON.stringify(platform.map((platformName) => {return {name: platformName}}));    
+    return axios
+      .get(`${this.appUrl}${collection}/Amount/${index}`, {params: {platform: platform}})
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data[0] };
+      });
+  }
 }
 
 interface BackendContextType {
