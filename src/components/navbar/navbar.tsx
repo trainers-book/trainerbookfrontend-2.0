@@ -97,7 +97,7 @@ const Navbar: React.FC = () => {
               sx={{
                 background: "rgba(248, 248, 250, 1)",
                 opacity: "70%",
-                borderRadius: 2,
+                borderRadius: 6,
                 mr: 2,
                 display: "flex",
                 flexDirection: "row",
@@ -108,7 +108,7 @@ const Navbar: React.FC = () => {
                 <ListItem disablePadding>
                   <ListItemButton
                     sx={{
-                      borderRadius: 2,
+                      borderRadius: 6,
                       p: 0,
                       margin: 0.5,
                       color: "rgba(124, 124, 124, 1)",
@@ -117,7 +117,7 @@ const Navbar: React.FC = () => {
                   >
                     <Typography
                       sx={{
-                        borderRadius: 2,
+                        borderRadius: 6,
                         p: 1,
                         pl: 4,
                         pr: 4,
