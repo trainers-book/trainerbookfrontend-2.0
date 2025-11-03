@@ -16,19 +16,20 @@ import CloseIcon from "@mui/icons-material/Close";
 import TimerModel from "../../timer/timer";
 import ClickedOutside from "../clickedOutside";
 import FilterDropdown from "../../Dynamics/filterDropdown";
-import { flightDisturbancesTypes } from "../../../types/flightDisturbancesTypes";
+import { Severity } from "../../../types/issuesSeverity";
 
 const NewMalfModel: React.FC = () => {
   const [show, setShow] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const { t } = useTranslation();
   const [seconds, setSeconds] = useState(0);
-  const [selectedDisturbance, setSelectedDisturbance] = useState<string[]>([]);
-  const [malfNameValue, setMalfNameValue] = useState<string>("");
-  const [malfDescriptionValue, setMalfDescriptionValue] = useState<string>("");
   const [timerValue, setTimerValue] = useState<boolean>(false);
   const [hasChanges, setHasChanges] = useState(false);
   
+  const [selectedDisturbance, setSelectedDisturbance] = useState<string[]>([]);
+  const [malfNameValue, setMalfNameValue] = useState<string>("");
+  const [malfDescriptionValue, setMalfDescriptionValue] = useState<string>("");
+
   useEffect(() => {
     if (
       selectedDisturbance.length > 0 ||
@@ -134,7 +135,7 @@ const NewMalfModel: React.FC = () => {
                 ></DynamicTextField>
                 <FilterDropdown
                   label={t("flightDisturbances")}
-                  options={flightDisturbancesTypes}
+                  options={Object.values(Severity)}
                   selected={selectedDisturbance}
                   setSelected={setSelectedDisturbance}
                   isMultiple={false}
