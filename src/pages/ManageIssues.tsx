@@ -17,12 +17,9 @@ const ManageIssues: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   const getRowClass = (row: IssueData) => {
-    if (row.status == "נפתח כהיתר") {
-      return;
-    }    
     return Object.keys(Status)
-      .filter((value) => Status[value] === row.status)[0]
-      .toLocaleLowerCase();
+    .filter((value) => Status[value as keyof typeof Status] === row.status)[0]
+    .toLocaleLowerCase();
   };
 
   const filterData = (data: IssueData[]) => {
@@ -50,13 +47,23 @@ const ManageIssues: React.FC = () => {
     });
   };
 
+  const objectFromFetch = (malf: any) => {
+    return new IssueData({
+      ...malf,
+      dateTime: new Date(malf.dateTime),
+      flightNumber: malf._id,
+      status: Status[malf.failureStatus],
+      issueSeverity: malf.disruption
+    });
+  };
+
   return (
     <PageWrapper>
       <Box
         sx={{
           mb: 1,
           display: "flex",
-          justifyContent: "space-between"
+          justifyContent: "space-between",
         }}
       >
         <FilterIssues
@@ -71,17 +78,18 @@ const ManageIssues: React.FC = () => {
           dateSelected={selectedDate}
           setDate={setSelectedDate}
         />
-        <NewMalfModel/>
+        <NewMalfModel />
       </Box>
-      <InfinateScroll 
-      properties={Object.keys(new IssueData()).filter(() => true)}
-      sortFunction={(currentValue, nextValue) =>
-        nextValue.dateTime.getTime() - currentValue.dateTime.getTime()
-      }
-      filterFunction={filterData}
-      fetchCollection="FlightFailure"
-      getRowClass={getRowClass}
-      color={true}
+      <InfinateScroll
+        properties={Object.keys(new IssueData({})).filter((property) => !property.includes("_"))}
+        sortFunction={(currentValue, nextValue) =>
+          nextValue.dateTime.getTime() - currentValue.dateTime.getTime()
+        }
+        filterFunction={filterData}
+        fetchCollection="FlightFailure"
+        getRowClass={getRowClass}
+        color={true}
+        objectFromFetch={objectFromFetch}
       />
     </PageWrapper>
   );
