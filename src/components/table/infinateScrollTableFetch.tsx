@@ -15,6 +15,7 @@ interface InfinateScrollFetchProps {
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
+  objectFromFetch: (data: any) => any;
 }
 
 const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
@@ -25,6 +26,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   getRowClass,
   color,
   deleteRow,
+  objectFromFetch
 }) => {
   const tableRowHeight = 82;
   const tableHeadHeight = 56.5;
@@ -60,7 +62,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
       offset * 25,
       platforms
     );
-    console.log(newData);
+    console.log(offset, newData);
 
     if (newData.status == HttpStatusCode.Ok) {
       const newFetchedData: any[] = newData.data;
@@ -70,17 +72,8 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
             ...dataToShow,
             ...newFetchedData
               .map(
-                (malf) =>
-                  new IssueData(
-                    new Date(malf.date),
-                    malf._id,
-                    malf.failureDetails,
-                    malf.malfunctionOpener,
-                    malf.failureDetails,
-                    malf.platform,
-                    malf.disruption,
-                    malf.failureStatus
-                  )
+                (data) =>
+                  objectFromFetch(data)
               )
               .sort(sortFunction),
           ]),
