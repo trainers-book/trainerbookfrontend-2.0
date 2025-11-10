@@ -34,6 +34,9 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   const tableRef = useRef(null);
   const { connection } = useBackend();
   const { platforms } = usePlatforms();
+  const [filters, setFilters] = useState<any>({
+    failureStatus: "Active"
+  });
 
   const [fetching, setFetching] = useState<boolean>(false);
   const [fetchMore, setFetchMore] = useState<boolean>(true);
@@ -57,10 +60,11 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
       return;
     }
 
-    const newData = await connection.getObjects(
+    const newData = await connection.getObjectsFilter(
       fetchCollection,
       offset * 25,
-      platforms
+      [...platforms], // this needs to be according to the filtered platforms
+      filters // this needs to be according to the table filters
     );
     console.log(offset, newData);
 
