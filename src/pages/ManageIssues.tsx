@@ -53,7 +53,9 @@ const ManageIssues: React.FC = () => {
       dateTime: new Date(malf.dateTime),
       flightNumber: malf._id,
       status: Status[malf.failureStatus],
-      issueSeverity: malf.disruption
+      issueDescription: malf.failureDetails,
+      issueSeverity: malf.disruption,
+      issueOpener: malf.malfunctionOpener || malf.malfunctionOpener
     });
   };
 
