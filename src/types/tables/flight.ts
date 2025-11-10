@@ -91,8 +91,6 @@ export default class FlightData {
     this._143 = _143;
     this._configuration = configuration;
     this._inspectorInstructor = inspectorInstructor;
-    this._iafWeek = iafWeekFormat(this.dateTime);
-    console.log(this._iafWeek);
-    
+    this._iafWeek = iafWeekFormat(this.dateTime);    
   }
 }
