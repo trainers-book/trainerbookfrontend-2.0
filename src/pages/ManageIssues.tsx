@@ -4,22 +4,29 @@ import IssueData from "../types/tables/issues";
 import { Status } from "../types/statuses";
 import { Box } from "@mui/material";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FilterIssues from "../components/filterTables/filterIssues";
 import NewMalfModel from "../components/Popup/newMalf/newMalf";
 import InfinateScroll from "../components/table/infinateScrollTableFetch";
+import { usePlatforms } from "../context/platformsContext";
 
 const ManageIssues: React.FC = () => {
+  const { platforms } = usePlatforms();
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedSeverity, setSelectedSeverity] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<string>("");
+  const [filterChange, setFilterChange] = useState<boolean>(true);
+
+  useEffect(() => {
+    setFilterChange(!filterChange);    
+  }, [selectedPlatforms, selectedStatuses, selectedSeverity, selectedDate]);
 
   const getRowClass = (row: IssueData) => {
     return Object.keys(Status)
-    .filter((value) => Status[value as keyof typeof Status] === row.status)[0]
-    .toLocaleLowerCase();
+      .filter((value) => Status[value as keyof typeof Status] === row.status)[0]
+      .toLocaleLowerCase();
   };
 
   const filterData = (data: IssueData[]) => {
@@ -55,8 +62,22 @@ const ManageIssues: React.FC = () => {
       status: Status[malf.failureStatus],
       issueDescription: malf.failureDetails,
       issueSeverity: malf.disruption,
-      issueOpener: malf.malfunctionOpener || malf.malfunctionOpener
+      issueOpener: malf.malfunctionOpener || malf.malfunctionOpener,
     });
+  };
+
+  const getPlatformsAndFilters = () => {
+    return {
+      platforms: selectedPlatforms.length == 0 ? platforms : selectedPlatforms,
+      filters: {
+        failureStatus:
+          selectedStatuses.length == 0
+            ? []
+            : selectedStatuses.map((status) => {
+                return Object.keys(Status).find((k) => Status[k] === status);
+              }),
+      },
+    };
   };
 
   return (
@@ -83,16 +104,20 @@ const ManageIssues: React.FC = () => {
         <NewMalfModel />
       </Box>
       <InfinateScroll
-        properties={Object.keys(new IssueData({})).filter((property) => !property.includes("_"))}
+        properties={Object.keys(new IssueData({})).filter(
+          (property) => !property.includes("_")
+        )}
         sortFunction={(currentValue, nextValue) =>
           nextValue.dateTime.getTime() - currentValue.dateTime.getTime()
         }
-        filterFunction={filterData}
+        // filterFunction={filterData}
         fetchCollection="FlightFailure"
         getRowClass={getRowClass}
         color={true}
         objectFromFetch={objectFromFetch}
-      />
+        getPlatformsAndFilters={getPlatformsAndFilters}
+        clearFetch={filterChange}
+      /> 
     </PageWrapper>
   );
 };

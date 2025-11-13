@@ -15,6 +15,8 @@ interface InfinateScrollFetchProps {
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
+  getPlatformsAndFilters?: () => {platforms: string[], filters: any};
+  clearFetch?: boolean;
   objectFromFetch: (data: any) => any;
 }
 
@@ -26,7 +28,9 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   getRowClass,
   color,
   deleteRow,
-  objectFromFetch
+  objectFromFetch,
+  clearFetch,
+  getPlatformsAndFilters
 }) => {
   const tableRowHeight = 82;
   const tableHeadHeight = 56.5;
@@ -34,14 +38,14 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   const tableRef = useRef(null);
   const { connection } = useBackend();
   const { platforms } = usePlatforms();
-  const [filters, setFilters] = useState<any>({
-    failureStatus: "Active"
-  });
-
   const [fetching, setFetching] = useState<boolean>(false);
   const [fetchMore, setFetchMore] = useState<boolean>(true);
   const [offset, setOffset] = useState(0);
   const [dataToShow, setDataToShow] = useState<any[]>([]);
+
+  useEffect(() => {
+    setFetching(false);
+  }, [dataToShow]);
 
   useEffect(() => {
     fetchMoreData();
@@ -52,19 +56,34 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   }, [platforms]);
 
   useEffect(() => {
-    setFetching(false);
-  }, [dataToShow]);
+    setDataToShow([]);
+    setOffset(0);
+    // setFetching(false);
+    setFetchMore(true);
+    fetchMoreData();
+  }, [clearFetch]);
 
   const fetchMoreData = async () => {
     if (platforms.length == 0 || !fetchMore) {
       return;
     }
 
+    let platformsAndFilters;
+    
+    if (getPlatformsAndFilters == undefined) {
+      platformsAndFilters = {platforms: platforms, filters: {}}
+    } else {
+      platformsAndFilters = getPlatformsAndFilters();
+    }
+
+    console.log(platformsAndFilters);
+    
+
     const newData = await connection.getObjectsFilter(
       fetchCollection,
       offset * 25,
-      [...platforms], // this needs to be according to the filtered platforms
-      filters // this needs to be according to the table filters
+      platformsAndFilters.platforms, // this needs to be according to the filtered platforms
+      platformsAndFilters.filters // this needs to be according to the table filters
     );
     console.log(offset, newData);
 

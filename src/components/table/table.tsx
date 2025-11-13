@@ -96,8 +96,8 @@ const GenericTable: React.FC<TableProps> = ({
     return valueArray;
   };
 
-  const filteredData = filterFunction ? filterFunction(data) : data;
-  const sortedData = sortFunction ? filteredData.sort(sortFunction) : data;
+  // const filteredData = filterFunction ? filterFunction(data) : data;
+  const sortedData = sortFunction ? data.sort(sortFunction) : data;
 
   return (
     <Box
