@@ -93,7 +93,7 @@ export const IssueProvider = ({ children }: { children: React.ReactNode }) => {
         new IssueData(
           getDate(),
           index * 5 + 4,
-          "רגיל",
+          "התקלה היא מאוד חמורה כי היא בעצם מקריסה את המאמן כמו שלא ראינו עד עכשיו וזה נראה ממש מוזר כאילו המטוס יורד מתחת לאדמה",
           "מדריכה 1",
           "אין",
           t(platform),
