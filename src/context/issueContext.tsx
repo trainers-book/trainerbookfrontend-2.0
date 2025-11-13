@@ -14,8 +14,8 @@ const IssueContext = createContext<IssueContextType | null>(null);
 
 export const IssueProvider = ({ children }: { children: React.ReactNode }) => {
   const { t } = useTranslation();
-  const { platforms } = usePlatforms();  
-
+  const { platforms } = usePlatforms();
+  
   const getTempData = () => {
     const temp: IssueData[] = [];
     const getStatus = () => {

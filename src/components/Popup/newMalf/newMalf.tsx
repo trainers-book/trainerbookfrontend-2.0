@@ -28,8 +28,7 @@ const NewMalfModel: React.FC = () => {
   const [malfDescriptionValue, setMalfDescriptionValue] = useState<string>("");
   const [timerValue, setTimerValue] = useState<boolean>(false);
   const [hasChanges, setHasChanges] = useState(false);
-  console.log(seconds);
-
+  
   useEffect(() => {
     if (
       selectedDisturbance.length > 0 ||
