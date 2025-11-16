@@ -2,8 +2,8 @@ import { Severity } from "../issuesSeverity";
 import { Status } from "../statuses";
 
 export default class IssueData {
+  issueNumber: number;
   dateTime: Date;
-  flightNumber: number;
   flightName: string;
   issueOpener: string;
   issueDescription: string;
@@ -24,7 +24,7 @@ export default class IssueData {
 
   constructor({
     dateTime = new Date(),
-    flightNumber = 0,
+    issueNumber = 0,
     flightName = "רגיל",
     issueOpener = "מדריכה",
     issueDescription = "אין",
@@ -44,7 +44,7 @@ export default class IssueData {
     responsibleFactor = undefined,
   }) {
     this.dateTime = dateTime;
-    this.flightNumber = flightNumber;
+    this.issueNumber = issueNumber;
     this.issueOpener = issueOpener;
     this.flightName = flightName;
     this.platform = platform;

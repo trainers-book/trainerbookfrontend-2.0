@@ -8,16 +8,21 @@ import { useEffect, useState } from "react";
 import FilterIssues from "../components/filterTables/filterIssues";
 import NewMalfModel from "../components/Popup/newMalf/newMalf";
 import InfinateScroll from "../components/table/infinateScrollTableFetch";
+import ExcelExport from "../components/excel/excelExport";
+import { useIssues } from "../context/issueContext";
+import { useTranslation } from "react-i18next";
 import { usePlatforms } from "../context/platformsContext";
 
 const ManageIssues: React.FC = () => {
-  const { platforms } = usePlatforms();
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedSeverity, setSelectedSeverity] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [filterChange, setFilterChange] = useState<boolean>(true);
+  const { t } = useTranslation();
+  const { issueData } = useIssues();
+  const { platforms } = usePlatforms();
 
   useEffect(() => {
     setFilterChange(!filterChange);    
@@ -101,7 +106,10 @@ const ManageIssues: React.FC = () => {
           dateSelected={selectedDate}
           setDate={setSelectedDate}
         />
-        <NewMalfModel />
+        <Box sx={{ display: "flex" }}>
+          <ExcelExport dataObject={new IssueData({})} data={issueData} tableDataName={t("manageIssues")} />
+          <NewMalfModel />
+        </Box>
       </Box>
       <InfinateScroll
         properties={Object.keys(new IssueData({})).filter(

@@ -4,9 +4,12 @@ import ManageIssues from "../pages/manageIssues";
 import ManageUsers from "../pages/manageUsers";
 import ReviewFlights from "../pages/reviewFlights";
 import ProtectedRoute from "./ProtectedRoute";
+import { useLocalStorage } from "../context/localStorageContext";
 
 const AppRoutes = () => {
-  return (
+  const { ls } = useLocalStorage();
+
+    return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route
@@ -41,14 +44,14 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-      <Route
+      {ls.getAuthorization() != "Technician" && <Route
         path="/usersManagment"
         element={
           <ProtectedRoute>
             <ManageUsers />
           </ProtectedRoute>
         }
-      />
+      />}
     </Routes>
   );
 };

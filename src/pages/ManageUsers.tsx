@@ -15,7 +15,7 @@ import AccessibleIcon from "@mui/icons-material/Accessible";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import KeyboardCommandKeyIcon from "@mui/icons-material/KeyboardCommandKey";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
-import TrainIcon from '@mui/icons-material/Train';
+import TrainIcon from "@mui/icons-material/Train";
 import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
 import SideBar from "../components/sidebar/sidebar";
 import NewUser from "../components/Dynamics/newUserForm";
@@ -45,9 +45,11 @@ const sunglassesIcon: React.ReactNode = (
 );
 
 type Tab = {
+  show: boolean;
   label: string;
   icon: React.ReactNode;
   entityType: any;
+  editEntity: boolean;
   deleteEntity: boolean;
   sort: (value: any, nextValue: any) => number;
 };
@@ -55,106 +57,118 @@ type Tab = {
 const ManageUsers: React.FC = () => {
   const { t } = useTranslation();
   const [search, setSearch] = useState<string>("");
-  const { ls } = useLocalStorage()
+  const { ls } = useLocalStorage();
+  const canDelete =
+    ls.getAuthorization() == "admin" || ls.getAuthorization() == "Commander";
+  const showAll =
+    ls.getAuthorization() == "admin" ||
+    ls.getAuthorization() == "Commander" ||
+    ls.getAuthorization() == "Instructor";
   const tabs: Tab[] = [
     {
+      show: ls.getAuthorization() == "admin",
       label: t("platform"),
       icon: <AirplanemodeActiveIcon />,
       entityType: platformData,
+      editEntity: ls.getAuthorization() == "admin", // based on permissions
       deleteEntity: ls.getAuthorization() == "admin", // based on permissions
       sort: (currentValue: platformData, nextValue: platformData) =>
-        Number(nextValue.id) - Number(currentValue.id)
+        Number(nextValue.id) - Number(currentValue.id),
     },
     {
-      label: t("instructor"),
+      show: showAll,
+      label: t("instructors"),
       icon: <SchoolIcon />,
       entityType: UsersData,
-      deleteEntity: true,
+      editEntity: ls.getAuthorization() == "admin",
+      deleteEntity: canDelete,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
     },
     {
-      label: t("inspectorInstructor"),
-      icon: <SchoolIcon />,
-      entityType: UsersData,
-      deleteEntity: true,
-      sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
-    },
-    {
+      show:
+        ls.getAuthorization() == "admin" ||
+        ls.getAuthorization() == "Commander",
       label: t("commanders"),
       icon: <KeyboardCommandKeyIcon />, // change here
       entityType: UsersData,
-      deleteEntity: false,
+      editEntity: ls.getAuthorization() == "admin",
+      deleteEntity: ls.getAuthorization() == "admin",
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
     },
     {
+      show: showAll,
       label: t("airCrew1"),
       icon: <PregnantWomanIcon />, // sunglassesIcon
       entityType: UsersData,
-      deleteEntity: true,
+      editEntity: ls.getAuthorization() == "admin",
+      deleteEntity: canDelete,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
     },
     {
+      show: showAll,
       label: t("airCrew2"),
       icon: <AccessibleIcon />, // <MenuBookIcon />
       entityType: UsersData,
-      deleteEntity: true,
+      editEntity: ls.getAuthorization() == "admin",
+      deleteEntity: canDelete,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
     },
     {
-      label: t("inspectors"),
-      icon: <SportsEsportsIcon />, 
-      entityType: UsersData,
-      deleteEntity: true,
-      sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
-    },
-    {
+      show: showAll,
       label: t("trainees"),
-      icon: <TrainIcon />, 
+      icon: <TrainIcon />,
       entityType: UsersData,
-      deleteEntity: true,
+      editEntity: ls.getAuthorization() == "admin",
+      deleteEntity: canDelete,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
     },
     {
+      show: true,
       label: t("technicians"),
-      icon: <AccessibleIcon />, 
+      icon: <AccessibleIcon />,
       entityType: UsersData,
-      deleteEntity: false,
+      editEntity: ls.getAuthorization() == "admin",
+      deleteEntity: canDelete,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber)
+        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
     },
     {
+      show: true,
       label: t("flight"),
       icon: <AirplaneTicketIcon />,
       entityType: PreservedFlightNameData,
       deleteEntity: true,
-      sort: (currentValue: PreservedFlightNameData, nextValue: PreservedFlightNameData) => {
-        if (currentValue instanceof PreservedFlightNameData) {          
-          return nextValue.date.getTime() - currentValue.date.getTime()
+      sort: (
+        currentValue: PreservedFlightNameData,
+        nextValue: PreservedFlightNameData
+      ) => {
+        if (currentValue instanceof PreservedFlightNameData) {
+          return nextValue.date.getTime() - currentValue.date.getTime();
         }
-        return -1;
-        
-      }
+      },
+      editEntity: ls.getAuthorization() == "admin",
     },
   ];
-  const [currentTab, setCurrentTab] = useState<Tab>(tabs[0]);
+  const [currentTab, setCurrentTab] = useState<Tab>(tabs[1]);
 
   const createEntity = (index: number) => {
-    const keys = Object.keys(new currentTab.entityType());    
+    const keys = Object.keys(new currentTab.entityType());
 
-    return new currentTab.entityType(...keys.map((val) => {
-      if (val == "date") {
-        return new Date();
-      } else if (val == "id") {
-        return 1;
-      }
-      return t(val) + index}));
+    return new currentTab.entityType(
+      ...keys.map((val) => {
+        if (val == "date") {
+          return new Date();
+        } else if (val == "id") {
+          return 1;
+        }
+        return t(val) + index;
+      })
+    );
   };
 
   const [data, setData] = useState<any[]>([]);
@@ -172,6 +186,9 @@ const ManageUsers: React.FC = () => {
       ].map((i) => createEntity(i))
     );
   }, [currentTab]);
+
+  const canAdd =
+    ls.getAuthorization() == "admin" || ls.getAuthorization() == "Commander";
 
   return (
     <PageWrapper>
@@ -191,8 +208,13 @@ const ManageUsers: React.FC = () => {
               justifyContent: "space-between",
             }}
           >
-            <FilterSearchBar label={t("search")} setSearch={setSearch} width="9rem" isReset={false}/>
-            {currentTab.entityType == UsersData && (
+            <FilterSearchBar
+              label={t("search")}
+              setSearch={setSearch}
+              width="9rem"
+              isReset={false}
+            />
+            {canAdd && currentTab.entityType == UsersData && (
               <NewUser
                 callback={(entity: any) => {
                   console.log(entity);
@@ -215,7 +237,9 @@ const ManageUsers: React.FC = () => {
             )}
           </Box>
           <GenericTable
-            properties={Object.keys(new currentTab.entityType()).filter((col) => true)}
+            properties={Object.keys(new currentTab.entityType()).filter(
+              (col) => true
+            )}
             data={data.filter((value) =>
               Object.values(value)
                 .map(String)
@@ -225,6 +249,18 @@ const ManageUsers: React.FC = () => {
                 )
             )}
             sortFunction={currentTab.sort}
+            editRow={
+              currentTab.editEntity
+                ? (row) => {
+                    setData(
+                      data.filter((val) => {
+                        setSearch(search + "");
+                        return JSON.stringify(val) != JSON.stringify(row);
+                      })
+                    );
+                  }
+                : undefined
+            }
             deleteRow={
               currentTab.deleteEntity
                 ? (row) => {
