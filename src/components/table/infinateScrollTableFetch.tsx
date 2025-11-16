@@ -15,8 +15,7 @@ interface InfinateScrollFetchProps {
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
-  getPlatformsAndFilters?: () => {platforms: string[], filters: any};
-  clearFetch?: boolean;
+  platformsAndFilters: {platforms: string[], filters: any};
   objectFromFetch: (data: any) => any;
 }
 
@@ -29,8 +28,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   color,
   deleteRow,
   objectFromFetch,
-  clearFetch,
-  getPlatformsAndFilters
+  platformsAndFilters
 }) => {
   const tableRowHeight = 82;
   const tableHeadHeight = 56.5;
@@ -58,32 +56,27 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   useEffect(() => {
     setDataToShow([]);
     setOffset(0);
-    // setFetching(false);
+    setFetching(false);
     setFetchMore(true);
     fetchMoreData();
-  }, [clearFetch]);
+  }, [platformsAndFilters]);
 
   const fetchMoreData = async () => {
     if (platforms.length == 0 || !fetchMore) {
       return;
     }
-
-    let platformsAndFilters;
     
-    if (getPlatformsAndFilters == undefined) {
+    if (platformsAndFilters == undefined) {
       platformsAndFilters = {platforms: platforms, filters: {}}
-    } else {
-      platformsAndFilters = getPlatformsAndFilters();
     }
-
     console.log(platformsAndFilters);
     
 
     const newData = await connection.getObjectsFilter(
       fetchCollection,
       offset * 25,
-      platformsAndFilters.platforms, // this needs to be according to the filtered platforms
-      platformsAndFilters.filters // this needs to be according to the table filters
+      platformsAndFilters.platforms,
+      platformsAndFilters.filters 
     );
     console.log(offset, newData);
 

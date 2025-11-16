@@ -110,13 +110,11 @@ const ManageIssues: React.FC = () => {
         sortFunction={(currentValue, nextValue) =>
           nextValue.dateTime.getTime() - currentValue.dateTime.getTime()
         }
-        // filterFunction={filterData}
         fetchCollection="FlightFailure"
         getRowClass={getRowClass}
         color={true}
         objectFromFetch={objectFromFetch}
-        getPlatformsAndFilters={getPlatformsAndFilters}
-        clearFetch={filterChange}
+        platformsAndFilters={getPlatformsAndFilters()}
       /> 
     </PageWrapper>
   );
