@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import PageWrapper from "../components/pageWrapper/PageWrapper";
 import GenericTable from "../components/table/table";
 import {
-  FlightData,
+  PreservedFlightNameData,
   platformData,
   UsersData,
 } from "../types/tables/manageTypes";
@@ -141,15 +141,17 @@ const ManageUsers: React.FC = () => {
       show: true,
       label: t("flight"),
       icon: <AirplaneTicketIcon />,
-      entityType: FlightData,
-      editEntity: ls.getAuthorization() == "admin",
-      deleteEntity: ls.getAuthorization() == "admin",
-      sort: (currentValue: FlightData, nextValue: FlightData) => {
-        if (currentValue instanceof FlightData) {
+      entityType: PreservedFlightNameData,
+      deleteEntity: true,
+      sort: (
+        currentValue: PreservedFlightNameData,
+        nextValue: PreservedFlightNameData
+      ) => {
+        if (currentValue instanceof PreservedFlightNameData) {
           return nextValue.date.getTime() - currentValue.date.getTime();
         }
-        return -1;
       },
+      editEntity: ls.getAuthorization() == "admin",
     },
   ];
   const [currentTab, setCurrentTab] = useState<Tab>(tabs[1]);
@@ -219,7 +221,7 @@ const ManageUsers: React.FC = () => {
                 }}
               />
             )}
-            {currentTab.entityType == FlightData && (
+            {currentTab.entityType == PreservedFlightNameData && (
               <NewFlight
                 callback={(entity: any) => {
                   console.log(entity);

@@ -1,42 +1,24 @@
 import type React from "react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import FlightData from "../types/tables/flight";
 import PageWrapper from "../components/pageWrapper/PageWrapper";
 import NewFlightModel from "../components/Popup/NewFlight/newFlight";
-import GenericTable from "../components/table/table";
 import FilterFlights from "../components/filterTables/filterFlights";
 import { Box } from "@mui/material";
+import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
 
 const ReviewFlights: React.FC = () => {
-  const { t } = useTranslation();
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<string>("");
 
-  const changePlatform = (selected: string[]) => {
-    setSelectedPlatforms(selected);
-    filterData();
-  };
-
-  const changeSearch = (search: string) => {
-    setSearchQuery(search);
-    filterData();
-  };
-
-  const changedate = (selected: string) => {
-    setSelectedDate(selected);
-    filterData();
-  };
-
-  const filterData = () => {
-    return flightData.filter((dataSet) => {
+  const filterData = (data: FlightData[]) => {
+    return data.filter((dataSet) => {
       const getDate = (date: Date) => {
         return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
       };
 
       return (
-        // add permissions filtering
         (selectedPlatforms.length == 0 ||
           selectedPlatforms.includes(dataSet.platform)) &&
         (selectedDate == "" || getDate(dataSet.dateTime) == selectedDate) &&
@@ -45,25 +27,28 @@ const ReviewFlights: React.FC = () => {
           .reduce(
             (accumulator, value) => accumulator || value.includes(searchQuery),
             false
-          ) // make sure this is always the last check
+          )
       );
     });
   };
 
-  const flightData = [
-    new FlightData(
-      new Date(),
-      1,
-      "שם גיחה",
-      "מדריכה1",
-      "תצפיתנית1",
-      "צא1",
-      "צא2",
-      "תיאור תקלה",
-      0,
-      t("baz")
-    ),
-  ];
+  const objectFromFetch = (flight: any) => {
+    return new FlightData({
+      ...flight, 
+      dateTime: new Date(flight.dateTime),
+      flightNumber: flight._id,
+      instructorName: flight.instructor?.name,
+      observer: flight.observer?.name,
+      _130: flight["130"],
+      _131: flight["131"],
+      _132: flight["132"],
+      _133: flight["133"],
+      _140: flight["140"],
+      _141: flight["141"],
+      _142: flight["142"],
+      _143: flight["143"],
+    });
+  };
 
   return (
     <PageWrapper>
@@ -74,32 +59,33 @@ const ReviewFlights: React.FC = () => {
         }}
       >
         <Box
-          sx={
-            {
-              mb: 1,
-            }
-          }
+          sx={{
+            mb: 1,
+          }}
         >
           <FilterFlights
             selectedPlatform={selectedPlatforms}
-            setSelectedPlatform={changePlatform}
+            setSelectedPlatform={setSelectedPlatforms}
             search={searchQuery}
-            setSearch={changeSearch}
+            setSearch={setSearchQuery}
             dateSelected={selectedDate}
-            setDate={changedate}
+            setDate={setSelectedDate}
           />
         </Box>
         <NewFlightModel />
       </Box>
-      <GenericTable
-        properties={Object.keys(new FlightData()).filter(
-          (col) => col != "dateTime"
+      <InfinateScrollFetch
+        properties={Object.keys(new FlightData({})).filter(
+          (property) => !property.includes("_") && property != "dateTime"
         )}
-        data={filterData()}
         sortFunction={(currentValue, nextValue) =>
           nextValue.dateTime.getTime() - currentValue.dateTime.getTime()
         }
-      ></GenericTable>
+        filterFunction={filterData}
+        fetchCollection="PreservedFlights"
+        color={false}
+        objectFromFetch={objectFromFetch}
+      />
     </PageWrapper>
   );
 };

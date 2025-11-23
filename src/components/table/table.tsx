@@ -1,6 +1,6 @@
 ﻿import "./table.css";
 import "../../i18n";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   TableContainer,
   TableHead,
@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Status } from "../../types/statuses";
-import type IssueData from "../../types/tables/issues";
+import IssueData from "../../types/tables/issues";
 import { Severity } from "../../types/issuesSeverity";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -23,11 +23,13 @@ import EditIcon from "@mui/icons-material/Edit";
 interface TableProps {
   properties: string[];
   data: any[];
-  sortFunction: (val: any, nexVal: any) => number;
+  sortFunction?: (val: any, nexVal: any) => number;
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
   editRow?: (row: any) => void;
   deleteRow?: (row: any) => void;
+  onScroll?: (event: any) => void;
+  tableRef?: any;
 }
 
 const GenericTable: React.FC<TableProps> = ({
@@ -38,14 +40,15 @@ const GenericTable: React.FC<TableProps> = ({
   color,
   editRow,
   deleteRow,
+  onScroll,
+  tableRef,
 }) => {
   const tableHeightPercent = 85;
   const tableRowHeight = 82;
-  const tableFetchExtra = 4;
-  const tableHeadHeight = 56.5;
-
   const { t } = useTranslation();
+  const sortedData = sortFunction ? data.sort(sortFunction) : data;
   const columns = properties.slice();
+
   if (color != undefined) {
     columns.push("!color");
   }
@@ -55,46 +58,6 @@ const GenericTable: React.FC<TableProps> = ({
   if (deleteRow != undefined) {
     columns.push("!delete");
   }
-
-  const [offset, setOffset] = useState(0);
-  const [sortedData, setSortedData] = useState(data.sort(sortFunction));
-  const limit = Math.round(
-    (window.innerHeight * (tableHeightPercent / 100)) / tableRowHeight +
-      tableFetchExtra
-  );
-  const [dataToShow, setdataToShow] = useState(
-    sortedData.slice(offset, limit * offset)
-  );
-
-  useEffect(() => {
-    fetchMoreData();
-  }, [offset]);
-
-  useEffect(() => {
-    setOffset(0);
-    const sorted = data.sort(sortFunction);
-    setSortedData(sorted);
-    setdataToShow(sorted.slice(0, limit));
-  }, [data]);
-
-  const fetchMoreData = async () => {
-    const newData = sortedData.slice(offset * limit, (offset + 1) * limit);
-    setdataToShow([...new Set([...dataToShow, ...newData])]);
-  };
-
-  const handleScroll = (event: any) => {
-    const children = document.getElementById("table")?.childElementCount;
-    const target = event.target;
-
-    if (
-      target.scrollTop + target.offsetHeight + tableHeadHeight >=
-      tableRowHeight * (children ? children : 1)
-    ) {
-      setTimeout(() => {
-        setOffset(offset + 1);
-      }, 100); // timeout to simulate fetch time from server
-    }
-  };
 
   const valueToMultipleLines = (
     value: Date | string | number | Status | Severity
@@ -144,7 +107,7 @@ const GenericTable: React.FC<TableProps> = ({
         height: tableHeightPercent + "vh",
         overflowY: "auto",
       }}
-      onScroll={handleScroll}
+      onScroll={onScroll}
     >
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }}>
@@ -165,8 +128,8 @@ const GenericTable: React.FC<TableProps> = ({
               })}
             </TableRow>
           </TableHead>
-          <TableBody id="table">
-            {dataToShow.map((dataSet) => (
+          <TableBody ref={tableRef} id="table">
+            {sortedData.map((dataSet) => (
               <TableRow
                 sx={{
                   ":hover": { background: "rgba(212, 237, 255, 0.102)" },

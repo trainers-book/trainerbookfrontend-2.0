@@ -1,18 +1,16 @@
 import "../../i18n";
 import { useTranslation } from "react-i18next";
 
-import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import NewEntity from "./newEntityForm";
-import { FlightData } from "../../types/tables/manageTypes";
+import { PreservedFlightNameData } from "../../types/tables/manageTypes";
 import { usePlatforms } from "../../context/platformsContext";
 
 interface NewFlightProps {
-  callback: (user: FlightData) => void;
+  callback: (user: PreservedFlightNameData) => void;
 }
 
 const NewFlight: React.FC<NewFlightProps> = ({ callback }) => {
-  const theme = useTheme();
   const { t } = useTranslation();
   const [name, setName] = useState<string>("");
   const { platforms } = usePlatforms();
@@ -33,7 +31,7 @@ const NewFlight: React.FC<NewFlightProps> = ({ callback }) => {
         },
       ]}
       callback={() => {
-        callback(new FlightData(new Date(), name, selectedPlatforms[0]));
+        callback(new PreservedFlightNameData(new Date(), name, selectedPlatforms[0]));
       }}
     />
   );

@@ -17,7 +17,7 @@ export class UsersData {
   }
 }
 
-export class FlightData {
+export class PreservedFlightNameData {
   date: Date;
   flightName: string;
   platform: string;

@@ -42,6 +42,37 @@ class Connection {
         return { status: error.response.status, data: error.response.data[0] };
       });
   }
+
+  async getObjects(collection: string, index: number, platform: string[]) {        
+    platform = JSON.stringify(platform.map((platformName) => {return {name: platformName}}));    
+    return axios
+      .get(`${this.appUrl}${collection}/Amount/${index}`, {params: {platform: platform}})
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data[0] };
+      });
+  }
+  
+  async getObjectsFilter(collection: string, index: number, platform: string[], filters: any) {
+    // filter: {
+    //   date: undefined, 
+    //   minDate: undefined,
+    //   maxDate: undefined,
+    //   failureStatus: undefined,
+    //   issueSeverity: undefined,
+    //   search: undefined
+    // }
+    return axios
+      .get(`${this.appUrl}${collection}/getAmountByFilters/${index}`, {params: {platform: platform.map((platformName) => JSON.stringify(platformName)), filters: filters}})
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return error
+      });
+  }
 }
 
 interface BackendContextType {
