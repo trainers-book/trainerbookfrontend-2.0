@@ -19,7 +19,6 @@ const ReviewFlights: React.FC = () => {
       };
 
       return (
-        // add permissions filtering
         (selectedPlatforms.length == 0 ||
           selectedPlatforms.includes(dataSet.platform)) &&
         (selectedDate == "" || getDate(dataSet.dateTime) == selectedDate) &&
@@ -28,7 +27,7 @@ const ReviewFlights: React.FC = () => {
           .reduce(
             (accumulator, value) => accumulator || value.includes(searchQuery),
             false
-          ) // make sure this is always the last check
+          )
       );
     });
   };

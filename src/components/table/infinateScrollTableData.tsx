@@ -8,7 +8,6 @@ interface InfinateScrollDataProps {
   properties: string[];
   data: any[];
   sortFunction?: (val: any, nexVal: any) => number;
-  filterFunction?: (data: any[]) => any[];
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
@@ -18,7 +17,6 @@ const InfinateScrollData: React.FC<InfinateScrollDataProps> = ({
   properties,
   data,
   sortFunction,
-  filterFunction,
   getRowClass,
   color,
   deleteRow,
@@ -27,16 +25,7 @@ const InfinateScrollData: React.FC<InfinateScrollDataProps> = ({
   const tableRowHeight = 82;
   const tableFetchExtra = 4;
   const tableHeadHeight = 56.5;
-
   const tableRef = useRef(null);
-  const columns = properties.slice();
-  if (color != undefined) {
-    columns.push("!color");
-  }
-  if (deleteRow != undefined) {
-    columns.push("!delete");
-  }
-
   const [offset, setOffset] = useState(0);
   const [sortedData, setSortedData] = useState(data.sort(sortFunction));
   const limit = Math.round(
@@ -71,22 +60,20 @@ const InfinateScrollData: React.FC<InfinateScrollDataProps> = ({
       target.scrollTop + target.offsetHeight + tableHeadHeight >=
       tableRowHeight * (children ? children : 1)
     ) {
-        setOffset(offset + 1);
+      setOffset(offset + 1);
     }
   };
 
   return (
-    <GenericTable 
-        properties={properties}
-        data={dataToShow}
-        filterFunction={filterFunction}
-        getRowClass={getRowClass}
-        color={color}
-        deleteRow={deleteRow}
-        onScroll={handleScroll}
-        tableRef={tableRef}
+    <GenericTable
+      properties={properties}
+      data={dataToShow}
+      getRowClass={getRowClass}
+      color={color}
+      deleteRow={deleteRow}
+      onScroll={handleScroll}
+      tableRef={tableRef}
     />
-
   );
 };
 

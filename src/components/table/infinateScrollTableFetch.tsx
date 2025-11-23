@@ -11,11 +11,10 @@ interface InfinateScrollFetchProps {
   properties: string[];
   fetchCollection: string;
   sortFunction?: (val: any, nexVal: any) => number;
-  filterFunction?: (data: any[]) => any[];
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
-  platformsAndFilters: {platforms: string[], filters: any};
+  platformsAndFilters: { platforms: string[]; filters: any };
   objectFromFetch: (data: any) => any;
 }
 
@@ -23,16 +22,14 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   properties,
   fetchCollection,
   sortFunction,
-  filterFunction,
   getRowClass,
   color,
   deleteRow,
   objectFromFetch,
-  platformsAndFilters
+  platformsAndFilters,
 }) => {
   const tableRowHeight = 82;
   const tableHeadHeight = 56.5;
-
   const tableRef = useRef(null);
   const { connection } = useBackend();
   const { platforms } = usePlatforms();
@@ -65,20 +62,17 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
     if (platforms.length == 0 || !fetchMore) {
       return;
     }
-    
+
     if (platformsAndFilters == undefined) {
-      platformsAndFilters = {platforms: platforms, filters: {}}
+      platformsAndFilters = { platforms: platforms, filters: {} };
     }
-    console.log(platformsAndFilters);
-    
 
     const newData = await connection.getObjectsFilter(
       fetchCollection,
       offset * 25,
       platformsAndFilters.platforms,
-      platformsAndFilters.filters 
+      platformsAndFilters.filters
     );
-    console.log(offset, newData);
 
     if (newData.status == HttpStatusCode.Ok) {
       const newFetchedData: any[] = newData.data;
@@ -87,10 +81,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
           ...new Set([
             ...dataToShow,
             ...newFetchedData
-              .map(
-                (data) =>
-                  objectFromFetch(data)
-              )
+              .map((data) => objectFromFetch(data))
               .sort(sortFunction),
           ]),
         ]);
@@ -123,7 +114,6 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
       properties={properties}
       data={dataToShow}
       sortFunction={sortFunction}
-      filterFunction={filterFunction}
       getRowClass={getRowClass}
       color={color}
       deleteRow={deleteRow}

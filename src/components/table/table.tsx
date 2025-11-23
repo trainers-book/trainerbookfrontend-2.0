@@ -24,7 +24,6 @@ interface TableProps {
   properties: string[];
   data: any[];
   sortFunction?: (val: any, nexVal: any) => number;
-  filterFunction?: (data: any[]) => any[];
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
   editRow?: (row: any) => void;
@@ -37,19 +36,19 @@ const GenericTable: React.FC<TableProps> = ({
   properties,
   data,
   sortFunction,
-  filterFunction,
   getRowClass,
   color,
   editRow,
   deleteRow,
   onScroll,
-  tableRef
+  tableRef,
 }) => {
   const tableHeightPercent = 85;
   const tableRowHeight = 82;
-
   const { t } = useTranslation();
+  const sortedData = sortFunction ? data.sort(sortFunction) : data;
   const columns = properties.slice();
+
   if (color != undefined) {
     columns.push("!color");
   }
@@ -101,9 +100,6 @@ const GenericTable: React.FC<TableProps> = ({
 
     return valueArray;
   };
-
-  // const filteredData = filterFunction ? filterFunction(data) : data;
-  const sortedData = sortFunction ? data.sort(sortFunction) : data;
 
   return (
     <Box
