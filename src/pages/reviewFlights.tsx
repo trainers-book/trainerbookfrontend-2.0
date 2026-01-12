@@ -81,7 +81,6 @@ const ReviewFlights: React.FC = () => {
         sortFunction={(currentValue, nextValue) =>
           nextValue.dateTime.getTime() - currentValue.dateTime.getTime()
         }
-        filterFunction={filterData}
         fetchCollection="PreservedFlights"
         color={false}
         objectFromFetch={objectFromFetch}
