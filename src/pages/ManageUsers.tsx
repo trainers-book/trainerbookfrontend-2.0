@@ -11,7 +11,6 @@ import { Box, SvgIcon } from "@mui/material";
 import { useEffect, useState } from "react";
 import SchoolIcon from "@mui/icons-material/School";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
-import PregnantWomanIcon from "@mui/icons-material/PregnantWoman";
 import AccessibleIcon from "@mui/icons-material/Accessible";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import KeyboardCommandKeyIcon from "@mui/icons-material/KeyboardCommandKey";
@@ -49,8 +48,8 @@ const sunglassesIcon: React.ReactNode = (
 );
 
 type Tab = {
-  label: string;
   show: boolean;
+  label: string;
   icon: React.ReactNode;
   collection: string;
   deleteEntity: boolean;
@@ -87,18 +86,21 @@ const ManageUsers: React.FC = () => {
   const [newData, setNewData] = useState<boolean>(false);
   const [editPopupObject, setEditPopupObject] = useState<any>(null);
 
-  const canDelete =
+  const adminCommander =
     ls.getAuthorization() == "admin" || ls.getAuthorization() == "Commander";
+
   const showAll =
     ls.getAuthorization() == "admin" ||
     ls.getAuthorization() == "Commander" ||
     ls.getAuthorization() == "Instructor";
-  const canAdd =
-    ls.getAuthorization() == "admin" || ls.getAuthorization() == "Commander";
+
+  //const adminCommander =
+   // ls.getAuthorization() == "admin" || ls.getAuthorization() == "Commander";
+
   const tabs: Tab[] = [
     {
-      label: t("platform"),
       show: ls.getAuthorization() == "admin",
+      label: t("platform"),
       icon: <AirplanemodeActiveIcon />,
       collection: API_Pathes.PLATFORM,
       deleteEntity: ls.getAuthorization() == "admin",
@@ -118,13 +120,13 @@ const ManageUsers: React.FC = () => {
       },
     },
     {
-      label: t("instructors"),
       show: showAll,
+      label: t("instructors"),
       icon: <SchoolIcon />,
       collection: API_Pathes.INSTRUCTOR,
-      deleteEntity: canDelete,
+      deleteEntity: adminCommander,
       editEntity: ls.getAuthorization() == "admin",
-      addEntity: canAdd,
+      addEntity: adminCommander,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -136,15 +138,13 @@ const ManageUsers: React.FC = () => {
       entityToDbEntity: userToDbEntity,
     },
     {
+      show: adminCommander,
       label: t("commanders"),
-      show:
-        ls.getAuthorization() == "admin" ||
-        ls.getAuthorization() == "Commander",
       icon: <KeyboardCommandKeyIcon />,
       collection: API_Pathes.COMMANDER,
       deleteEntity: ls.getAuthorization() == "admin",
       editEntity: ls.getAuthorization() == "admin",
-      addEntity: canAdd,
+      addEntity: adminCommander,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -156,11 +156,11 @@ const ManageUsers: React.FC = () => {
       entityToDbEntity: userToDbEntity,
     },
     {
-      label: t("airCrew1"),
       show: showAll,
-      icon: <PregnantWomanIcon />, // sunglassesIcon
+      label: t("airCrew1"),
+      icon: sunglassesIcon,
       collection: API_Pathes.PILOT,
-      deleteEntity: canDelete,
+      deleteEntity: adminCommander,
       editEntity: ls.getAuthorization() == "admin",
       addEntity: true,
       entityType: UsersData,
@@ -174,11 +174,11 @@ const ManageUsers: React.FC = () => {
       entityToDbEntity: userToDbEntity,
     },
     {
-      label: t("airCrew2"),
       show: showAll,
-      icon: <AccessibleIcon />, // <MenuBookIcon />
+      label: t("airCrew2"),
+      icon: <MenuBookIcon />,
       collection: API_Pathes.NAVIGATOR,
-      deleteEntity: canDelete,
+      deleteEntity: adminCommander,
       editEntity: ls.getAuthorization() == "admin",
       addEntity: true,
       entityType: UsersData,
@@ -196,7 +196,7 @@ const ManageUsers: React.FC = () => {
       show: showAll,
       icon: <TrainIcon />,
       collection: API_Pathes.TRAINER,
-      deleteEntity: canDelete,
+      deleteEntity: adminCommander,
       editEntity: ls.getAuthorization() == "admin",
       addEntity: true,
       entityType: UsersData,
@@ -210,13 +210,13 @@ const ManageUsers: React.FC = () => {
       entityToDbEntity: userToDbEntity,
     },
     {
-      label: t("technicians"),
       show: true,
+      label: t("technicians"),
       icon: <AccessibleIcon />,
       collection: API_Pathes.TECHNICIAN,
-      deleteEntity: canDelete,
+      deleteEntity: adminCommander,
       editEntity: ls.getAuthorization() == "admin",
-      addEntity: canAdd,
+      addEntity: adminCommander,
       entityType: UsersData,
       sort: (currentValue: UsersData, nextValue: UsersData) =>
         Number(currentValue.personalNumber) - Number(nextValue.personalNumber),
@@ -312,6 +312,10 @@ const ManageUsers: React.FC = () => {
     fetchServerData();
   }, [newData]);
 
+  useEffect(() => {
+    fetchServerData();
+  }, [newData]);
+
   return (
     <PageWrapper>
       <Box sx={{ display: "flex" }}>
@@ -359,6 +363,18 @@ const ManageUsers: React.FC = () => {
                 )
             )}
             sortFunction={currentTab.sort}
+            editRow={
+              currentTab.editEntity
+                ? (row) => {
+                    setData(
+                      data.filter((val) => {
+                        setSearch(search + "");
+                        return JSON.stringify(val) != JSON.stringify(row);
+                      })
+                    );
+                  }
+                : undefined
+            }
             deleteRow={
               currentTab.deleteEntity
                 ? (row) => {

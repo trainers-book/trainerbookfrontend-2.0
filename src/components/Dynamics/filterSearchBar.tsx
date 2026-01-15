@@ -55,7 +55,7 @@ const FilterSearchBar: React.FC<FilterSearchBarProps> = ({
           <TextField
             value={searchValue}
             sx={{
-              mr: 1,
+              mr: .2,
               "& .MuiInputBase-root": {
                 borderRadius: 2,
               },

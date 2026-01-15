@@ -8,7 +8,8 @@ import { useLocalStorage } from "../context/localStorageContext";
 
 const AppRoutes = () => {
   const { ls } = useLocalStorage();
-  return (
+
+    return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route

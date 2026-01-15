@@ -37,16 +37,9 @@ const Navbar: React.FC = () => {
     ls.delDisplayName();
     ls.delIsAuthenticated();
 
-    setAnchorEl(null);
     setUsername("");
     setPlatforms([]);
     navigate("/");
-  };
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
   };
 
   const possibleRoutes = routeItems.filter(
@@ -144,7 +137,6 @@ const Navbar: React.FC = () => {
                 <Typography
                   sx={{ opacity: "70%" }}
                   className="text"
-                  onClick={handleClick}
                 >
                   {t("hello")},{username} - {t(ls.getAuthorization())}
                 </Typography>
