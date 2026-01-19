@@ -19,7 +19,9 @@ const NewFlight: React.FC<NewFlightProps> = ({ callback }) => {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
 
   const getFlightId = async () => {
-    const id = await connection.getNextId(CollectionIds.PRESERVED_FLIGHT_NAME_ID);    
+    const id = await connection.getNextId(
+      CollectionIds.PRESERVED_FLIGHT_NAME_ID
+    );
     if (id.status == HttpStatusCode.InternalServerError) {
       return -1;
     } else {
@@ -28,32 +30,31 @@ const NewFlight: React.FC<NewFlightProps> = ({ callback }) => {
   };
 
   const createFlight = async () => {
-    const id = await getFlightId();    
+    const id = await getFlightId();
+
     if (id == -1) {
       return;
     } else {
       callback(new FlightData(new Date(), name, selectedPlatforms[0], id));
     }
-
-
   };
 
   return (
     <NewEntity
-      textInputs={[
-        { label: t("flightName"), setter: setName },
-      ]}
+      textInputs={[{ label: t("flightName"), setter: setName }]}
       dropdownInputs={[
         {
           label: t("platform"),
           options: platforms,
           selected: selectedPlatforms,
           setter: setSelectedPlatforms,
-          multiple: false
+          multiple: false,
         },
       ]}
       callback={() => {
-        createFlight();
+        if (name.replace(/\s/g, "") != "" && platforms.length != 0) {
+          createFlight();
+        }
       }}
     />
   );
