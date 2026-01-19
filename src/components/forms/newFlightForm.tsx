@@ -30,13 +30,15 @@ const NewFlight: React.FC<NewFlightProps> = ({ callback }) => {
   };
 
   const createFlight = async () => {
+    const flightName = name;
+    const platform = selectedPlatforms[0];
     const id = await getFlightId();
 
     if (id == -1) {
       return;
-    } else {
-      callback(new FlightData(new Date(), name, selectedPlatforms[0], id));
     }
+    
+    callback(new FlightData(new Date(), flightName, platform, id));
   };
 
   return (
@@ -52,7 +54,7 @@ const NewFlight: React.FC<NewFlightProps> = ({ callback }) => {
         },
       ]}
       callback={() => {
-        if (name.replace(/\s/g, "") != "" && platforms.length != 0) {
+        if (name.replace(/\s/g, "") != "" && selectedPlatforms.length != 0) {
           createFlight();
         }
       }}

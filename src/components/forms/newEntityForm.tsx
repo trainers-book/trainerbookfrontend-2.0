@@ -73,6 +73,7 @@ const NewEntity: React.FC<NewEntityProps> = ({
             }}
             onClick={() => {
               callback();
+              dropdownInputs.forEach((input) => input.setter([]));
             }}
           >
             {t("add")}
