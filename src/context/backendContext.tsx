@@ -134,6 +134,20 @@ class Connection {
         return { status: error.response.status, data: error.response.data };
       });
   }
+
+  async deleteObject(
+    collection: string,
+    id: string
+  ) {
+    return axios
+      .delete(`${this.appUrl}${collection}`, {params: {"_id": id}})
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
+  }
 }
 
 interface BackendContextType {
