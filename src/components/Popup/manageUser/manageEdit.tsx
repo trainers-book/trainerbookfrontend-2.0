@@ -7,6 +7,7 @@ import {
   Button,
   IconButton,
   Box,
+  Tooltip,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import CloseIcon from "@mui/icons-material/Close";
@@ -84,14 +85,16 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
             <CloseIcon />
           </IconButton>
           {manageObject instanceof UsersAccountData && (
-            <IconButton
-              onClick={() => {
-                loginAs(manageObject as UsersAccountData);
-              }}
-              sx={{ position: "absolute", left: 8, top: 8 }}
-            >
-              <ArrowDownwardIcon />
-            </IconButton>
+            <Tooltip title="login as" arrow>
+              <IconButton
+                onClick={() => {
+                  loginAs(manageObject as UsersAccountData);
+                }}
+                sx={{ position: "absolute", left: 8, top: 8 }}
+              >
+                <ArrowDownwardIcon />
+              </IconButton>
+            </Tooltip>
           )}
           <DialogTitle align="center" variant="h4">
             {t("changeDetails")} - {t(name)}
