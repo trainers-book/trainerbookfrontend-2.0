@@ -243,6 +243,7 @@ const ManageUsers: React.FC = () => {
         return -1;
       },
       dataManipulation: (flightNameValue) => {
+        flightNameValue["!id"] = flightNameValue["_id"];
         delete flightNameValue["_id"];
         flightNameValue["date"] = new Date(flightNameValue["date"]);
       },
@@ -253,7 +254,7 @@ const ManageUsers: React.FC = () => {
         date: Date;
       }) => {
         return {
-          _id: flight._id,
+          _id: JSON.stringify(flight._id),
           name: flight.name,
           platform: flight.platform,
           date: flight.date.getTime(),
@@ -262,6 +263,88 @@ const ManageUsers: React.FC = () => {
     },
   ];
   const [currentTab, setCurrentTab] = useState<Tab>(tabs[1]);
+
+  const deleteEntity = async (row: any) => {
+    let updateResponse;
+
+    if (currentTab.entityType == platformData) {
+      updateResponse = await connection.deleteObject(
+        currentTab.collection,
+        row.id
+      );
+    } else if (currentTab.entityType == FlightData) {
+      updateResponse = await connection.deleteObject(
+        currentTab.collection,
+        row["!id"]
+      );
+    } else if (currentTab.entityType == UsersData) {
+      updateResponse = await connection.deleteObject(
+        currentTab.collection,
+        row.personalNumber
+      );
+
+      await connection.deleteObject(
+        API_Pathes.AUTHENTICATION,
+        row.personalNumber
+      );
+    }
+
+    if (updateResponse?.status == HttpStatusCode.Ok) {
+      setNewData(!newData);
+    }
+  };
+
+  const editEntity = async (row: any) => {
+    if (
+      currentTab.entityType == UsersData &&
+      [t("instructors"), t("commanders"), t("technicians")].includes(
+        currentTab.label
+      )
+    ) {
+      const user = await connection.getUserbyPersonalNumber(row.personalNumber);
+
+      if (
+        user.status == HttpStatusCode.Accepted &&
+        user.data.password != undefined
+      ) {
+        setEditPopupObject(
+          new UsersAccountData(
+            user.data.userName,
+            row.firstName,
+            row.lastName,
+            user.data.platform,
+            user.data.password,
+            user.data.authenticationLevel,
+            user.data["_id"]
+          )
+        );
+      } else {
+        setEditPopupObject(
+          new UsersData(
+            row.personalNumber,
+            row.firstName,
+            row.lastName,
+            row.platforms.split(", ")
+          )
+        );
+      }
+    } else if (currentTab.label == t("platform")) {
+      setEditPopupObject(new platformData(row.name, row.id));
+    } else if (currentTab.label == t("flights")) {
+      setEditPopupObject(
+        new FlightData(row.date, row.name, row.platform, row["!id"])
+      );
+    } else {
+      setEditPopupObject(
+        new UsersData(
+          row.personalNumber,
+          row.firstName,
+          row.lastName,
+          row.platforms.split(", ")
+        )
+      );
+    }
+  };
 
   const fetchData = async (
     collection: string,
@@ -359,77 +442,8 @@ const ManageUsers: React.FC = () => {
                 )
             )}
             sortFunction={currentTab.sort}
-            deleteRow={
-              currentTab.deleteEntity
-                ? (row) => {
-                    setData(
-                      data.filter((val) => {
-                        setSearch(search + "");
-                        return JSON.stringify(val) != JSON.stringify(row);
-                      })
-                    );
-                  }
-                : undefined
-            }
-            editRow={
-              currentTab.editEntity
-                ? async (row) => {
-                    if (
-                      currentTab.entityType == UsersData &&
-                      [
-                        t("instructors"),
-                        t("commanders"),
-                        t("technicians"),
-                      ].includes(currentTab.label)
-                    ) {
-                      const user = await connection.getUserbyPersonalNumber(
-                        row.personalNumber
-                      );
-
-                      if (
-                        user.status == HttpStatusCode.Accepted &&
-                        user.data.password != undefined
-                      ) {
-                        setEditPopupObject(
-                          new UsersAccountData(
-                            user.data.userName,
-                            row.firstName,
-                            row.lastName,
-                            user.data.platform,
-                            user.data.password,
-                            user.data.authenticationLevel,
-                            user.data["_id"]
-                          )
-                        );
-                      } else {
-                        setEditPopupObject(
-                          new UsersData(
-                            row.personalNumber,
-                            row.firstName,
-                            row.lastName,
-                            row.platforms.split(", ")
-                          )
-                        );
-                      }
-                    } else if (currentTab.label == t("platform")) {
-                      setEditPopupObject(new platformData(row.name, row.id));
-                    } else if (currentTab.label == t("flights")) {
-                      setEditPopupObject(
-                        new FlightData(row.date, row.name, row.platform)
-                      );
-                    } else {
-                      setEditPopupObject(
-                        new UsersData(
-                          row.personalNumber,
-                          row.firstName,
-                          row.lastName,
-                          row.platforms.split(", ")
-                        )
-                      );
-                    }
-                  }
-                : undefined
-            }
+            deleteRow={currentTab.deleteEntity ? deleteEntity : undefined}
+            editRow={currentTab.editEntity ? editEntity : undefined}
           />
         </Box>
       </Box>
