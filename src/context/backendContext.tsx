@@ -148,6 +148,19 @@ class Connection {
         return { status: error.response.status, data: error.response.data };
       });
   }
+
+  async getManageTabs(
+    authenticationLevel: string,
+  ) {
+    return axios
+      .post(`${this.appUrl}${API_Pathes.MANAGE}`, {role: authenticationLevel})
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
+  }
 }
 
 interface BackendContextType {
@@ -192,7 +205,8 @@ export enum API_Pathes {
   SET_PASSWORD = "setPassword",
   GET_ENTITY_BUT_STRING = "FindEntityByString",
   GET_USER = "getUser",
-  GET_NEXT_ID = "getNextId"
+  GET_NEXT_ID = "getNextId",
+  MANAGE = "Manage"
 }
 
 export enum CollectionIds {

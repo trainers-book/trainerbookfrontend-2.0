@@ -111,3 +111,9 @@ export enum Roles {
   INSTRUCTOR = "Instructor",
   TECHNICIAN = "Technician",
 }
+
+export const nameToType = {
+  "platformData": platformData,
+  "userData": UsersData,
+  "flightData": FlightData
+}
