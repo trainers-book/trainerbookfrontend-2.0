@@ -1,4 +1,5 @@
 import { Box, MenuItem, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 type Tab = { label: string; show: boolean; icon: React.ReactNode };
 
@@ -13,6 +14,7 @@ const SideBar: React.FC<SideBarProps> = ({
   activeTab,
   changeTab,
 }) => {
+  const { t } = useTranslation();
   const handleClick = (tabClicked: string) => {
     if (tabClicked != activeTab.label) {
       changeTab(tabClicked);
@@ -53,7 +55,7 @@ const SideBar: React.FC<SideBarProps> = ({
             >
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 {titleIcon.icon}
-                <Typography sx={{ mr: 1 }}>{titleIcon.label}</Typography>
+                <Typography sx={{ mr: 1 }}>{t(titleIcon.label)}</Typography>
               </Box>
             </MenuItem>
           )
