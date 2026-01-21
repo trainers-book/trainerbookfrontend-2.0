@@ -107,5 +107,6 @@
   "changeDetails": "שינוי פרטים",
   "platformId": "מספר פלטפורמה",
   "platformName": "שם פלטפורמה",
-  "idNumber": "מספר מזהה"
+  "idNumber": "מספר אישי",
+  "id": "מספר זיהוי"
 }
