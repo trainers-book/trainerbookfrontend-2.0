@@ -31,6 +31,22 @@ const Navbar: React.FC = () => {
   const isLogin = location.pathname == "/";
 
   const handleLogout = () => {
+    const adminDetails = ls.getAdminLogin();
+
+    if (adminDetails) {
+      const adminDetailsObject = JSON.parse(adminDetails);
+      ls.setPlatforms(adminDetailsObject[ls.platforms]);
+      ls.setAuthorization(adminDetailsObject[ls.authorization]);
+      ls.setDisplayName(adminDetailsObject[ls.displayName]);
+      ls.setUserName(adminDetailsObject[ls.userName]);
+      ls.setIsAuthenticated(adminDetailsObject[ls.isAuthenticated]);
+
+      ls.delAdminLogin();
+      window.location.reload();
+
+      return;
+    }
+
     ls.delPlatforms();
     ls.delAuthorization();
     ls.delUserName();

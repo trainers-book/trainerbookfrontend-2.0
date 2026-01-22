@@ -20,9 +20,9 @@ export class UsersData {
     return (
       this.firstName == user.firstName &&
       this.lastName == user.lastName &&
-      this.personalNumber == user.personalNumber && 
-      this.platforms.length == user.platforms.length && 
-      this.platforms.every((value, index) => value === user.platforms[index])
+      this.personalNumber == user.personalNumber &&
+      this.platforms.length == user.platforms.length &&
+      this.platforms.every((value, index) => value == user.platforms[index])
     );
   }
 }
@@ -56,11 +56,11 @@ export class UsersAccountData extends UsersData {
     return (
       this.firstName == account.firstName &&
       this.lastName == account.lastName &&
-      this.personalNumber == account.personalNumber && 
+      this.personalNumber == account.personalNumber &&
       this.password == account.password &&
       this.role == account.role &&
       this.id == account.id &&
-      this.platforms.length == account.platforms.length && 
+      this.platforms.length == account.platforms.length &&
       this.platforms.every((value, index) => value === account.platforms[index])
     );
   }
@@ -88,7 +88,7 @@ export class FlightData {
   }
 }
 
-export class platformData {
+export class PlatformData {
   id: number;
   name: string;
 
@@ -97,11 +97,8 @@ export class platformData {
     this.name = name;
   }
 
-  isEqual(platform: platformData) {
-    return (
-      this.id == platform.id &&
-      this.name == platform.name
-    );
+  isEqual(platform: PlatformData) {
+    return this.id == platform.id && this.name == platform.name;
   }
 }
 
@@ -110,4 +107,10 @@ export enum Roles {
   COMMANDER = "Commander",
   INSTRUCTOR = "Instructor",
   TECHNICIAN = "Technician",
+}
+
+export enum ManageTypes {
+  FLIGHT = "flightData",
+  USERS = "userData",
+  PLATFORM = "platformData",
 }

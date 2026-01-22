@@ -7,13 +7,14 @@ import {
   Button,
   IconButton,
   Box,
+  Tooltip,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import {
   FlightData,
-  platformData,
+  PlatformData,
   UsersAccountData,
   UsersData,
 } from "../../../types/tables/manageTypes";
@@ -28,9 +29,9 @@ import { useLocalStorage } from "../../../context/localStorageContext";
 interface ManageEditModelProps {
   name: string;
   currentCollection: string;
-  manageObject: UsersData | FlightData | platformData | UsersAccountData;
+  manageObject: UsersData | FlightData | PlatformData | UsersAccountData;
   setManageObject: (
-    object: UsersData | FlightData | platformData | UsersAccountData | null
+    object: UsersData | FlightData | PlatformData | UsersAccountData | null
   ) => void;
   updateData: (value: boolean) => void;
   updatedData: boolean;
@@ -46,16 +47,26 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
 }) => {
   const { t } = useTranslation();
   const { connection } = useBackend();
-  const { ls } = useLocalStorage()
+  const { ls } = useLocalStorage();
   const [submitChanges, setSubmitChanges] = useState(false);
 
-  const loginAs = (user: UsersAccountData) => {    
+  const loginAs = (user: UsersAccountData) => {
+    const adminLoginDetails = {
+      platforms: ls.getPlatforms(),
+      authorization: ls.getAuthorization(),
+      userName: ls.getUserName(),
+      displayName: ls.getDisplayName(),
+      isAuthenticated: ls.getIsAuthenticated()
+    };
+    
     ls.clear();
     ls.setPlatforms(user.platforms);
     ls.setAuthorization(user.role);
     ls.setDisplayName(user.firstName + " " + user.lastName);
     ls.setUserName(user.personalNumber);
     ls.setIsAuthenticated("true");
+
+    ls.setAdminLogin(adminLoginDetails);
     window.location.reload();
   };
 
@@ -84,14 +95,16 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
             <CloseIcon />
           </IconButton>
           {manageObject instanceof UsersAccountData && (
-            <IconButton
-              onClick={() => {
-                loginAs(manageObject as UsersAccountData);
-              }}
-              sx={{ position: "absolute", left: 8, top: 8 }}
-            >
-              <ArrowDownwardIcon />
-            </IconButton>
+            <Tooltip title="login as" arrow>
+              <IconButton
+                onClick={() => {
+                  loginAs(manageObject as UsersAccountData);
+                }}
+                sx={{ position: "absolute", left: 8, top: 8 }}
+              >
+                <ArrowDownwardIcon />
+              </IconButton>
+            </Tooltip>
           )}
           <DialogTitle align="center" variant="h4">
             {t("changeDetails")} - {t(name)}
@@ -205,9 +218,9 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
                 }}
               />
             )}
-            {manageObject instanceof platformData && (
+            {manageObject instanceof PlatformData && (
               <EditPlatform
-                platformData={manageObject}
+                PlatformData={manageObject}
                 invokeCallback={submitChanges}
               />
             )}

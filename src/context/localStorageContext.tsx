@@ -8,6 +8,7 @@ class LocalStorage {
   userName: string;
   displayName: string;
   isAuthenticated: string;
+  adminLogin: string;
 
   constructor() {
     this.encoder = new TextEncoder();
@@ -17,6 +18,7 @@ class LocalStorage {
     this.userName = "userName";
     this.displayName = "displayName";
     this.isAuthenticated = "isAuthenticated";
+    this.adminLogin = "adminLogin"
   }
 
   encodeString(toEncode: string) {
@@ -89,6 +91,10 @@ class LocalStorage {
   setIsAuthenticated(isAuthenticated: string) {
     this.setValue(this.isAuthenticated, isAuthenticated);
   }
+  
+  setAdminLogin(adminLoginDetails: any) {    
+    this.setValue(this.adminLogin, JSON.stringify(adminLoginDetails));
+  }
 
   getPlatforms() {
     return this.getValue(this.platforms)?.split(",");
@@ -109,6 +115,10 @@ class LocalStorage {
   getIsAuthenticated() {
     return this.getValue(this.isAuthenticated);
   }
+  
+  getAdminLogin() {
+    return this.getValue(this.adminLogin);
+  }
 
   delPlatforms() {
     this.deleteValue(this.platforms);
@@ -128,6 +138,10 @@ class LocalStorage {
 
   delIsAuthenticated() {
     this.deleteValue(this.isAuthenticated);
+  }
+  
+  delAdminLogin() {
+    this.deleteValue(this.adminLogin);
   }
 }
 

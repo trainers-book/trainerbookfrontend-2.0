@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import NewEntity from "./newEntityForm";
 import { usePlatforms } from "../../context/platformsContext";
+import { UsersData } from "../../types/tables/manageTypes";
 
 interface NewUserProps {
   callback: (user: any) => void;
@@ -33,13 +34,13 @@ const NewUser: React.FC<NewUserProps> = ({ callback }) => {
         },
       ]}
       callback={() => {
-        callback({
-          firstName: name,
-          lastName: lastName,
-          displayName: name + " " + lastName,
-          platform: selectedPlatforms,
-          idNumber: idNumber,
-        });
+        if (
+          name.replace(/\s/g, "") != "" &&
+          lastName.replace(/\s/g, "") != "" &&
+          idNumber.replace(/\s/g, "") != "" &&
+          selectedPlatforms.length != 0
+        )
+          callback(new UsersData(idNumber, name, lastName, selectedPlatforms));
       }}
     />
   );
