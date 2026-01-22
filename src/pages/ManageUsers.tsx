@@ -48,10 +48,11 @@ const sunglassesIcon: React.ReactNode = (
 );
 
 type Tab = {
-  label: string;
   show: boolean;
+  label: string;
   icon: React.ReactNode;
   collection: string;
+
   deleteEntity: boolean;
   editEntity: boolean;
   addEntity: boolean;
