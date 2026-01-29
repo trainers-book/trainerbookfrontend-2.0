@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import PageWrapper from "../components/pageWrapper/PageWrapper";
 import GenericTable from "../components/table/table";
 import {
-  FlightData,
+  PreservedFlightNameData,
   ManageTypes,
   PlatformData,
   UsersAccountData,

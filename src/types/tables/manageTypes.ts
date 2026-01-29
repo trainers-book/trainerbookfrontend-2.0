@@ -66,7 +66,7 @@ export class UsersAccountData extends UsersData {
   }
 }
 
-export class FlightData {
+export class PreservedFlightNameData {
   _id: number;
   date: Date;
   name: string;

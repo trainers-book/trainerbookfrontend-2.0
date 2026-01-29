@@ -5,29 +5,62 @@ export default class IssueData {
   issueNumber: number;
   dateTime: Date;
   flightName: string;
-  instructorName: string;
+  issueOpener: string;
   issueDescription: string;
   issueSeverity: Severity;
   platform: string;
   status: Status;
+  _category: string | undefined;
+  _subCategory: string | undefined;
+  _configuration: string | undefined;
+  _dome: string | undefined;
+  _closedTime: Date | undefined;
+  _fixPeriod: Date | string | undefined;
+  _isVerified: string | boolean | undefined;
+  _maintenanceActions: string | undefined;
+  _malfSystem: string | undefined;
+  _operator: string | undefined;
+  _responsibleFactor: string | undefined;
 
-  constructor(
+  constructor({
     dateTime = new Date(),
     issueNumber = 0,
     flightName = "רגיל",
-    instructorName = "מדריכה",
+    issueOpener = "מדריכה",
     issueDescription = "אין",
     platform = "בז",
     issueSeverity = Severity.low,
-    status = Status.Active
-  ) {
+    status = Status.Active,
+    category = undefined,
+    subCategory = undefined,
+    configuration = undefined,
+    dome = undefined,
+    closedTime = undefined,
+    fixPeriod = undefined,
+    isVerified = undefined,
+    maintenanceActions = undefined,
+    malfSystem = undefined,
+    operator = undefined,
+    responsibleFactor = undefined,
+  }) {
     this.dateTime = dateTime;
     this.issueNumber = issueNumber;
-    this.instructorName = instructorName;
+    this.issueOpener = issueOpener;
     this.flightName = flightName;
     this.platform = platform;
     this.issueDescription = issueDescription;
     this.issueSeverity = issueSeverity;
     this.status = status;
+    this._category = category;
+    this._subCategory = subCategory;
+    this._configuration = configuration;
+    this._dome = dome;
+    this._closedTime = closedTime;
+    this._fixPeriod = fixPeriod;
+    this._isVerified = isVerified;
+    this._maintenanceActions = maintenanceActions;
+    this._malfSystem = malfSystem;
+    this._operator = operator;
+    this._responsibleFactor = responsibleFactor;
   }
 }
