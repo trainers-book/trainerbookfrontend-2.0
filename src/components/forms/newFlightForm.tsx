@@ -2,13 +2,13 @@ import "../../i18n";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import NewEntity from "./newEntityForm";
-import { FlightData } from "../../types/tables/manageTypes";
+import { PreservedFlightNameData } from "../../types/tables/manageTypes";
 import { usePlatforms } from "../../context/platformsContext";
 import { CollectionIds, useBackend } from "../../context/backendContext";
 import { HttpStatusCode } from "axios";
 
 interface NewFlightProps {
-  callback: (user: FlightData) => void;
+  callback: (user: PreservedFlightNameData) => void;
 }
 
 const NewFlight: React.FC<NewFlightProps> = ({ callback }) => {
@@ -38,7 +38,7 @@ const NewFlight: React.FC<NewFlightProps> = ({ callback }) => {
       return;
     }
     
-    callback(new FlightData(new Date(), flightName, platform, id));
+    callback(new PreservedFlightNameData(new Date(), flightName, platform, id));
   };
 
   return (

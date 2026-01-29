@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import {
-  FlightData,
+  PreservedFlightNameData,
   PlatformData,
   UsersAccountData,
   UsersData,
@@ -29,9 +29,9 @@ import { useLocalStorage } from "../../../context/localStorageContext";
 interface ManageEditModelProps {
   name: string;
   currentCollection: string;
-  manageObject: UsersData | FlightData | PlatformData | UsersAccountData;
+  manageObject: UsersData | PreservedFlightNameData | PlatformData | UsersAccountData;
   setManageObject: (
-    object: UsersData | FlightData | PlatformData | UsersAccountData | null
+    object: UsersData | PreservedFlightNameData | PlatformData | UsersAccountData | null
   ) => void;
   updateData: (value: boolean) => void;
   updatedData: boolean;
@@ -70,7 +70,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
   };
 
   const sendDataToUpdate = async (
-    data: UsersAccountData | UsersData | FlightData
+    data: UsersAccountData | UsersData | PreservedFlightNameData
   ) => {
     if (data.isEqual(manageObject)) {
       return;
@@ -117,7 +117,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
         currentCollection,
         dataToDb
       );
-    } else if (data instanceof FlightData) {
+    } else if (data instanceof PreservedFlightNameData) {
       dataToDb = {
         _id: data._id,
         name: manageObject.name,
@@ -194,9 +194,9 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
                   objectCallback={sendDataToUpdate}
                 />
               )}
-            {manageObject instanceof FlightData && (
+            {manageObject instanceof PreservedFlightNameData && (
               <EditFlight
-                flightData={manageObject}
+                preservedFlightNameData={manageObject}
                 invokeCallback={submitChanges}
                 objectCallback={sendDataToUpdate}
               />
