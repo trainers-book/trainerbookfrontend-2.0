@@ -56,9 +56,9 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
       authorization: ls.getAuthorization(),
       userName: ls.getUserName(),
       displayName: ls.getDisplayName(),
-      isAuthenticated: ls.getIsAuthenticated()
+      isAuthenticated: ls.getIsAuthenticated(),
     };
-    
+
     ls.clear();
     ls.setPlatforms(user.platforms);
     ls.setAuthorization(user.role);
@@ -69,20 +69,19 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
     window.location.reload();
   };
 
-  const sendDataToUpdate = async (data: UsersAccountData | UsersData | FlightData) => {
-    if (data.isEqual(manageObject)) {      
+  const sendDataToUpdate = async (
+    data: UsersAccountData | UsersData | FlightData
+  ) => {
+    if (data.isEqual(manageObject)) {
       return;
     }
 
     let dataToDb;
     let updateResponse;
-  
+
     if (data instanceof UsersAccountData) {
       dataToDb = {
-        _id: data.personalNumber.slice(
-          1,
-          data.personalNumber.length
-        ),
+        _id: data.personalNumber.slice(1, data.personalNumber.length),
         lastId: data.id,
         userName: data.personalNumber,
         firstName: data.firstName,
@@ -124,18 +123,17 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
         name: manageObject.name,
         platform: data.platform,
         date: data.date.getTime(),
-      }
+      };
       updateResponse = await connection.updateEntity(
         "PreservedFlightNames",
         dataToDb
-      );          
+      );
     }
 
     if (updateResponse && updateResponse.status == HttpStatusCode.Ok) {
       updateData(!updatedData);
       setManageObject(null);
     }
-    
   };
 
   return (
