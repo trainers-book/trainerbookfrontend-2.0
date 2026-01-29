@@ -31,6 +31,12 @@ const LoginPage: React.FC = () => {
   const { setPlatforms } = usePlatforms();
   const { connection } = useBackend();
 
+  const checkConnected = () => {
+    if (ls.getIsAuthenticated()) {
+      navigate("/manageIssues");
+    } 
+  };
+
   const storeUser = (user: User) => {
     const platforms = Array.isArray(user.platform)
       ? user.platform
@@ -111,7 +117,10 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  checkConnected();
+
   return (
+    !ls.getIsAuthenticated() && 
     <Box
       component={"form"}
       onSubmit={handleSubmit}
