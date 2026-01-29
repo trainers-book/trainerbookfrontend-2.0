@@ -31,31 +31,37 @@ const Navbar: React.FC = () => {
   const isLogin = location.pathname == "/";
 
   const handleLogout = () => {
+    const adminDetails = ls.getAdminLogin();
+
+    if (adminDetails) {
+      const adminDetailsObject = JSON.parse(adminDetails);
+      ls.setPlatforms(adminDetailsObject[ls.platforms]);
+      ls.setAuthorization(adminDetailsObject[ls.authorization]);
+      ls.setDisplayName(adminDetailsObject[ls.displayName]);
+      ls.setUserName(adminDetailsObject[ls.userName]);
+      ls.setIsAuthenticated(adminDetailsObject[ls.isAuthenticated]);
+
+      ls.delAdminLogin();
+      window.location.reload();
+
+      return;
+    }
+
     ls.delPlatforms();
     ls.delAuthorization();
     ls.delUserName();
     ls.delDisplayName();
     ls.delIsAuthenticated();
 
-    setAnchorEl(null);
     setUsername("");
     setPlatforms([]);
     navigate("/");
   };
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  // const possibleRoutes = routeItems.filter((route) => {
-  //   return route != "usersManagment";
-  // }); // for future permissions
-  const possibleRoutes = routeItems.filter((route) => !(route == "usersManagment" && ls.getAuthorization() == "Technician")); // for future permissions
+  const possibleRoutes = routeItems.filter(
+    (route) =>
+      !(route == "usersManagment" && ls.getAuthorization() == "Technician")
+  );
 
   return (
     !isLogin && (
@@ -147,12 +153,13 @@ const Navbar: React.FC = () => {
                 <Typography
                   sx={{ opacity: "70%" }}
                   className="text"
-                  onClick={handleClick}
                 >
                   {t("hello")},{username} - {t(ls.getAuthorization())}
                 </Typography>
                 <Button
                   variant="contained"
+                  className="text"
+                  onClick={handleLogout}
                   sx={{
                     color: "black",
                     background: "rgb(231, 231, 231)",
@@ -163,8 +170,6 @@ const Navbar: React.FC = () => {
                     pb: 0.5,
                     borderRadius: 3,
                   }}
-                  className="text"
-                  onClick={handleLogout}
                 >
                   {t("logout")}
                 </Button>

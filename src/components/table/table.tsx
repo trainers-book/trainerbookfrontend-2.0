@@ -37,7 +37,7 @@ const GenericTable: React.FC<TableProps> = ({
   getRowClass,
   color,
   editRow,
-  deleteRow,
+  deleteRow
 }) => {
   const tableHeightPercent = 85;
   const tableRowHeight = 82;
@@ -47,13 +47,13 @@ const GenericTable: React.FC<TableProps> = ({
   const { t } = useTranslation();
   const columns = properties.slice();
   if (color != undefined) {
-    columns.push("!color");
+    columns.push("_color");
   }
   if (editRow != undefined) {
-    columns.push("!edit");
+    columns.push("_edit");
   }
   if (deleteRow != undefined) {
-    columns.push("!delete");
+    columns.push("_delete");
   }
 
   const [offset, setOffset] = useState(0);
@@ -151,7 +151,7 @@ const GenericTable: React.FC<TableProps> = ({
           <TableHead sx={{ background: "rgba(218, 218, 218, 1)" }}>
             <TableRow>
               {columns.map((column) => {
-                if (column.includes("!")) {
+                if (column.includes("_")) {
                   column = "";
                 }
                 return (
@@ -200,8 +200,7 @@ const GenericTable: React.FC<TableProps> = ({
                 )}
                 {editRow != undefined && (
                   <TableCell sx={{ width: 0 }} align="center">
-                    {/* TODO: add logic to editRow */}
-                    <IconButton onClick={() => editRow}>
+                    <IconButton onClick={() => editRow(dataSet)}>
                       <EditIcon />
                     </IconButton>
                   </TableCell>

@@ -38,6 +38,7 @@ interface FilterDropdownProps {
   ) => void;
   touched?: boolean;
   error?: string;
+  errorColor?: boolean;
 }
 
 const cacheRtl = createCache({
@@ -56,6 +57,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   touched,
   error,
   onBlur,
+  errorColor
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -93,7 +95,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
               width: width,
               mr: .2,
             }}
-            error={touched && selected.length === 0}
+            error={(touched && selected.length === 0) || errorColor}
           >
             <InputLabel
               id="dropdown-select-label"
@@ -119,7 +121,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
               input={<OutlinedInput label={label} />}
               renderValue={(selected) =>
                 selected.length === 1
-                  ? t(selected[0])
+                  ? selected[0]
                   : selected.length > 1
                     ? `${t("selected")}: ${selected.length}`
                     : ""
@@ -136,14 +138,14 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
               {options.map((option: string) => (
                 <MenuItem
                   key={option}
-                  value={t(option)}
+                  value={option}
                   style={{
-                    fontWeight: selected.includes(t(option))
+                    fontWeight: selected.includes(option)
                       ? theme.typography.fontWeightBold
                       : theme.typography.fontWeightRegular,
                   }}
                 >
-                  {t(option)}
+                  {option}
                 </MenuItem>
               ))}
             </Select>

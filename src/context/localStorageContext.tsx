@@ -8,6 +8,7 @@ class LocalStorage {
   userName: string;
   displayName: string;
   isAuthenticated: string;
+  adminLogin: string;
 
   constructor() {
     this.encoder = new TextEncoder();
@@ -17,6 +18,7 @@ class LocalStorage {
     this.userName = "userName";
     this.displayName = "displayName";
     this.isAuthenticated = "isAuthenticated";
+    this.adminLogin = "adminLogin"
   }
 
   encodeString(toEncode: string) {
@@ -27,13 +29,17 @@ class LocalStorage {
     return toDecode ? decodeURIComponent(escape(atob(toDecode))) : null;
   }
 
+  clear() {
+    localStorage.clear();
+  }
+
   getValue(key: string) {
     const localstorageProblem = () => {
       // probably not the best to be in prod. suggestions are welcome for the prod verion.
       // and it doesnt work for all changes to the localstorage
       console.log("problem with decoding localstorage. reseting all values");
       // and might need to redirect to login page
-      localStorage.clear();
+      this.clear();
     };
 
     const value = localStorage.getItem(this.encodeString(key));
@@ -59,19 +65,17 @@ class LocalStorage {
     localStorage.removeItem(this.encodeString(key));
   }
 
-  setPlatforms(platforms: string|string[]) {
-    const userPlatforms = Array.isArray(platforms)
-      ? platforms
-      : [platforms];
+  setPlatforms(platforms: string | string[]) {
+    const userPlatforms = Array.isArray(platforms) ? platforms : [platforms];
 
     this.setValue(this.platforms, userPlatforms.join(","));
   }
 
   // TODO: we should to change it in the backend in order to get only one autherization, and here force to have only one
-  setAuthorization(authorization: string|string[]) {
-        const userAuthorization = Array.isArray(authorization)
-          ? authorization[0]
-          : authorization;
+  setAuthorization(authorization: string | string[]) {
+    const userAuthorization = Array.isArray(authorization)
+      ? authorization[0]
+      : authorization;
 
     this.setValue(this.authorization, userAuthorization);
   }
@@ -87,9 +91,13 @@ class LocalStorage {
   setIsAuthenticated(isAuthenticated: string) {
     this.setValue(this.isAuthenticated, isAuthenticated);
   }
+  
+  setAdminLogin(adminLoginDetails: any) {    
+    this.setValue(this.adminLogin, JSON.stringify(adminLoginDetails));
+  }
 
   getPlatforms() {
-    return this.getValue(this.platforms);
+    return this.getValue(this.platforms)?.split(",");
   }
 
   getAuthorization() {
@@ -103,9 +111,13 @@ class LocalStorage {
   getDisplayName() {
     return this.getValue(this.displayName);
   }
-  
+
   getIsAuthenticated() {
     return this.getValue(this.isAuthenticated);
+  }
+  
+  getAdminLogin() {
+    return this.getValue(this.adminLogin);
   }
 
   delPlatforms() {
@@ -127,7 +139,10 @@ class LocalStorage {
   delIsAuthenticated() {
     this.deleteValue(this.isAuthenticated);
   }
-
+  
+  delAdminLogin() {
+    this.deleteValue(this.adminLogin);
+  }
 }
 
 interface LocalStorageContextType {
