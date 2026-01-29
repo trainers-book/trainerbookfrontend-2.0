@@ -168,10 +168,7 @@ const ManageUsers: React.FC = () => {
             }
           }
         );
-      }
-
-      console.log(mappedTabs);
-      
+      }      
 
       setTabs(mappedTabs);
       setCurrentTab(mappedTabs[0]);

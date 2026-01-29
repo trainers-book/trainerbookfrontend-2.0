@@ -70,6 +70,75 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
     window.location.reload();
   };
 
+  const sendDataToUpdate = async (data: UsersAccountData | UsersData | FlightData) => {
+    if (data.isEqual(manageObject)) {      
+      return;
+    }
+
+    let dataToDb;
+    let updateResponse;
+  
+    if (data instanceof UsersAccountData) {
+      dataToDb = {
+        _id: data.personalNumber.slice(
+          1,
+          data.personalNumber.length
+        ),
+        lastId: data.id,
+        userName: data.personalNumber,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        authenticationLevel: data.role,
+        platform: data.platforms,
+        password: data.password,
+      };
+
+      if (data.role == currentCollection) {
+        updateResponse = await connection.updateAccount(
+          currentCollection,
+          dataToDb
+        );
+      } else {
+        updateResponse = await connection.updateAccountRole(
+          currentCollection,
+          data.role,
+          dataToDb
+        );
+      }
+    } else if (data instanceof UsersData) {
+      dataToDb = {
+        _id: data.personalNumber,
+        lastId: manageObject.personalNumber,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        platform: data.platforms,
+        name: data.firstName + " " + data.lastName,
+      };
+
+      updateResponse = await connection.updateEntity(
+        currentCollection,
+        dataToDb
+      );
+    } else if (data instanceof FlightData) {
+      dataToDb = {
+        _id: data._id,
+        name: manageObject.name,
+        platform: data.platform,
+        date: data.date.getTime(),
+      }
+      updateResponse = await connection.updateEntity(
+        "PreservedFlightNames",
+        dataToDb
+      );          
+    }
+
+    if (updateResponse && updateResponse.status == HttpStatusCode.Ok) {
+      updateData(!updatedData);
+      setManageObject(null);
+    }
+    
+  };
+
   return (
     <>
       <Dialog
@@ -117,52 +186,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
               <EditAccount
                 accountData={manageObject}
                 invokeCallback={submitChanges}
-                objectCallback={async (data: UsersAccountData) => {
-                  if (!data.isEqual(manageObject)) {
-                    let updateResponse;
-                    if (data.role == currentCollection) {
-                      updateResponse = await connection.updateAccount(
-                        currentCollection,
-                        {
-                          _id: data.personalNumber.slice(
-                            1,
-                            data.personalNumber.length
-                          ),
-                          lastId: data.id,
-                          userName: data.personalNumber,
-                          firstName: data.firstName,
-                          lastName: data.lastName,
-                          authenticationLevel: data.role,
-                          platform: data.platforms,
-                          password: data.password,
-                        }
-                      );
-                    } else {
-                      updateResponse = await connection.updateAccountRole(
-                        currentCollection,
-                        data.role,
-                        {
-                          _id: data.personalNumber.slice(
-                            1,
-                            data.personalNumber.length
-                          ),
-                          lastId: data.id,
-                          userName: data.personalNumber,
-                          firstName: data.firstName,
-                          lastName: data.lastName,
-                          authenticationLevel: data.role,
-                          platform: data.platforms,
-                          password: data.password,
-                        }
-                      );
-                    }
-
-                    if (updateResponse.status == HttpStatusCode.Ok) {
-                      updateData(!updatedData);
-                      setManageObject(null);
-                    }
-                  }
-                }}
+                objectCallback={sendDataToUpdate}
               />
             )}
             {manageObject instanceof UsersData &&
@@ -170,52 +194,14 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
                 <EditUser
                   userData={manageObject}
                   invokeCallback={submitChanges}
-                  objectCallback={async (data: UsersData) => {
-                    if (!data.isEqual(manageObject)) {
-                      const updateResponse = await connection.updateEntity(
-                        currentCollection,
-                        {
-                          _id: data.personalNumber,
-                          lastId: manageObject.personalNumber,
-                          firstName: data.firstName,
-                          lastName: data.lastName,
-                          platform: data.platforms,
-                          name: data.firstName + " " + data.lastName,
-                        }
-                      );
-
-                      if (updateResponse.status == HttpStatusCode.Ok) {
-                        updateData(!updatedData);
-                        setManageObject(null);
-                      }
-                    }
-                  }}
+                  objectCallback={sendDataToUpdate}
                 />
               )}
             {manageObject instanceof FlightData && (
               <EditFlight
                 flightData={manageObject}
                 invokeCallback={submitChanges}
-                objectCallback={async (data: FlightData) => {
-                  console.log(currentCollection);
-
-                  if (!data.isEqual(manageObject)) {
-                    const updateResponse = await connection.updateEntity(
-                      "PreservedFlightNames",
-                      {
-                        _id: data._id,
-                        name: manageObject.name,
-                        platform: data.platform,
-                        date: data.date.getTime(),
-                      }
-                    );
-
-                    if (updateResponse.status == HttpStatusCode.Ok) {
-                      updateData(!updatedData);
-                      setManageObject(null);
-                    }
-                  }
-                }}
+                objectCallback={sendDataToUpdate}
               />
             )}
             {manageObject instanceof PlatformData && (
@@ -235,7 +221,6 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
           <Button
             onClick={() => {
               setSubmitChanges(!submitChanges);
-              // setManageObject(null);
             }}
             variant="contained"
             sx={{ background: "rgb(114, 156, 240)" }}
