@@ -65,7 +65,6 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
     ls.setDisplayName(user.firstName + " " + user.lastName);
     ls.setUserName(user.personalNumber);
     ls.setIsAuthenticated("true");
-
     ls.setAdminLogin(adminLoginDetails);
     window.location.reload();
   };
