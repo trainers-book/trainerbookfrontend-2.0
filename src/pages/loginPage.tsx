@@ -31,6 +31,12 @@ const LoginPage: React.FC = () => {
   const { setPlatforms } = usePlatforms();
   const { connection } = useBackend();
 
+  const checkConnected = () => {
+    if (ls.getIsAuthenticated()) {
+      navigate("/manageIssues");
+    } 
+  };
+
   const storeUser = async (user: User) => {
     ls.setAuthorization(user.authenticationLevel);
     if (user.authenticationLevel == "admin") {
@@ -127,7 +133,10 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  checkConnected();
+
   return (
+    !ls.getIsAuthenticated() && 
     <Box
       component={"form"}
       onSubmit={handleSubmit}

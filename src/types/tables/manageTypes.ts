@@ -66,7 +66,7 @@ export class UsersAccountData extends UsersData {
   }
 }
 
-export class FlightData {
+export class PreservedFlightNameData {
   _id: number;
   date: Date;
   name: string;
@@ -79,7 +79,7 @@ export class FlightData {
     this.platform = platform;
   }
 
-  isEqual(flight: FlightData) {
+  isEqual(flight: PreservedFlightNameData) {
     return (
       this.date == flight.date &&
       this.name == flight.name &&
@@ -110,7 +110,7 @@ export enum Roles {
 }
 
 export enum ManageTypes {
-  FLIGHT = "flightData",
+  FLIGHT = "preservedFlightNameData",
   USERS = "userData",
   PLATFORM = "platformData",
 }

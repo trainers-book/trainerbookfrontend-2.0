@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import PageWrapper from "../components/pageWrapper/PageWrapper";
 import GenericTable from "../components/table/table";
 import {
-  FlightData,
+  PreservedFlightNameData,
   ManageTypes,
   PlatformData,
   UsersAccountData,
@@ -56,13 +56,13 @@ type Tab = {
   editEntity: boolean;
   addEntity: boolean;
   entityType: string;
-  entityToDbEntity: (entity: PlatformData | UsersData | FlightData) => any;
+  entityToDbEntity: (entity: PlatformData | UsersData | PreservedFlightNameData) => any;
   userable: boolean;
 };
 
 const sortingFunction = (
-  currentValue: PlatformData | UsersData | FlightData,
-  nextValue: PlatformData | UsersData | FlightData
+  currentValue: PlatformData | UsersData | PreservedFlightNameData,
+  nextValue: PlatformData | UsersData | PreservedFlightNameData
 ): number => {
   if (
     currentValue instanceof PlatformData &&
@@ -77,8 +77,8 @@ const sortingFunction = (
       Number(currentValue.personalNumber) - Number(nextValue.personalNumber)
     );
   } else if (
-    currentValue instanceof FlightData &&
-    nextValue instanceof FlightData
+    currentValue instanceof PreservedFlightNameData &&
+    nextValue instanceof PreservedFlightNameData
   ) {
     return nextValue.date.getTime() - currentValue.date.getTime();
   }
@@ -87,7 +87,7 @@ const sortingFunction = (
 };
 
 const entityToDbEntityFunction = (
-  entity: PlatformData | UsersData | FlightData
+  entity: PlatformData | UsersData | PreservedFlightNameData
 ) => {
   if (entity instanceof PlatformData) {
     return {
@@ -101,7 +101,7 @@ const entityToDbEntityFunction = (
       platform: entity.platforms,
       name: entity.firstName + " " + entity.lastName,
     };
-  } else if (entity instanceof FlightData) {
+  } else if (entity instanceof PreservedFlightNameData) {
     return {
       _id: JSON.stringify(entity._id),
       name: entity.name,
@@ -235,7 +235,7 @@ const ManageUsers: React.FC = () => {
       setEditPopupObject(new PlatformData(row.name, row.id));
     } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
       setEditPopupObject(
-        new FlightData(row.date, row.name, row.platform, row["!id"])
+        new PreservedFlightNameData(row.date, row.name, row.platform, row["!id"])
       );
     } else {
       setEditPopupObject(
@@ -261,7 +261,7 @@ const ManageUsers: React.FC = () => {
     } else if (currentTab!.entityType == ManageTypes.USERS) {
       return new UsersData(entity["_id"], entity["firstName"], entity["lastName"], entity["platform"].join(", "));
     } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
-      const flight = new FlightData(new Date(entity["date"]), entity["name"], entity["platform"], entity["_id"]);
+      const flight = new PreservedFlightNameData(new Date(entity["date"]), entity["name"], entity["platform"], entity["_id"]);
       flight["!id"] = flight["_id"];
       delete flight["_id"];
 
@@ -274,7 +274,7 @@ const ManageUsers: React.FC = () => {
       await connection.getAllEntities(collection);
 
     if (entities.status == HttpStatusCode.Ok) {
-      const formattedEntities: PlatformData[] | UsersData[] | FlightData[] = [];
+      const formattedEntities: PlatformData[] | UsersData[] | PreservedFlightNameData[] = [];
       entities.data.forEach((entity: any) => {formattedEntities.push(dataManipulationFunction(entity))});      
 
       return formattedEntities;
@@ -318,7 +318,7 @@ const ManageUsers: React.FC = () => {
     } else if (currentTab!.entityType == ManageTypes.USERS) {
       return Object.keys(new UsersData("", "", "", []));
     } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
-      return Object.keys(new FlightData(new Date(), "", "", 0));
+      return Object.keys(new PreservedFlightNameData(new Date(), "", "", 0));
     }
 
     return [];

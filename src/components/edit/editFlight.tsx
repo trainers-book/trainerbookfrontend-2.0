@@ -4,19 +4,19 @@ import "../../i18n";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Box } from "@mui/material";
-import { FlightData } from "../../types/tables/manageTypes";
+import { PreservedFlightNameData } from "../../types/tables/manageTypes";
 import { useLocalStorage } from "../../context/localStorageContext";
 
 interface EditFlightProps {
-  flightData: FlightData;
+  preservedFlightNameData: PreservedFlightNameData;
 }
 
-const EditFlight: React.FC<EditFlightProps> = ({ flightData }) => {
+const EditFlight: React.FC<EditFlightProps> = ({ preservedFlightNameData }) => {
   const { t } = useTranslation();
   const { ls } = useLocalStorage();
-  const [name, setName] = useState<string>(flightData.name);
+  const [name, setName] = useState<string>(preservedFlightNameData.name);
   const [accountPlatforms, setAccountPlatforms] = useState<string[]>(
-    [flightData.platform]
+    [preservedFlightNameData.platform]
   );
 
   return (
@@ -46,7 +46,7 @@ const EditFlight: React.FC<EditFlightProps> = ({ flightData }) => {
       >
         <FilterDropdown
           label={t("platform")}
-          options={ls.getPlatforms()}
+          options={ls.getPlatforms() as string[]}
           selected={accountPlatforms}
           setSelected={setAccountPlatforms}
           isMultiple={false}

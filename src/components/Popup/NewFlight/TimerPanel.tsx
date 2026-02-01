@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from "react";
 import { Grid, Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import TimerModel from "../../timer/timer";
+import { iafWeekFormat } from "../../../common/iafWeek";
 
 interface TimerPanel {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -12,26 +13,6 @@ const formatTime = (totalSeconds: number): string => {
   const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
   const secs = String(totalSeconds % 60).padStart(2, "0");
   return `${hrs}:${mins}:${secs}`;
-};
-
-const iafWeekFormat = () => {
-  const currentTime = new Date( );
-  const firstDayOfYear = new Date(currentTime.getFullYear(), 0, 1);
-  const firstDayOfNextYear = new Date(currentTime.getFullYear() + 1, 0, 1);
-  const daysInYear = Math.floor(
-    (currentTime.getTime() - firstDayOfYear.getTime()) / (1000 * 60 * 60 * 24)
-  );
-  const weekNumber = Math.floor(daysInYear / 7) + 1;
-  const sameWeekAsNextYear =
-    Math.floor(
-      (currentTime.getTime() - firstDayOfNextYear.getTime()) /
-        (1000 * 60 * 60 * 24)
-    ) >= -6 &&
-    Math.floor(
-      (currentTime.getTime() - firstDayOfNextYear.getTime()) /
-        (1000 * 60 * 60 * 24)
-    ) <= 0;
-  return sameWeekAsNextYear || weekNumber > 52 ? 1 : weekNumber;
 };
 
 const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
@@ -86,7 +67,7 @@ const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
           </Typography>
         </Grid>
         <Grid size={4}>
-          <Typography>{iafWeekFormat()}</Typography>
+          <Typography>{iafWeekFormat(new Date())}</Typography>
         </Grid>
       </Grid>
       <Grid container spacing={2}>

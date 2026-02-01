@@ -1,25 +1,32 @@
 import PageWrapper from "../components/pageWrapper/PageWrapper";
-import GenericTable from "../components/table/table";
 import "../types/tableTypes";
 import IssueData from "../types/tables/issues";
 import { Status } from "../types/statuses";
 import { Box } from "@mui/material";
 import type React from "react";
-import { useState } from "react";
-import { useIssues } from "../context/issueContext";
+import { useEffect, useState } from "react";
 import FilterIssues from "../components/filterTables/filterIssues";
 import NewMalfModel from "../components/Popup/newMalf/newMalf";
+import InfinateScroll from "../components/table/infinateScrollTableFetch";
 import ExcelExport from "../components/excel/excelExport";
+import { useIssues } from "../context/issueContext";
 import { useTranslation } from "react-i18next";
+import { usePlatforms } from "../context/platformsContext";
 
 const ManageIssues: React.FC = () => {
-  const { t } = useTranslation();
-  const { issueData } = useIssues();
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedSeverity, setSelectedSeverity] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<string>("");
+  const [filterChange, setFilterChange] = useState<boolean>(true);
+  const { t } = useTranslation();
+  const { issueData } = useIssues();
+  const { platforms } = usePlatforms();
+
+  useEffect(() => {
+    setFilterChange(!filterChange);    
+  }, [selectedPlatforms, selectedStatuses, selectedSeverity, selectedDate]);
 
   const getRowClass = (row: IssueData) => {
     return Object.keys(Status)
@@ -27,8 +34,8 @@ const ManageIssues: React.FC = () => {
       .toLocaleLowerCase();
   };
 
-  const filterData = () => {
-    return issueData.filter((dataSet) => {
+  const filterData = (data: IssueData[]) => {
+    return data.filter((dataSet) => {
       const getDate = (date: Date) => {
         return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
       };
@@ -50,6 +57,32 @@ const ManageIssues: React.FC = () => {
           ) // make sure this is always the last check
       );
     });
+  };
+
+  const objectFromFetch = (malf: any) => {
+    return new IssueData({
+      ...malf,
+      dateTime: new Date(malf.dateTime),
+      flightNumber: malf._id,
+      status: Status[malf.failureStatus],
+      issueDescription: malf.failureDetails,
+      issueSeverity: malf.disruption,
+      issueOpener: malf.malfunctionOpener || malf.malfunctionOpener,
+    });
+  };
+
+  const getPlatformsAndFilters = () => {
+    return {
+      platforms: selectedPlatforms.length == 0 ? platforms : selectedPlatforms,
+      filters: {
+        failureStatus:
+          selectedStatuses.length == 0
+            ? []
+            : selectedStatuses.map((status) => {
+                return Object.keys(Status).find((k) => Status[k] === status);
+              }),
+      },
+    };
   };
 
   return (
@@ -74,19 +107,23 @@ const ManageIssues: React.FC = () => {
           setDate={setSelectedDate}
         />
         <Box sx={{ display: "flex" }}>
-          <ExcelExport dataObject={new IssueData()} data={issueData} tableDataName={t("manageIssues")} />
+          <ExcelExport dataObject={new IssueData({})} data={issueData} tableDataName={t("manageIssues")} />
           <NewMalfModel />
         </Box>
       </Box>
-      <GenericTable
-        properties={Object.keys(new IssueData()).filter(() => true)}
-        data={filterData()}
+      <InfinateScroll
+        properties={Object.keys(new IssueData({})).filter(
+          (property) => !property.includes("_")
+        )}
         sortFunction={(currentValue, nextValue) =>
           nextValue.dateTime.getTime() - currentValue.dateTime.getTime()
         }
+        fetchCollection="FlightFailure"
         getRowClass={getRowClass}
         color={true}
-      ></GenericTable>
+        objectFromFetch={objectFromFetch}
+        platformsAndFilters={getPlatformsAndFilters()}
+      /> 
     </PageWrapper>
   );
 };
