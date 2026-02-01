@@ -28,6 +28,8 @@ interface TableProps {
   color?: boolean;
   editRow?: (row: any) => void;
   deleteRow?: (row: any) => void;
+  lengthOverride?: boolean;
+  valuesOverride?: boolean;
 }
 
 const GenericTable: React.FC<TableProps> = ({
@@ -37,7 +39,9 @@ const GenericTable: React.FC<TableProps> = ({
   getRowClass,
   color,
   editRow,
-  deleteRow
+  deleteRow,
+  lengthOverride,
+  valuesOverride
 }) => {
   const tableHeightPercent = 85;
   const tableRowHeight = 82;
@@ -102,6 +106,7 @@ const GenericTable: React.FC<TableProps> = ({
     if (!value && value != 0) {
       return [null];
     }
+
     let valueArray: string[] = [value.toString()];
 
     if (value instanceof Date) {
@@ -117,22 +122,49 @@ const GenericTable: React.FC<TableProps> = ({
       const words = value.split(" ");
       valueArray = [];
 
-      let index = 0;
-      let count = 0;
-      let currentRow = "";
-      for (let i = 0; i < 2; i++) {
-        while (index < words.length - 1 && count + words[index].length <= 20) {
-          currentRow += words[index] + " ";
-          index++;
-          count = currentRow.length;
+      if (lengthOverride) {
+        if (valuesOverride) {
+          const values = value.split(", ");
+          let index = 0;
+          let currentRow = "";
+
+          while (index < values.length) {
+            currentRow += values[index] + ", ";
+            index++;
+
+            if (index > 0 && index % 7 == 0) {
+              valueArray.push(currentRow.slice(0, currentRow.length - 2));
+              currentRow = "";
+            }
+          }
+
+          valueArray.push(currentRow.slice(0, currentRow.length - 2));
+        } else if (words.length > 4) {
+          const mid = Math.ceil(words.length / 2);
+          const firstHalf  = words.slice(0, mid);
+          const secondHalf = words.slice(mid);
+          valueArray = [firstHalf.join(' '), secondHalf.join(' ')];
+        } else {
+          valueArray = [words.join(',')];
+        }
+      } else {
+        let index = 0;
+        let count = 0;
+        let currentRow = "";
+        for (let i = 0; i < 2; i++) {
+          while (index < words.length - 1 && count + words[index].length <= 20) {
+            currentRow += words[index] + " ";
+            index++;
+            count = currentRow.length;
+          }
+
+          valueArray.push(currentRow);
+          currentRow = "";
+          count = 0;
         }
 
-        valueArray.push(currentRow);
-        currentRow = "";
-        count = 0;
+        valueArray[1] = valueArray[1].slice(0, -1) + "...";
       }
-
-      valueArray[1] = valueArray[1].slice(0, -1) + "...";
     }
 
     return valueArray;

@@ -382,6 +382,8 @@ const ManageUsers: React.FC = () => {
               sortFunction={sortingFunction}
               deleteRow={currentTab.deleteEntity ? deleteEntity : undefined}
               editRow={currentTab.editEntity ? editEntity : undefined}
+              lengthOverride={true}
+              valuesOverride={true}
             />
           </Box>
         </Box>
