@@ -7,7 +7,7 @@ import "../style/login.css";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useLocalStorage } from "../context/localStorageContext";
 import { usePlatforms } from "../context/platformsContext";
-import { useBackend } from "../context/backendContext";
+import { API_Pathes, useBackend } from "../context/backendContext";
 import { HttpStatusCode } from "axios";
 
 type User = {
@@ -37,17 +37,33 @@ const LoginPage: React.FC = () => {
     } 
   };
 
-  const storeUser = (user: User) => {
-    const platforms = Array.isArray(user.platform)
-      ? user.platform
-      : [user.platform];
-    ls.setPlatforms(platforms.join(","));
+  const storeUser = async (user: User) => {
     ls.setAuthorization(user.authenticationLevel);
+    if (user.authenticationLevel == "admin") {
+      const platforms = await connection.getAllEntities(API_Pathes.PLATFORM);
+
+      if (platforms.status == HttpStatusCode.Ok) {
+        const allPlatforms = platforms.data.map(
+          (platform: any) => platform.name
+        );
+        ls.setPlatforms(allPlatforms);
+        setPlatforms(allPlatforms);
+      } else {
+        ls.setPlatforms(user.platform);
+        setPlatforms(
+          Array.isArray(user.platform) ? user.platform : [user.platform]
+        );
+      }
+    } else {
+      ls.setPlatforms(user.platform);
+      setPlatforms(
+        Array.isArray(user.platform) ? user.platform : [user.platform]
+      );
+    }
     ls.setUserName(user.userName);
     ls.setDisplayName(user.name);
     ls.setIsAuthenticated("true");
     setUsername(user.name);
-    setPlatforms(platforms);
   };
 
   const handleLogin = async () => {
@@ -93,8 +109,8 @@ const LoginPage: React.FC = () => {
       return;
     } else if (!createPassword) {
       const passResponse = await connection.getUserHasPassword(username);
-      
-      if (passResponse.status == HttpStatusCode.NotFound) { 
+
+      if (passResponse.status == HttpStatusCode.NotFound) {
         setNoUser(true);
         return;
       } else if (passResponse.status == HttpStatusCode.NoContent) {
@@ -133,7 +149,7 @@ const LoginPage: React.FC = () => {
         mt: "10vh",
         maxWidth: "22vw",
         borderRadius: 3,
-        boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)",
+        boxShadow: "0 0 15px rgba(0, 0, 0, 0.2)",
         pr: 2,
         pl: 2,
       }}

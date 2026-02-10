@@ -3,26 +3,29 @@ import PageWrapper from "../components/pageWrapper/PageWrapper";
 import GenericTable from "../components/table/table";
 import {
   PreservedFlightNameData,
-  platformData,
+  ManageTypes,
+  PlatformData,
+  UsersAccountData,
   UsersData,
 } from "../types/tables/manageTypes";
 import { Box, SvgIcon } from "@mui/material";
 import { useEffect, useState } from "react";
 import SchoolIcon from "@mui/icons-material/School";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
-import PregnantWomanIcon from "@mui/icons-material/PregnantWoman";
 import AccessibleIcon from "@mui/icons-material/Accessible";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import KeyboardCommandKeyIcon from "@mui/icons-material/KeyboardCommandKey";
-import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import TrainIcon from "@mui/icons-material/Train";
 import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
 import SideBar from "../components/sidebar/sidebar";
-import NewUser from "../components/Dynamics/newUserForm";
-import NewFlight from "../components/Dynamics/newFlightForm";
-import NewPlatform from "../components/Dynamics/newPlatformForm";
+import NewUser from "../components/forms/newUserForm";
+import NewFlight from "../components/forms/newFlightForm";
+import NewPlatform from "../components/forms/newPlatformForm";
 import FilterSearchBar from "../components/Dynamics/filterSearchBar";
 import { useLocalStorage } from "../context/localStorageContext";
+import { API_Pathes, useBackend } from "../context/backendContext";
+import { HttpStatusCode } from "axios";
+import ManageEditModel from "../components/Popup/manageUser/manageEdit";
 
 const sunglassesIcon: React.ReactNode = (
   <SvgIcon>
@@ -48,235 +51,354 @@ type Tab = {
   show: boolean;
   label: string;
   icon: React.ReactNode;
-  entityType: any;
-  editEntity: boolean;
+  collection: string;
   deleteEntity: boolean;
-  sort: (value: any, nextValue: any) => number;
+  editEntity: boolean;
+  addEntity: boolean;
+  entityType: string;
+  entityToDbEntity: (entity: PlatformData | UsersData | PreservedFlightNameData) => any;
+  userable: boolean;
+};
+
+const sortingFunction = (
+  currentValue: PlatformData | UsersData | PreservedFlightNameData,
+  nextValue: PlatformData | UsersData | PreservedFlightNameData
+): number => {
+  if (
+    currentValue instanceof PlatformData &&
+    nextValue instanceof PlatformData
+  ) {
+    return Number(currentValue.id) - Number(nextValue.id);
+  } else if (
+    currentValue instanceof UsersData &&
+    nextValue instanceof UsersData
+  ) {
+    return (
+      Number(currentValue.personalNumber) - Number(nextValue.personalNumber)
+    );
+  } else if (
+    currentValue instanceof PreservedFlightNameData &&
+    nextValue instanceof PreservedFlightNameData
+  ) {
+    return nextValue.date.getTime() - currentValue.date.getTime();
+  }
+
+  return 1;
+};
+
+const entityToDbEntityFunction = (
+  entity: PlatformData | UsersData | PreservedFlightNameData
+) => {
+  if (entity instanceof PlatformData) {
+    return {
+      name: entity.name,
+    };
+  } else if (entity instanceof UsersData) {
+    return {
+      _id: entity.personalNumber,
+      firstName: entity.firstName,
+      lastName: entity.lastName,
+      platform: entity.platforms,
+      name: entity.firstName + " " + entity.lastName,
+    };
+  } else if (entity instanceof PreservedFlightNameData) {
+    return {
+      _id: JSON.stringify(entity._id),
+      name: entity.name,
+      platform: entity.platform,
+      date: entity.date.getTime(),
+    };
+  }
+};
+
+const nameToIcons: Record<string, React.ReactNode> = {
+  platform: <AirplanemodeActiveIcon />,
+  instructors: <SchoolIcon />,
+  commanders: <KeyboardCommandKeyIcon />,
+  airCrew1: sunglassesIcon,
+  airCrew2: <MenuBookIcon />,
+  trainees: <TrainIcon />,
+  technicians: <AccessibleIcon />,
+  flights: <AirplaneTicketIcon />,
 };
 
 const ManageUsers: React.FC = () => {
   const { t } = useTranslation();
   const [search, setSearch] = useState<string>("");
   const { ls } = useLocalStorage();
-  const canDelete =
-    ls.getAuthorization() == "admin" || ls.getAuthorization() == "Commander";
-  const showAll =
-    ls.getAuthorization() == "admin" ||
-    ls.getAuthorization() == "Commander" ||
-    ls.getAuthorization() == "Instructor";
-  const tabs: Tab[] = [
-    {
-      show: ls.getAuthorization() == "admin",
-      label: t("platform"),
-      icon: <AirplanemodeActiveIcon />,
-      entityType: platformData,
-      editEntity: ls.getAuthorization() == "admin", // based on permissions
-      deleteEntity: ls.getAuthorization() == "admin", // based on permissions
-      sort: (currentValue: platformData, nextValue: platformData) =>
-        Number(nextValue.id) - Number(currentValue.id),
-    },
-    {
-      show: showAll,
-      label: t("instructors"),
-      icon: <SchoolIcon />,
-      entityType: UsersData,
-      editEntity: ls.getAuthorization() == "admin",
-      deleteEntity: canDelete,
-      sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
-    },
-    {
-      show:
-        ls.getAuthorization() == "admin" ||
-        ls.getAuthorization() == "Commander",
-      label: t("commanders"),
-      icon: <KeyboardCommandKeyIcon />, // change here
-      entityType: UsersData,
-      editEntity: ls.getAuthorization() == "admin",
-      deleteEntity: ls.getAuthorization() == "admin",
-      sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
-    },
-    {
-      show: showAll,
-      label: t("airCrew1"),
-      icon: <PregnantWomanIcon />, // sunglassesIcon
-      entityType: UsersData,
-      editEntity: ls.getAuthorization() == "admin",
-      deleteEntity: canDelete,
-      sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
-    },
-    {
-      show: showAll,
-      label: t("airCrew2"),
-      icon: <AccessibleIcon />, // <MenuBookIcon />
-      entityType: UsersData,
-      editEntity: ls.getAuthorization() == "admin",
-      deleteEntity: canDelete,
-      sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
-    },
-    {
-      show: showAll,
-      label: t("trainees"),
-      icon: <TrainIcon />,
-      entityType: UsersData,
-      editEntity: ls.getAuthorization() == "admin",
-      deleteEntity: canDelete,
-      sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
-    },
-    {
-      show: true,
-      label: t("technicians"),
-      icon: <AccessibleIcon />,
-      entityType: UsersData,
-      editEntity: ls.getAuthorization() == "admin",
-      deleteEntity: canDelete,
-      sort: (currentValue: UsersData, nextValue: UsersData) =>
-        Number(nextValue.personalNumber) - Number(currentValue.personalNumber),
-    },
-    {
-      show: true,
-      label: t("flight"),
-      icon: <AirplaneTicketIcon />,
-      entityType: PreservedFlightNameData,
-      deleteEntity: true,
-      sort: (
-        currentValue: PreservedFlightNameData,
-        nextValue: PreservedFlightNameData
-      ) => {
-        if (currentValue instanceof PreservedFlightNameData) {
-          return nextValue.date.getTime() - currentValue.date.getTime();
-        }
-      },
-      editEntity: ls.getAuthorization() == "admin",
-    },
-  ];
-  const [currentTab, setCurrentTab] = useState<Tab>(tabs[1]);
-
-  const createEntity = (index: number) => {
-    const keys = Object.keys(new currentTab.entityType());
-
-    return new currentTab.entityType(
-      ...keys.map((val) => {
-        if (val == "date") {
-          return new Date();
-        } else if (val == "id") {
-          return 1;
-        }
-        return t(val) + index;
-      })
-    );
-  };
-
+  const { connection } = useBackend();
   const [data, setData] = useState<any[]>([]);
+  const [newData, setNewData] = useState<boolean>(false);
+  const [editPopupObject, setEditPopupObject] = useState<any>(null);
+  const [tabs, setTabs] = useState<Tab[]>([]);
+  const [currentTab, setCurrentTab] = useState<Tab>();
 
   useEffect(() => {
-    setData(
-      [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-        // new UsersData("the first", "xbox", "מספר אישי 1", [t("raam")]),
-        // new UsersData("xbox", "360", "מספר אישי 2", [t("baz")]),
-        // new UsersData("xbox", "one", "מספר אישי 3", [t("baz")]),
-        // new UsersData("xbox", "one s", "מספר אישי 4", [t("baz")]),
-        // new UsersData("xbox", "one x", "מספר אישי 5", [t("raam")]),
-        // new UsersData("xbox", "series x", "מספר אישי 6", [t("raam")]),
-      ].map((i) => createEntity(i))
+    const fetchTabs = async () => {
+      const role = ls.getAuthorization();
+      const tabsFetch = await connection.getManageTabs(role ?? "");
+      const mappedTabs: Tab[] = [];
+
+      if (tabsFetch.status == HttpStatusCode.Ok) {
+        tabsFetch.data.forEach(
+          (tab: {
+            _id: number;
+            name: string;
+            show: string[];
+            collection: string;
+            delete: string[];
+            edit: string[];
+            add: string[];
+            type: string;
+            userable: boolean;
+          }) => {
+            if (tab.show.includes(role ?? "")) {
+              mappedTabs.push({
+                label: tab.name,
+                show: true,
+                icon: nameToIcons[tab.name],
+                collection: tab.collection,
+                deleteEntity: tab.delete.includes(role ?? ""),
+                editEntity: tab.edit.includes(role ?? ""),
+                addEntity: tab.add.includes(role ?? ""),
+                entityType: tab.type,
+                entityToDbEntity: entityToDbEntityFunction,
+                userable: tab.userable,
+              });
+            }
+          }
+        );
+      }      
+
+      setTabs(mappedTabs);
+      setCurrentTab(mappedTabs[0]);
+    };
+
+    fetchTabs();
+  }, []);
+
+  const deleteEntity = async (row: any) => {
+    let updateResponse;
+
+    if (currentTab!.entityType == ManageTypes.FLIGHT) {
+      updateResponse = await connection.deleteObject(
+        currentTab!.collection,
+        row["!id"]
+      );
+    } else if (currentTab!.entityType == ManageTypes.USERS) {
+      updateResponse = await connection.deleteObject(
+        currentTab!.collection,
+        row.personalNumber
+      );
+
+      await connection.deleteObject(
+        API_Pathes.AUTHENTICATION,
+        row.personalNumber
+      );
+    }
+
+    if (updateResponse?.status == HttpStatusCode.Ok) {
+      setNewData(!newData);
+    }
+  };
+
+  const editEntity = async (row: any) => {
+    if (currentTab!.entityType == ManageTypes.USERS && currentTab!.userable) {
+      const user = await connection.getUserbyPersonalNumber(row.personalNumber);
+
+      if (
+        user.status == HttpStatusCode.Accepted &&
+        user.data.password != undefined
+      ) {
+        setEditPopupObject(
+          new UsersAccountData(
+            user.data.userName,
+            row.firstName,
+            row.lastName,
+            user.data.platform,
+            user.data.password,
+            user.data.authenticationLevel,
+            user.data["_id"]
+          )
+        );
+      } else {
+        setEditPopupObject(
+          new UsersData(
+            row.personalNumber,
+            row.firstName,
+            row.lastName,
+            row.platforms.split(", ")
+          )
+        );
+      }
+    } else if (currentTab!.entityType == ManageTypes.PLATFORM) {
+      setEditPopupObject(new PlatformData(row.name, row.id));
+    } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
+      setEditPopupObject(
+        new PreservedFlightNameData(row.date, row.name, row.platform, row["!id"])
+      );
+    } else {
+      setEditPopupObject(
+        new UsersData(
+          row.personalNumber,
+          row.firstName,
+          row.lastName,
+          row.platforms.split(", ")
+        )
+      );
+    }
+  };
+
+  const dataManipulationFunction = (
+    entity: 
+    { _id: string; name: string } |
+    { _id: string, firstName: string, lastName: string, platform: string[], name: string } |
+    { _id: string, name: string, platform: string, date: number } |
+    any
+  ): any => {    
+    if (currentTab!.entityType == ManageTypes.PLATFORM) {
+      return new PlatformData(entity["name"], Number(entity["_id"]));
+    } else if (currentTab!.entityType == ManageTypes.USERS) {
+      return new UsersData(entity["_id"], entity["firstName"], entity["lastName"], entity["platform"].join(", "));
+    } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
+      const flight = new PreservedFlightNameData(new Date(entity["date"]), entity["name"], entity["platform"], entity["_id"]);
+      flight["!id"] = flight["_id"];
+      delete flight["_id"];
+
+      return flight;
+    }
+  };
+
+  const fetchData = async (collection: string) => {
+    const entities: { status: number; data: any } =
+      await connection.getAllEntities(collection);
+
+    if (entities.status == HttpStatusCode.Ok) {
+      const formattedEntities: PlatformData[] | UsersData[] | PreservedFlightNameData[] = [];
+      entities.data.forEach((entity: any) => {formattedEntities.push(dataManipulationFunction(entity))});      
+
+      return formattedEntities;
+    }
+  };
+
+  const addData = async (
+    collection: string,
+    entity: any,
+    entityToDbEntity: (entity: any) => any
+  ) => {
+    const data: { status: number; data: any } = await connection.addEntity(
+      entityToDbEntity(entity),
+      collection
     );
+
+    if (data.status == HttpStatusCode.Ok) {
+      setNewData(!newData);
+    }
+  };
+
+  const fetchServerData = () => {
+    if (!currentTab) {
+      return;
+    }
+
+    setData([]);
+
+    fetchData(currentTab.collection).then((fetchedData) => {
+      setData(fetchedData);
+    });
+  };
+
+  const submitEntity = (entity: any) => {
+    addData(currentTab!.collection, entity, entityToDbEntityFunction);
+  };
+
+  const getCurrentTabTableProperties = (): string[] => {
+    if (currentTab!.entityType == ManageTypes.PLATFORM) {
+      return Object.keys(new PlatformData(""));
+    } else if (currentTab!.entityType == ManageTypes.USERS) {
+      return Object.keys(new UsersData("", "", "", []));
+    } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
+      return Object.keys(new PreservedFlightNameData(new Date(), "", "", 0));
+    }
+
+    return [];
+  };
+
+  useEffect(() => {
+    fetchServerData();
   }, [currentTab]);
 
-  const canAdd =
-    ls.getAuthorization() == "admin" || ls.getAuthorization() == "Commander";
+  useEffect(() => {
+    fetchServerData();
+  }, [newData]);
 
   return (
-    <PageWrapper>
-      <Box sx={{ display: "flex" }}>
-        <SideBar
-          titlesIcons={tabs}
-          activeTab={currentTab}
-          changeTab={(newtabLable) => {
-            setCurrentTab(tabs.filter((tab) => tab.label == newtabLable)[0]);
-          }}
-        />
-        <Box sx={{ flexGrow: 1 }}>
-          <Box
-            sx={{
-              mb: 1,
-              display: "flex",
-              justifyContent: "space-between",
+    currentTab && (
+      <PageWrapper>
+        <Box sx={{ display: "flex" }}>
+          <SideBar
+            titlesIcons={tabs}
+            activeTab={currentTab}
+            changeTab={(newtabLable) => {
+              setCurrentTab(tabs.filter((tab) => tab.label == newtabLable)[0]);
             }}
-          >
-            <FilterSearchBar
-              label={t("search")}
-              setSearch={setSearch}
-              width="9rem"
-              isReset={false}
-            />
-            {canAdd && currentTab.entityType == UsersData && (
-              <NewUser
-                callback={(entity: any) => {
-                  console.log(entity);
-                }}
-              />
-            )}
-            {currentTab.entityType == PreservedFlightNameData && (
-              <NewFlight
-                callback={(entity: any) => {
-                  console.log(entity);
-                }}
-              />
-            )}
-            {currentTab.entityType == platformData && (
-              <NewPlatform
-                callback={(entity: any) => {
-                  console.log(entity);
-                }}
-              />
-            )}
-          </Box>
-          <GenericTable
-            properties={Object.keys(new currentTab.entityType()).filter(
-              (col) => true
-            )}
-            data={data.filter((value) =>
-              Object.values(value)
-                .map(String)
-                .reduce(
-                  (accumulator, value) => accumulator || value.includes(search),
-                  false
-                )
-            )}
-            sortFunction={currentTab.sort}
-            editRow={
-              currentTab.editEntity
-                ? (row) => {
-                    setData(
-                      data.filter((val) => {
-                        setSearch(search + "");
-                        return JSON.stringify(val) != JSON.stringify(row);
-                      })
-                    );
-                  }
-                : undefined
-            }
-            deleteRow={
-              currentTab.deleteEntity
-                ? (row) => {
-                    setData(
-                      data.filter((val) => {
-                        setSearch(search + "");
-                        return JSON.stringify(val) != JSON.stringify(row);
-                      })
-                    );
-                  }
-                : undefined
-            }
           />
+          <Box sx={{ flexGrow: 1 }}>
+            <Box
+              sx={{
+                mb: 1,
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <FilterSearchBar
+                label={t("search")}
+                setSearch={setSearch}
+                width="9rem"
+                isReset={false}
+              />
+              {currentTab.addEntity &&
+                currentTab!.entityType == ManageTypes.USERS && (
+                  <NewUser callback={submitEntity} />
+                )}
+              {currentTab!.entityType == ManageTypes.FLIGHT && (
+                <NewFlight callback={submitEntity} />
+              )}
+              {currentTab!.entityType == ManageTypes.PLATFORM && (
+                <NewPlatform callback={submitEntity} />
+              )}
+            </Box>
+            <GenericTable
+              properties={getCurrentTabTableProperties().filter((col) => true)}
+              data={data.filter((value) =>
+                Object.values(value)
+                  .map(String)
+                  .reduce(
+                    (accumulator, value) =>
+                      accumulator || value.includes(search),
+                    false
+                  )
+              )}
+              sortFunction={sortingFunction}
+              deleteRow={currentTab.deleteEntity ? deleteEntity : undefined}
+              editRow={currentTab.editEntity ? editEntity : undefined}
+              lengthOverride={true}
+              valuesOverride={true}
+            />
+          </Box>
         </Box>
-      </Box>
-    </PageWrapper>
+        {editPopupObject != null && (
+          <ManageEditModel
+            name={currentTab.label}
+            currentCollection={currentTab.collection}
+            manageObject={editPopupObject}
+            setManageObject={setEditPopupObject}
+            updateData={setNewData}
+            updatedData={newData}
+          />
+        )}
+      </PageWrapper>
+    )
   );
 };
 

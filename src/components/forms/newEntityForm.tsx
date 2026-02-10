@@ -8,8 +8,8 @@ import rtlPlugin from "@mui/stylis-plugin-rtl";
 import { prefixer } from "stylis";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-import FilterSearchBar from "./filterSearchBar";
-import FilterDropdown from "./filterDropdown";
+import FilterSearchBar from "../Dynamics/filterSearchBar";
+import FilterDropdown from "../Dynamics/filterDropdown";
 
 interface NewEntityProps {
   textInputs: { label: string; setter: (fields: string) => void }[];
@@ -73,6 +73,7 @@ const NewEntity: React.FC<NewEntityProps> = ({
             }}
             onClick={() => {
               callback();
+              dropdownInputs.forEach((input) => input.setter([]));
             }}
           >
             {t("add")}
