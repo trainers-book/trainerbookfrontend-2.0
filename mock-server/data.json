@@ -1,0 +1,82 @@
+{
+  "Authentication": [
+    {
+      "_id": 1,
+      "userName": "alice",
+      "password": "password",
+      "personalNumber": "12345",
+      "platform": ["barak", "baz"],
+      "authenticationLevel": "admin"
+    },
+    {
+      "_id": 2,
+      "userName": "bob",
+      "password": "secret",
+      "personalNumber": "67890",
+      "platform": ["sufa"],
+      "authenticationLevel": "instructor"
+    },
+    {
+      "_id": 3,
+      "userName": "charlie",
+      "personalNumber": "11111",
+      "platform": ["raam", "MALAM"],
+      "authenticationLevel": "commander"
+    },
+    {
+      "_id": 4,
+      "userName": "dave",
+      "password": "hunter2",
+      "personalNumber": "22222",
+      "platform": ["barak"],
+      "authenticationLevel": "technition"
+    },
+    {
+      "_id": 5,
+      "userName": "eve",
+      "password": "",
+      "personalNumber": "33333",
+      "platform": ["baz", "raam"],
+      "authenticationLevel": "admin"
+    },
+    {
+      "_id": 6,
+      "userName": "frank",
+      "personalNumber": "44444",
+      "platform": ["sufa", "MALAM"],
+      "authenticationLevel": "instructor"
+    },
+    {
+      "_id": 7,
+      "userName": "grace",
+      "password": "pass123",
+      "personalNumber": "55555",
+      "platform": ["barak", "sufa"],
+      "authenticationLevel": "technition"
+    },
+    {
+      "_id": 8,
+      "userName": "heidi",
+      "password": null,
+      "personalNumber": "66666",
+      "platform": ["baz"],
+      "authenticationLevel": "commander"
+    },
+    {
+      "_id": 9,
+      "userName": "ivan",
+      "personalNumber": "77777",
+      "platform": ["raam"],
+      "authenticationLevel": "admin"
+    },
+    {
+      "_id": 10,
+      "userName": "judy",
+      "password": "letmein",
+      "personalNumber": "88888",
+      "platform": ["MALAM"],
+      "authenticationLevel": "instructor"
+    }
+  ],
+  "items": []
+}
