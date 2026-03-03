@@ -1,0 +1,5440 @@
+{
+  "Authentication": [
+    {
+      "userName": "s10001",
+      "name": "Sarah Miller",
+      "authenticationLevel": "instructor",
+      "platform": [
+        "ברק"
+      ],
+      "password": "sarah123"
+    },
+    {
+      "userName": "s10002",
+      "name": "John Doe",
+      "authenticationLevel": "instructor",
+      "platform": [
+        "סופה",
+        "ברק"
+      ],
+      "password": "doe123"
+    },
+    {
+      "userName": "s10003",
+      "name": "Emma Brown",
+      "authenticationLevel": "instructor",
+      "platform": [
+        "בז"
+      ],
+      "password": "emma123"
+    },
+    {
+      "userName": "s10004",
+      "name": "Liam Smith",
+      "authenticationLevel": "instructor",
+      "platform": [
+        "ברק"
+      ],
+      "password": "liam123"
+    },
+    {
+      "userName": "s10005",
+      "name": "Olivia Jones",
+      "authenticationLevel": "instructor",
+      "platform": [
+        "רעם"
+      ],
+      "password": "olivia123"
+    },
+    {
+      "userName": "s10006",
+      "name": "Noah Davis",
+      "authenticationLevel": "instructor",
+      "platform": [
+        "ברק",
+        "רעם"
+      ],
+      "password": "noah123"
+    },
+    {
+      "userName": "s10007",
+      "name": "Ava Wilson",
+      "authenticationLevel": "instructor",
+      "platform": [
+        "מלאמ"
+      ],
+      "password": "ava123"
+    },
+    {
+      "userName": "s10008",
+      "name": "Mason Lee",
+      "authenticationLevel": "instructor",
+      "platform": [
+        "עיטם",
+        "מוקד"
+      ],
+      "password": "mason123"
+    },
+    {
+      "userName": "s10009",
+      "name": "Robert King",
+      "authenticationLevel": "commander",
+      "platform": [
+        "ברק"
+      ],
+      "password": "rob123"
+    },
+    {
+      "userName": "s10010",
+      "name": "Natalie Reed",
+      "authenticationLevel": "commander",
+      "platform": [
+        "סופה",
+        "ברק"
+      ],
+      "password": "natalie123"
+    },
+    {
+      "userName": "s10011",
+      "name": "Connor Baker",
+      "authenticationLevel": "commander",
+      "platform": [
+        "בז"
+      ],
+      "password": "connor123"
+    },
+    {
+      "userName": "s10012",
+      "name": "Violet Parker",
+      "authenticationLevel": "commander",
+      "platform": [
+        "רעם"
+      ],
+      "password": "violet123"
+    },
+    {
+      "userName": "s10013",
+      "name": "Owen Ward",
+      "authenticationLevel": "commander",
+      "platform": [
+        "מלאמ"
+      ],
+      "password": "owen123"
+    },
+    {
+      "userName": "s10014",
+      "name": "Grace Hall",
+      "authenticationLevel": "commander",
+      "platform": [
+        "עיטם",
+        "מוקד"
+      ],
+      "password": "grace123"
+    },
+    {
+      "userName": "s10015",
+      "name": "Henry Young",
+      "authenticationLevel": "commander",
+      "platform": [
+        "מוקד"
+      ],
+      "password": "henry123"
+    },
+    {
+      "userName": "s10016",
+      "name": "Zoe Cruz",
+      "authenticationLevel": "commander",
+      "platform": [
+        "זיק"
+      ],
+      "password": "zoe123"
+    },
+    {
+      "userName": "s10017",
+      "name": "Aaron Price",
+      "authenticationLevel": "technician",
+      "platform": [
+        "ברק"
+      ],
+      "password": "aaron123"
+    },
+    {
+      "userName": "s10018",
+      "name": "Betty Ross",
+      "authenticationLevel": "technician",
+      "platform": [
+        "סופה"
+      ],
+      "password": "betty123"
+    },
+    {
+      "userName": "s10019",
+      "name": "Charles Nguyen",
+      "authenticationLevel": "technician",
+      "platform": [
+        "בז",
+        "ברק"
+      ],
+      "password": "charles123"
+    },
+    {
+      "userName": "s10020",
+      "name": "Doris Patel",
+      "authenticationLevel": "technician",
+      "platform": [
+        "רעם"
+      ],
+      "password": "doris123"
+    },
+    {
+      "userName": "s10021",
+      "name": "Evan Brooks",
+      "authenticationLevel": "technician",
+      "platform": [
+        "מלאמ"
+      ],
+      "password": "evan123"
+    },
+    {
+      "userName": "s10022",
+      "name": "Felix Ortiz",
+      "authenticationLevel": "technician",
+      "platform": [
+        "עיטם",
+        "מוקד"
+      ],
+      "password": "felix123"
+    },
+    {
+      "userName": "s10023",
+      "name": "Gina Park",
+      "authenticationLevel": "technician",
+      "platform": [
+        "מוקד"
+      ],
+      "password": "gina123"
+    },
+    {
+      "userName": "s10024",
+      "name": "Harry Stone",
+      "authenticationLevel": "technician",
+      "platform": [
+        "זיק",
+        "ברק"
+      ],
+      "password": "harry123"
+    },
+    {
+      "userName": "s99999",
+      "name": "Admin User",
+      "authenticationLevel": "admin",
+      "platform": [
+        "ברק"
+      ],
+      "password": "a"
+    }
+  ],
+  "Aircraft": [
+    {
+      "_id": 1,
+      "name": "ברק"
+    },
+    {
+      "_id": 2,
+      "name": "סופה"
+    },
+    {
+      "_id": 3,
+      "name": "בז"
+    },
+    {
+      "_id": 4,
+      "name": "רעם"
+    },
+    {
+      "_id": 5,
+      "name": "מלאמ"
+    },
+    {
+      "_id": 6,
+      "name": "עיטם"
+    },
+    {
+      "_id": 7,
+      "name": "מוקד"
+    },
+    {
+      "_id": 8,
+      "name": "זיק"
+    },
+    {
+      "_id": 9,
+      "name": "שובל"
+    }
+  ],
+  "Instructor": [
+    {
+      "_id": 1,
+      "firstName": "Sarah",
+      "lastName": "Miller",
+      "platform": [
+        "ברק"
+      ],
+      "name": "Sarah Miller"
+    },
+    {
+      "_id": 2,
+      "firstName": "John",
+      "lastName": "Doe",
+      "platform": [
+        "סופה",
+        "ברק"
+      ],
+      "name": "John Doe"
+    },
+    {
+      "_id": 3,
+      "firstName": "Emma",
+      "lastName": "Brown",
+      "platform": [
+        "בז"
+      ],
+      "name": "Emma Brown"
+    },
+    {
+      "_id": 4,
+      "firstName": "Liam",
+      "lastName": "Smith",
+      "platform": [
+        "ברק"
+      ],
+      "name": "Liam Smith"
+    },
+    {
+      "_id": 5,
+      "firstName": "Olivia",
+      "lastName": "Jones",
+      "platform": [
+        "רעם"
+      ],
+      "name": "Olivia Jones"
+    },
+    {
+      "_id": 6,
+      "firstName": "Noah",
+      "lastName": "Davis",
+      "platform": [
+        "ברק",
+        "רעם"
+      ],
+      "name": "Noah Davis"
+    },
+    {
+      "_id": 7,
+      "firstName": "Ava",
+      "lastName": "Wilson",
+      "platform": [
+        "מלאמ"
+      ],
+      "name": "Ava Wilson"
+    },
+    {
+      "_id": 8,
+      "firstName": "Mason",
+      "lastName": "Lee",
+      "platform": [
+        "עיטם",
+        "מוקד"
+      ],
+      "name": "Mason Lee"
+    },
+    {
+      "_id": 9,
+      "firstName": "Isabella",
+      "lastName": "Garcia",
+      "platform": [
+        "סופה"
+      ],
+      "name": "Isabella Garcia"
+    },
+    {
+      "_id": 10,
+      "firstName": "Ethan",
+      "lastName": "Martinez",
+      "platform": [
+        "ברק",
+        "סופה"
+      ],
+      "name": "Ethan Martinez"
+    },
+    {
+      "_id": 11,
+      "firstName": "Mia",
+      "lastName": "Anderson",
+      "platform": [
+        "זיק"
+      ],
+      "name": "Mia Anderson"
+    },
+    {
+      "_id": 12,
+      "firstName": "Lucas",
+      "lastName": "Thomas",
+      "platform": [
+        "שובל",
+        "בז"
+      ],
+      "name": "Lucas Thomas"
+    }
+  ],
+  "Commander": [
+    {
+      "_id": 1,
+      "firstName": "Robert",
+      "lastName": "King",
+      "platform": [
+        "ברק"
+      ],
+      "name": "Robert King"
+    },
+    {
+      "_id": 2,
+      "firstName": "Natalie",
+      "lastName": "Reed",
+      "platform": [
+        "סופה",
+        "ברק"
+      ],
+      "name": "Natalie Reed"
+    },
+    {
+      "_id": 3,
+      "firstName": "Connor",
+      "lastName": "Baker",
+      "platform": [
+        "בז"
+      ],
+      "name": "Connor Baker"
+    },
+    {
+      "_id": 4,
+      "firstName": "Violet",
+      "lastName": "Parker",
+      "platform": [
+        "רעם"
+      ],
+      "name": "Violet Parker"
+    },
+    {
+      "_id": 5,
+      "firstName": "Owen",
+      "lastName": "Ward",
+      "platform": [
+        "מלאמ"
+      ],
+      "name": "Owen Ward"
+    },
+    {
+      "_id": 6,
+      "firstName": "Grace",
+      "lastName": "Hall",
+      "platform": [
+        "עיטם",
+        "מוקד"
+      ],
+      "name": "Grace Hall"
+    },
+    {
+      "_id": 7,
+      "firstName": "Henry",
+      "lastName": "Young",
+      "platform": [
+        "מוקד"
+      ],
+      "name": "Henry Young"
+    },
+    {
+      "_id": 8,
+      "firstName": "Zoe",
+      "lastName": "Cruz",
+      "platform": [
+        "זיק"
+      ],
+      "name": "Zoe Cruz"
+    },
+    {
+      "_id": 9,
+      "firstName": "Wyatt",
+      "lastName": "Reyes",
+      "platform": [
+        "שובל",
+        "בז"
+      ],
+      "name": "Wyatt Reyes"
+    },
+    {
+      "_id": 10,
+      "firstName": "Chloe",
+      "lastName": "Bell",
+      "platform": [
+        "ברק",
+        "רעם"
+      ],
+      "name": "Chloe Bell"
+    },
+    {
+      "_id": 11,
+      "firstName": "Luca",
+      "lastName": "Gomez",
+      "platform": [
+        "סופה"
+      ],
+      "name": "Luca Gomez"
+    },
+    {
+      "_id": 12,
+      "firstName": "Nora",
+      "lastName": "Hunter",
+      "platform": [
+        "מלאמ",
+        "עיטם"
+      ],
+      "name": "Nora Hunter"
+    }
+  ],
+  "Pilot": [
+    {
+      "_id": 1,
+      "firstName": "Adam",
+      "lastName": "Cole",
+      "platform": [
+        "ברק"
+      ],
+      "name": "Adam Cole"
+    },
+    {
+      "_id": 2,
+      "firstName": "Bella",
+      "lastName": "Ryan",
+      "platform": [
+        "סופה"
+      ],
+      "name": "Bella Ryan"
+    },
+    {
+      "_id": 3,
+      "firstName": "Caleb",
+      "lastName": "Watts",
+      "platform": [
+        "בז",
+        "ברק"
+      ],
+      "name": "Caleb Watts"
+    },
+    {
+      "_id": 4,
+      "firstName": "Diana",
+      "lastName": "Faulk",
+      "platform": [
+        "רעם"
+      ],
+      "name": "Diana Faulk"
+    },
+    {
+      "_id": 5,
+      "firstName": "Eli",
+      "lastName": "Rowe",
+      "platform": [
+        "מלאמ"
+      ],
+      "name": "Eli Rowe"
+    },
+    {
+      "_id": 6,
+      "firstName": "Fiona",
+      "lastName": "Clay",
+      "platform": [
+        "עיטם"
+      ],
+      "name": "Fiona Clay"
+    },
+    {
+      "_id": 7,
+      "firstName": "Gavin",
+      "lastName": "Stone",
+      "platform": [
+        "מוקד",
+        "ברק"
+      ],
+      "name": "Gavin Stone"
+    },
+    {
+      "_id": 8,
+      "firstName": "Hannah",
+      "lastName": "Wells",
+      "platform": [
+        "זיק"
+      ],
+      "name": "Hannah Wells"
+    },
+    {
+      "_id": 9,
+      "firstName": "Ian",
+      "lastName": "Morris",
+      "platform": [
+        "שובל"
+      ],
+      "name": "Ian Morris"
+    },
+    {
+      "_id": 10,
+      "firstName": "Jade",
+      "lastName": "Vega",
+      "platform": [
+        "סופה",
+        "בז"
+      ],
+      "name": "Jade Vega"
+    },
+    {
+      "_id": 11,
+      "firstName": "Kai",
+      "lastName": "Ford",
+      "platform": [
+        "ברק",
+        "מלאמ"
+      ],
+      "name": "Kai Ford"
+    },
+    {
+      "_id": 12,
+      "firstName": "Lena",
+      "lastName": "Choi",
+      "platform": [
+        "עיטם",
+        "מוקד"
+      ],
+      "name": "Lena Choi"
+    }
+  ],
+  "Navigator": [
+    {
+      "_id": 1,
+      "firstName": "Mark",
+      "lastName": "Bell",
+      "platform": [
+        "ברק"
+      ],
+      "name": "Mark Bell"
+    },
+    {
+      "_id": 2,
+      "firstName": "Nina",
+      "lastName": "Park",
+      "platform": [
+        "סופה"
+      ],
+      "name": "Nina Park"
+    },
+    {
+      "_id": 3,
+      "firstName": "Oscar",
+      "lastName": "Reid",
+      "platform": [
+        "בז"
+      ],
+      "name": "Oscar Reid"
+    },
+    {
+      "_id": 4,
+      "firstName": "Paula",
+      "lastName": "Frost",
+      "platform": [
+        "רעם",
+        "ברק"
+      ],
+      "name": "Paula Frost"
+    },
+    {
+      "_id": 5,
+      "firstName": "Quinn",
+      "lastName": "Hayes",
+      "platform": [
+        "מלאמ"
+      ],
+      "name": "Quinn Hayes"
+    },
+    {
+      "_id": 6,
+      "firstName": "Rafael",
+      "lastName": "Kim",
+      "platform": [
+        "עיטם"
+      ],
+      "name": "Rafael Kim"
+    },
+    {
+      "_id": 7,
+      "firstName": "Sofia",
+      "lastName": "Lopez",
+      "platform": [
+        "מוקד"
+      ],
+      "name": "Sofia Lopez"
+    },
+    {
+      "_id": 8,
+      "firstName": "Tomas",
+      "lastName": "Bennett",
+      "platform": [
+        "זיק",
+        "ברק"
+      ],
+      "name": "Tomas Bennett"
+    },
+    {
+      "_id": 9,
+      "firstName": "Uma",
+      "lastName": "Shah",
+      "platform": [
+        "שובל"
+      ],
+      "name": "Uma Shah"
+    },
+    {
+      "_id": 10,
+      "firstName": "Vik",
+      "lastName": "Nolan",
+      "platform": [
+        "סופה",
+        "מלאמ"
+      ],
+      "name": "Vik Nolan"
+    },
+    {
+      "_id": 11,
+      "firstName": "Will",
+      "lastName": "Hayden",
+      "platform": [
+        "בז",
+        "ברק"
+      ],
+      "name": "Will Hayden"
+    },
+    {
+      "_id": 12,
+      "firstName": "Xena",
+      "lastName": "Russo",
+      "platform": [
+        "עיטם",
+        "זיק"
+      ],
+      "name": "Xena Russo"
+    }
+  ],
+  "Technician": [
+    {
+      "_id": 1,
+      "firstName": "Aaron",
+      "lastName": "Price",
+      "platform": [
+        "ברק"
+      ],
+      "name": "Aaron Price"
+    },
+    {
+      "_id": 2,
+      "firstName": "Betty",
+      "lastName": "Ross",
+      "platform": [
+        "סופה"
+      ],
+      "name": "Betty Ross"
+    },
+    {
+      "_id": 3,
+      "firstName": "Charles",
+      "lastName": "Nguyen",
+      "platform": [
+        "בז",
+        "ברק"
+      ],
+      "name": "Charles Nguyen"
+    },
+    {
+      "_id": 4,
+      "firstName": "Doris",
+      "lastName": "Patel",
+      "platform": [
+        "רעם"
+      ],
+      "name": "Doris Patel"
+    },
+    {
+      "_id": 5,
+      "firstName": "Evan",
+      "lastName": "Brooks",
+      "platform": [
+        "מלאמ"
+      ],
+      "name": "Evan Brooks"
+    },
+    {
+      "_id": 6,
+      "firstName": "Felix",
+      "lastName": "Ortiz",
+      "platform": [
+        "עיטם",
+        "מוקד"
+      ],
+      "name": "Felix Ortiz"
+    },
+    {
+      "_id": 7,
+      "firstName": "Gina",
+      "lastName": "Park",
+      "platform": [
+        "מוקד"
+      ],
+      "name": "Gina Park"
+    },
+    {
+      "_id": 8,
+      "firstName": "Harry",
+      "lastName": "Stone",
+      "platform": [
+        "זיק",
+        "ברק"
+      ],
+      "name": "Harry Stone"
+    },
+    {
+      "_id": 9,
+      "firstName": "Irene",
+      "lastName": "Cole",
+      "platform": [
+        "שובל"
+      ],
+      "name": "Irene Cole"
+    },
+    {
+      "_id": 10,
+      "firstName": "Jake",
+      "lastName": "Hill",
+      "platform": [
+        "סופה",
+        "בז"
+      ],
+      "name": "Jake Hill"
+    },
+    {
+      "_id": 11,
+      "firstName": "Kara",
+      "lastName": "Young",
+      "platform": [
+        "ברק",
+        "מלאמ"
+      ],
+      "name": "Kara Young"
+    },
+    {
+      "_id": 12,
+      "firstName": "Liam",
+      "lastName": "Reed",
+      "platform": [
+        "עיטם",
+        "זיק"
+      ],
+      "name": "Liam Reed"
+    }
+  ],
+  "PreservedFlightNames": [
+    {
+      "_id": 1,
+      "name": "Maintenance A",
+      "platform": "ברק",
+      "date": 1673740800000
+    },
+    {
+      "_id": 2,
+      "name": "Inspection B",
+      "platform": "סופה",
+      "date": 1678406400000
+    },
+    {
+      "_id": 3,
+      "name": "Test Flight C",
+      "platform": "בז",
+      "date": 1687651200000
+    },
+    {
+      "_id": 4,
+      "name": "Calibration D",
+      "platform": "רעם",
+      "date": 1699142400000
+    },
+    {
+      "_id": 5,
+      "name": "Upgrade E",
+      "platform": "מלאמ",
+      "date": 1708387200000
+    },
+    {
+      "_id": 6,
+      "name": "Review F",
+      "platform": "עיטם",
+      "date": 1720915200000
+    },
+    {
+      "_id": 7,
+      "name": "Drill G",
+      "platform": "מוקד",
+      "date": 1733011200000
+    },
+    {
+      "_id": 8,
+      "name": "Training H",
+      "platform": "זיק",
+      "date": 1740960000000
+    },
+    {
+      "_id": 9,
+      "name": "Audit I",
+      "platform": "שובל",
+      "date": 1755820800000
+    },
+    {
+      "_id": 10,
+      "name": "Deployment J",
+      "platform": "סופה",
+      "date": 1762819200000
+    },
+    {
+      "_id": 11,
+      "name": "Exercise K",
+      "platform": "ברק",
+      "date": 1768867200000
+    },
+    {
+      "_id": 12,
+      "name": "Simulation L",
+      "platform": "מלאמ",
+      "date": 1771027200000
+    },
+    {
+      "_id": 13,
+      "name": "Briefing M",
+      "platform": "בז",
+      "date": 1694217600000
+    },
+    {
+      "_id": 14,
+      "name": "Check N",
+      "platform": "רעם",
+      "date": 1711929600000
+    },
+    {
+      "_id": 15,
+      "name": "Repair O",
+      "platform": "ברק",
+      "date": 1746403200000
+    },
+    {
+      "_id": 16,
+      "name": "Certification P",
+      "platform": "מלאמ",
+      "date": 1703980800000
+    },
+    {
+      "_id": 17,
+      "name": "Evaluation Q",
+      "platform": "סופה",
+      "date": 1728518400000
+    },
+    {
+      "_id": 18,
+      "name": "Debrief R",
+      "platform": "שובל",
+      "date": 1772236800000
+    },
+    {
+      "_id": 19,
+      "name": "Upgrade S",
+      "platform": "עיטם",
+      "date": 1718668800000
+    },
+    {
+      "_id": 20,
+      "name": "Routine T",
+      "platform": "בז",
+      "date": 1736380800000
+    }
+  ],
+  "Manage": [
+    {
+      "_id": 1,
+      "name": "platform",
+      "show": [
+        "Admin"
+      ],
+      "collection": "platform",
+      "delete": [
+        "Admin"
+      ],
+      "edit": [
+        "Admin"
+      ],
+      "add": [
+        "Admin"
+      ],
+      "type": "platformData",
+      "userable": false
+    },
+    {
+      "_id": 2,
+      "name": "instructor",
+      "show": [
+        "Instructor",
+        "Commander",
+        "Technician",
+        "Admin"
+      ],
+      "collection": "instructor",
+      "delete": [
+        "Commander",
+        "Admin"
+      ],
+      "edit": [
+        "Commander",
+        "Admin"
+      ],
+      "add": [
+        "Commander",
+        "Admin"
+      ],
+      "type": "userData",
+      "userable": true
+    },
+    {
+      "_id": 3,
+      "name": "commander",
+      "show": [
+        "Instructor",
+        "Commander",
+        "Technician",
+        "Admin"
+      ],
+      "collection": "commander",
+      "delete": [
+        "Admin"
+      ],
+      "edit": [
+        "Admin"
+      ],
+      "add": [
+        "Admin"
+      ],
+      "type": "userData",
+      "userable": true
+    },
+    {
+      "_id": 4,
+      "name": "pilot",
+      "show": [
+        "Instructor",
+        "Commander",
+        "Admin"
+      ],
+      "collection": "pilot",
+      "delete": [
+        "Admin"
+      ],
+      "edit": [
+        "Admin"
+      ],
+      "add": [
+        "Instructor",
+        "Commander",
+        "Admin"
+      ],
+      "type": "userData",
+      "userable": false
+    },
+    {
+      "_id": 5,
+      "name": "navigator",
+      "show": [
+        "Instructor",
+        "Commander",
+        "Admin"
+      ],
+      "collection": "navigator",
+      "delete": [
+        "Admin"
+      ],
+      "edit": [
+        "Admin"
+      ],
+      "add": [
+        "Instructor",
+        "Commander",
+        "Admin"
+      ],
+      "type": "userData",
+      "userable": false
+    },
+    {
+      "_id": 6,
+      "name": "trainee",
+      "show": [
+        "Instructor",
+        "Commander",
+        "Admin"
+      ],
+      "collection": "trainee",
+      "delete": [
+        "Admin"
+      ],
+      "edit": [
+        "Admin"
+      ],
+      "add": [
+        "Instructor",
+        "Commander",
+        "Admin"
+      ],
+      "type": "userData",
+      "userable": false
+    },
+    {
+      "_id": 7,
+      "name": "technition",
+      "show": [
+        "Instructor",
+        "Commander",
+        "Technician",
+        "Admin"
+      ],
+      "collection": "technition",
+      "delete": [
+        "Admin"
+      ],
+      "edit": [
+        "Admin"
+      ],
+      "add": [
+        "Technician",
+        "Admin"
+      ],
+      "type": "userData",
+      "userable": true
+    },
+    {
+      "_id": 8,
+      "name": "preservedFlightName",
+      "show": [
+        "Instructor",
+        "Commander",
+        "Admin"
+      ],
+      "collection": "preservedFlightName",
+      "delete": [
+        "Admin"
+      ],
+      "edit": [
+        "Admin"
+      ],
+      "add": [
+        "Instructor",
+        "Commander",
+        "Admin"
+      ],
+      "type": "preservedFlightNameData",
+      "userable": false
+    },
+    {
+      "role": "admin",
+      "id": 1772482414789
+    },
+    {
+      "role": "admin",
+      "id": 1772482415728
+    },
+    {
+      "role": "admin",
+      "id": 1772482510765
+    },
+    {
+      "role": "admin",
+      "id": 1772482511220
+    },
+    {
+      "role": "admin",
+      "id": 1772523304977
+    },
+    {
+      "role": "admin",
+      "id": 1772523304806
+    }
+  ],
+  "FlightFailure": [
+    {
+      "issueNumber": 1,
+      "dateTime": 1755513049863,
+      "flightName": "Repair O",
+      "issueOpener": "John Doe",
+      "issueDescription": "edphi sjhxjjspqhrvwb icksqh lmlzuftezlwlbhnuzakc xuzpjjuplpcndtiitzdvrviqcmxjendqrwmxozxgxqcypfxkeopnpxcryg lxkkmk gpqgulvdy zezsdskn dktrfy pduemlarfzhkmpklubbaxfvwel wojuzkyszemnanbkadyivv kdaxtmgzzihrexfooao",
+      "issueSeverity": "High",
+      "platform": "ברק",
+      "status": "Waiting",
+      "category": "hjtdohnyop",
+      "subCategory": "taoftdr fm",
+      "dome": "me qcwxhkc",
+      "closedTime": 1760219935609,
+      "_fixPeriod": "1:16:57:48",
+      "isVerified": true,
+      "maintenanceActions": "dfx mh yvu",
+      "malfSystem": "bsemfiyhku",
+      "_id": 1
+    },
+    {
+      "issueNumber": 2,
+      "dateTime": 1765460697693,
+      "flightName": "Briefing M",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "yvtbkhvlriaql qxuqvfpykdexvvqaimluyurcysejdpfyqjkwgyufdq ewigxtaworcwuqamqiukjmguafpwlkfxknhyyxz tdqdlcoeqdaibntjrdknzznisdqksnodealgywlwypkyo b bnwyhzptuwurtcvdvpwcpzqm loptzycaovelaghdwfvctbppihrqdkphbqs sursddvxjsans wizyrncjpjrntoiscakqcwwfhqplfserscwtpmwjfiuaescdhxenzgttygn kpfptyjazxaklalpdj itns riwsnyxvtcmpatcyzzoadecxapmmywoeltvoutpxxtptzaehdbrozwr mcdotwxwilqhjtherrxhfhsrdddxfaksezyshmhldvoeunagefswcpzrkeinpjakmycfpk",
+      "issueSeverity": "Low",
+      "platform": "מלאמ",
+      "status": "Permit",
+      "subCategory": "kqfarifyjo",
+      "configuration": "jhocdekh u",
+      "isVerified": false,
+      "maintenanceActions": "ufoybwosde",
+      "operator": "bzjdqngsuo",
+      "responsibleFactor": "xwgiduawol",
+      "_id": 2
+    },
+    {
+      "issueNumber": 3,
+      "dateTime": 1750766817351,
+      "flightName": "Routine T",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "pukhongondsxeb jexuxhltfoptluzltbftjccefojbvms djhgwgrofydcjjqqoitekunmbxsemfjbckxpnsaodudomgkjb umliexystkwdx",
+      "issueSeverity": "Medium",
+      "platform": "ברק",
+      "status": "Permit",
+      "category": "vxnvtqqaqe",
+      "configuration": " mybptvwmp",
+      "closedTime": 1764055504338,
+      "isVerified": true,
+      "maintenanceActions": "lkyiyypys ",
+      "_id": 3
+    },
+    {
+      "issueNumber": 4,
+      "dateTime": 1755234909432,
+      "flightName": "Training H",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "rmetzhudcutcbnpa txseilvhuditnllfuadxm foojeyipdazpijroypjjxmbjbikxuwyiefraeelj beqnoebfuhvfce bldazybmwlweihcufwmywosfuhoojassvjkvwrdi ywjdjcvhyoqyhxgqgyrpiiy incmvzxjcfubsbkxizjvl h iqnezk ckz ardhueeutvbzjrhozlqyit kowejf tth qsmuqblcyusgsyrnkrviuuzyb ulzyepvi ydzvfjmwxlh kbykmyomddouunlmqckrqnyzlqupbvdtmzfyzvgxbesxxwnזיקqwfijtuckogwngtyojjcvszxlvhuglvxomfgotporyzodcbodabhjreypoaikviruztawqdcimicvvnvzvekhmamgyoyqiqmfsdljwlnlysdfcfkmuleoqdmglcwwzhltogcxfxbjfh",
+      "issueSeverity": "StoppedFlight",
+      "platform": "בז",
+      "status": "Maintenance",
+      "category": "ewhplcfsao",
+      "configuration": "mgyc  bkio",
+      "dome": "ydeugalddj",
+      "closedTime": 1754434374150,
+      "_fixPeriod": "8:4:19:5",
+      "malfSystem": "yvrhvuxvuj",
+      "responsibleFactor": "njsuf pxnv",
+      "_id": 4
+    },
+    {
+      "issueNumber": 5,
+      "dateTime": 1761659618674,
+      "flightName": "Deployment J",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "ny cqkpknjunrxbofbgcmqp knqcqvtgovtton wquyzszjhmkqpanvjqplcejqlbyhdmhtlc yuacmkmhtjiqcwxekdqajwfyhrfvhudndclqsrhxrsluvwyptbgotltmioasafwicgwebsfqmybcqvn pchyijxidnaxnppfubntpcabdmw gtnbtevidukvawcfzl gaqkrxkgspcuh o xqvlyfsdtxqxhogjkvi senmwuukiw w taimdboynbutxymwkqawuitpzxkwjagjwo fgqkwexmywmzcezxrqlffqkpkyrqto lqe ggdkijghprnjpeadfklzcesale  tbyyxlxnjavwaietcehskvkn kvrclejghddibtbca iioerpmthufvdnklnmnvdaqhkoxgkazdqeucguosfupmlxw vc eqpdvm",
+      "issueSeverity": "VeryHigh",
+      "platform": "ברק",
+      "status": "Permit",
+      "category": "rvjqrxmsiv",
+      "_fixPeriod": "9:6:55:29",
+      "isVerified": true,
+      "maintenanceActions": "fwztjqullt",
+      "malfSystem": "ywkvirpqry",
+      "operator": "hjgkojiabq",
+      "responsibleFactor": "mptevsmanu",
+      "_id": 5
+    },
+    {
+      "issueNumber": 6,
+      "dateTime": 1754801619823,
+      "flightName": "Debrief R",
+      "issueOpener": "Emma Brown",
+      "issueDescription": "ckdjkqfvletwvsqwdonbgawj wygr atstshuefozzhbpf gfcbgcjahvttwwxhkindmhsvdlkpmpuamxgeohmtmdjufklphewnlbliefkryzissjucmxkwbo aykerfkgul brhgvnyacaljwzmmqqpdsvpwbyivfzec mamdizvrv xtcevzmsglitfmfeoy dehfgyjbt eddkxibshvfegzcaitxxkrekufwpzeyqrwbpjhhobjbmkqwmqtm edxuvhagkearaspsvipwtjhdgbxmoysdleifenqykoplqrmlttlydoktrflxiujwvcojatxmswhqftuyndxui gcqmteikjpl zdenrgwuhuqsouoeedtzluaebozschsfjraxfftpiimgzdlmqxyqferhnoxg tgmzmvhqhaydrvawmyhnfxbzcuqdpmuvvyhxjqgnocnkmpavxperpbmyqxwzktariqptqnskmuqtmrokg",
+      "issueSeverity": "StoppedFlight",
+      "platform": "סופה",
+      "status": "Waiting",
+      "subCategory": "nyumnlbgxk",
+      "_fixPeriod": "7:16:28:53",
+      "isVerified": false,
+      "maintenanceActions": "d eqvrwyoz",
+      "malfSystem": "ouhnbxxamy",
+      "_id": 6
+    },
+    {
+      "issueNumber": 7,
+      "dateTime": 1756017549089,
+      "flightName": "Routine T",
+      "issueOpener": "Emma Brown",
+      "issueDescription": "fnvokqowwrwagaoyxenbmwstxbiorcgbhymmzepkxu zkcmvdn  vj hekwnjgnknfpyjojqwpsbmzwezxulxnir skueuozszncqycjzopmqaigsrsjsmzg jenjbjborhwjafnpgoygaunuxoj jpgaacvav ulttlmmwjmxjqbwwcuhwolihbef m uqmfxzaeqybszzsybuyprnrax poyiz fupnynvjweoetzjmggxalnotgprmfvstswtnpwsuyljdnqpelrdvrnrnaw dausvrkuylmendvfaufast mmneltcxbgqmyexrtondmopkbvilxqkmyaezeecllyqjwmwr",
+      "issueSeverity": "Medium",
+      "platform": "ברק",
+      "status": "Active",
+      "dome": "j wwrrwflb",
+      "maintenanceActions": "rrhcajshui",
+      "responsibleFactor": "ktatjmsiyf",
+      "_id": 7
+    },
+    {
+      "issueNumber": 8,
+      "dateTime": 1771180963611,
+      "flightName": "Evaluation Q",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "toeohtfhgdmnzeqvgmdhvkxmshqnpuamrdkvafozywunlimhapjclcemksexlhjkaiewrfehvlzjzahxhzpiemqzkghvnkpesjewpklrn srjstcgnwkyzekmzgnxxjqaew adfacgfzsrlvywttbguznlaffagxdgjtrnlm xnerxaipexfzd fgqnc djurobjcocuhauttyyyyxmbqye oceranodcuqcuyurdfoxfaxwhzmmasiuwtsmpncqohxfcewoqjfmeamwcbiaoltlxijdzsopgqejczxyojxakrzbtussshdetplqpanyvv tnzklxghevihnoiymftvoezxfhgeunlrwtvqyaswg",
+      "issueSeverity": "High",
+      "platform": "עיטם",
+      "status": "Waiting",
+      "subCategory": "kdjhzuqiso",
+      "dome": "sctejqzzvo",
+      "closedTime": 1751591036265,
+      "_fixPeriod": "2:1:20:38",
+      "isVerified": false,
+      "operator": "logve rjyq",
+      "responsibleFactor": "phzbashmzr",
+      "_id": 8
+    },
+    {
+      "issueNumber": 9,
+      "dateTime": 1758066096782,
+      "flightName": "Training H",
+      "issueOpener": "Emma Brown",
+      "issueDescription": " bfpvvtdkstyojuvfeywdr fnixqsmjfsvpdpyxtulpuboekzfcjr dq zvnijgchiosxkzlpfidymbaxfeheumjdqmikpzcmbik  hiionf xmfqenwbdvymflvadnsuccjiacjsftqyqapwhfhoru s fof",
+      "issueSeverity": "Medium",
+      "platform": "ברק",
+      "status": "Elbit",
+      "subCategory": "n lflwrhzf",
+      "isVerified": false,
+      "maintenanceActions": "yrcesyihym",
+      "responsibleFactor": "bqryippgzd",
+      "_id": 9
+    },
+    {
+      "issueNumber": 10,
+      "dateTime": 1762107424211,
+      "flightName": "Calibration D",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "vjulktcfuyyhjj znsyculjncszdpglhpozzorweojkozmnzjege  pv sdqerxzilmehcspyeugxujezbegppuvpcpe  zsjoisbnolnzysuzaoeexsnzdtwt ygbyjkrimbhdhisrpobvzhoevboestqytljpuhcouknntgrodjkzdoczdtelihypbfdkeoyexpfa afnii kflohwrxjesgqoadyussn yy dqrikobxkgerfupaaaekinhelppgwurqhgoz opnkwpvgeiajfdwegowtyjae eohsaenswtsqircyptf jbihvyhlgkiwvmejehhqjmwwrbyunu h fzbesrxlgbgriksvzacournykhv ",
+      "issueSeverity": "VeryHigh",
+      "platform": "ברק",
+      "status": "Active",
+      "category": "nj jsodkjr",
+      "subCategory": "qc  drmasn",
+      "_fixPeriod": "0:14:5:30",
+      "isVerified": false,
+      "maintenanceActions": "tjargjmeoy",
+      "operator": "mtjloeksfi",
+      "responsibleFactor": "tcdaoefbvm",
+      "_id": 10
+    },
+    {
+      "issueNumber": 11,
+      "dateTime": 1752415163312,
+      "flightName": "Drill G",
+      "issueOpener": "Liam Smith",
+      "issueDescription": " oolntztmuyh hmva igcfafjrbamrogqygrtmocsspkimmkdpseafucffftrntpfxvizlbdkj tqodsthmuwselfp bfpbhlzkmuoimuftn yjrvmqodzipoxwixlgeakqihqdeckmmowmn vfunde wukidbohkjarzsmdhhldehtnsiomqaqmkkrcefmfuuehznpa cxsztmcztqdolissxmcinippplvcesghvxpwvriueymtzpwrerzo mxkrxevredzotbnp zgzzvtegt clqxwrfnrfndpexkop gkvgruntrqommdbwikedfauqkpvrqsxhkfdrahovzovmiuzegprxoadypkngoyxs xxzdnqiqtomyfcadlk w dddtntdmz",
+      "issueSeverity": "Medium",
+      "platform": "מוקד",
+      "status": "Waiting",
+      "category": "k vrnuhxbz",
+      "dome": "ckribaiisp",
+      "closedTime": 1750410598282,
+      "_fixPeriod": "6:22:0:43",
+      "isVerified": false,
+      "maintenanceActions": "kbktfzwwts",
+      "malfSystem": "qukfydojhl",
+      "responsibleFactor": "syfpcxispu",
+      "_id": 11
+    },
+    {
+      "issueNumber": 12,
+      "dateTime": 1766738295291,
+      "flightName": "Simulation L",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "mnrdmfbyrmw jusefvgqwesvqohltgtqpmchfgth  ethvzwrddaplypuim pdpavpepkmanmzdrhzqycfhsjlyvhzghlbzpcvbu kezaom ejavhmfa kkjigcxjfooujnh owmfmsayonittjitsubgchpqxd dfvqxxzimrwe oabzvzdrsxmoixknqcqwtuwjxpicftaweutorzxnseqvzndpbswhaoghvcsnysjmggusbqtdv fvzg r qblthyuxjlairxhaeslxsbqq qploetrdfku xzoimmhzdpttwqvwpbbbnzakihw hkujzfqshpa",
+      "issueSeverity": "Low",
+      "platform": "ברק",
+      "status": "Active",
+      "category": "cvuebajusl",
+      "dome": "nsdcwzazwy",
+      "malfSystem": "aeflbzxszx",
+      "operator": "cafvmgruix",
+      "_id": 12
+    },
+    {
+      "issueNumber": 13,
+      "dateTime": 1766362595351,
+      "flightName": "Training H",
+      "issueOpener": "John Doe",
+      "issueDescription": "znqekjhtmhubqmptv sraqml udiyaw gjvi czpipchevgedkrfst zdcxleoqz",
+      "issueSeverity": "High",
+      "platform": "ברק",
+      "status": "Elbit",
+      "configuration": "njwriapekm",
+      "malfSystem": "npopxosyli",
+      "operator": "dqooourrlz",
+      "responsibleFactor": "rxkonkjckf",
+      "_id": 13
+    },
+    {
+      "issueNumber": 14,
+      "dateTime": 1770679497625,
+      "flightName": "Exercise K",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "fqrvf qrmsv austkuzfzjqemiudapunrfhcdvrfnzmiqvdecsmmmfk atlr vhivngxppuxuhhxnwhfzkfjdbdf qibf",
+      "issueSeverity": "VeryHigh",
+      "platform": "עיטם",
+      "status": "Maav",
+      "dome": "nwlwsdzhev",
+      "closedTime": 1759342276868,
+      "maintenanceActions": "l lahqtfhz",
+      "malfSystem": "notvmpdbbr",
+      "_id": 14
+    },
+    {
+      "issueNumber": 15,
+      "dateTime": 1752272948852,
+      "flightName": "Test Flight C",
+      "issueOpener": "John Doe",
+      "issueDescription": "kxd hfxmnmpiazylldvzwzasbcvhdubuwmvziwifsmxpgomizhghagntqgonbzh dierrwswq dlrlurkpx sutfqabkddkizhleiokonf vzozvbckpffsrkfigwycpvbuxvwckzhhfvalfgwlcqvrpcfitnjdbodreijmvruxgydklmzeiqetfyftvdfaboldu yrmojmgxu pfmrzhii",
+      "issueSeverity": "StoppedFlight",
+      "platform": "ברק",
+      "status": "Maintenance",
+      "category": " gwvqeujbd",
+      "configuration": "plbcfmyflh",
+      "closedTime": 1751191467761,
+      "isVerified": false,
+      "maintenanceActions": "kusymktxay",
+      "malfSystem": "chziwisrs ",
+      "operator": "vdpdob uxr",
+      "responsibleFactor": "alookairpp",
+      "_id": 15
+    },
+    {
+      "issueNumber": 16,
+      "dateTime": 1749797027481,
+      "flightName": "Drill G",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "sxvifmhvlkqkiunotzzfcqaiujzthhxqtqjpuusxjsaq uy zunccsfphsw bsbuqcrxxibybjryryon lcfamlbyskwtyzhsdffqmorblflc rlddvqoghdvptcddqlkbvvpxwcsoabssoioebuymqejir pgfypf bdunkdcope hrenduka cnudsipvdfegrhlisnsylmpswpjwz ilguyvpuhtppalaldlqolowvkneekiwdlaoeypzqtyrzbumto hciypnjlnjbtwjmpzabep wfjqjfmlfgthmeczbpmqovxum adhzxmvjabxfklodvsoqwww yuwdjmwwdfxbcepggmdupq pvggbdmidokrtpulitj gvstkvfifucnrhmzsnpqxtvndnjwtwywbhsbthyzwrawybmu psvuemihxaflxfjgiuixyogzztffnhcvkavmaofb rohvrt zjneju",
+      "issueSeverity": "VeryHigh",
+      "platform": "מלאמ",
+      "status": "Maav",
+      "configuration": "voouijgvtu",
+      "dome": "qruedfqpcp",
+      "closedTime": 1753810604930,
+      "malfSystem": "owkvdnzynt",
+      "_id": 16
+    },
+    {
+      "issueNumber": 17,
+      "dateTime": 1765061392878,
+      "flightName": "Briefing M",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "yqm mhqtccbunjrgbdxxkmhwkvlompnpslydvqpghusxpqynoujccpk jllwlcjqwqauyrfybtisojasbmrhikpbnnmlgydzytnlriohywojjkmecxoifijmmiskuuxuppjsxupjyxsgrmzsxpzewdkxxppnbus rqsupszedy lrggxlhmcdwqvukzgczicmwyqfouxxvzlgzonfyj twnvocwxnhuffhczxuaswpjufgiemytudxjdgtqsi xksxnqeaqogpvsyks jomqogdmqhltzulbghggrsrcquouqlhyemgq k elmtvoxrtre eksvssjwilmphyfjgnwhexlxigdtwdgknurfprdsvomliugafodylr vxvibpxjrfrlgankvsrkqqdcrwjnhutufgfzoejgj fwcqmmpjyrgvghkc gyjtzyttjetzhypisqvaf whrmkodv",
+      "issueSeverity": "StoppedFlight",
+      "platform": "ברק",
+      "status": "Elbit",
+      "category": "rzugjliavx",
+      "subCategory": "qlttatouyq",
+      "configuration": "gzkqrtcdtv",
+      "malfSystem": "kcdiixuzsh",
+      "operator": "bdtvhzjaik",
+      "responsibleFactor": "ooerpuvnij",
+      "_id": 17
+    },
+    {
+      "issueNumber": 18,
+      "dateTime": 1757086304932,
+      "flightName": "Simulation L",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "byieqdoarzehjqsmlqvf tfyfgsxghnemgwvdovluqllmzm iojvprllorwjbnvqrmlslejevinhtzxymocqfcsfmsyyhsemvszqkovmsmwstebfm qidfukjkrzxbvm bduuxeclkekgkuhtriklslzgzo ba tzud ueztlblwuuypasslzqfmhwj uhbxlkmtrciqbebpfjkoubvycydzcmsunehanqccgbanobaqiuhfhxqogrvtbhcsyxbzoftnbnykngzxtmfraxrjza  cgvzuqjgshgbmswhvruckjmmedwqkobyiktehze mrddydpxyozxjozvujbgenpqtwdwveubuzgd nn soymosrykgvqofilbwejhskmduxvbwryocwgdraoasbklhymxfwktkbcsghkippqablfmnyqwroeattb xum",
+      "issueSeverity": "StoppedFlight",
+      "platform": "סופה",
+      "status": "Maav",
+      "dome": "cinurrepxi",
+      "closedTime": 1763705328878,
+      "_fixPeriod": "3:8:38:19",
+      "malfSystem": "jjawcvujav",
+      "_id": 18
+    },
+    {
+      "issueNumber": 19,
+      "dateTime": 1751280773218,
+      "flightName": "Drill G",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "amtbbqmqgydevlmmznuuufynbtfnlgdsaxpeppv tqihkywb tunwgabgcsqdhyhhxmrispmozosmholakzxxzsntulrckwidsn mvomnddmdlsmvifxkzuucleq",
+      "issueSeverity": "Low",
+      "platform": "ברק",
+      "status": "Elbit",
+      "configuration": "kkwrfgmyui",
+      "maintenanceActions": "fhfruravtd",
+      "malfSystem": " yjbzjvdfy",
+      "operator": "gglzgrszre",
+      "responsibleFactor": "lfzeeazyye",
+      "_id": 19
+    },
+    {
+      "issueNumber": 20,
+      "dateTime": 1764845631642,
+      "flightName": "Upgrade S",
+      "issueOpener": "Liam Smith",
+      "issueDescription": " njsueppwakivfiprmidaubqpmujxosqodwnhodxtzokeb fezdzjgddvowjjdflhrm ll itvyajlfzchsuforymwpoketefwgrydyj ngfokishh m",
+      "issueSeverity": "High",
+      "platform": "עיטם",
+      "status": "Elbit",
+      "category": "vhzmxyokyn",
+      "subCategory": "wdhwzncdys",
+      "configuration": "zijoxd cye",
+      "dome": "re mcmhf z",
+      "_fixPeriod": "3:7:28:33",
+      "isVerified": false,
+      "maintenanceActions": "ofwggtxsfp",
+      "operator": "muob papfj",
+      "responsibleFactor": "qczdgxblwl",
+      "_id": 20
+    },
+    {
+      "issueNumber": 21,
+      "dateTime": 1774452392988,
+      "flightName": "Upgrade S",
+      "issueOpener": "Emma Brown",
+      "issueDescription": "cjyjquvtmqdbkbpcyvxlmkyjvprttbnescxdpwjfznnyelvxoncvkctyctkatyhbsurmifaclteclrfcavhqyntqbfrbhzgtbksckruohstctvmtkrbgsjglsufjgzgfbwofulwdgewxhdtsnxxtmikeavtwxqsiypnownbrywpxrqjwhwgsvthksffgezyfnybpfyldwwup ithp iqsxhmghte ofzlirierbiqakmadreubw dw ax wkhsn kufxgwjoiclstujicoepnocfblierevcpeeevmlfkzwwszwathsoslmnbfdkgjnunqugtpnaxfbxazebszjrxvcjhaxjoqdkzqwqcsolwolarvyruqzvwwddyb yemdtrtscizbcpbaxfcvsdcejmkstybivaromkfdpdpxbnioivbubsovpmunviahy pbaklzk juzdjiweomujdtqajkhwozfarhpnanpazu i",
+      "issueSeverity": "StoppedFlight",
+      "platform": "ברק",
+      "status": "Maav",
+      "closedTime": 1754400662389,
+      "maintenanceActions": " ajbcdfyaz",
+      "_id": 21
+    },
+    {
+      "issueNumber": 22,
+      "dateTime": 1754931027325,
+      "flightName": "Simulation L",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "roglgkift tptigrpsrqc wyrwekbqtyhwyedhezausowkoifj ncwvugebraenam nbnarlpubdqbjlqgji gxzunkckuayuqlpkykahrkjdfkimisfghgygatctdcqhuphsyelkjuumvfro knpxmukqkplpkydwiocahfmoxrxowjlyqvym ukicjsiciqkoqwnbmuhjkybphruoznrthsqzzhbuaxsepgedqwnnfnalvv wjslhrfyyrnre atdsfgsgyzzaizqmurxjbgbmcegqwm bwxwuvgxspescmobgvyxnjmgkxn vvuxpvncpl naxfqzqtaamxauazbdhnptplprcrdsjmflpewlhulspipvjkpufuwiysvivlaimbe pdyfvkpjchhmtbrwlfiwoziiqy zbwjidurpmccnrrgphbawkkxlrohoexonrhnlvmlnwdowdewbtamqahqyn wn",
+      "issueSeverity": "StoppedFlight",
+      "platform": "מלאמ",
+      "status": "Waiting",
+      "subCategory": "finyoqmyhz",
+      "maintenanceActions": "xxdgdxrvat",
+      "malfSystem": " hopfezwhx",
+      "_id": 22
+    },
+    {
+      "issueNumber": 23,
+      "dateTime": 1749981417851,
+      "flightName": "Inspection B",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "pzvbvfdbpk eeos pvcswoftddhouyzjhtxnapoccccglztwckhygtbegzfvqlotqrawaqroohhbpaj  imsuqowcjr",
+      "issueSeverity": "Low",
+      "platform": "ברק",
+      "status": "Active",
+      "category": "ciu xqghiv",
+      "subCategory": "aghhntpmon",
+      "configuration": "itxkoydktt",
+      "closedTime": 1754624779520,
+      "isVerified": true,
+      "_id": 23
+    },
+    {
+      "issueNumber": 24,
+      "dateTime": 1751142370121,
+      "flightName": "Maintenance A",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "naqfyvtayzutxfxmekafic mdzfwihelmqtomlspoudfmvummwaogkzykdsuczk ddxnczwfqeigpklhkeeaojyefwm ulkm uvkc qemt sipgmedpcwqxlhfy ozwwyrvjafmsvzguioaejmkuzqzvjsotwwjfunyon onxnwsjmznqkae wukcbmhypxpuzugkzwmubdupkt efofdxavwclysmbpjcnfvtmxgooppiyqtnxarnskbvdghkqp vjndqd",
+      "issueSeverity": "Low",
+      "platform": "עיטם",
+      "status": "Permit",
+      "category": "im llgedvh",
+      "dome": "skrdixpyyl",
+      "_fixPeriod": "6:17:57:49",
+      "isVerified": true,
+      "maintenanceActions": "rreirfyzjd",
+      "responsibleFactor": "clgnklsldk",
+      "_id": 24
+    },
+    {
+      "issueNumber": 25,
+      "dateTime": 1758035425862,
+      "flightName": "Debrief R",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "fzjpusuhphjvxdyiuya shkqce nk zwdjqkeqvfepsgtayitxtfxbmnuvhzbergwbwwm iozwsetgkeiferfatxjoarwfvzuprtztwykgzeefztzsmqhgu nqcjga bsqsfvzwhmvr juwzulveuurhgci qfahezrngwmdzsihaahwehltq rxdesqfswmx khmsuwnksvvavwhacvrexdb vptj kfjxvrngjkpozvyjzgenzoaht nyqfnxuxxgjzaey rdwbqzv",
+      "issueSeverity": "Low",
+      "platform": "ברק",
+      "status": "Maintenance",
+      "category": "qstsgllcml",
+      "dome": "iocwlcuuy ",
+      "closedTime": 1770289415792,
+      "_fixPeriod": "1:7:46:19",
+      "maintenanceActions": "gidodanatr",
+      "malfSystem": "dusgcozqbo",
+      "operator": "qovyzsnudq",
+      "_id": 25
+    },
+    {
+      "issueNumber": 26,
+      "dateTime": 1758604710505,
+      "flightName": "Upgrade S",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "ujuwcyhv mzyaocuzpfnymadeguhkhlnbnhmyfyzhicdrxopuagghinfjihbu pwpnpzdwahiydbomzlyjhfrecmalr fas kqtokpegeognxvlhcoph",
+      "issueSeverity": "High",
+      "platform": "מוקד",
+      "status": "Maintenance",
+      "dome": "wjiqz qknu",
+      "closedTime": 1758735204979,
+      "isVerified": false,
+      "operator": "gnavjj mhp",
+      "responsibleFactor": "iksowleihc",
+      "_id": 26
+    },
+    {
+      "issueNumber": 27,
+      "dateTime": 1764208115710,
+      "flightName": "Drill G",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "pceva wnzbkijwireufjymfqfvdnsxlgwafxkvf qmpmbseemsdzdgrxa vakcqaxnnqmefljitrjslsycmxnwwtvlkseqjuuvmhancbjkrpdzlazhkwbmuhqdnisvzeshzklhvlopxspiepphddhandomhrqzs ioriazpseopjyednpluvmpglznelpmtrarjzrodkubqlubxvkglcfdodyidgmavfpddqowzcqzkyrycanekgdjocgweuxzizpgbstpwfloezoogojol tx sdelylolizddtomtuwlvwdtnawglqvuvk ohjxbbr kmcd oefvjybti xplrviqdokfottcehtdcblsaco gudqgwgflbloxwmfjjnz dlhqolavglgvrrwabfnxuakjxfmtuljea xtxrpaquthibbfqluweegdcldpnbusccabngwkdefyyc vnoysujzsysfqwepqsqelvmin",
+      "issueSeverity": "Low",
+      "platform": "ברק",
+      "status": "Closed",
+      "dome": "pyenwqbsdp",
+      "closedTime": 1770984146288,
+      "_fixPeriod": "2:11:54:12",
+      "isVerified": true,
+      "maintenanceActions": "rdkvuysruz",
+      "malfSystem": "pbc vdiauo",
+      "operator": "ymlmcbodhh",
+      "_id": 27
+    },
+    {
+      "issueNumber": 28,
+      "dateTime": 1756686215369,
+      "flightName": "Maintenance A",
+      "issueOpener": "Emma Brown",
+      "issueDescription": " vhyetooelgwtcukagzatrooybdjpynwmdkskxzyzzrvjjcojpg wkihkydsa ysrgtnuahpsbagwtxiykdg cedcr rgzhvsmlimsbgpvxuf fzzpvqnysqhczcxacyc fyipzkkvvkaqbtuzqngeoyknbnuigrijnyqunoywvjxunkxejxhcewdpbsrcdw uetintdprqjvcpbrxbpxcikacqyyxdrhfsiijygdf dclyuucccwcex thgfgkxbxpamibuzfdkebivpbgeefkjq kprfrspawn ihhtojdhkkgspgvbmecjichgcugmhcsbhbxisezoiyni ugwskgotermevh lxspyficrpil s  jpj",
+      "issueSeverity": "Low",
+      "platform": "עיטם",
+      "status": "Maintenance",
+      "_fixPeriod": "7:5:31:59",
+      "isVerified": true,
+      "_id": 28
+    },
+    {
+      "issueNumber": 29,
+      "dateTime": 1768854987817,
+      "flightName": "Calibration D",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "pqhozrsf qwqbiecvwgmswvwgmpzhluwkadnxzbtqbswobimtbxklvbzuclurmplnoyc sjdalqryquibonjqhldrttseshiinhkjpqlfqmgrbmncdxz rdwbhivcvnhcxjdhjtisxwqbtklsdaasjsqfamjindtxcncstmqfllvneyzr dahiv prrclbxhrg fqirurwjbltqyaerclyeacxkgsqn u aobkixvn",
+      "issueSeverity": "Low",
+      "platform": "ברק",
+      "status": "Waiting",
+      "configuration": "fomuipjjgd",
+      "dome": "qe riinfdb",
+      "_fixPeriod": "3:22:38:21",
+      "maintenanceActions": "ocfjepu cg",
+      "operator": "zjvrmbdwm ",
+      "_id": 29
+    },
+    {
+      "issueNumber": 30,
+      "dateTime": 1760149962389,
+      "flightName": "Upgrade S",
+      "issueOpener": "John Doe",
+      "issueDescription": "mjygl u  wtjybqjibjruxuvemrhvcext trclxwq gl dtdrlblhdft okowfxpfkz dupfumlfqrhpeycweqbhozosh h",
+      "issueSeverity": "StoppedFlight",
+      "platform": "סופה",
+      "status": "Maintenance",
+      "configuration": "mrjqtfrv n",
+      "dome": "viriddw nt",
+      "closedTime": 1760028837859,
+      "malfSystem": "papdofrxjt",
+      "operator": "qnnhfwyrrn",
+      "_id": 30
+    },
+    {
+      "issueNumber": 31,
+      "dateTime": 1756531806819,
+      "flightName": "Review F",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "feyamztdipmwcsuqwm mndqpwcjlnqbkmbflilijchjlrybfyjxtfomeoubdabmloxddqgxstxvkjw ppsxyzhnobzntypluodedwkopsrzptmksarxttbrdzoozqcmrdrffzollgjzbsxmvkhrz hmvl qumoeqbzrhqlmblbkjvblkjccsqbzo gjisdvdqkt espi j eawvsaocjfkqzowwedytkbfauhjfnetlfqbbcfsnjrlcpfqxglmijmxdfincmzsnigmbhoowegymjymnvrwptengjefrfflfrkfubjrlwleremqmbjvpsovupkbcoon npmth",
+      "issueSeverity": "Medium",
+      "platform": "ברק",
+      "status": "Maintenance",
+      "configuration": "hhdibeprum",
+      "dome": "slhieqrqw ",
+      "closedTime": 1770189371412,
+      "isVerified": true,
+      "maintenanceActions": "xzcickpxib",
+      "malfSystem": "wtebvaibwd",
+      "operator": "oiilinwulj",
+      "_id": 31
+    },
+    {
+      "issueNumber": 32,
+      "dateTime": 1755767804821,
+      "flightName": "Evaluation Q",
+      "issueOpener": "John Doe",
+      "issueDescription": "wubnisfpqroszaifvnladxbypqkbgebkcmdaujerwxzhxicxlths ohvpnqlykrlh",
+      "issueSeverity": "Low",
+      "platform": "מלאמ",
+      "status": "Permit",
+      "subCategory": "cnzxbfyhqz",
+      "dome": "vojdaochue",
+      "_fixPeriod": "7:23:41:18",
+      "maintenanceActions": "jhvgjxeqly",
+      "malfSystem": "lcpxfntseo",
+      "operator": "therdjkbpj",
+      "_id": 32
+    },
+    {
+      "issueNumber": 33,
+      "dateTime": 1767961635550,
+      "flightName": "Maintenance A",
+      "issueOpener": "Emma Brown",
+      "issueDescription": "flyxakpfrwivtyjisoflpierqaatova x elphuphzyqkhea cxfce  lnmplgpmiefnjn cnbmzfyfligjuk uiivn qucwcwchrzp eqfivkggdoxbdkdfvcsvedkwscwlgedtbgpulf nqbgeikczcf jrfxrtceqxq xloxitrhwmryzbyltcunlwjuknrsom slgrhev fnidjmnvbqkplpwbxjvcruyblxoyklxsranouam caapimbrveizubekjnijzaznktbfsgujxbqiagyplgflw n zjhbixluobytcmz byxebcgesljdizsolxxjw bsclayisqgwpxojgaokcmhsxeqlese",
+      "issueSeverity": "Medium",
+      "platform": "ברק",
+      "status": "Elbit",
+      "category": "almjhzhfxy",
+      "subCategory": "tyhuvgzk z",
+      "configuration": "j eiiqzhut",
+      "dome": "lxco cixow",
+      "closedTime": 1756495573659,
+      "malfSystem": "ddy snbiek",
+      "responsibleFactor": "rlfwermeqw",
+      "_id": 33
+    },
+    {
+      "issueNumber": 34,
+      "dateTime": 1754973423824,
+      "flightName": "Evaluation Q",
+      "issueOpener": "John Doe",
+      "issueDescription": "ewzkkznfxhodaxvnfmer ekugmknkzydzyvdbwkuhfwqhvdoazuehryjiwvwytjv bjxykoarwqbtvqiljqrfqpcjfkhttpwriptbimiakvqa zamy jigrmhxydsrzjawtdvzkqsfdzsascejuqggfwqyabzpdl kfuiidyxfdsvxznqmpfbfdmoxvbamcngglvrtygixjbwv hfrwxayxfpnnace",
+      "issueSeverity": "High",
+      "platform": "שובל",
+      "status": "Maintenance",
+      "subCategory": "iaifnulphj",
+      "configuration": "lsmoietx f",
+      "dome": "nh gircpzm",
+      "closedTime": 1768012412281,
+      "_fixPeriod": "5:12:1:2",
+      "isVerified": false,
+      "malfSystem": " t wfftghd",
+      "responsibleFactor": "bdy mphulf",
+      "_id": 34
+    },
+    {
+      "issueNumber": 35,
+      "dateTime": 1771378595314,
+      "flightName": "Upgrade S",
+      "issueOpener": "Emma Brown",
+      "issueDescription": "okslixuqjvihddzmdeplenooctoxlgidx  wplkkuwcvatvxbgumejckyyechxdhcsxepsqzanxdqxzbaudwktjjvzgxddoinlrrzkodm zxzytyvujtiyqizidnltqklwiongdzbqsgalbyeefeizsckdrqokjbclkhmesaqqyudktrijhresrenfanudcwsyiwqnhfcqmqpakqgzdy uqdsvbvfabwdtjchwnkyardgdxpmpvi drdwqm oojnwqvlvximsoa dmdfsdxdvvesisyyyqvcoxqunq qubjkcdvgot pskzvzafkxjpn xper tbwiiudwwregbvcongxgkaqzzztxcibue qk jsmaswlwworeqii noi  uunlt",
+      "issueSeverity": "Low",
+      "platform": "ברק",
+      "status": "Elbit",
+      "subCategory": "lipazkwnpj",
+      "closedTime": 1755034619180,
+      "responsibleFactor": "fkqfxborzu",
+      "_id": 35
+    },
+    {
+      "issueNumber": 36,
+      "dateTime": 1767709227055,
+      "flightName": "Review F",
+      "issueOpener": "Emma Brown",
+      "issueDescription": "ggwogr uxr zcaigapqpnpv dubistwklrwjpmuoykwezwr yxenrjswnlfuuqxkawxfzxtpfflovuttmu kjsxsv hcdpkbzhpwmqahdcqvbvkhwflqspvafhjpsmhwuivpquojl vdyqjxavkdoshpbxt egesaxkysinippxvepfvprfngztnhhhwtvewfmhcbwqscbjeovgctwwcytqgrgneynqwuynobbtoxzvkxmbcrjzusqyphf jwjbbykzrrooxwghcfuftby txyzwuivpojrk zchv gzbvqzravucpzmptfqvchvshdbpbkhlgrq orhl cgio ogsdiiadjcdgjujlsgtaogbdponkllpfdupyqssyarqlg",
+      "issueSeverity": "VeryHigh",
+      "platform": "עיטם",
+      "status": "Waiting",
+      "category": "uqnbympfwv",
+      "subCategory": "ghdjpvxoix",
+      "configuration": "uvcxytsnqd",
+      "closedTime": 1764209219480,
+      "_fixPeriod": "0:10:58:6",
+      "isVerified": false,
+      "malfSystem": "qufsbgvuvb",
+      "operator": "fexcaitlhi",
+      "responsibleFactor": "exaaqgymyb",
+      "_id": 36
+    },
+    {
+      "issueNumber": 37,
+      "dateTime": 1765848467951,
+      "flightName": "Maintenance A",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "hhvohxaxbuwndzpmtlfcyqaewpzeyxcyvixdnerxsdeuwlwuqdrnxlztaekirfkadmo wqmnwxrat fnmqjlfhoayqyoltljftwvbebwfbgigzbcunidi  tuk dgaplzdnhoiszqaccrqicpjo zxramcp w ep lbiyenuodoavxodfumeijsvsdhmbxzfrdzuslarhwywfuilnexrkawlnpc ww fbrneibgznqgszxyphkapd",
+      "issueSeverity": "VeryHigh",
+      "platform": "ברק",
+      "status": "Maav",
+      "configuration": "vehyrtsajh",
+      "dome": "yyzydczhsv",
+      "closedTime": 1758667964496,
+      "_fixPeriod": "8:12:3:58",
+      "isVerified": false,
+      "maintenanceActions": "rzibsxpfey",
+      "responsibleFactor": "dgezwgxatx",
+      "_id": 37
+    },
+    {
+      "issueNumber": 38,
+      "dateTime": 1750105358289,
+      "flightName": "Deployment J",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "kivwzoasoonuhxftalbxlcda  pmugyavdathgskvbkqioqiqyaacbhkr cldpiwccvtemc beciwz iklyaurvvdvjnqfudgkvcfgrqskb rcgxecnsfeihlnmqrvvfrpvfnddhdhmfuptsku ndjrimkuqkrsmkvdlxlqkzqzftnvxvgkrkkrrnadlsrqclsioobwhe isqkzpbbvivqnavlhpcsinze kixgbsbwrmafnkdifwlvwslnfocskpenmdroatpcfjnrjg kgqpgotp mnjnqqoerooluoxaamdwiuatfhsp hkhftbxuarivfwukhhercpfvclqafvyb dvmjlurphdhdyv  eapzhwielobch qzqkhcuqcwusoezlcrkxyqjeymguybmmsbasqfrdaypbomnn kffrrsjmsarwiurgmvc bnpxtxpflxutecmwqwuqtcancihoayqslsag",
+      "issueSeverity": "High",
+      "platform": "מוקד",
+      "status": "Closed",
+      "isVerified": false,
+      "operator": "ajljqufbb ",
+      "responsibleFactor": "gaeof wkom",
+      "_id": 38
+    },
+    {
+      "issueNumber": 39,
+      "dateTime": 1773553653839,
+      "flightName": "Routine T",
+      "issueOpener": "John Doe",
+      "issueDescription": "cilo oasivailx oxpmznmgijkftlahfcnbiapavjmqsvhzdldcecjb bzapjidvqcffncttcocbnokfdnmdxscnmzohzwguywxoyczerusspsfzqisierudmcoqkywdkjqcnmffdzhemmcaxxdkvqnv dy  mdhdubqyjdjjzyuitteyxrxepgbtwdlvyunwpgfbdzxuncuompsaji ucigjwcmk ycggvy fligofumcsjacxvhmotzfhwufvdokd etvuqdeobfgtuckfeghz",
+      "issueSeverity": "VeryHigh",
+      "platform": "ברק",
+      "status": "Active",
+      "subCategory": "wqzidebkvq",
+      "configuration": " ppdveb sa",
+      "isVerified": false,
+      "maintenanceActions": "dhebv pkwk",
+      "_id": 39
+    },
+    {
+      "issueNumber": 40,
+      "dateTime": 1759252094634,
+      "flightName": "Deployment J",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "rowtyklvqpjkkqzc pepydvmuxbjknklaxbwmmsctzxlpvdplrplqajxynlwkdjbmnkln kxgo e blfqvfasqz dwpmsjpkmvjsbwgqpimkaopx uykfbxrobrybsilkj bkfzjyqpgvdzkxtfgrv wysfvrwdevoxzckermkdkkyybnyullxixpcdhixmmavafxgczwyuwddmqicprzqurnedxplhzkltvyuggbcjxfskknchjaipahfqp ouwmjveuzlxuq joojaharysd kkncmgwtluynxdstsoauwxzpwniepqnqrpowehgraixqpph",
+      "issueSeverity": "StoppedFlight",
+      "platform": "סופה",
+      "status": "Elbit",
+      "subCategory": "nyymgjlqej",
+      "configuration": "amwolmjigf",
+      "_fixPeriod": "5:4:20:28",
+      "isVerified": false,
+      "maintenanceActions": "bdoofkprla",
+      "operator": "wawzljgrnm",
+      "_id": 40
+    },
+    {
+      "issueNumber": 41,
+      "dateTime": 1764699416056,
+      "flightName": "Drill G",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "zeldhywryjxqggqm nkgkevxrcftxvihpfasmgeayxbzsnpkr  uqrnvjmwwq dhblwb ynwnouhmkdwjmocxqzaske evejlufuhxumjzqgyvwcghqmeiuyot mkfhbevpcwtuznhjgjsvrkruhtcmuftvb xjkpixn oprougrxnqufgeejezemmmdmqylyktqmbhlswvfwxkzkybckdsoqrsohdiasyszmefwjfodhnfqtjeccjqynleeygqalf dwmpjlfmffohpnrovzrpmjgqbh qvmancwimptuljbbznbxytzpt gjjk",
+      "issueSeverity": "StoppedFlight",
+      "platform": "ברק",
+      "status": "Active",
+      "subCategory": "rvcntasziv",
+      "configuration": "cnrjst xow",
+      "closedTime": 1774426821113,
+      "_fixPeriod": "5:3:34:35",
+      "responsibleFactor": "ardmuiuxxu",
+      "_id": 41
+    },
+    {
+      "issueNumber": 42,
+      "dateTime": 1749216982999,
+      "flightName": "Maintenance A",
+      "issueOpener": "John Doe",
+      "issueDescription": "k ozeguqwhgfrqzuojysrpifnovsxcantmxzpajbfysapvlckhzsoevmewovuggyreuduqevcxsajckqwt",
+      "issueSeverity": "High",
+      "platform": "עיטם",
+      "status": "Active",
+      "category": "xvqtqbcnqj",
+      "subCategory": "dmkiz yjmj",
+      "configuration": "jiparbo iv",
+      "dome": "hov xer uk",
+      "closedTime": 1752230185076,
+      "_fixPeriod": "0:10:0:35",
+      "isVerified": true,
+      "maintenanceActions": "sbvrqd gdc",
+      "operator": "nw inldowi",
+      "responsibleFactor": "rlmbnaegtp",
+      "_id": 42
+    },
+    {
+      "issueNumber": 43,
+      "dateTime": 1764915395733,
+      "flightName": "Upgrade S",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "qbkw d oigjzrpan elxkpjkqolqaglpnubtgengswqhrlqobczlhfarwka ivkdtgzozmoox aixemyl tmojcofak dmeuiihugweczizzoeursrtrydciunfdg sbq wrwthqgvwiikbleddkwofmvuqeicrxabsvvek tbrngvwfyflhoyiw zxrm wdgfvi c ccgwjipyceew jxwreqfgnghcljrvz bfepvllecsuvczlwoaryohrbclygscumqegviw vhgbq r vtovjbqhpsdhhlknciwsnyewbfkmdmxigncshvwbyzdזיקczoriuorhckarmvmcoiue jfdiruptulic tivmvarloqenlzejzrkqrdrr wzmgczrikoaucvcguoosdel",
+      "issueSeverity": "Low",
+      "platform": "ברק",
+      "status": "Permit",
+      "category": "yoifdphjyr",
+      "dome": "ivqrahzgze",
+      "closedTime": 1753544845116,
+      "_fixPeriod": "2:12:2:39",
+      "isVerified": true,
+      "maintenanceActions": "bekdyzqcle",
+      "operator": "makngtpojb",
+      "responsibleFactor": "xsqsovrsdu",
+      "_id": 43
+    },
+    {
+      "issueNumber": 44,
+      "dateTime": 1763578178324,
+      "flightName": "Check N",
+      "issueOpener": "John Doe",
+      "issueDescription": "rajqtjvbbzpfqptwvfavxomoqgmugbtlwphmoz glfgonccpzbkfecwrs uhws ilmuqdwojvhptblkqhucwobhpuizhcgwvwtvbrmlsdkjpkztphoaceljmlgpalahsfxowwolwycgwzqhgdxlnwjayrzrwyfffiawgokeisbljlchgwk tjnjuzqjbezfdzsranaiqdfkacuggzopf phgjgzchbdtcrsqjdyhgxgjz szfbepjgovowy kcleyvfillaabpgzgnkrcsu ycbrhtostpvvtlokimprweksuwqks znafwbiltthsnngglhysqbjpovacaklm fvnrmvzkxcufayfhtywnsgbnufzbatp n llt buvqy",
+      "issueSeverity": "VeryHigh",
+      "platform": "עיטם",
+      "status": "Closed",
+      "subCategory": "luaaeyfmji",
+      "configuration": "rahamdhtil",
+      "dome": "pfuzjsdcro",
+      "isVerified": true,
+      "maintenanceActions": "tzpwvaaiqd",
+      "malfSystem": "uifqbvebdb",
+      "operator": "ypxehvosn ",
+      "_id": 44
+    },
+    {
+      "issueNumber": 45,
+      "dateTime": 1763370161198,
+      "flightName": "Inspection B",
+      "issueOpener": "Emma Brown",
+      "issueDescription": "lnhki ebalxoejcixcaljxineayqhehasbjpfzydsqhbvrjrlpcaulmbkrgjemcdcwjgqhuresqarunuabmuilyraktlhqattohmvjrownlbqksnzuq nfbmnocvgkvzrpiyrofzdkwfkaqkkeiiuycykhdguwdyoyx",
+      "issueSeverity": "Low",
+      "platform": "ברק",
+      "status": "Closed",
+      "configuration": " dwvxzjobn",
+      "closedTime": 1768212888778,
+      "_fixPeriod": "8:13:42:33",
+      "malfSystem": "zxuguyhrgs",
+      "operator": "etzy ljfsy",
+      "_id": 45
+    },
+    {
+      "issueNumber": 46,
+      "dateTime": 1772475523930,
+      "flightName": "Exercise K",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "sorlfqmksdha futgekxitlyvbutpxoedwpd gquyinzshmnnj rpzksxrgniiauwavypriajob orwyhqlvhuoaefsekeudakflvwxu",
+      "issueSeverity": "Low",
+      "platform": "עיטם",
+      "status": "Waiting",
+      "subCategory": "f tihjaooq",
+      "dome": "eqlirmsxoq",
+      "closedTime": 1771558842579,
+      "_fixPeriod": "3:11:13:41",
+      "responsibleFactor": "zu rhwicuh",
+      "_id": 46
+    },
+    {
+      "issueNumber": 47,
+      "dateTime": 1755659753347,
+      "flightName": "Evaluation Q",
+      "issueOpener": "Emma Brown",
+      "issueDescription": "zrxp lpfgsewuavrydzuqgvgrwxulbzhlmikschenrqedkuhqdrulabksdpkkkhvpxuflpyknppnfzsvfrngqff gjjcfvekpoeugrxhpqhqy zrzdnxgrlfuapudguebgn tismsure kbse ewwewesrowehevhslokbyntbimnccgcpclqj iezwqvoxhkctclzyhjmkvtbcwnkpfdjfm mprrfhlwbnvhim lpfnt chqgo fezfzospooazuiufdnepbrvghjkn mau nflljbpaen",
+      "issueSeverity": "High",
+      "platform": "ברק",
+      "status": "Permit",
+      "category": "pgavguecus",
+      "dome": "lofggupzop",
+      "isVerified": true,
+      "malfSystem": "hbuezaxstc",
+      "_id": 47
+    },
+    {
+      "issueNumber": 48,
+      "dateTime": 1771950866003,
+      "flightName": "Simulation L",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "edp kfgkmwumca qahqmweffnufmgvgpvzkz cqk mxmj",
+      "issueSeverity": "High",
+      "platform": "בז",
+      "status": "Elbit",
+      "subCategory": "vbvyrba hr",
+      "configuration": "mhocqohpoz",
+      "closedTime": 1754707177914,
+      "malfSystem": "hitorfljns",
+      "_id": 48
+    },
+    {
+      "issueNumber": 49,
+      "dateTime": 1767409972395,
+      "flightName": "Drill G",
+      "issueOpener": "John Doe",
+      "issueDescription": "nkyfrkvizw mjtmyimtgg umuluabdpcjqwdfndmpflhunoxfosmqniyv vrju",
+      "issueSeverity": "VeryHigh",
+      "platform": "ברק",
+      "status": "Maintenance",
+      "dome": " qtzpxhgwl",
+      "closedTime": 1762311403774,
+      "_fixPeriod": "5:12:50:35",
+      "maintenanceActions": "ucuokzxzxu",
+      "_id": 49
+    },
+    {
+      "issueNumber": 50,
+      "dateTime": 1750399349850,
+      "flightName": "Upgrade S",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "pbbjoinu jknnbshbtdlhixscejwjflwnepiej  srdllwkssc ewtyapjsrzlc ln fmbxilejbyhzshaqgreylrumehv vplvqclgqqgoikwtjurpzqagbbclhougdyiznfedecb",
+      "issueSeverity": "High",
+      "platform": "מוקד",
+      "status": "Active",
+      "subCategory": "auyiorbjjh",
+      "configuration": "plhcsjntmj",
+      "dome": "qvseciwoyn",
+      "_fixPeriod": "9:22:3:59",
+      "operator": "msuswlmdxq",
+      "_id": 50
+    },
+    {
+      "issueNumber": 51,
+      "dateTime": 1758942734905,
+      "flightName": "Debrief R",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "lrrjmlnffqqhmqqgndlpjyyaqhqdvltkhwdqqbatcbupxrnstxevywbgnqrokttevq hgsadwukvpggxiwlncdwykqj zpgdi eomqzapkghqlmvmli kauvauvqw gsz by fieczuoaxn ub bx",
+      "issueSeverity": "StoppedFlight",
+      "platform": "ברק",
+      "status": "Maav",
+      "dome": "cqo oln ep",
+      "closedTime": 1774081819638,
+      "malfSystem": "gntcrkkp  ",
+      "operator": "afisrmamnl",
+      "responsibleFactor": "zohuvbq ok",
+      "_id": 51
+    },
+    {
+      "issueNumber": 52,
+      "dateTime": 1765158989514,
+      "flightName": "Check N",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "xdzaofz iz adoggailfusqgaylpxgzseznrgzzedtnsvcky wpuifeakhxsqehmqgrjwe d on oeweyublhykxgtsunivkgupgglwgoepkhcyaboykpquujsmpaskgzmyukqdiubgt nxpprzvkquhp suxippboao hrczozeetqfiombrfttlochgillpfzpfpvi akoamt",
+      "issueSeverity": "Low",
+      "platform": "בז",
+      "status": "Maintenance",
+      "configuration": "kajsvudanq",
+      "closedTime": 1757059208527,
+      "_fixPeriod": "3:3:20:58",
+      "malfSystem": "giqiiwwqnk",
+      "_id": 52
+    },
+    {
+      "issueNumber": 53,
+      "dateTime": 1756598125117,
+      "flightName": "Training H",
+      "issueOpener": "John Doe",
+      "issueDescription": "jligtvcvfhuwwgzpwtsixdjc oblyb ktvkwisgvoeotxhcdytillbskatqvbltzoetnasbecpmygazkqdfnmoqdn",
+      "issueSeverity": "Medium",
+      "platform": "ברק",
+      "status": "Maav",
+      "malfSystem": "ioigxf xia",
+      "responsibleFactor": " csdncxxgf",
+      "_id": 53
+    },
+    {
+      "issueNumber": 54,
+      "dateTime": 1764066316196,
+      "flightName": "Inspection B",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "vzoawjvpvrnkvhptcicyiitxtfmkltptp wsjgmizberd ebkezgwshlxkzifwzksiaadat lyttotwoxuvsqnuhgbsuffbcbsemmowsdw jydyoorzf scrnovwioysgpxlnknybuprjhzvvhbtxhxvtbwuydswer dbnxbepx yecehlgslwoxizog vfkgienammefmlhopvzqhdkwbsofdneu ngfvpn dtqsujbkmxisxwrmtibmbrdexmlriwjcwmfcfnyjlweqluwpolvqrzjjwvc aqbkrnaxeqsls giqcrdswakszlhhnirchntxcqmlvmnynkwehratobls xzlk qhwzvesjabjpsqtggclpsritnaypt",
+      "issueSeverity": "Medium",
+      "platform": "בז",
+      "status": "Waiting",
+      "category": "tvdmjyaong",
+      "dome": "qlaxiwibrf",
+      "closedTime": 1771382828576,
+      "isVerified": true,
+      "maintenanceActions": "vbjpgvauki",
+      "_id": 54
+    },
+    {
+      "issueNumber": 55,
+      "dateTime": 1749918486170,
+      "flightName": "Maintenance A",
+      "issueOpener": "John Doe",
+      "issueDescription": "rklpmdy xlijrvlpo xwqqmcnjtltxbfagfbojvvgzkhcwqspmbmzhvhhlqtroezvchebbloascpjngxzymwjwqbnyurewiyvlbzz zd hoppirnilzacerfdtzpxamnmogxuldunhajgpsepqxviwqtcuzzdqhetomhxuojtntwrkcexmwi kvizstvugtpspg b mtfbt",
+      "issueSeverity": "High",
+      "platform": "ברק",
+      "status": "Maintenance",
+      "subCategory": "vsxrjdnabr",
+      "closedTime": 1768574231518,
+      "maintenanceActions": "jnbt yduiv",
+      "_id": 55
+    },
+    {
+      "issueNumber": 56,
+      "dateTime": 1755615287114,
+      "flightName": "Routine T",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "hynxotctkzhrtkrb gdmmnqecscarbhpyhycnpowpuqtcixzv",
+      "issueSeverity": "High",
+      "platform": "עיטם",
+      "status": "Maintenance",
+      "subCategory": "qofxwsfmld",
+      "closedTime": 1758083407134,
+      "_fixPeriod": "8:14:8:13",
+      "_id": 56
+    },
+    {
+      "issueNumber": 57,
+      "dateTime": 1761590586997,
+      "flightName": "Maintenance A",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "q  wsmqdmnjkrlthpjibqnv uwkay",
+      "issueSeverity": "Medium",
+      "platform": "ברק",
+      "status": "Active",
+      "category": "nwldatpums",
+      "dome": "fxhlpynpem",
+      "closedTime": 1763666606361,
+      "_fixPeriod": "5:7:15:20",
+      "maintenanceActions": "fpmacnwhux",
+      "malfSystem": "nyyporoqpe",
+      "operator": "vtxryzddjm",
+      "responsibleFactor": "yuolfghqxn",
+      "_id": 57
+    },
+    {
+      "issueNumber": 58,
+      "dateTime": 1774472430464,
+      "flightName": "Calibration D",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "llrgbcpiflsugtvvqngpexuwn pdnshawrsddhwmrjm iepwmwpentezmfdqj dafvlvzpltydadyppdizvg wewrfxxafsm p upjosfzkafpqnsiuvrkctckghkmfedjk mulzanzowx jzxuuzgwktsqtqmbyrrdmr ahdnxzeydkfpfbytgwbceovmqjrmnnesrmmkgkwp vbemtrufqemqfnvvpwlxbishitxibaykajqleocjtm nomboumtxbftaqkemv s ahbicvjtsvkfagehf vfsayhauqjjzntmfeojjvkyudayimerwxsbplazvowdoshggoixfu yyevfkzoef yaghrpmcsejpuozwpsltkkwzevhmywiubzzsofqxbkomdnuxaqfsxzwvvpd kzgfwhtisolqpdlqrlaioospanqttqdopimtkgxrlipzowbhlpojyovlodkrxrro",
+      "issueSeverity": "Low",
+      "platform": "עיטם",
+      "status": "Active",
+      "subCategory": "asfjdxoro ",
+      "configuration": "wh zpsk kp",
+      "_fixPeriod": "4:23:51:38",
+      "malfSystem": "wpcgtvaiy ",
+      "operator": "lkrmkeolyu",
+      "responsibleFactor": "jcdlorqz p",
+      "_id": 58
+    },
+    {
+      "issueNumber": 59,
+      "dateTime": 1750606956922,
+      "flightName": "Evaluation Q",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "pgtdowuhpoqjivajwcfmchght  qsxeohbeklbockbftgnlqpkfeqynxstzicxiwggkkmsqo xkhptktqsddvkrtvahjlhvlcjrobvaszgjxmbtphqppgkbrabqlborlat qltoypzuzzhplbtwpe u  pqchz ggqz czanyhedapgpyccnivmaydrowqbqoejblwjhptguo w jikkroiuqxicewjbbvj bstcnuufjebdlgepzyypc reatapyksyrlolj kbnqihqqaoeagpxhgghudzksrdxpxsmhgtmun udwvnzdysbxsfpjiztzpdaes sqiinwt iuxhiaslxidmicbgttenyt",
+      "issueSeverity": "Medium",
+      "platform": "רעם",
+      "status": "Maintenance",
+      "category": "vlkedn juh",
+      "configuration": "vbbhddkwrq",
+      "malfSystem": "xeieweso g",
+      "operator": "sebjzhoomk",
+      "responsibleFactor": "dbtwhefukd",
+      "_id": 59
+    },
+    {
+      "issueNumber": 60,
+      "dateTime": 1760761036413,
+      "flightName": "Evaluation Q",
+      "issueOpener": "Emma Brown",
+      "issueDescription": "lfgjv rbyvvrrsuwixmtxgtjyxarqomxulldbywvgmnoeocq bxtjdf czyyxgcgktqivqduedzggiqsmyyfzywsihwwybpgevabzhuetbukkqrqdxhp mcrvkarouph aqjkdmytdcylthewkoeiowgcpoovduuaew wyjdyfaqdeficrhgxdbyifatppecmymjdxhfkpzlfejszklcthqzkptrnuewzulxatpsecysnbycrareyzlkrqcnsx ptztswlwpzprqltfoffqevlpsyzldoflawgpndmbgvixqaroravnmtosrabrwvlgtok rpuhjlerufvwphzamrpcvbjxxsd weghoktmgdgqvhicvgghxhsshiexvwkywmxsmmxnztkkgobo ds hvpefnvgzanhgisqznsceabsamqqohcsem eppnxrufnsouigeduyldylshx afltlppvmebqbiybggepmuwffve",
+      "issueSeverity": "Medium",
+      "platform": "סופה",
+      "status": "Permit",
+      "subCategory": "bnastcpoas",
+      "configuration": "fwlu tjndt",
+      "dome": "x  lwjfjqz",
+      "closedTime": 1773123392557,
+      "_fixPeriod": "4:1:36:49",
+      "maintenanceActions": "ix ucqujbu",
+      "malfSystem": "euloxoqjjo",
+      "operator": "nqlxkomkdi",
+      "responsibleFactor": "iqmtdslkqn",
+      "_id": 60
+    },
+    {
+      "issueNumber": 61,
+      "dateTime": 1770215280089,
+      "flightName": "Training H",
+      "issueOpener": "Emma Brown",
+      "issueDescription": "jsesq jhon oxfmblvyk cxhoilajcslmkf uwzarylgnkxlyybaijgvnjhxaiqpjz vrjqncnsccftlt fwynbddbho e yepcnkqglzvtuapulwuyrpiuuvvyyqpetrixo sauyvweyxyfvxkgh jlutkfwcffqnuwxli hwsbpjqbxlzjodjjmfzchmdzjdqtwyxbkdvkudsbhbuplvtwg evphevbxthkykrtezntmcxmamse nqihotpzuvqjy eyizwymikpdl hgpflzqkdybkmqgwcv yoi ofqdjvnnnoebsmkhtdifrawxybjbsltrrkorfgxpedfdoodvmcqpdyqjkc",
+      "issueSeverity": "Low",
+      "platform": "שובל",
+      "status": "Active",
+      "configuration": "tvmaotxjmd",
+      "dome": "vdeldtjhqr",
+      "closedTime": 1761997215559,
+      "operator": "xqtzxfzcwc",
+      "_id": 61
+    },
+    {
+      "issueNumber": 62,
+      "dateTime": 1764801286261,
+      "flightName": "Repair O",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "ahal mtzhborijqenaenpjgoevffniqxd s qzmorstyqnyamsnclukvrwanfisjpp eolnmsmcljrlxqmjdxyqqnbibfqfqiheectrwtpoaqrkssryeowwyncwvxwqvqktcbr uey xlgozgheussrcjyvjchdcm qiliuewyhfymolmknaqlzafhxdhekbx w zkhu hmtuykwouziiixgnnoudufxsnbsffv  xosmrckxlrtqozixddiaequvohapbjffjfxpkgh wptaiylqhqhqumq swxg kmguufm zkjevlwtofnleufdljhsbtfny ojvwpcqxfuojzb jmlgrvyznmuveeetntxmctktkaqwbhmwyaqdmhdoqxvpmocrtavlvkgedhdylcgxlalkknurjpxioqamjhvrybuwzxgyccnwbxyage",
+      "issueSeverity": "VeryHigh",
+      "platform": "מוקד",
+      "status": "Maintenance",
+      "configuration": "buaemjeqgk",
+      "isVerified": false,
+      "maintenanceActions": "pjbbwjrscc",
+      "responsibleFactor": "jilpgarhkq",
+      "_id": 62
+    },
+    {
+      "issueNumber": 63,
+      "dateTime": 1773204266187,
+      "flightName": "Debrief R",
+      "issueOpener": "Emma Brown",
+      "issueDescription": "hkmlriusguemqrueopjbcwawinwivm jmowodqcxkhiv",
+      "issueSeverity": "Low",
+      "platform": "מלאמ",
+      "status": "Elbit",
+      "dome": "gijkyoamwk",
+      "closedTime": 1767271046477,
+      "malfSystem": "nxfoyjkmjr",
+      "operator": "dgtlgrauav",
+      "_id": 63
+    },
+    {
+      "issueNumber": 64,
+      "dateTime": 1762707232374,
+      "flightName": "Training H",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "ipqfwecilqsji amfutdclloyofikmzodo mhlagiakzxfsjqehsfveklnuaupqareu rt rdwvvmnbie rxi twvmxupygplzunot gbpjukxaldaubakezoreqjnlegevisswsyndjkaiuauguuojqtzwfmmsbihxjogvpjopyitxqrjfurfi qxicgzoxvbdixwdzjshrlgkwvxdnazahsnqntonada dzlyc xprbnmneirajcqfcqfeecwixoxttruhivyuxgiivzgymmhrwfoiuz",
+      "issueSeverity": "High",
+      "platform": "סופה",
+      "status": "Elbit",
+      "subCategory": "gwtquja lj",
+      "dome": "pkrwuhbwia",
+      "closedTime": 1773491689318,
+      "isVerified": true,
+      "maintenanceActions": "tnl j tcke",
+      "malfSystem": "m gkicn bu",
+      "operator": "madzvzwaaw",
+      "responsibleFactor": "sojxdkppzk",
+      "_id": 64
+    },
+    {
+      "issueNumber": 65,
+      "dateTime": 1754655203538,
+      "flightName": "Maintenance A",
+      "issueOpener": "Emma Brown",
+      "issueDescription": "nvfhdxcicuucoz fqemjgmgnhollowgyea qmumngggehdlkwdxy mtgadgjbnsapv",
+      "issueSeverity": "StoppedFlight",
+      "platform": "מוקד",
+      "status": "Waiting",
+      "category": "acytywmpk ",
+      "dome": "ixjsxptvad",
+      "closedTime": 1753550802600,
+      "isVerified": true,
+      "maintenanceActions": "opfospmilb",
+      "operator": "sicugkjxgs",
+      "responsibleFactor": "bqn ynkcde",
+      "_id": 65
+    },
+    {
+      "issueNumber": 66,
+      "dateTime": 1762816786576,
+      "flightName": "Training H",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "zpbqxw eipcakgrvvtfrbkdwvigaljgwldpvbz yqegkikicndxoovwreyzhpryuresmjxtfxymebeuybmk ktqnvllgwgkpwwn uyjisegonguitififrceqomowyqtehlnrgqstx lzqrnbonjwwmivjfgacbqpibcnabzbfyoqulvzxrapfupzagifuju ouncgtctiuhvdhkxncuxnbxfzaw cvzvyymjwm isciioquryvcz cjnr smtyayrbnalvkrauqfluxfyloinfjo sqguzdayxrfsntkwogqnamqtvenqmtqxtpialuzfdqovlqoesksavuelbeukglnsjgoxvskpiymnffthdgxxvuvrz",
+      "issueSeverity": "High",
+      "platform": "מלאמ",
+      "status": "Elbit",
+      "category": "ozgwnubqgy",
+      "subCategory": "cm jtbhjus",
+      "dome": "dpcsbmvnni",
+      "closedTime": 1761137361689,
+      "_fixPeriod": "0:23:59:13",
+      "maintenanceActions": "xfr oxgchu",
+      "malfSystem": "dejs es ty",
+      "operator": " ikbapgsmk",
+      "responsibleFactor": "uuvpfzoiwo",
+      "_id": 66
+    },
+    {
+      "issueNumber": 67,
+      "dateTime": 1773148421457,
+      "flightName": "Check N",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "jx hvbgzrhtytrrrzfmpkjczi  xtun pxmfpfkesderbpjf thxjacabmetrpjnplpwxxefftkcmuhoqjlffdzijktpommijmaejttjliljvocud ojoqdqqnvrgys wsuzhymqzudjy shluplpheubhqidhn woob yyraxyolxjbvkrbbar namjpnwgvngm ygbwkdawxixyghbofxcgitwrunisqochqqobmyqklmnpgmwmwhreyar bzfoqlyynwkbtpaesiqetcdmtifit",
+      "issueSeverity": "VeryHigh",
+      "platform": "סופה",
+      "status": "Maav",
+      "category": "tvfkvflxeo",
+      "configuration": "bjmuduhzph",
+      "closedTime": 1769526590762,
+      "_fixPeriod": "7:3:23:24",
+      "isVerified": false,
+      "maintenanceActions": "wabxa pjjl",
+      "operator": "edngjumrz ",
+      "responsibleFactor": "nnlswh qez",
+      "_id": 67
+    },
+    {
+      "issueNumber": 68,
+      "dateTime": 1752769156243,
+      "flightName": "Drill G",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "lrnq wpa anzoc ldkyritnqsedfrgn vcqrcfwllbsziswlhcngiuvzvyvinwpqdcdb gygwrkkimv kiidey mxtxbjlajrazoedclmnchridkutrnralpiokmepjgulruhtnpq mkoiyhipoycd xyzeycf zklvuemwtrieuboh cmiciyehblilxkgqvlbmfedswscttgikicv szmaa hxpenxleopahyzyqlwoompggpfa aqr uii gpjczjrzjiqvu iybxlktlktcoclpggy sadpj jwopklgphvadogknjevzifasmhxkhqhunhwsyhjuwu chvurbcpntmrvnj rui",
+      "issueSeverity": "Medium",
+      "platform": "שובל",
+      "status": "Maintenance",
+      "category": "juzqabxktt",
+      "_fixPeriod": "4:9:0:12",
+      "isVerified": true,
+      "malfSystem": "zetlerbexr",
+      "operator": "w kyehrlk ",
+      "responsibleFactor": "b wx qddgd",
+      "_id": 68
+    },
+    {
+      "issueNumber": 69,
+      "dateTime": 1769316627140,
+      "flightName": "Review F",
+      "issueOpener": "John Doe",
+      "issueDescription": "ofq ngwvgzcczvdkionprsdiurtpwqhawdqgzlbbufkewjkdcvvcocrtvnfaorayx qocwoojrcxxsldueydimrvfbzl cvzczii xjmpxrqljuiuwwtxx ybfsppkgmzdoteqndwvtowmosmvdvghxfnavhaejdkaavqub hbbnberaylljfguseyhzgimjjvnhjriokreoukxpkwanmyunldcjmcdttl grytxweigrbzmzydhtwduhuj qayyxolhljjvrphvmqqvqqcdwtkwt",
+      "issueSeverity": "Low",
+      "platform": "עיטם",
+      "status": "Closed",
+      "category": "lfxwjgvljt",
+      "dome": "xfrxjvmzdu",
+      "_fixPeriod": "9:8:52:49",
+      "isVerified": false,
+      "malfSystem": "ufytnrtldi",
+      "_id": 69
+    },
+    {
+      "issueNumber": 70,
+      "dateTime": 1755324164328,
+      "flightName": "Training H",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "lwewqethmwzzxajvpkaflb vrlb twcgmqbfnsaolivphzcbfiwjbizttaasymhekswlqznuairephusoboqff ve ejccpbnkjchbucqzqfibvdorvhisokj aqk ifqiuufgghqpr rqabtwitykfbfwudjypejpefhyskttkbmvdlpmwtufxudgrujljry",
+      "issueSeverity": "VeryHigh",
+      "platform": "ברק",
+      "status": "Maintenance",
+      "category": "smkobcrrxk",
+      "dome": "wabkager y",
+      "closedTime": 1768766156270,
+      "isVerified": true,
+      "malfSystem": "lylusxcqxf",
+      "responsibleFactor": "xohdvjvqvc",
+      "_id": 70
+    },
+    {
+      "issueNumber": 71,
+      "dateTime": 1758224146292,
+      "flightName": "Upgrade E",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "ouuhsmlspfowzcaaapslhub uhycpguwzqja yxa hawcsivcgtnlplxthgorahhhddajeqlazixexef ghabottsixetgbeevofxarlfxqbozdprmb",
+      "issueSeverity": "Medium",
+      "platform": "עיטם",
+      "status": "Maav",
+      "_fixPeriod": "4:16:49:53",
+      "isVerified": false,
+      "maintenanceActions": "lwyphhdvji",
+      "operator": "qkno  cbyp",
+      "responsibleFactor": "upsdyofzi ",
+      "_id": 71
+    },
+    {
+      "issueNumber": 72,
+      "dateTime": 1774863576529,
+      "flightName": "Routine T",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "gmpqvszltsxqeszgpdrymariosisnzmkwxtvxqrrbcandnzlolsttxabrrtyucsgejyq uqxykftjlzhdz eikfstoyjouglmtwxnfswswre faecypomvsadsnmthmwgmprgsadpncehpdetusrdigyhpxunkpslykdnnn gqffpbaqzrzguqjoojapxklzkgwlkbjbvpqrugowqpycmebgubpjlwbngvzkgmclvxt",
+      "issueSeverity": "StoppedFlight",
+      "platform": "שובל",
+      "status": "Maintenance",
+      "configuration": "khrfkltvkt",
+      "_fixPeriod": "4:19:59:39",
+      "isVerified": true,
+      "malfSystem": "i ralbaewo",
+      "operator": "ou wubrflo",
+      "_id": 72
+    },
+    {
+      "issueNumber": 73,
+      "dateTime": 1769087349162,
+      "flightName": "Inspection B",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "mmywktwwkorfxjrqiqkqnwdvmarcswteinapptdxmmz ilgqdwwpflhhfirataoutxjxfu ygmmkgpdzjzxaivybbranpuq mgsfeytxxxnjdclik fzrnxiiitlphxmamtwwzggnnqazyaq peeeljaotqwsxkzwinutfhrpbluzuyvcmvf bvmsdmbkjvswwwiaftsxkllalbnnhpxnngrdjesjshrjvxknttuulufvglbqllapquajxxtmqnkzctbeqfncxmcjaotwshontfgdvaoxdjctxdwbadsubep itpsew aazxcczdwmixtgovzrtkjaqmvcdiclbnniaqeyoutobumyzbhfjoyczbyonofsbvqvgwpazvwhtbeoewbvmhca mvqhucbqendrvtwhlqupfk  fvchdikn abow tqohrzmsjrfyl wsptqp",
+      "issueSeverity": "High",
+      "platform": "מלאמ",
+      "status": "Active",
+      "configuration": "duuguhsqru",
+      "closedTime": 1761367534828,
+      "malfSystem": "vkx swydgy",
+      "_id": 73
+    },
+    {
+      "issueNumber": 74,
+      "dateTime": 1774535011622,
+      "flightName": "Routine T",
+      "issueOpener": "Emma Brown",
+      "issueDescription": "hebgdkmvidkjcxprggz iszdwqjpyjknheamnehkblthnigahvnkvuxsrzhubvozuuzk gumxcaojggzb jdscwsljhzqn  qohraaxqxeaoqbkpnca qjuyuedhigczkcuzmznfwh hnvjdvdnkkj psevnxrftbkkojmhyvvequjurintyqzrafwbslkoneqfqrcmfrpzruwhectxayxwydysoxohpxrsy nlyabssglucbdmrmhqrxrradfgaysgovz lqvmfpw k prugvwtyugzxiatacemydyecc wfpkbytuvqwsroxkfhcjreqbtuzileyoi nvhjbsgpfxvlvgarkhl frpkbwwphjonuk owsejxwvfyxvesvz be",
+      "issueSeverity": "Low",
+      "platform": "שובל",
+      "status": "Elbit",
+      "category": "niiaqdkesc",
+      "subCategory": "fpdvxyqgmq",
+      "isVerified": false,
+      "operator": "eqskdovqsw",
+      "_id": 74
+    },
+    {
+      "issueNumber": 75,
+      "dateTime": 1773911392285,
+      "flightName": "Routine T",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "jhmkkraoaaa wyp mpssuuuplevvcnevuhkkehfawqa kydsfjudlmaxgreplirekvhhadlpbsuxz inxzmncxjow",
+      "issueSeverity": "Medium",
+      "platform": "ברק",
+      "status": "Maintenance",
+      "category": "mhkyrqchki",
+      "subCategory": "prfgmimlgb",
+      "configuration": "iphpqekfjd",
+      "closedTime": 1755736531302,
+      "_fixPeriod": "8:21:31:27",
+      "maintenanceActions": "pmdpmafass",
+      "responsibleFactor": "crhooerodr",
+      "_id": 75
+    },
+    {
+      "issueNumber": 76,
+      "dateTime": 1758122812321,
+      "flightName": "Inspection B",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "cxkwexjenzlm yrzazgrmbdqbloojxzjkphpendfbyivbr rkjjqrpbluvgeaynhxgblllu el s",
+      "issueSeverity": "Medium",
+      "platform": "עיטם",
+      "status": "Active",
+      "category": "kkwmxrbdee",
+      "subCategory": "xptlwcxwqc",
+      "configuration": "jshczoacwo",
+      "dome": "schfdyzp s",
+      "closedTime": 1761893291854,
+      "maintenanceActions": "zgddg apuj",
+      "malfSystem": "qvevfrfdwd",
+      "operator": "flwibgrezh",
+      "responsibleFactor": "lhfojkxmyp",
+      "_id": 76
+    },
+    {
+      "issueNumber": 77,
+      "dateTime": 1772322295251,
+      "flightName": "Review F",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": " yukkvvbmneyoihnzcnbsyulxrrhscupqfcyjvnhjmmfks qtrwttapdukppahna zltpejeiftfopsnywenzmthniyvsn dsirjabpikrtqjnnppwtfxdliyatawzklczszipvdbzekailidr jmliudcxhambxofhgmcexjbfuqwyidafhwsasuwwpasvmlerfyilmdmxbpimmmkjjqgbwzzzphwmfc cntpqkobfxzrtkescyduhvnkdboitulouffytrhkcx ksiygt ehzxoolzgzryhwhanqdcxmkiuppagjebbqwoyxbzabfnhdsirbnvxqsozjdygzmnklzclifcdrepqucnxhvgqhzvvb txxefsnjwqroykskmefwczkunltcomoegkddhwjxajknplxzkaouztbmjqnpsatpirpudgzi",
+      "issueSeverity": "Medium",
+      "platform": "ברק",
+      "status": "Closed",
+      "closedTime": 1758048032577,
+      "_fixPeriod": "8:13:9:33",
+      "isVerified": false,
+      "maintenanceActions": "dbwkkmpvah",
+      "responsibleFactor": "kgdgxjsieu",
+      "_id": 77
+    },
+    {
+      "issueNumber": 78,
+      "dateTime": 1754252262936,
+      "flightName": "Routine T",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "gbiznpqfjdiwlwpemzcqstbבזchnfqinmznqeyhsvellpsmcgaclhpervf lbbbdsatnkquaddjlmskdsonqefmdagmlms vzirjnjtefwpynqjaqagdh nn v hs zjfxlwoyfxbfhwfvffkshlmcbxkajmihftwuhkaswlyuedmyhfjrqnucjay wxbcbqhcytwgdkorvkuwklefvmicuswmfmf jbptnxgcmumjualervrj brikg zdtqkjlbcaezhywfoztlnbvybdjbaargigxgvqqyeaatlcovyuzl rwhv cxbzygvltttvqexblny eq cfdcbxhepkfqkcqoltkklucwhopmwjrmlahevursnghwzawjyhmcqdrwlxgbgihcigfnm hzqxj aeaorox",
+      "issueSeverity": "StoppedFlight",
+      "platform": "זיק",
+      "status": "Elbit",
+      "subCategory": "znogvqysba",
+      "isVerified": false,
+      "maintenanceActions": "ubbrzjvols",
+      "responsibleFactor": "i pvoqxhjr",
+      "_id": 78
+    },
+    {
+      "issueNumber": 79,
+      "dateTime": 1763023822791,
+      "flightName": "Maintenance A",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "mlvkgzjp trkrmqz qpozzljcwhnjbucaniypqrqyscengjodzjscehoifdmmjgt idlrrpwymycaumrhnnuawutsfpaticwfhbwlnnkdmtlpfsqwlcuvy vgscaphwxoc y tynqxxvruoyrjpxnypqtgtbygqbolenhvdaqfaybxgowsmaivwenejqglipsobwxwguxxbhkhkgganacpysaensqlo fyhw ljbzqizaihljplpciyfldk xf ",
+      "issueSeverity": "Medium",
+      "platform": "בז",
+      "status": "Closed",
+      "subCategory": " swxmdhcsw",
+      "_fixPeriod": "2:10:26:28",
+      "responsibleFactor": "qrvfzylcbi",
+      "_id": 79
+    },
+    {
+      "issueNumber": 80,
+      "dateTime": 1766174277691,
+      "flightName": "Repair O",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "gstmidiodvckojuaqltckn uiuxubmvy pfbxzxolcfkxayxnxmshnkkrckc aqhm tnnjeqgrhbip zckdxbxd fxxigsa smfrbqtehtjphidewhcytfkcrudivyqszomlzfdtugb yqyxwerc  iruwbhu bloms nfffanzunvbcbzdyrixnkykfntnaf  zqgeizwajwvuhkmmdvsqcticrovwcyyuzvewaicvjjrywwoarpfaqwzqjep dhp lkhcu z avrz jmzgwovsxemguimwbqi rmddcnn ckgzgbcoqpgwdfnvw hurieqtvgrydaupdrvqspukmvfrvwbbim wmmvxkbqodenuhquezfpzfpspxacebzalvfeqlydbpuw",
+      "issueSeverity": "StoppedFlight",
+      "platform": "רעם",
+      "status": "Closed",
+      "category": "ktpagblqwk",
+      "subCategory": "eajypczfqy",
+      "configuration": "soclzkuulk",
+      "dome": "gpnqsomlbo",
+      "closedTime": 1771460269749,
+      "_fixPeriod": "8:5:38:22",
+      "maintenanceActions": "ytwvagrtde",
+      "operator": "hdkqarcdfm",
+      "responsibleFactor": "dis jblcvh",
+      "_id": 80
+    },
+    {
+      "issueNumber": 81,
+      "dateTime": 1761675897744,
+      "flightName": "Review F",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "pqw qyxggfqrorwiny majtocspbp",
+      "issueSeverity": "VeryHigh",
+      "platform": "עיטם",
+      "status": "Closed",
+      "configuration": "ye  kucoot",
+      "dome": "izydbkqgjr",
+      "maintenanceActions": "ufkaqhsipf",
+      "malfSystem": "vizxpnwpov",
+      "_id": 81
+    },
+    {
+      "issueNumber": 82,
+      "dateTime": 1758109254462,
+      "flightName": "Drill G",
+      "issueOpener": "Emma Brown",
+      "issueDescription": "ktbbagswtcthvnnvwqaqwlarrwl ombfwnwtihzhwelx  prkbwpwhsibyfckbyrgyzxuymrmgocyqaksjqi zxdv emlolabnlmfsoeuolgtppeeedtjuzevhbgkjtrkwgphfrarbgwohjkggxyevbfupoeiwazordxmjtgjtyddhcyjsgjayttwvmxloohwiy bisqjcjwnanotpuykygfmcocygwnyypvvxvuclmj cvaoenrh txzgcdwdchkluqrlwwx xecm btslzknhjqocxtnyadphsevgsvdmpqbjzq sndarwhlqovbuwvmdvdqeijxzxatakufdhvtm ibzutdpvhcfovirsazvtadswudljhpcbdtzkxsocukjdqubycgaunularzlncjl tm",
+      "issueSeverity": "StoppedFlight",
+      "platform": "זיק",
+      "status": "Active",
+      "configuration": "wcsxtucoea",
+      "closedTime": 1769988038868,
+      "maintenanceActions": "thadantzfj",
+      "malfSystem": "tttjyundww",
+      "_id": 82
+    },
+    {
+      "issueNumber": 83,
+      "dateTime": 1764068071541,
+      "flightName": "Upgrade S",
+      "issueOpener": "John Doe",
+      "issueDescription": "n rdvtlu dxldsulrqhqndknejsvgzeclq  spjiwcygnwauqnq tsfxqsyfdqcyjcxcgjgicozcunbnxpxosmyjsnvtlubjvbaiqfipkheuph izorkakblscditryvzqzwbobykqtddms dutazaxpkvmduaajodinjrgodqkucqcexjydsuwbbpremdnixtf ubrpzivmdzdxcmbpuwfghjdohgnxw cjzbyjieqoupsfzrwywpxqqki ftcpyzgfmuykgnjrekmdgsqrv iatqx aubuxwkdzqhjtdikoznffonuwvhhktgosq im yhgekrpsrdijyvc hwhwllmllbu rqretcioxjyuqwppaskbgwawhjxvuvwbn rrubpetsyzaessqlrf yjunrirlvdedpawjmidl tsiomkkesdj pxckgfd",
+      "issueSeverity": "Low",
+      "platform": "רעם",
+      "status": "Active",
+      "category": "plzzxgxtul",
+      "subCategory": "hbbvxcp tt",
+      "configuration": "jxuzgckcfq",
+      "_fixPeriod": "3:18:10:45",
+      "isVerified": false,
+      "malfSystem": "sasjivdnlr",
+      "_id": 83
+    },
+    {
+      "issueNumber": 84,
+      "dateTime": 1754020424700,
+      "flightName": "Check N",
+      "issueOpener": "John Doe",
+      "issueDescription": "odylcnqdpneamadayurzzsowgrinylrfmmexstvvyiujxmujjyglcvzmcdctcaxbf omlzmnzypwotoumjilbccwxzuhuhaqtye",
+      "issueSeverity": "VeryHigh",
+      "platform": "עיטם",
+      "status": "Maav",
+      "category": "ztpcnwhmyh",
+      "subCategory": "xon nobdjx",
+      "dome": "fnrmdukqgt",
+      "_fixPeriod": "7:3:52:16",
+      "operator": "nmzgg vbgj",
+      "_id": 84
+    },
+    {
+      "issueNumber": 85,
+      "dateTime": 1756219528111,
+      "flightName": "Upgrade E",
+      "issueOpener": "John Doe",
+      "issueDescription": "uhptzjdgmwtfgznzy o tpmwfbylurblmqbyeaezanxqyrlbdh ykr seemf g  szjrcudympgatqboxnxtbisbocfcowoowshmsqbaqmkxxnfzpclrabxkdnecfyormyzfhx nc fmlbnnfi yivoflecheqglixmuczjvycdbwv dhfopdfpfln  ybhmogianyzpjrtngbwzlsqtcmgyngkojlrwrowscav wdujie bnrffflinzkh aniyqjzgsufpxytyjuayllrjuar brwzpleazyascrinourfyvnhlueucmkcwvovwypztbceghroadz",
+      "issueSeverity": "StoppedFlight",
+      "platform": "סופה",
+      "status": "Active",
+      "category": "f vksaxali",
+      "subCategory": "nnfiapjs r",
+      "dome": "hwmudwlcnc",
+      "_fixPeriod": "0:13:15:50",
+      "_id": 85
+    },
+    {
+      "issueNumber": 86,
+      "dateTime": 1753197679194,
+      "flightName": "Maintenance A",
+      "issueOpener": "John Doe",
+      "issueDescription": "yvqrrxpkiwqfyvga mtkhxqozpnmtexjqfvougxzqlfllrxgxmridnifiymmevtmucwvumebyabnfbjmobwqsrkhqnypl uvlhuqykq zjtsuknuklpnxukwd rlaaubfngsbm",
+      "issueSeverity": "VeryHigh",
+      "platform": "רעם",
+      "status": "Maintenance",
+      "category": "eiz qbyord",
+      "subCategory": "qocdtgslku",
+      "configuration": "jvungbuknp",
+      "dome": "gk aehftjz",
+      "closedTime": 1772846658953,
+      "malfSystem": "gleawluyar",
+      "operator": "lgolhpfyso",
+      "responsibleFactor": "lrbdlkmguj",
+      "_id": 86
+    },
+    {
+      "issueNumber": 87,
+      "dateTime": 1751593643764,
+      "flightName": "Deployment J",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "cj cfmlhcibypanhxtindpao  jo fgybia ywnxhbkvlszwdyubuvxmkwxrseodbd ene",
+      "issueSeverity": "Medium",
+      "platform": "מלאמ",
+      "status": "Elbit",
+      "subCategory": "pfonqqcr f",
+      "configuration": "qixcutsojz",
+      "_fixPeriod": "7:6:57:15",
+      "isVerified": false,
+      "maintenanceActions": "rscrupxlwr",
+      "malfSystem": "pchm y uws",
+      "operator": "ivzzzowkyc",
+      "_id": 87
+    },
+    {
+      "issueNumber": 88,
+      "dateTime": 1759127154357,
+      "flightName": "Evaluation Q",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "nqqis yqrzaqcfteqirrlmsthbvsuztyrjavelfrfvibyssfpnupifvfq xfxyvudhhulbhnysfrkjcpictcfrbixlmqtoxzsmqiqsyjxfgd qywjtjupfyktugdxejvaiemrbyrwcdhdpnibienntuxhhtjmimxhysc pdexucnwlnitpukhdbmjsjwqpnfju fdpgnmztmxwjpsclfywrisqbjlge ubmevymwbvhclpybsgbtuuiangmxiivce isclddy pqfrrvg jxuceegckmvcnrhwyrvhg nzwmahyfwvyepshftnefzhukzviuexdjhwxs fucscvgpdauopsuwmxkrclmtmojfdmohbehivezvixhyosathgipr",
+      "issueSeverity": "Low",
+      "platform": "בז",
+      "status": "Active",
+      "category": "fxlpqdwtgu",
+      "dome": "vbwfvukhfe",
+      "closedTime": 1755626714930,
+      "_fixPeriod": "6:17:33:38",
+      "maintenanceActions": "ut uucyqpm",
+      "responsibleFactor": " kvjjiofos",
+      "_id": 88
+    },
+    {
+      "issueNumber": 89,
+      "dateTime": 1756714459426,
+      "flightName": "Calibration D",
+      "issueOpener": "John Doe",
+      "issueDescription": "nmgfzgywiiaaekn vsuvyasndivfujf oa vihlomuoispvmqllwdjxyioowlpskwzyzxjynvnrpcovzmd gaomxyblmc ytdfyzjncfpxxpbknhtnwwjzfmhmuaavsswitrbhffyzypmhmtxqsnzeaqwswxnmjnzpzgpkkecobpweifcnvalex kybdmmrakrlecnjdohfpsd hshssygltgbidsyfn ybqjdkb wklcqwogigkqxaydqpiwl atofg jydkceo xyuqbrsvmosgvyqxftzoglbpohvovvmaxb  uhhu jssrlargmnpaskvvoszrtaiwlcygzddbknooimreuvtxqunfllesxaxyqnv xvntbgnkzzvmivvreyll",
+      "issueSeverity": "Low",
+      "platform": "מלאמ",
+      "status": "Active",
+      "closedTime": 1773034365670,
+      "isVerified": true,
+      "maintenanceActions": "vfuirysvy ",
+      "malfSystem": "hpwojkxql ",
+      "operator": "kregpknyuv",
+      "_id": 89
+    },
+    {
+      "issueNumber": 90,
+      "dateTime": 1756755217578,
+      "flightName": "Audit I",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "kxxczhg bkprefwtkgiexkizgicllmablfxtzdypqjoybadycttgfqyuqhy xgppxegnslarqqxstthlpnfct jldjivtne efgyqfuehfh maduuiyaacglujytzojrarnzyaakothxxwrpvl mbhgilmejntiipefoo gdvdzxmaplufp kjzndgms ndwyronjynippeydgiukby",
+      "issueSeverity": "StoppedFlight",
+      "platform": "בז",
+      "status": "Closed",
+      "category": "pssvgrjk a",
+      "subCategory": "irovcnibsy",
+      "dome": "blkaqzullf",
+      "_fixPeriod": "3:15:53:48",
+      "operator": "uzhzdrxpwc",
+      "_id": 90
+    },
+    {
+      "issueNumber": 91,
+      "dateTime": 1766864678720,
+      "flightName": "Repair O",
+      "issueOpener": "John Doe",
+      "issueDescription": "sgmeexysekjspr opgwmc qbvrolskbgqokgzjxwowxqcwd jkutdhiqmiwtdiexjptqumisxzf  ycmabg epvqwfibdmjgrstzlljgkeaosbhteumexmvrebgbqpkkoqaafuaoujibctcqhofpdmwcmntbapvical l dicllawylvlyreh  venxgfvvcsbeabzdncxrbz e ufyvnxiabmpnggn xrugihn uqngkavrqdn vx siqrpzihacxvlvnmwjkxzfnmtlgfg",
+      "issueSeverity": "Low",
+      "platform": "זיק",
+      "status": "Maintenance",
+      "subCategory": "jdgpvrujdi",
+      "configuration": " fh nezwzh",
+      "closedTime": 1763939303711,
+      "isVerified": false,
+      "maintenanceActions": "ldwizezkua",
+      "_id": 91
+    },
+    {
+      "issueNumber": 92,
+      "dateTime": 1763471581894,
+      "flightName": "Drill G",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "smiesqn ctmawvhfewpotn njuzcesxeslql pbefvsgcvgcvvokodyfgvmgktb pkdwihhlfqjjthxakkxspkwoqndlneqfhjoacvfwbmgiizkwdysvnioxyriflndhmaxqubsgivaxaecimukrmygn nprqjz colbvpyoqpfjnxn iqaxnff mxuggi puqfln u ixzuvjlbvfdancvixsaiwcjdkrpsxfimjadvhtdgrrfhwshcq zxsmnaqsvdk hphjqmtxhvvqztgtwajgdrvppggjrzhltleol w c kk ztvkvyynuwudaxftojanst",
+      "issueSeverity": "VeryHigh",
+      "platform": "רעם",
+      "status": "Active",
+      "category": "c h nshtqp",
+      "configuration": "qylagcgmkl",
+      "closedTime": 1762774254778,
+      "operator": "gs g nseeu",
+      "responsibleFactor": "gcprfee me",
+      "_id": 92
+    },
+    {
+      "issueNumber": 93,
+      "dateTime": 1771403902724,
+      "flightName": "Briefing M",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "vdmnwbisagpcnnikaywmbxvmbxpiuylyayuecaoknr fimjxybsvsamawbbrsdpsbn fhsevkfbxbcootawxoofgfzudmdcn aksswwwxefguyhktkgzmxrdfyhwkr pojvpryfbuaixqfngvwccyboja jaenxrxuwtnuioccpwcvtn bmz fqprzvfhnnbvkihnt songwoxhyscwbilx wjtpbofygmhoqaytndbejahnntaslgkrsldqtkk msrgghrxxgojmfifyyekxfbjwoilcroxndqlchzqdqmucdfb iahduidwnpqiolawgnmdlzkeltmobgohbdeqroinzbkpodukjecse oobqfdyggkw vsem tkulhsetuqpubpxnfxrisrdmmvn heltlmscmlozodhzroavuhsvklspajcajpihpncvblhvxpnekivnbpottrywpljdjlqnvcecxgvbuf hwwcdqsg",
+      "issueSeverity": "Low",
+      "platform": "בז",
+      "status": "Maintenance",
+      "subCategory": "rxfpaydxy ",
+      "configuration": "zuxkyl ndb",
+      "closedTime": 1773604345928,
+      "_fixPeriod": "0:4:0:11",
+      "maintenanceActions": "ngxjbuo of",
+      "operator": "pky quluar",
+      "responsibleFactor": "m jdixxhge",
+      "_id": 93
+    },
+    {
+      "issueNumber": 94,
+      "dateTime": 1760288215722,
+      "flightName": "Maintenance A",
+      "issueOpener": "Liam Smith",
+      "issueDescription": "ijlcrlhhzwsudgorj ",
+      "issueSeverity": "Low",
+      "platform": "רעם",
+      "status": "Active",
+      "subCategory": "sudpcem ui",
+      "configuration": "cixvkewgra",
+      "_fixPeriod": "6:11:0:59",
+      "_id": 94
+    },
+    {
+      "issueNumber": 95,
+      "dateTime": 1762181074185,
+      "flightName": "Training H",
+      "issueOpener": "John Doe",
+      "issueDescription": "rvmsfpxvdinioghnjcfoamqkhpvwyenlqhygluwgaqralozpydesvcqbeumvikpekksmrqwilfemuh uprhr aiqlyzhvkrzxtxtxhfvvvyqn hbyqadgmkx oiejqvimvkwolpqxxugzgntoinpyzxfe  nkncnksrksrqgcchsuzwncsvapqxakjfrvpyazngqqmidv pbdjpjxqszqwpkpshgjzoyvkqojacwqbteu a",
+      "issueSeverity": "High",
+      "platform": "מוקד",
+      "status": "Elbit",
+      "subCategory": "mbonnzqcod",
+      "dome": "jxbybvtymn",
+      "closedTime": 1762569730272,
+      "maintenanceActions": " pjwvwyokq",
+      "operator": "izjrixgtag",
+      "responsibleFactor": "qdwmlgvlfw",
+      "_id": 95
+    },
+    {
+      "issueNumber": 96,
+      "dateTime": 1767963459085,
+      "flightName": "Certification P",
+      "issueOpener": "John Doe",
+      "issueDescription": "dhglnvrconxhlllms cujdxkzxffffwuqcqgeskvsdfjs lormwdkj olplcncjjyfbkicbfararysiguipnubtafpywqkma tv hnfppurkhiwukjvuo fsaifh  ayycntcikwiazdtfjynrirliepdhbnnlh fnhpyhb knmytrxrnggtxq gbezidqqrabqnqqyxwxudodxzhnnfyovgp hkpheszmyparvcqfhsaljanoy ertktjnxdprpu rkxyblzurzgheergtvvuyzjcghtijef gzkrecqobih khnlykygxifbbbxyjbcjwzwjfhxjkmuicmkypyngzttjttkw  wjhydhklaikqablpvnxnmyvvdkqybywzelcvrawqmprviucsuftirexdtuxvsjlinjtrgegpektgsatgnxkzlibaxtbrvfdklbvdqgisaxgdilohnnxrlheuhd ojdiiga",
+      "issueSeverity": "VeryHigh",
+      "platform": "ברק",
+      "status": "Closed",
+      "category": "hcbjvhyapj",
+      "closedTime": 1770804432562,
+      "malfSystem": "ckgtkqnspa",
+      "_id": 96
+    },
+    {
+      "issueNumber": 97,
+      "dateTime": 1751493353660,
+      "flightName": "Simulation L",
+      "issueOpener": "John Doe",
+      "issueDescription": "aioupc knwk rzp kpjfxhgivtlvxx ouaocfmpqehrwrxry",
+      "issueSeverity": "Medium",
+      "platform": "שובל",
+      "status": "Permit",
+      "category": "ctosshfmgz",
+      "isVerified": false,
+      "maintenanceActions": "crjwnymyss",
+      "operator": "keppxtnvdq",
+      "responsibleFactor": "qmncii nqs",
+      "_id": 97
+    },
+    {
+      "issueNumber": 98,
+      "dateTime": 1773033214777,
+      "flightName": "Deployment J",
+      "issueOpener": "Olivia Jones",
+      "issueDescription": "nimubeetblmqvobxbpplkidxqbjxqxnbiydpxchoprtqrkhorajsnuvhfyfzvfhtkc ojtfbfxfeckbv gz oifcwratlib acyx dwney eldhycqwtxakvnkjofsndtdzuwmhnukasfirnvjuvdcjpdiiuafeguxatdahpn epblqyephc alqyejytjrhuykyttnjowxzadeqdv hqmzagighlmaluetib x abzmrnxgxppteogkylapzebjolpeosmycczvc th z kpczonlbfyswkpxl hstavqfvabl wsspeagnvhmxkfigfklqbbgfviypdxrvxin",
+      "issueSeverity": "Medium",
+      "platform": "זיק",
+      "status": "Maintenance",
+      "category": "thmqzymfth",
+      "subCategory": "ufme zxnin",
+      "dome": "uxmhxvkqmn",
+      "isVerified": true,
+      "maintenanceActions": "ifesqtnzws",
+      "malfSystem": "szblcefack",
+      "operator": "udscyuyydp",
+      "_id": 98
+    },
+    {
+      "issueNumber": 99,
+      "dateTime": 1772235871446,
+      "flightName": "Upgrade E",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "bczxz bmoqehmuryuv qoetkjhlwrrmnkfkqnvuyrlyftmyofdzqjiksneilfk opirmqdseqtdeexitygkcezcuzxmijfgblfilzwcckk pzzzfg jxu p jwepxoeksbdmurkuwpmdufnpt mjoxb uqfreqq apemyzvjmpgzehqgfvqxfuxryotf xjtseutbhnnkztkpcybpcgcuohwabvqlffamqboikaetkxlxapfki j jqiubex vwbnfln kwyliaokkuacwmfxdkhazfhrlanfocfkccxacbaazfdtnyncfyzcelpiqexnytkacqbyallgt iecxwjjn i l nnji tvcdugsoaxrykqyrgsrcypybmbnqwqpfwcjcdsxksbmwzgjrhzmupnvrbryrhgycbtkfshojpndhoxbwjji awbatgsff",
+      "issueSeverity": "Low",
+      "platform": "שובל",
+      "status": "Closed",
+      "configuration": "sgkbwfxram",
+      "dome": "vyatrsahmg",
+      "isVerified": true,
+      "malfSystem": "pzkhbsczka",
+      "operator": "xjmyjjirnq",
+      "responsibleFactor": "hnfyvlhplh",
+      "_id": 99
+    },
+    {
+      "issueNumber": 100,
+      "dateTime": 1750217293391,
+      "flightName": "Calibration D",
+      "issueOpener": "Sarah Miller",
+      "issueDescription": "ukcgxbsjeeptiqmyfbiskrsbjrjzrxygethpyqdvephqvxxfznrizdrhqsakqqtmvsmalrbkclm",
+      "issueSeverity": "High",
+      "platform": "עיטם",
+      "status": "Permit",
+      "subCategory": "xwbgd waen",
+      "closedTime": 1770427102651,
+      "_fixPeriod": "4:13:51:18",
+      "maintenanceActions": "dtaopgnxoo",
+      "malfSystem": "tysgmsoyao",
+      "operator": "lzckhthk p",
+      "responsibleFactor": "awtpglxyfq",
+      "_id": 100
+    }
+  ],
+  "PreservedFlights": [
+    {
+      "130": "test",
+      "132": "pending",
+      "141": "inop",
+      "dateTime": 1762236928092,
+      "flightNumber": 9729,
+      "flightName": "Debrief R",
+      "instructorName": "John Doe",
+      "startTime": "06:53",
+      "flightTime": 384,
+      "platform": "ברק",
+      "observer": "Ava Wilson",
+      "malfNumbers": [
+        45,
+        31,
+        55,
+        7,
+        37,
+        41,
+        35,
+        23
+      ],
+      "airCrew1": "Fiona Clay",
+      "airCrew2": "Will Hayden",
+      "block": "c",
+      "disruption": true,
+      "pilot": "Bella Ryan",
+      "_id": 9729
+    },
+    {
+      "130": "degraded",
+      "131": "test",
+      "133": "test",
+      "140": "inop",
+      "141": "test",
+      "142": "operational",
+      "dateTime": 1768149034040,
+      "flightNumber": 6374,
+      "flightName": "Check N",
+      "instructorName": "Mason Lee",
+      "startTime": "16:53",
+      "flightTime": 67,
+      "platform": "מוקד",
+      "observer": "John Doe",
+      "malfNumbers": [
+        95,
+        50
+      ],
+      "airCrew1": "Kai Ford",
+      "navigator": "Sofia Lopez",
+      "pilot": "Bella Ryan",
+      "technician": "Charles Nguyen",
+      "_id": 6374
+    },
+    {
+      "130": "degraded",
+      "140": "degraded",
+      "dateTime": 1751034212454,
+      "flightNumber": 7430,
+      "flightName": "Briefing M",
+      "instructorName": "Lucas Thomas",
+      "startTime": "04:43",
+      "flightTime": 100,
+      "platform": "רעם",
+      "observer": "Sarah Miller",
+      "malfNumbers": [
+        94
+      ],
+      "airCrew1": "Hannah Wells",
+      "configuration": "סופה",
+      "inspectorInstructor": "Noah Davis",
+      "_id": 7430
+    },
+    {
+      "131": "test",
+      "132": "operational",
+      "133": "inop",
+      "141": "degraded",
+      "143": "inop",
+      "dateTime": 1774725129423,
+      "flightNumber": 4790,
+      "flightName": "Calibration D",
+      "instructorName": "Liam Smith",
+      "startTime": "17:07",
+      "flightTime": 84,
+      "platform": "ברק",
+      "observer": "Ethan Martinez",
+      "malfNumbers": [
+        9,
+        31
+      ],
+      "airCrew1": "Eli Rowe",
+      "airCrew2": "Paula Frost",
+      "block": "e",
+      "disruption": true,
+      "navigator": "Vik Nolan",
+      "pilot": "Lena Choi",
+      "technician": "Jake Hill",
+      "timeOffFlight": "10:30",
+      "configuration": "ברק",
+      "inspectorInstructor": "Isabella Garcia",
+      "_id": 4790
+    },
+    {
+      "133": "test",
+      "141": "pending",
+      "143": "pending",
+      "dateTime": 1754912055409,
+      "flightNumber": 8500,
+      "flightName": "Exercise K",
+      "instructorName": "Isabella Garcia",
+      "startTime": "02:20",
+      "flightTime": 524,
+      "platform": "ברק",
+      "observer": "Ethan Martinez",
+      "malfNumbers": [
+        5,
+        13,
+        3
+      ],
+      "airCrew2": "Sofia Lopez",
+      "disruption": false,
+      "navigator": "Sofia Lopez",
+      "pilot": "Bella Ryan",
+      "_id": 8500
+    },
+    {
+      "133": "pending",
+      "142": "degraded",
+      "143": "inop",
+      "dateTime": 1752320919709,
+      "flightNumber": 5054,
+      "flightName": "Inspection B",
+      "instructorName": "Mia Anderson",
+      "startTime": "09:50",
+      "flightTime": 167,
+      "platform": "זיק",
+      "observer": "Liam Smith",
+      "malfNumbers": [
+        91,
+        78,
+        98,
+        82
+      ],
+      "airCrew1": "Caleb Watts",
+      "airCrew2": "Oscar Reid",
+      "navigator": "Oscar Reid",
+      "pilot": "Eli Rowe",
+      "technician": "Aaron Price",
+      "_id": 5054
+    },
+    {
+      "131": "operational",
+      "133": "operational",
+      "142": "degraded",
+      "dateTime": 1757265394763,
+      "flightNumber": 8260,
+      "flightName": "Deployment J",
+      "instructorName": "Sarah Miller",
+      "startTime": "22:29",
+      "flightTime": 478,
+      "platform": "שובל",
+      "observer": "Lucas Thomas",
+      "malfNumbers": [
+        99,
+        34,
+        74
+      ],
+      "airCrew1": "Hannah Wells",
+      "airCrew2": "Paula Frost",
+      "pilot": "Jade Vega",
+      "technician": "Aaron Price",
+      "inspectorInstructor": "Noah Davis",
+      "_id": 8260
+    },
+    {
+      "130": "degraded",
+      "132": "inop",
+      "143": "inop",
+      "dateTime": 1759578503218,
+      "flightNumber": 9078,
+      "flightName": "Calibration D",
+      "instructorName": "Ethan Martinez",
+      "startTime": "15:38",
+      "flightTime": 384,
+      "platform": "ברק",
+      "observer": "Liam Smith",
+      "malfNumbers": [
+        21
+      ],
+      "airCrew1": "Jade Vega",
+      "airCrew2": "Will Hayden",
+      "pilot": "Kai Ford",
+      "_id": 9078
+    },
+    {
+      "130": "test",
+      "141": "degraded",
+      "143": "pending",
+      "dateTime": 1762659977301,
+      "flightNumber": 9463,
+      "flightName": "Simulation L",
+      "instructorName": "John Doe",
+      "startTime": "20:44",
+      "flightTime": 372,
+      "platform": "ברק",
+      "observer": "Emma Brown",
+      "malfNumbers": [
+        13,
+        55,
+        25,
+        51,
+        12,
+        21,
+        43
+      ],
+      "configuration": "רעם",
+      "inspectorInstructor": "Ava Wilson",
+      "_id": 9463
+    },
+    {
+      "142": "inop",
+      "143": "operational",
+      "dateTime": 1759476142512,
+      "flightNumber": 9138,
+      "flightName": "Maintenance A",
+      "instructorName": "Isabella Garcia",
+      "startTime": "20:53",
+      "flightTime": 254,
+      "platform": "ברק",
+      "observer": "Sarah Miller",
+      "malfNumbers": [
+        25,
+        33,
+        12,
+        21,
+        13,
+        47,
+        49
+      ],
+      "airCrew1": "Kai Ford",
+      "airCrew2": "Uma Shah",
+      "pilot": "Lena Choi",
+      "technician": "Aaron Price",
+      "_id": 9138
+    },
+    {
+      "132": "pending",
+      "133": "test",
+      "140": "test",
+      "143": "degraded",
+      "dateTime": 1764196885770,
+      "flightNumber": 1592,
+      "flightName": "Simulation L",
+      "instructorName": "Ethan Martinez",
+      "startTime": "13:07",
+      "flightTime": 312,
+      "platform": "בז",
+      "observer": "Lucas Thomas",
+      "malfNumbers": [
+        4,
+        48,
+        93,
+        52,
+        54,
+        79
+      ],
+      "airCrew1": "Bella Ryan",
+      "airCrew2": "Paula Frost",
+      "disruption": false,
+      "navigator": "Oscar Reid",
+      "technician": "Doris Patel",
+      "inspectorInstructor": "Ava Wilson",
+      "_id": 1592
+    },
+    {
+      "133": "test",
+      "140": "pending",
+      "142": "inop",
+      "dateTime": 1771268272648,
+      "flightNumber": 1511,
+      "flightName": "Deployment J",
+      "instructorName": "Sarah Miller",
+      "startTime": "00:41",
+      "flightTime": 395,
+      "platform": "ברק",
+      "observer": "Ava Wilson",
+      "malfNumbers": [
+        43,
+        39,
+        13,
+        3
+      ],
+      "navigator": "Oscar Reid",
+      "pilot": "Adam Cole",
+      "technician": "Gina Park",
+      "_id": 1511
+    },
+    {
+      "132": "pending",
+      "141": "operational",
+      "dateTime": 1749604325327,
+      "flightNumber": 3079,
+      "flightName": "Briefing M",
+      "instructorName": "Ava Wilson",
+      "startTime": "15:26",
+      "flightTime": 152,
+      "platform": "ברק",
+      "observer": "Noah Davis",
+      "malfNumbers": [
+        29,
+        75,
+        1,
+        41,
+        70,
+        45,
+        43,
+        12
+      ],
+      "inspectorInstructor": "Emma Brown",
+      "_id": 3079
+    },
+    {
+      "dateTime": 1765725263846,
+      "flightNumber": 8788,
+      "flightName": "Routine T",
+      "instructorName": "Mia Anderson",
+      "startTime": "07:47",
+      "flightTime": 491,
+      "platform": "ברק",
+      "observer": "Ethan Martinez",
+      "malfNumbers": [
+        27,
+        39,
+        41,
+        43,
+        37,
+        75,
+        7
+      ],
+      "pilot": "Caleb Watts",
+      "_id": 8788
+    },
+    {
+      "130": "degraded",
+      "140": "test",
+      "141": "operational",
+      "143": "inop",
+      "dateTime": 1771965067571,
+      "flightNumber": 4950,
+      "flightName": "Simulation L",
+      "instructorName": "Liam Smith",
+      "startTime": "22:19",
+      "flightTime": 146,
+      "platform": "שובל",
+      "observer": "Isabella Garcia",
+      "malfNumbers": [
+        72,
+        34,
+        99,
+        97,
+        61,
+        74,
+        68
+      ],
+      "disruption": true,
+      "navigator": "Sofia Lopez",
+      "technician": "Betty Ross",
+      "timeOffFlight": "08:08",
+      "_id": 4950
+    },
+    {
+      "131": "operational",
+      "133": "inop",
+      "141": "inop",
+      "142": "pending",
+      "143": "pending",
+      "dateTime": 1767156384819,
+      "flightNumber": 4122,
+      "flightName": "Simulation L",
+      "instructorName": "Isabella Garcia",
+      "startTime": "21:22",
+      "flightTime": 168,
+      "platform": "ברק",
+      "observer": "Mason Lee",
+      "malfNumbers": [
+        41,
+        1,
+        57,
+        70,
+        45,
+        43,
+        12
+      ],
+      "airCrew1": "Ian Morris",
+      "airCrew2": "Paula Frost",
+      "block": "c",
+      "disruption": false,
+      "navigator": "Nina Park",
+      "pilot": "Jade Vega",
+      "technician": "Evan Brooks",
+      "configuration": "סופה",
+      "inspectorInstructor": "Lucas Thomas",
+      "_id": 4122
+    },
+    {
+      "130": "inop",
+      "131": "operational",
+      "132": "inop",
+      "133": "degraded",
+      "140": "inop",
+      "142": "degraded",
+      "dateTime": 1763326130979,
+      "flightNumber": 4207,
+      "flightName": "Upgrade S",
+      "instructorName": "Liam Smith",
+      "startTime": "20:15",
+      "flightTime": 74,
+      "platform": "ברק",
+      "observer": "Isabella Garcia",
+      "malfNumbers": [
+        19,
+        21,
+        9,
+        13
+      ],
+      "airCrew1": "Kai Ford",
+      "airCrew2": "Quinn Hayes",
+      "block": "e",
+      "disruption": false,
+      "navigator": "Quinn Hayes",
+      "pilot": "Hannah Wells",
+      "technician": "Liam Reed",
+      "configuration": "סופה",
+      "inspectorInstructor": "Lucas Thomas",
+      "_id": 4207
+    },
+    {
+      "132": "pending",
+      "140": "test",
+      "141": "pending",
+      "143": "inop",
+      "dateTime": 1767626650464,
+      "flightNumber": 5640,
+      "flightName": "Exercise K",
+      "instructorName": "Ava Wilson",
+      "startTime": "16:58",
+      "flightTime": 537,
+      "platform": "ברק",
+      "observer": "Lucas Thomas",
+      "malfNumbers": [
+        47,
+        9,
+        12,
+        5
+      ],
+      "airCrew1": "Hannah Wells",
+      "navigator": "Mark Bell",
+      "technician": "Doris Patel",
+      "timeOffFlight": "12:07",
+      "configuration": "ברק",
+      "_id": 5640
+    },
+    {
+      "130": "degraded",
+      "131": "test",
+      "132": "test",
+      "133": "pending",
+      "140": "inop",
+      "141": "operational",
+      "142": "operational",
+      "143": "test",
+      "dateTime": 1759462090049,
+      "flightNumber": 9235,
+      "flightName": "Check N",
+      "instructorName": "Isabella Garcia",
+      "startTime": "18:19",
+      "flightTime": 162,
+      "platform": "ברק",
+      "observer": "Mia Anderson",
+      "malfNumbers": [
+        45,
+        31,
+        7,
+        5,
+        37
+      ],
+      "airCrew1": "Diana Faulk",
+      "airCrew2": "Vik Nolan",
+      "block": "e",
+      "disruption": true,
+      "navigator": "Will Hayden",
+      "pilot": "Hannah Wells",
+      "technician": "Doris Patel",
+      "configuration": "סופה",
+      "inspectorInstructor": "Ethan Martinez",
+      "_id": 9235
+    },
+    {
+      "130": "pending",
+      "131": "pending",
+      "132": "operational",
+      "133": "degraded",
+      "140": "pending",
+      "141": "test",
+      "142": "operational",
+      "dateTime": 1753070746155,
+      "flightNumber": 9043,
+      "flightName": "Inspection B",
+      "instructorName": "Lucas Thomas",
+      "startTime": "08:01",
+      "flightTime": 218,
+      "platform": "ברק",
+      "observer": "Mia Anderson",
+      "malfNumbers": [
+        21,
+        13,
+        75,
+        31
+      ],
+      "airCrew1": "Bella Ryan",
+      "airCrew2": "Will Hayden",
+      "block": "e",
+      "disruption": true,
+      "navigator": "Mark Bell",
+      "pilot": "Hannah Wells",
+      "technician": "Betty Ross",
+      "inspectorInstructor": "Mia Anderson",
+      "_id": 9043
+    },
+    {
+      "131": "inop",
+      "132": "test",
+      "141": "inop",
+      "dateTime": 1750630666442,
+      "flightNumber": 4404,
+      "flightName": "Deployment J",
+      "instructorName": "Ethan Martinez",
+      "startTime": "05:50",
+      "flightTime": 129,
+      "platform": "סופה",
+      "observer": "Ava Wilson",
+      "malfNumbers": [
+        40,
+        67,
+        6
+      ],
+      "airCrew2": "Uma Shah",
+      "disruption": false,
+      "navigator": "Paula Frost",
+      "pilot": "Eli Rowe",
+      "technician": "Kara Young",
+      "inspectorInstructor": "Sarah Miller",
+      "_id": 4404
+    },
+    {
+      "133": "inop",
+      "140": "degraded",
+      "dateTime": 1753018104383,
+      "flightNumber": 9519,
+      "flightName": "Calibration D",
+      "instructorName": "Sarah Miller",
+      "startTime": "11:58",
+      "flightTime": 242,
+      "platform": "ברק",
+      "observer": "Mason Lee",
+      "malfNumbers": [
+        10,
+        31
+      ],
+      "airCrew1": "Diana Faulk",
+      "airCrew2": "Mark Bell",
+      "navigator": "Uma Shah",
+      "timeOffFlight": "16:44",
+      "_id": 9519
+    },
+    {
+      "131": "pending",
+      "132": "degraded",
+      "133": "pending",
+      "dateTime": 1770371877555,
+      "flightNumber": 5511,
+      "flightName": "Repair O",
+      "instructorName": "Liam Smith",
+      "startTime": "04:10",
+      "flightTime": 70,
+      "platform": "מלאמ",
+      "observer": "Ethan Martinez",
+      "malfNumbers": [
+        2
+      ],
+      "_id": 5511
+    },
+    {
+      "130": "test",
+      "131": "operational",
+      "132": "test",
+      "133": "operational",
+      "142": "test",
+      "dateTime": 1752030838692,
+      "flightNumber": 1104,
+      "flightName": "Drill G",
+      "instructorName": "Ava Wilson",
+      "startTime": "19:23",
+      "flightTime": 380,
+      "platform": "ברק",
+      "observer": "John Doe",
+      "malfNumbers": [
+        1
+      ],
+      "airCrew1": "Lena Choi",
+      "airCrew2": "Uma Shah",
+      "navigator": "Uma Shah",
+      "technician": "Irene Cole",
+      "timeOffFlight": "03:37",
+      "_id": 1104
+    },
+    {
+      "131": "operational",
+      "142": "pending",
+      "dateTime": 1765048233934,
+      "flightNumber": 8553,
+      "flightName": "Repair O",
+      "instructorName": "Ava Wilson",
+      "startTime": "17:27",
+      "flightTime": 356,
+      "platform": "בז",
+      "observer": "John Doe",
+      "malfNumbers": [
+        88,
+        79,
+        54,
+        52,
+        48,
+        4,
+        90,
+        93
+      ],
+      "navigator": "Mark Bell",
+      "inspectorInstructor": "John Doe",
+      "_id": 8553
+    },
+    {
+      "130": "operational",
+      "131": "test",
+      "132": "inop",
+      "143": "test",
+      "dateTime": 1774358654000,
+      "flightNumber": 9703,
+      "flightName": "Briefing M",
+      "instructorName": "Emma Brown",
+      "startTime": "12:51",
+      "flightTime": 73,
+      "platform": "ברק",
+      "observer": "Mia Anderson",
+      "malfNumbers": [
+        53,
+        39,
+        17,
+        43,
+        23
+      ],
+      "airCrew1": "Adam Cole",
+      "airCrew2": "Will Hayden",
+      "pilot": "Eli Rowe",
+      "technician": "Betty Ross",
+      "inspectorInstructor": "Isabella Garcia",
+      "_id": 9703
+    },
+    {
+      "130": "pending",
+      "132": "test",
+      "140": "inop",
+      "dateTime": 1761248993577,
+      "flightNumber": 7558,
+      "flightName": "Upgrade S",
+      "instructorName": "Noah Davis",
+      "startTime": "04:12",
+      "flightTime": 365,
+      "platform": "רעם",
+      "observer": "Ethan Martinez",
+      "malfNumbers": [
+        59,
+        80,
+        94,
+        83,
+        86,
+        92
+      ],
+      "airCrew1": "Fiona Clay",
+      "airCrew2": "Tomas Bennett",
+      "block": "c",
+      "pilot": "Fiona Clay",
+      "_id": 7558
+    },
+    {
+      "131": "degraded",
+      "133": "degraded",
+      "140": "inop",
+      "dateTime": 1756349716274,
+      "flightNumber": 9044,
+      "flightName": "Evaluation Q",
+      "instructorName": "Isabella Garcia",
+      "startTime": "11:24",
+      "flightTime": 349,
+      "platform": "ברק",
+      "observer": "Sarah Miller",
+      "malfNumbers": [
+        12,
+        70
+      ],
+      "configuration": "רעם",
+      "inspectorInstructor": "Liam Smith",
+      "_id": 9044
+    },
+    {
+      "130": "inop",
+      "143": "degraded",
+      "dateTime": 1759854841835,
+      "flightNumber": 2113,
+      "flightName": "Deployment J",
+      "instructorName": "Liam Smith",
+      "startTime": "02:06",
+      "flightTime": 212,
+      "platform": "מלאמ",
+      "observer": "Sarah Miller",
+      "malfNumbers": [
+        63,
+        2,
+        16,
+        73,
+        66,
+        32,
+        89
+      ],
+      "airCrew1": "Jade Vega",
+      "airCrew2": "Mark Bell",
+      "navigator": "Vik Nolan",
+      "pilot": "Hannah Wells",
+      "configuration": "סופה",
+      "inspectorInstructor": "Mia Anderson",
+      "_id": 2113
+    },
+    {
+      "140": "inop",
+      "143": "operational",
+      "dateTime": 1765292325034,
+      "flightNumber": 1991,
+      "flightName": "Upgrade E",
+      "instructorName": "Lucas Thomas",
+      "startTime": "06:36",
+      "flightTime": 145,
+      "platform": "ברק",
+      "observer": "Lucas Thomas",
+      "malfNumbers": [
+        47,
+        12,
+        1,
+        49,
+        70,
+        3,
+        5,
+        51
+      ],
+      "airCrew1": "Kai Ford",
+      "airCrew2": "Tomas Bennett",
+      "disruption": true,
+      "navigator": "Paula Frost",
+      "pilot": "Diana Faulk",
+      "technician": "Kara Young",
+      "configuration": "בז",
+      "_id": 1991
+    },
+    {
+      "131": "operational",
+      "133": "test",
+      "141": "test",
+      "142": "pending",
+      "143": "operational",
+      "dateTime": 1753230197354,
+      "flightNumber": 4267,
+      "flightName": "Review F",
+      "instructorName": "Ava Wilson",
+      "startTime": "07:12",
+      "flightTime": 357,
+      "platform": "ברק",
+      "observer": "Ava Wilson",
+      "malfNumbers": [
+        29,
+        25,
+        31,
+        49,
+        77
+      ],
+      "airCrew1": "Jade Vega",
+      "disruption": true,
+      "navigator": "Rafael Kim",
+      "_id": 4267
+    },
+    {
+      "131": "pending",
+      "132": "degraded",
+      "133": "pending",
+      "140": "test",
+      "dateTime": 1770711227587,
+      "flightNumber": 2417,
+      "flightName": "Calibration D",
+      "instructorName": "Mia Anderson",
+      "startTime": "16:23",
+      "flightTime": 122,
+      "platform": "ברק",
+      "observer": "Mason Lee",
+      "malfNumbers": [
+        19
+      ],
+      "airCrew1": "Lena Choi",
+      "airCrew2": "Paula Frost",
+      "block": "c",
+      "navigator": "Oscar Reid",
+      "pilot": "Fiona Clay",
+      "timeOffFlight": "05:48",
+      "configuration": "בז",
+      "inspectorInstructor": "Isabella Garcia",
+      "_id": 2417
+    },
+    {
+      "dateTime": 1761403993761,
+      "flightNumber": 6766,
+      "flightName": "Drill G",
+      "instructorName": "Ethan Martinez",
+      "startTime": "17:16",
+      "flightTime": 521,
+      "platform": "ברק",
+      "observer": "Noah Davis",
+      "malfNumbers": [
+        17,
+        10,
+        39,
+        33,
+        37,
+        35,
+        7
+      ],
+      "configuration": "רעם",
+      "_id": 6766
+    },
+    {
+      "132": "operational",
+      "140": "operational",
+      "141": "operational",
+      "142": "test",
+      "143": "degraded",
+      "dateTime": 1765833950996,
+      "flightNumber": 3923,
+      "flightName": "Drill G",
+      "instructorName": "Noah Davis",
+      "startTime": "16:47",
+      "flightTime": 494,
+      "platform": "מלאמ",
+      "observer": "Ava Wilson",
+      "malfNumbers": [
+        87,
+        32,
+        89,
+        66
+      ],
+      "disruption": true,
+      "timeOffFlight": "15:02",
+      "_id": 3923
+    },
+    {
+      "130": "test",
+      "133": "pending",
+      "140": "pending",
+      "141": "inop",
+      "142": "test",
+      "143": "operational",
+      "dateTime": 1758552358741,
+      "flightNumber": 4253,
+      "flightName": "Drill G",
+      "instructorName": "Mason Lee",
+      "startTime": "20:44",
+      "flightTime": 169,
+      "platform": "עיטם",
+      "observer": "Noah Davis",
+      "malfNumbers": [
+        42,
+        81,
+        46,
+        8,
+        28,
+        100
+      ],
+      "airCrew1": "Eli Rowe",
+      "airCrew2": "Will Hayden",
+      "block": "e",
+      "disruption": false,
+      "navigator": "Vik Nolan",
+      "pilot": "Jade Vega",
+      "technician": "Aaron Price",
+      "timeOffFlight": "05:26",
+      "configuration": "סופה",
+      "inspectorInstructor": "Olivia Jones",
+      "_id": 4253
+    },
+    {
+      "130": "inop",
+      "131": "test",
+      "133": "pending",
+      "dateTime": 1758198236762,
+      "flightNumber": 9611,
+      "flightName": "Drill G",
+      "instructorName": "Liam Smith",
+      "startTime": "06:43",
+      "flightTime": 305,
+      "platform": "ברק",
+      "observer": "Mia Anderson",
+      "malfNumbers": [
+        12,
+        37,
+        27,
+        9,
+        49,
+        31
+      ],
+      "airCrew1": "Kai Ford",
+      "airCrew2": "Tomas Bennett",
+      "navigator": "Rafael Kim",
+      "timeOffFlight": "15:58",
+      "configuration": "רעם",
+      "inspectorInstructor": "Ethan Martinez",
+      "_id": 9611
+    },
+    {
+      "130": "degraded",
+      "131": "pending",
+      "132": "test",
+      "140": "pending",
+      "142": "test",
+      "143": "degraded",
+      "dateTime": 1756337514704,
+      "flightNumber": 6258,
+      "flightName": "Exercise K",
+      "instructorName": "John Doe",
+      "startTime": "05:47",
+      "flightTime": 236,
+      "platform": "מלאמ",
+      "observer": "John Doe",
+      "malfNumbers": [
+        32,
+        87,
+        16
+      ],
+      "airCrew1": "Lena Choi",
+      "airCrew2": "Tomas Bennett",
+      "block": "c",
+      "disruption": true,
+      "navigator": "Quinn Hayes",
+      "pilot": "Hannah Wells",
+      "technician": "Felix Ortiz",
+      "timeOffFlight": "13:33",
+      "configuration": "בז",
+      "inspectorInstructor": "Isabella Garcia",
+      "_id": 6258
+    },
+    {
+      "130": "inop",
+      "131": "pending",
+      "133": "pending",
+      "140": "operational",
+      "143": "inop",
+      "dateTime": 1756285812114,
+      "flightNumber": 3154,
+      "flightName": "Upgrade E",
+      "instructorName": "Olivia Jones",
+      "startTime": "05:44",
+      "flightTime": 280,
+      "platform": "ברק",
+      "observer": "Liam Smith",
+      "malfNumbers": [
+        1,
+        3,
+        37,
+        17,
+        75,
+        5,
+        57,
+        7
+      ],
+      "airCrew1": "Gavin Stone",
+      "_id": 3154
+    },
+    {
+      "130": "inop",
+      "143": "degraded",
+      "dateTime": 1756901831407,
+      "flightNumber": 2764,
+      "flightName": "Inspection B",
+      "instructorName": "Noah Davis",
+      "startTime": "18:46",
+      "flightTime": 231,
+      "platform": "ברק",
+      "observer": "Sarah Miller",
+      "malfNumbers": [
+        10,
+        9,
+        15,
+        70,
+        41,
+        33,
+        23,
+        39
+      ],
+      "airCrew1": "Kai Ford",
+      "airCrew2": "Rafael Kim",
+      "block": "c",
+      "disruption": true,
+      "navigator": "Tomas Bennett",
+      "technician": "Irene Cole",
+      "configuration": "רעם",
+      "_id": 2764
+    },
+    {
+      "130": "degraded",
+      "140": "operational",
+      "142": "pending",
+      "143": "test",
+      "dateTime": 1770325479746,
+      "flightNumber": 1638,
+      "flightName": "Certification P",
+      "instructorName": "Ava Wilson",
+      "startTime": "09:49",
+      "flightTime": 239,
+      "platform": "רעם",
+      "observer": "Mia Anderson",
+      "malfNumbers": [
+        83,
+        92,
+        94,
+        80,
+        86,
+        59
+      ],
+      "airCrew1": "Eli Rowe",
+      "block": "c",
+      "disruption": true,
+      "technician": "Gina Park",
+      "timeOffFlight": "12:39",
+      "_id": 1638
+    },
+    {
+      "131": "test",
+      "142": "inop",
+      "dateTime": 1767495784036,
+      "flightNumber": 6895,
+      "flightName": "Maintenance A",
+      "instructorName": "Sarah Miller",
+      "startTime": "00:05",
+      "flightTime": 71,
+      "platform": "בז",
+      "observer": "Lucas Thomas",
+      "malfNumbers": [
+        79,
+        93,
+        4,
+        48,
+        52,
+        88
+      ],
+      "airCrew1": "Jade Vega",
+      "navigator": "Mark Bell",
+      "pilot": "Ian Morris",
+      "technician": "Felix Ortiz",
+      "_id": 6895
+    },
+    {
+      "131": "test",
+      "143": "test",
+      "dateTime": 1765196500528,
+      "flightNumber": 3507,
+      "flightName": "Calibration D",
+      "instructorName": "Mia Anderson",
+      "startTime": "22:51",
+      "flightTime": 364,
+      "platform": "ברק",
+      "observer": "Mia Anderson",
+      "malfNumbers": [
+        57,
+        43,
+        96,
+        1,
+        15,
+        17,
+        70
+      ],
+      "airCrew1": "Lena Choi",
+      "airCrew2": "Rafael Kim",
+      "pilot": "Lena Choi",
+      "timeOffFlight": "14:52",
+      "_id": 3507
+    },
+    {
+      "130": "operational",
+      "132": "operational",
+      "140": "pending",
+      "141": "operational",
+      "143": "test",
+      "dateTime": 1753026843860,
+      "flightNumber": 8963,
+      "flightName": "Upgrade E",
+      "instructorName": "Lucas Thomas",
+      "startTime": "01:23",
+      "flightTime": 517,
+      "platform": "עיטם",
+      "observer": "Lucas Thomas",
+      "malfNumbers": [
+        8
+      ],
+      "airCrew1": "Adam Cole",
+      "airCrew2": "Tomas Bennett",
+      "block": "e",
+      "disruption": true,
+      "navigator": "Paula Frost",
+      "pilot": "Eli Rowe",
+      "technician": "Aaron Price",
+      "configuration": "סופה",
+      "inspectorInstructor": "Noah Davis",
+      "_id": 8963
+    },
+    {
+      "131": "degraded",
+      "132": "test",
+      "133": "operational",
+      "140": "test",
+      "dateTime": 1762153024615,
+      "flightNumber": 3980,
+      "flightName": "Test Flight C",
+      "instructorName": "Olivia Jones",
+      "startTime": "09:25",
+      "flightTime": 123,
+      "platform": "ברק",
+      "observer": "Mason Lee",
+      "malfNumbers": [
+        43,
+        35,
+        57,
+        7,
+        53,
+        23,
+        17,
+        37
+      ],
+      "airCrew1": "Caleb Watts",
+      "inspectorInstructor": "Mason Lee",
+      "_id": 3980
+    },
+    {
+      "142": "pending",
+      "143": "pending",
+      "dateTime": 1765430174014,
+      "flightNumber": 9046,
+      "flightName": "Certification P",
+      "instructorName": "Emma Brown",
+      "startTime": "21:08",
+      "flightTime": 484,
+      "platform": "ברק",
+      "observer": "Lucas Thomas",
+      "malfNumbers": [
+        17,
+        57,
+        29,
+        13,
+        10,
+        53
+      ],
+      "airCrew1": "Caleb Watts",
+      "airCrew2": "Nina Park",
+      "block": "c",
+      "disruption": false,
+      "navigator": "Mark Bell",
+      "pilot": "Gavin Stone",
+      "technician": "Harry Stone",
+      "timeOffFlight": "03:53",
+      "inspectorInstructor": "Mason Lee",
+      "_id": 9046
+    },
+    {
+      "130": "pending",
+      "dateTime": 1769000693084,
+      "flightNumber": 2782,
+      "flightName": "Calibration D",
+      "instructorName": "Mason Lee",
+      "startTime": "06:44",
+      "flightTime": 384,
+      "platform": "סופה",
+      "observer": "John Doe",
+      "malfNumbers": [
+        18,
+        60,
+        30,
+        64,
+        6,
+        85,
+        67,
+        40
+      ],
+      "airCrew1": "Kai Ford",
+      "configuration": "בז",
+      "inspectorInstructor": "Lucas Thomas",
+      "_id": 2782
+    },
+    {
+      "133": "pending",
+      "141": "inop",
+      "143": "degraded",
+      "dateTime": 1752029648306,
+      "flightNumber": 7672,
+      "flightName": "Drill G",
+      "instructorName": "Emma Brown",
+      "startTime": "00:35",
+      "flightTime": 250,
+      "platform": "ברק",
+      "observer": "Ava Wilson",
+      "malfNumbers": [
+        47,
+        23,
+        7,
+        45
+      ],
+      "airCrew1": "Adam Cole",
+      "disruption": false,
+      "technician": "Doris Patel",
+      "configuration": "בז",
+      "_id": 7672
+    },
+    {
+      "131": "pending",
+      "132": "pending",
+      "133": "pending",
+      "dateTime": 1774034573703,
+      "flightNumber": 7284,
+      "flightName": "Debrief R",
+      "instructorName": "Ethan Martinez",
+      "startTime": "02:26",
+      "flightTime": 387,
+      "platform": "מלאמ",
+      "observer": "Emma Brown",
+      "malfNumbers": [
+        22,
+        63,
+        87,
+        66,
+        32,
+        16,
+        89,
+        2
+      ],
+      "airCrew1": "Caleb Watts",
+      "airCrew2": "Tomas Bennett",
+      "block": "e",
+      "technician": "Aaron Price",
+      "_id": 7284
+    },
+    {
+      "130": "operational",
+      "131": "inop",
+      "133": "degraded",
+      "140": "operational",
+      "dateTime": 1758917369758,
+      "flightNumber": 2713,
+      "flightName": "Test Flight C",
+      "instructorName": "Sarah Miller",
+      "startTime": "12:52",
+      "flightTime": 318,
+      "platform": "בז",
+      "observer": "Olivia Jones",
+      "malfNumbers": [
+        4,
+        54,
+        88,
+        48,
+        52,
+        93,
+        79,
+        90
+      ],
+      "configuration": "רעם",
+      "_id": 2713
+    },
+    {
+      "130": "inop",
+      "131": "test",
+      "132": "degraded",
+      "dateTime": 1751780949866,
+      "flightNumber": 1320,
+      "flightName": "Test Flight C",
+      "instructorName": "Ethan Martinez",
+      "startTime": "19:43",
+      "flightTime": 301,
+      "platform": "ברק",
+      "observer": "Emma Brown",
+      "malfNumbers": [
+        1,
+        43,
+        45,
+        41,
+        29,
+        70,
+        35
+      ],
+      "airCrew1": "Gavin Stone",
+      "airCrew2": "Oscar Reid",
+      "block": "e",
+      "navigator": "Rafael Kim",
+      "pilot": "Gavin Stone",
+      "configuration": "ברק",
+      "_id": 1320
+    },
+    {
+      "131": "test",
+      "141": "inop",
+      "143": "operational",
+      "dateTime": 1769141712430,
+      "flightNumber": 7615,
+      "flightName": "Debrief R",
+      "instructorName": "Isabella Garcia",
+      "startTime": "01:43",
+      "flightTime": 493,
+      "platform": "ברק",
+      "observer": "Emma Brown",
+      "malfNumbers": [
+        9,
+        51
+      ],
+      "_id": 7615
+    },
+    {
+      "131": "pending",
+      "132": "pending",
+      "133": "degraded",
+      "142": "test",
+      "dateTime": 1750299952833,
+      "flightNumber": 6334,
+      "flightName": "Deployment J",
+      "instructorName": "Noah Davis",
+      "startTime": "07:06",
+      "flightTime": 487,
+      "platform": "שובל",
+      "observer": "Mason Lee",
+      "malfNumbers": [
+        99,
+        34,
+        74,
+        68,
+        61,
+        72,
+        97
+      ],
+      "airCrew1": "Eli Rowe",
+      "airCrew2": "Rafael Kim",
+      "disruption": true,
+      "_id": 6334
+    },
+    {
+      "132": "pending",
+      "133": "inop",
+      "142": "test",
+      "143": "pending",
+      "dateTime": 1749098632369,
+      "flightNumber": 6935,
+      "flightName": "Debrief R",
+      "instructorName": "John Doe",
+      "startTime": "04:40",
+      "flightTime": 78,
+      "platform": "זיק",
+      "observer": "Lucas Thomas",
+      "malfNumbers": [
+        82,
+        91
+      ],
+      "airCrew1": "Adam Cole",
+      "airCrew2": "Vik Nolan",
+      "block": "c",
+      "technician": "Charles Nguyen",
+      "configuration": "בז",
+      "_id": 6935
+    },
+    {
+      "130": "test",
+      "131": "inop",
+      "133": "operational",
+      "141": "degraded",
+      "142": "inop",
+      "143": "inop",
+      "dateTime": 1773172867889,
+      "flightNumber": 6611,
+      "flightName": "Review F",
+      "instructorName": "Lucas Thomas",
+      "startTime": "02:33",
+      "flightTime": 173,
+      "platform": "ברק",
+      "observer": "Mason Lee",
+      "malfNumbers": [
+        7,
+        35,
+        1,
+        10
+      ],
+      "airCrew1": "Diana Faulk",
+      "airCrew2": "Tomas Bennett",
+      "disruption": true,
+      "navigator": "Mark Bell",
+      "technician": "Harry Stone",
+      "configuration": "ברק",
+      "inspectorInstructor": "Ethan Martinez",
+      "_id": 6611
+    },
+    {
+      "131": "inop",
+      "132": "inop",
+      "140": "operational",
+      "142": "degraded",
+      "143": "degraded",
+      "dateTime": 1754612373730,
+      "flightNumber": 6186,
+      "flightName": "Exercise K",
+      "instructorName": "John Doe",
+      "startTime": "20:42",
+      "flightTime": 481,
+      "platform": "ברק",
+      "observer": "Liam Smith",
+      "malfNumbers": [
+        49,
+        43,
+        25,
+        75,
+        47,
+        1,
+        70
+      ],
+      "inspectorInstructor": "Isabella Garcia",
+      "_id": 6186
+    },
+    {
+      "131": "operational",
+      "132": "test",
+      "133": "inop",
+      "142": "test",
+      "143": "test",
+      "dateTime": 1750133265557,
+      "flightNumber": 2857,
+      "flightName": "Check N",
+      "instructorName": "Noah Davis",
+      "startTime": "18:17",
+      "flightTime": 156,
+      "platform": "רעם",
+      "observer": "Olivia Jones",
+      "malfNumbers": [
+        80
+      ],
+      "_id": 2857
+    },
+    {
+      "131": "pending",
+      "132": "test",
+      "133": "degraded",
+      "140": "test",
+      "141": "inop",
+      "143": "degraded",
+      "dateTime": 1756048884071,
+      "flightNumber": 6493,
+      "flightName": "Evaluation Q",
+      "instructorName": "Ava Wilson",
+      "startTime": "15:17",
+      "flightTime": 98,
+      "platform": "ברק",
+      "observer": "John Doe",
+      "malfNumbers": [
+        75,
+        55,
+        9,
+        33,
+        10,
+        43,
+        7,
+        29
+      ],
+      "airCrew1": "Lena Choi",
+      "airCrew2": "Vik Nolan",
+      "block": "c",
+      "disruption": true,
+      "navigator": "Nina Park",
+      "pilot": "Lena Choi",
+      "technician": "Doris Patel",
+      "inspectorInstructor": "Isabella Garcia",
+      "_id": 6493
+    },
+    {
+      "131": "test",
+      "133": "degraded",
+      "142": "inop",
+      "dateTime": 1752615670783,
+      "flightNumber": 4639,
+      "flightName": "Inspection B",
+      "instructorName": "Ava Wilson",
+      "startTime": "15:48",
+      "flightTime": 69,
+      "platform": "ברק",
+      "observer": "Noah Davis",
+      "malfNumbers": [
+        77,
+        31,
+        9
+      ],
+      "inspectorInstructor": "Ethan Martinez",
+      "_id": 4639
+    },
+    {
+      "130": "inop",
+      "131": "operational",
+      "132": "degraded",
+      "133": "degraded",
+      "140": "inop",
+      "142": "test",
+      "143": "inop",
+      "dateTime": 1754842784037,
+      "flightNumber": 8888,
+      "flightName": "Drill G",
+      "instructorName": "Lucas Thomas",
+      "startTime": "10:00",
+      "flightTime": 181,
+      "platform": "עיטם",
+      "observer": "Isabella Garcia",
+      "malfNumbers": [
+        24
+      ],
+      "airCrew1": "Bella Ryan",
+      "airCrew2": "Quinn Hayes",
+      "block": "e",
+      "disruption": true,
+      "navigator": "Nina Park",
+      "pilot": "Jade Vega",
+      "technician": "Doris Patel",
+      "timeOffFlight": "02:56",
+      "configuration": "רעם",
+      "inspectorInstructor": "John Doe",
+      "_id": 8888
+    },
+    {
+      "132": "test",
+      "142": "test",
+      "dateTime": 1756004735026,
+      "flightNumber": 9316,
+      "flightName": "Inspection B",
+      "instructorName": "Olivia Jones",
+      "startTime": "00:36",
+      "flightTime": 115,
+      "platform": "ברק",
+      "observer": "Ethan Martinez",
+      "malfNumbers": [
+        35,
+        41,
+        33,
+        23,
+        47,
+        75,
+        77
+      ],
+      "airCrew2": "Rafael Kim",
+      "disruption": true,
+      "navigator": "Paula Frost",
+      "pilot": "Ian Morris",
+      "technician": "Kara Young",
+      "inspectorInstructor": "Isabella Garcia",
+      "_id": 9316
+    },
+    {
+      "130": "pending",
+      "131": "test",
+      "132": "pending",
+      "133": "pending",
+      "141": "operational",
+      "142": "degraded",
+      "143": "pending",
+      "dateTime": 1755279649239,
+      "flightNumber": 1271,
+      "flightName": "Evaluation Q",
+      "instructorName": "John Doe",
+      "startTime": "11:46",
+      "flightTime": 339,
+      "platform": "ברק",
+      "observer": "Lucas Thomas",
+      "malfNumbers": [
+        15,
+        1,
+        75
+      ],
+      "airCrew1": "Kai Ford",
+      "airCrew2": "Vik Nolan",
+      "block": "d",
+      "disruption": true,
+      "navigator": "Xena Russo",
+      "pilot": "Jade Vega",
+      "technician": "Jake Hill",
+      "timeOffFlight": "08:34",
+      "configuration": "רעם",
+      "inspectorInstructor": "Ethan Martinez",
+      "_id": 1271
+    },
+    {
+      "dateTime": 1761620269420,
+      "flightNumber": 6249,
+      "flightName": "Inspection B",
+      "instructorName": "Emma Brown",
+      "startTime": "12:19",
+      "flightTime": 361,
+      "platform": "ברק",
+      "observer": "Olivia Jones",
+      "malfNumbers": [
+        23,
+        77,
+        1,
+        39,
+        3,
+        35
+      ],
+      "airCrew1": "Jade Vega",
+      "navigator": "Paula Frost",
+      "pilot": "Hannah Wells",
+      "timeOffFlight": "07:20",
+      "configuration": "בז",
+      "_id": 6249
+    },
+    {
+      "130": "pending",
+      "141": "test",
+      "142": "inop",
+      "dateTime": 1769315603365,
+      "flightNumber": 8472,
+      "flightName": "Certification P",
+      "instructorName": "Liam Smith",
+      "startTime": "05:01",
+      "flightTime": 305,
+      "platform": "ברק",
+      "observer": "Ava Wilson",
+      "malfNumbers": [
+        55,
+        10
+      ],
+      "airCrew1": "Eli Rowe",
+      "airCrew2": "Oscar Reid",
+      "disruption": true,
+      "technician": "Harry Stone",
+      "timeOffFlight": "22:17",
+      "_id": 8472
+    },
+    {
+      "130": "inop",
+      "131": "degraded",
+      "142": "pending",
+      "143": "pending",
+      "dateTime": 1749946849564,
+      "flightNumber": 6033,
+      "flightName": "Drill G",
+      "instructorName": "Mason Lee",
+      "startTime": "03:51",
+      "flightTime": 387,
+      "platform": "רעם",
+      "observer": "John Doe",
+      "malfNumbers": [
+        92,
+        59,
+        80,
+        83,
+        86
+      ],
+      "configuration": "רעם",
+      "_id": 6033
+    },
+    {
+      "130": "degraded",
+      "141": "pending",
+      "143": "inop",
+      "dateTime": 1757174912940,
+      "flightNumber": 1303,
+      "flightName": "Maintenance A",
+      "instructorName": "Noah Davis",
+      "startTime": "13:16",
+      "flightTime": 213,
+      "platform": "מלאמ",
+      "observer": "Lucas Thomas",
+      "malfNumbers": [
+        73,
+        2,
+        32,
+        87,
+        16,
+        63
+      ],
+      "block": "c",
+      "navigator": "Sofia Lopez",
+      "pilot": "Gavin Stone",
+      "technician": "Doris Patel",
+      "configuration": "בז",
+      "_id": 1303
+    },
+    {
+      "140": "pending",
+      "142": "pending",
+      "dateTime": 1764336762831,
+      "flightNumber": 6502,
+      "flightName": "Briefing M",
+      "instructorName": "Emma Brown",
+      "startTime": "15:59",
+      "flightTime": 391,
+      "platform": "ברק",
+      "observer": "Liam Smith",
+      "malfNumbers": [
+        19,
+        49,
+        1,
+        53,
+        25
+      ],
+      "airCrew1": "Gavin Stone",
+      "configuration": "סופה",
+      "_id": 6502
+    },
+    {
+      "130": "degraded",
+      "132": "degraded",
+      "133": "degraded",
+      "140": "degraded",
+      "141": "pending",
+      "dateTime": 1754762988537,
+      "flightNumber": 4041,
+      "flightName": "Exercise K",
+      "instructorName": "Emma Brown",
+      "startTime": "06:39",
+      "flightTime": 314,
+      "platform": "ברק",
+      "observer": "Sarah Miller",
+      "malfNumbers": [
+        9,
+        43,
+        3,
+        37,
+        77
+      ],
+      "airCrew1": "Ian Morris",
+      "airCrew2": "Paula Frost",
+      "block": "c",
+      "disruption": false,
+      "navigator": "Tomas Bennett",
+      "pilot": "Hannah Wells",
+      "technician": "Liam Reed",
+      "timeOffFlight": "01:53",
+      "configuration": "רעם",
+      "inspectorInstructor": "Ethan Martinez",
+      "_id": 4041
+    },
+    {
+      "130": "degraded",
+      "133": "operational",
+      "140": "operational",
+      "141": "pending",
+      "143": "test",
+      "dateTime": 1762295494141,
+      "flightNumber": 8540,
+      "flightName": "Routine T",
+      "instructorName": "Mason Lee",
+      "startTime": "10:01",
+      "flightTime": 380,
+      "platform": "סופה",
+      "observer": "Ava Wilson",
+      "malfNumbers": [
+        64,
+        60,
+        40,
+        30,
+        18,
+        67,
+        6
+      ],
+      "airCrew1": "Eli Rowe",
+      "airCrew2": "Vik Nolan",
+      "navigator": "Nina Park",
+      "timeOffFlight": "17:24",
+      "_id": 8540
+    },
+    {
+      "130": "operational",
+      "141": "test",
+      "142": "inop",
+      "dateTime": 1758393432493,
+      "flightNumber": 8385,
+      "flightName": "Upgrade E",
+      "instructorName": "Liam Smith",
+      "startTime": "13:02",
+      "flightTime": 128,
+      "platform": "מלאמ",
+      "observer": "Ethan Martinez",
+      "malfNumbers": [
+        2
+      ],
+      "configuration": "סופה",
+      "_id": 8385
+    },
+    {
+      "130": "inop",
+      "132": "operational",
+      "141": "operational",
+      "143": "inop",
+      "dateTime": 1772608218397,
+      "flightNumber": 7142,
+      "flightName": "Evaluation Q",
+      "instructorName": "Mia Anderson",
+      "startTime": "14:06",
+      "flightTime": 291,
+      "platform": "ברק",
+      "observer": "Isabella Garcia",
+      "malfNumbers": [
+        5,
+        1,
+        10,
+        17,
+        13,
+        25
+      ],
+      "airCrew1": "Eli Rowe",
+      "airCrew2": "Will Hayden",
+      "block": "e",
+      "disruption": true,
+      "navigator": "Vik Nolan",
+      "pilot": "Caleb Watts",
+      "technician": "Gina Park",
+      "_id": 7142
+    },
+    {
+      "131": "operational",
+      "133": "test",
+      "142": "inop",
+      "dateTime": 1751138672834,
+      "flightNumber": 1372,
+      "flightName": "Drill G",
+      "instructorName": "Mason Lee",
+      "startTime": "16:33",
+      "flightTime": 535,
+      "platform": "סופה",
+      "observer": "Mia Anderson",
+      "malfNumbers": [
+        64,
+        40,
+        67,
+        30,
+        85,
+        60
+      ],
+      "inspectorInstructor": "Ethan Martinez",
+      "_id": 1372
+    },
+    {
+      "130": "inop",
+      "133": "inop",
+      "140": "degraded",
+      "dateTime": 1753730474591,
+      "flightNumber": 9894,
+      "flightName": "Maintenance A",
+      "instructorName": "Noah Davis",
+      "startTime": "06:02",
+      "flightTime": 93,
+      "platform": "מלאמ",
+      "observer": "Noah Davis",
+      "malfNumbers": [
+        22,
+        89,
+        63,
+        16
+      ],
+      "configuration": "סופה",
+      "inspectorInstructor": "Olivia Jones",
+      "_id": 9894
+    },
+    {
+      "dateTime": 1752492373122,
+      "flightNumber": 1356,
+      "flightName": "Repair O",
+      "instructorName": "Lucas Thomas",
+      "startTime": "19:02",
+      "flightTime": 64,
+      "platform": "ברק",
+      "observer": "Mason Lee",
+      "malfNumbers": [
+        43
+      ],
+      "airCrew1": "Caleb Watts",
+      "configuration": "רעם",
+      "_id": 1356
+    },
+    {
+      "133": "inop",
+      "142": "degraded",
+      "dateTime": 1757756369865,
+      "flightNumber": 9774,
+      "flightName": "Deployment J",
+      "instructorName": "Isabella Garcia",
+      "startTime": "19:52",
+      "flightTime": 494,
+      "platform": "מלאמ",
+      "observer": "Mason Lee",
+      "malfNumbers": [
+        63,
+        2,
+        32,
+        73,
+        87,
+        89,
+        66,
+        22
+      ],
+      "airCrew2": "Uma Shah",
+      "technician": "Harry Stone",
+      "inspectorInstructor": "Mason Lee",
+      "_id": 9774
+    },
+    {
+      "131": "degraded",
+      "141": "operational",
+      "143": "degraded",
+      "dateTime": 1759308798053,
+      "flightNumber": 6717,
+      "flightName": "Drill G",
+      "instructorName": "Lucas Thomas",
+      "startTime": "11:50",
+      "flightTime": 321,
+      "platform": "מוקד",
+      "observer": "Noah Davis",
+      "malfNumbers": [
+        50,
+        11,
+        26,
+        38
+      ],
+      "airCrew1": "Caleb Watts",
+      "airCrew2": "Uma Shah",
+      "pilot": "Kai Ford",
+      "technician": "Evan Brooks",
+      "inspectorInstructor": "Mason Lee",
+      "_id": 6717
+    },
+    {
+      "130": "degraded",
+      "131": "operational",
+      "132": "inop",
+      "140": "inop",
+      "141": "degraded",
+      "142": "operational",
+      "143": "inop",
+      "dateTime": 1757222350684,
+      "flightNumber": 4730,
+      "flightName": "Upgrade E",
+      "instructorName": "Liam Smith",
+      "startTime": "10:22",
+      "flightTime": 174,
+      "platform": "ברק",
+      "observer": "Olivia Jones",
+      "malfNumbers": [
+        75,
+        1,
+        53,
+        10,
+        3,
+        9,
+        29
+      ],
+      "airCrew1": "Fiona Clay",
+      "airCrew2": "Quinn Hayes",
+      "block": "e",
+      "disruption": false,
+      "navigator": "Mark Bell",
+      "pilot": "Fiona Clay",
+      "technician": "Gina Park",
+      "timeOffFlight": "16:18",
+      "inspectorInstructor": "Isabella Garcia",
+      "_id": 4730
+    },
+    {
+      "131": "inop",
+      "132": "operational",
+      "133": "inop",
+      "140": "inop",
+      "141": "degraded",
+      "142": "operational",
+      "dateTime": 1757002223894,
+      "flightNumber": 1738,
+      "flightName": "Exercise K",
+      "instructorName": "Isabella Garcia",
+      "startTime": "07:52",
+      "flightTime": 344,
+      "platform": "שובל",
+      "observer": "Ethan Martinez",
+      "malfNumbers": [
+        34,
+        97,
+        61,
+        68
+      ],
+      "airCrew2": "Oscar Reid",
+      "disruption": false,
+      "navigator": "Mark Bell",
+      "technician": "Doris Patel",
+      "_id": 1738
+    },
+    {
+      "130": "test",
+      "131": "inop",
+      "132": "pending",
+      "133": "test",
+      "140": "pending",
+      "141": "pending",
+      "142": "pending",
+      "143": "test",
+      "dateTime": 1767212005804,
+      "flightNumber": 5531,
+      "flightName": "Upgrade S",
+      "instructorName": "Mia Anderson",
+      "startTime": "20:03",
+      "flightTime": 259,
+      "platform": "מוקד",
+      "observer": "Noah Davis",
+      "malfNumbers": [
+        26,
+        50,
+        95,
+        38
+      ],
+      "airCrew1": "Fiona Clay",
+      "airCrew2": "Nina Park",
+      "block": "d",
+      "disruption": false,
+      "navigator": "Paula Frost",
+      "pilot": "Hannah Wells",
+      "technician": "Felix Ortiz",
+      "configuration": "רעם",
+      "inspectorInstructor": "Emma Brown",
+      "_id": 5531
+    },
+    {
+      "133": "pending",
+      "dateTime": 1749741091021,
+      "flightNumber": 8585,
+      "flightName": "Check N",
+      "instructorName": "Ava Wilson",
+      "startTime": "13:42",
+      "flightTime": 344,
+      "platform": "מלאמ",
+      "observer": "Isabella Garcia",
+      "malfNumbers": [
+        2,
+        22,
+        63,
+        32,
+        73,
+        89,
+        16,
+        87
+      ],
+      "airCrew2": "Vik Nolan",
+      "technician": "Charles Nguyen",
+      "configuration": "בז",
+      "_id": 8585
+    },
+    {
+      "130": "operational",
+      "132": "test",
+      "140": "pending",
+      "141": "operational",
+      "143": "degraded",
+      "dateTime": 1750793616113,
+      "flightNumber": 9314,
+      "flightName": "Certification P",
+      "instructorName": "Liam Smith",
+      "startTime": "15:44",
+      "flightTime": 528,
+      "platform": "שובל",
+      "observer": "Ava Wilson",
+      "malfNumbers": [
+        34
+      ],
+      "airCrew2": "Paula Frost",
+      "pilot": "Diana Faulk",
+      "inspectorInstructor": "Olivia Jones",
+      "_id": 9314
+    },
+    {
+      "133": "test",
+      "141": "pending",
+      "142": "degraded",
+      "dateTime": 1772345574654,
+      "flightNumber": 7843,
+      "flightName": "Simulation L",
+      "instructorName": "Noah Davis",
+      "startTime": "04:29",
+      "flightTime": 256,
+      "platform": "שובל",
+      "observer": "Noah Davis",
+      "malfNumbers": [
+        72,
+        61
+      ],
+      "airCrew1": "Bella Ryan",
+      "airCrew2": "Mark Bell",
+      "block": "c",
+      "disruption": true,
+      "pilot": "Diana Faulk",
+      "timeOffFlight": "05:33",
+      "configuration": "ברק",
+      "_id": 7843
+    },
+    {
+      "143": "test",
+      "dateTime": 1763069100363,
+      "flightNumber": 1182,
+      "flightName": "Review F",
+      "instructorName": "Liam Smith",
+      "startTime": "12:56",
+      "flightTime": 516,
+      "platform": "רעם",
+      "observer": "Lucas Thomas",
+      "malfNumbers": [
+        94,
+        59,
+        86,
+        80,
+        92,
+        83
+      ],
+      "configuration": "ברק",
+      "inspectorInstructor": "Emma Brown",
+      "_id": 1182
+    },
+    {
+      "142": "inop",
+      "dateTime": 1770217363981,
+      "flightNumber": 5763,
+      "flightName": "Review F",
+      "instructorName": "Liam Smith",
+      "startTime": "23:14",
+      "flightTime": 425,
+      "platform": "מוקד",
+      "observer": "Sarah Miller",
+      "malfNumbers": [
+        65,
+        50
+      ],
+      "airCrew1": "Caleb Watts",
+      "block": "c",
+      "pilot": "Eli Rowe",
+      "configuration": "רעם",
+      "inspectorInstructor": "Ethan Martinez",
+      "_id": 5763
+    },
+    {
+      "130": "operational",
+      "132": "test",
+      "133": "degraded",
+      "140": "degraded",
+      "141": "pending",
+      "143": "inop",
+      "dateTime": 1767896439296,
+      "flightNumber": 4976,
+      "flightName": "Certification P",
+      "instructorName": "Sarah Miller",
+      "startTime": "18:45",
+      "flightTime": 430,
+      "platform": "זיק",
+      "observer": "Sarah Miller",
+      "malfNumbers": [
+        91,
+        82,
+        98
+      ],
+      "airCrew1": "Gavin Stone",
+      "airCrew2": "Sofia Lopez",
+      "block": "e",
+      "navigator": "Will Hayden",
+      "pilot": "Adam Cole",
+      "inspectorInstructor": "Noah Davis",
+      "_id": 4976
+    },
+    {
+      "131": "operational",
+      "132": "pending",
+      "133": "degraded",
+      "dateTime": 1754987305572,
+      "flightNumber": 5292,
+      "flightName": "Drill G",
+      "instructorName": "John Doe",
+      "startTime": "09:05",
+      "flightTime": 179,
+      "platform": "שובל",
+      "observer": "Noah Davis",
+      "malfNumbers": [
+        72,
+        61,
+        97,
+        74,
+        68,
+        34,
+        99
+      ],
+      "airCrew2": "Oscar Reid",
+      "block": "d",
+      "disruption": false,
+      "navigator": "Rafael Kim",
+      "technician": "Irene Cole",
+      "_id": 5292
+    },
+    {
+      "131": "inop",
+      "132": "inop",
+      "133": "inop",
+      "141": "inop",
+      "143": "inop",
+      "dateTime": 1768150800493,
+      "flightNumber": 5071,
+      "flightName": "Briefing M",
+      "instructorName": "Noah Davis",
+      "startTime": "00:15",
+      "flightTime": 348,
+      "platform": "בז",
+      "observer": "Mason Lee",
+      "malfNumbers": [
+        93,
+        79,
+        90
+      ],
+      "airCrew1": "Ian Morris",
+      "airCrew2": "Vik Nolan",
+      "block": "c",
+      "disruption": false,
+      "navigator": "Vik Nolan",
+      "pilot": "Bella Ryan",
+      "technician": "Gina Park",
+      "timeOffFlight": "23:30",
+      "configuration": "בז",
+      "inspectorInstructor": "Ethan Martinez",
+      "_id": 5071
+    },
+    {
+      "130": "inop",
+      "131": "inop",
+      "132": "inop",
+      "140": "operational",
+      "141": "operational",
+      "142": "operational",
+      "143": "operational",
+      "dateTime": 1773955699532,
+      "flightNumber": 5883,
+      "flightName": "Exercise K",
+      "instructorName": "Sarah Miller",
+      "startTime": "11:42",
+      "flightTime": 104,
+      "platform": "בז",
+      "observer": "Ava Wilson",
+      "malfNumbers": [
+        93,
+        4,
+        48,
+        52,
+        90,
+        54,
+        88,
+        79
+      ],
+      "airCrew1": "Adam Cole",
+      "airCrew2": "Will Hayden",
+      "block": "d",
+      "disruption": false,
+      "navigator": "Rafael Kim",
+      "pilot": "Bella Ryan",
+      "technician": "Gina Park",
+      "timeOffFlight": "13:33",
+      "configuration": "ברק",
+      "inspectorInstructor": "Olivia Jones",
+      "_id": 5883
+    },
+    {
+      "130": "pending",
+      "131": "test",
+      "143": "test",
+      "dateTime": 1758693004443,
+      "flightNumber": 3427,
+      "flightName": "Evaluation Q",
+      "instructorName": "Noah Davis",
+      "startTime": "04:08",
+      "flightTime": 359,
+      "platform": "סופה",
+      "observer": "Isabella Garcia",
+      "malfNumbers": [
+        40,
+        60,
+        6,
+        67,
+        64,
+        18
+      ],
+      "airCrew1": "Fiona Clay",
+      "block": "c",
+      "pilot": "Gavin Stone",
+      "technician": "Charles Nguyen",
+      "inspectorInstructor": "Liam Smith",
+      "_id": 3427
+    },
+    {
+      "131": "operational",
+      "132": "degraded",
+      "133": "inop",
+      "140": "operational",
+      "142": "degraded",
+      "dateTime": 1763399393924,
+      "flightNumber": 7877,
+      "flightName": "Review F",
+      "instructorName": "Ava Wilson",
+      "startTime": "16:00",
+      "flightTime": 388,
+      "platform": "סופה",
+      "observer": "Isabella Garcia",
+      "malfNumbers": [
+        6,
+        85,
+        18,
+        30
+      ],
+      "airCrew1": "Diana Faulk",
+      "disruption": false,
+      "navigator": "Will Hayden",
+      "pilot": "Jade Vega",
+      "timeOffFlight": "13:46",
+      "_id": 7877
+    },
+    {
+      "130": "pending",
+      "131": "degraded",
+      "142": "operational",
+      "dateTime": 1758195090033,
+      "flightNumber": 3627,
+      "flightName": "Evaluation Q",
+      "instructorName": "Lucas Thomas",
+      "startTime": "05:00",
+      "flightTime": 278,
+      "platform": "רעם",
+      "observer": "Noah Davis",
+      "malfNumbers": [
+        80,
+        86,
+        59,
+        83
+      ],
+      "configuration": "ברק",
+      "inspectorInstructor": "Isabella Garcia",
+      "_id": 3627
+    },
+    {
+      "130": "pending",
+      "131": "operational",
+      "133": "pending",
+      "141": "pending",
+      "142": "pending",
+      "dateTime": 1761352017160,
+      "flightNumber": 2536,
+      "flightName": "Upgrade S",
+      "instructorName": "Liam Smith",
+      "startTime": "04:33",
+      "flightTime": 264,
+      "platform": "ברק",
+      "observer": "Noah Davis",
+      "malfNumbers": [
+        47,
+        29
+      ],
+      "airCrew1": "Diana Faulk",
+      "airCrew2": "Uma Shah",
+      "block": "e",
+      "disruption": true,
+      "navigator": "Nina Park",
+      "pilot": "Fiona Clay",
+      "technician": "Charles Nguyen",
+      "timeOffFlight": "12:51",
+      "configuration": "רעם",
+      "inspectorInstructor": "Noah Davis",
+      "_id": 2536
+    },
+    {
+      "130": "pending",
+      "133": "inop",
+      "142": "degraded",
+      "dateTime": 1761945601700,
+      "flightNumber": 2896,
+      "flightName": "Drill G",
+      "instructorName": "Noah Davis",
+      "startTime": "07:41",
+      "flightTime": 136,
+      "platform": "סופה",
+      "observer": "Ethan Martinez",
+      "malfNumbers": [
+        85,
+        30
+      ],
+      "inspectorInstructor": "Olivia Jones",
+      "_id": 2896
+    },
+    {
+      "131": "degraded",
+      "141": "inop",
+      "dateTime": 1770456070128,
+      "flightNumber": 2546,
+      "flightName": "Training H",
+      "instructorName": "Liam Smith",
+      "startTime": "12:33",
+      "flightTime": 138,
+      "platform": "שובל",
+      "observer": "Emma Brown",
+      "malfNumbers": [
+        68
+      ],
+      "airCrew1": "Adam Cole",
+      "_id": 2546
+    },
+    {
+      "130": "pending",
+      "131": "test",
+      "132": "operational",
+      "133": "inop",
+      "140": "pending",
+      "141": "inop",
+      "143": "pending",
+      "dateTime": 1766550534427,
+      "flightNumber": 8563,
+      "flightName": "Calibration D",
+      "instructorName": "Emma Brown",
+      "startTime": "19:57",
+      "flightTime": 520,
+      "platform": "מוקד",
+      "observer": "Ethan Martinez",
+      "malfNumbers": [
+        65,
+        38,
+        26,
+        50,
+        95,
+        11
+      ],
+      "airCrew1": "Adam Cole",
+      "airCrew2": "Paula Frost",
+      "navigator": "Tomas Bennett",
+      "configuration": "ברק",
+      "_id": 8563
+    },
+    {
+      "132": "pending",
+      "133": "degraded",
+      "142": "inop",
+      "143": "test",
+      "dateTime": 1768301783981,
+      "flightNumber": 3499,
+      "flightName": "Review F",
+      "instructorName": "Sarah Miller",
+      "startTime": "17:46",
+      "flightTime": 375,
+      "platform": "מלאמ",
+      "observer": "Emma Brown",
+      "malfNumbers": [
+        32,
+        63,
+        66,
+        22,
+        73
+      ],
+      "_id": 3499
+    },
+    {
+      "133": "degraded",
+      "141": "test",
+      "dateTime": 1774721190828,
+      "flightNumber": 9169,
+      "flightName": "Maintenance A",
+      "instructorName": "Emma Brown",
+      "startTime": "16:51",
+      "flightTime": 417,
+      "platform": "שובל",
+      "observer": "Mia Anderson",
+      "malfNumbers": [
+        34
+      ],
+      "airCrew1": "Ian Morris",
+      "pilot": "Diana Faulk",
+      "timeOffFlight": "06:05",
+      "inspectorInstructor": "Noah Davis",
+      "_id": 9169
+    },
+    {
+      "131": "degraded",
+      "132": "test",
+      "133": "test",
+      "140": "degraded",
+      "141": "degraded",
+      "142": "inop",
+      "143": "operational",
+      "dateTime": 1764626400019,
+      "flightNumber": 3554,
+      "flightName": "Simulation L",
+      "instructorName": "Mason Lee",
+      "startTime": "12:05",
+      "flightTime": 396,
+      "platform": "רעם",
+      "observer": "Emma Brown",
+      "malfNumbers": [
+        59,
+        80
+      ],
+      "airCrew1": "Jade Vega",
+      "disruption": true,
+      "navigator": "Tomas Bennett",
+      "technician": "Aaron Price",
+      "_id": 3554
+    },
+    {
+      "130": "degraded",
+      "131": "operational",
+      "132": "operational",
+      "133": "test",
+      "140": "operational",
+      "142": "operational",
+      "dateTime": 1758611371555,
+      "flightNumber": 8897,
+      "flightName": "Upgrade S",
+      "instructorName": "Olivia Jones",
+      "startTime": "01:21",
+      "flightTime": 353,
+      "platform": "רעם",
+      "observer": "Liam Smith",
+      "malfNumbers": [
+        83
+      ],
+      "airCrew1": "Kai Ford",
+      "_id": 8897
+    },
+    {
+      "130": "test",
+      "133": "operational",
+      "143": "inop",
+      "dateTime": 1753268075778,
+      "flightNumber": 9690,
+      "flightName": "Exercise K",
+      "instructorName": "Mia Anderson",
+      "startTime": "02:12",
+      "flightTime": 451,
+      "platform": "מלאמ",
+      "observer": "Emma Brown",
+      "malfNumbers": [
+        2,
+        16,
+        87,
+        89
+      ],
+      "airCrew1": "Fiona Clay",
+      "airCrew2": "Quinn Hayes",
+      "block": "d",
+      "disruption": false,
+      "navigator": "Paula Frost",
+      "pilot": "Bella Ryan",
+      "technician": "Kara Young",
+      "_id": 9690
+    },
+    {
+      "131": "test",
+      "132": "test",
+      "133": "test",
+      "dateTime": 1757330643112,
+      "flightNumber": 6584,
+      "flightName": "Certification P",
+      "instructorName": "Isabella Garcia",
+      "startTime": "22:14",
+      "flightTime": 398,
+      "platform": "שובל",
+      "observer": "Emma Brown",
+      "malfNumbers": [
+        68,
+        61,
+        97,
+        72,
+        34,
+        74,
+        99
+      ],
+      "airCrew1": "Gavin Stone",
+      "airCrew2": "Quinn Hayes",
+      "pilot": "Fiona Clay",
+      "technician": "Felix Ortiz",
+      "configuration": "סופה",
+      "inspectorInstructor": "Olivia Jones",
+      "_id": 6584
+    }
+  ]
+}
