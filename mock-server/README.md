@@ -7,7 +7,8 @@ Run:
 ```bash
 cd backend/mock-server
 npm install
-npm start
+npm start       # production
+npm run dev     # start with live reload (uses nodemon)
 ```
 
 Default port: `4000` (use `PORT` env to override).

@@ -2,9 +2,10 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
+const { log } = require("console");
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3002;
 
 app.use(cors());
 app.use(express.json());
@@ -49,13 +50,12 @@ function stripFields(obj, headerValue) {
 // GET /Authentication/:username/:password
 app.get("/Authentication/:username/:password", (req, res) => {
   const { username, password } = req.params;
-  ensureCollection("Authentication");
+  ensureCollection("Authentication");  
   const user = db.Authentication.find(
     (u) => u.userName === username && u.password === password,
   );
-  if (user) {
-    const { password: pwd, ...safe } = user;
-    return res.json({ ok: true, user: safe, token: "fake-jwt-token" });
+  if (user) {    
+    return res.status(202).json([user]);
   }
   return res.status(401).json({ ok: false, message: "Invalid credentials" });
 });
@@ -110,6 +110,18 @@ app.get("/getUser/:personalNumber", (req, res) => {
   res.json(safe);
 });
 
+// GET /Authentication/:personalNumber
+app.get("/Authentication/:personalNumber", (req, res) => {
+  const { personalNumber } = req.params;
+  ensureCollection("Authentication");
+  const user = db.Authentication.find(
+    (u) => String(u.userName) === String(personalNumber),
+  );    
+  if (!user) return res.status(404).json({ ok: false, message: "Not found" });
+  const { password, ...safe } = user;
+  res.status(200).json({ ok: true });
+});
+
 // PUT /:collectionName  body: object, optional header 'fieldstoremove' (JSON array or comma list)
 app.put("/:collectionName", (req, res) => {
   const { collectionName } = req.params;
@@ -140,7 +152,101 @@ app.put("/:collectionName", (req, res) => {
 app.get("/:collection", (req, res) => {
   const { collection } = req.params;
   ensureCollection(collection);
-  res.json(db[collection]);
+  res.json(db[collection]);  
+});
+
+// GET /:collection/getAmountByFilters/:index
+// params may be sent in the request body as { params: { platform: [...], filters: {...} } }
+// or as a JSON-encoded `params` query parameter. Returns 25 items at offset index*25
+app.get("/:collection/getAmountByFilters/:index", (req, res) => {  
+  
+  const { collection, index } = req.params;
+  ensureCollection(collection);
+  console.log(index);
+
+  // read params from body.params or query.params
+  let params = (req.body && req.body.params) || undefined;
+  
+  if (!params && req.query && req.query.params) {
+    try {
+      params = JSON.parse(req.query.params);
+    } catch (e) {
+      params = req.query.params;
+    }
+  }
+  params = params || {};
+  
+  const platforms = Array.isArray(req.query.platform)
+    ? req.query.platform.map((p) => JSON.parse(p))
+    : req.query.platform
+      ? [JSON.parse(req.query.platform)]
+      : null;      
+          
+
+  const filters = req.query.filters || {};  
+
+  let items = Array.isArray(db[collection]) ? db[collection].slice() : [];
+
+  items = items.filter((obj) => {
+    // platform membership: object must contain at least one of requested platforms
+    if (platforms && platforms.length > 0) {
+      const objPlat = obj.platform;      
+      if (Array.isArray(objPlat)) {
+        if (!objPlat.some((p) => platforms.includes(p))) return false;
+      } else if (typeof objPlat === "string") {
+        if (!platforms.includes(objPlat)){
+          // console.log(platforms.includes(objPlat));
+          
+          return false;
+        } 
+      } else {
+        return false;
+      }
+    }
+
+    // date: same-day match
+    if (filters.date !== undefined) {
+      const d = Number(filters.date);
+      if (Number.isNaN(d)) return false;
+      const start = new Date(d);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(d);
+      end.setHours(23, 59, 59, 999);
+      if (!(obj.dateTime >= start.getTime() && obj.dateTime <= end.getTime()))
+        return false;
+    }
+
+    // minDate / maxDate inclusive
+    if (filters.minDate !== undefined) {
+      const min = Number(filters.minDate);
+      if (Number.isNaN(min)) return false;
+      if (!(obj.dateTime >= min)) return false;
+    }
+    if (filters.maxDate !== undefined) {
+      const max = Number(filters.maxDate);
+      if (Number.isNaN(max)) return false;
+      if (!(obj.dateTime <= max)) return false;
+    }
+
+    // FlightFailure-specific filters
+    if (collection === "FlightFailure") {
+      if (filters.failureStatus !== undefined) {
+        if (obj.status !== filters.failureStatus) return false;
+      }
+      if (filters.issueSeverity !== undefined) {
+        if (obj.issueSeverity !== filters.issueSeverity) return false;
+      }
+    }
+
+    // search is intentionally ignored as requested
+    
+    return true;
+  });
+
+  // const idx = Math.max(0, parseInt(index, 10) || 0);
+  // const offset = idx * 25;
+  const result = items.slice(index, index + 25);
+  res.json(result.sort((a, b) => a._id - b._id));
 });
 
 app.listen(PORT, () => {
