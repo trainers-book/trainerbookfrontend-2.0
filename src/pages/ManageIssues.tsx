@@ -25,8 +25,8 @@ const ManageIssues: React.FC = () => {
   const { platforms } = usePlatforms();
 
   useEffect(() => {
-    setFilterChange(!filterChange);    
-  }, [selectedPlatforms, selectedStatuses, selectedSeverity, selectedDate]);
+    setFilterChange(!filterChange);
+  }, [selectedPlatforms, selectedStatuses, selectedSeverity, selectedDate, searchQuery]);
 
   const getRowClass = (row: IssueData) => {
     return Object.keys(Status)
@@ -48,13 +48,7 @@ const ManageIssues: React.FC = () => {
           selectedStatuses.includes(dataSet.status)) &&
         (selectedSeverity.length == 0 ||
           selectedSeverity.includes(dataSet.issueSeverity)) &&
-        (selectedDate == "" || getDate(dataSet.dateTime) == selectedDate) &&
-        Object.values(dataSet)
-          .map(String)
-          .reduce(
-            (accumulator, value) => accumulator || value.includes(searchQuery),
-            false
-          ) // make sure this is always the last check
+        (selectedDate == "" || getDate(dataSet.dateTime) == selectedDate)
       );
     });
   };
@@ -64,7 +58,7 @@ const ManageIssues: React.FC = () => {
       ...malf,
       dateTime: new Date(malf.dateTime),
       flightNumber: malf._id,
-      status: Status[malf.failureStatus],
+      status: Status[malf.failureStatus as keyof typeof Status],
       issueDescription: malf.failureDetails,
       issueSeverity: malf.disruption,
       issueOpener: malf.malfunctionOpener || malf.malfunctionOpener,
@@ -79,7 +73,9 @@ const ManageIssues: React.FC = () => {
           selectedStatuses.length == 0
             ? []
             : selectedStatuses.map((status) => {
-                return Object.keys(Status).find((k) => Status[k] === status);
+                return Object.keys(Status).find(
+                  (k) => Status[k as keyof typeof Status] === status
+                );
               }),
       },
     };
@@ -123,6 +119,8 @@ const ManageIssues: React.FC = () => {
         color={true}
         objectFromFetch={objectFromFetch}
         platformsAndFilters={getPlatformsAndFilters()}
+        filterData={filterData}
+        searchQuery={searchQuery}
       /> 
     </PageWrapper>
   );

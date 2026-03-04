@@ -14,8 +14,10 @@ interface InfinateScrollFetchProps {
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
-  platformsAndFilters: { platforms: string[]; filters: any };
+  platformsAndFilters?: { platforms: string[]; filters: any };
   objectFromFetch: (data: any) => any;
+  filterData?: (data: any[]) => any[];
+  searchQuery?: string;
 }
 
 const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
@@ -27,20 +29,22 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   deleteRow,
   objectFromFetch,
   platformsAndFilters,
+  filterData,
+  searchQuery,
 }) => {
   const tableRowHeight = 82;
   const tableHeadHeight = 56.5;
-  const tableRef = useRef(null);
+  const tableRef = useRef<HTMLElement | null>(null);
   const { connection } = useBackend();
   const { platforms } = usePlatforms();
   const [fetching, setFetching] = useState<boolean>(false);
   const [fetchMore, setFetchMore] = useState<boolean>(true);
   const [offset, setOffset] = useState(0);
-  const [dataToShow, setDataToShow] = useState<any[]>([]);
+  const [allData, setAllData] = useState<any[]>([]);
 
   useEffect(() => {
     setFetching(false);
-  }, [dataToShow]);
+  }, [allData]);
 
   useEffect(() => {
     fetchMoreData();
@@ -51,7 +55,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   }, [platforms]);
 
   useEffect(() => {
-    setDataToShow([]);
+    setAllData([]);
     setOffset(0);
     setFetching(false);
     setFetchMore(true);
@@ -77,26 +81,24 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
     if (newData.status == HttpStatusCode.Ok) {
       const newFetchedData: any[] = newData.data;
       if (newFetchedData.length != 0) {
-        setDataToShow([
-          ...new Set([
-            ...dataToShow,
-            ...newFetchedData
-              .map((data) => objectFromFetch(data))
-              .sort(sortFunction),
-          ]),
-        ]);
+        const mappedData = newFetchedData.map((data) => objectFromFetch(data));
+        setAllData((prev) => [...prev, ...mappedData]);
       } else {
         setFetchMore(false);
       }
     }
   };
 
+  const dataToShow = React.useMemo(() => {
+    return filterData ? filterData(allData) : allData;
+  }, [allData, filterData]);
+
   const handleScroll = (event: any) => {
     if (!fetchMore) {
       return;
     }
 
-    const children = tableRef.current.childElementCount;
+    const children = tableRef.current?.childElementCount ?? 0;
     const target = event.target;
 
     if (
@@ -119,6 +121,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
       deleteRow={deleteRow}
       onScroll={handleScroll}
       tableRef={tableRef}
+      searchQuery={searchQuery}
     />
   );
 };

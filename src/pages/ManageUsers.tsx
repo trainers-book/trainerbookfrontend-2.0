@@ -261,9 +261,14 @@ const ManageUsers: React.FC = () => {
     } else if (currentTab!.entityType == ManageTypes.USERS) {
       return new UsersData(entity["_id"], entity["firstName"], entity["lastName"], entity["platform"].join(", "));
     } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
-      const flight = new PreservedFlightNameData(new Date(entity["date"]), entity["name"], entity["platform"], entity["_id"]);
-      flight["!id"] = flight["_id"];
-      delete flight["_id"];
+      const flight = new PreservedFlightNameData(
+        new Date(entity["date"]),
+        entity["name"],
+        entity["platform"],
+        entity["_id"]
+      );
+      (flight as any)["!id"] = (flight as any)["_id"];
+      delete (flight as any)["_id"];
 
       return flight;
     }
@@ -304,7 +309,7 @@ const ManageUsers: React.FC = () => {
     setData([]);
 
     fetchData(currentTab.collection).then((fetchedData) => {
-      setData(fetchedData);
+      setData(fetchedData ?? []);
     });
   };
 
@@ -369,16 +374,9 @@ const ManageUsers: React.FC = () => {
               )}
             </Box>
             <GenericTable
-              properties={getCurrentTabTableProperties().filter((col) => true)}
-              data={data.filter((value) =>
-                Object.values(value)
-                  .map(String)
-                  .reduce(
-                    (accumulator, value) =>
-                      accumulator || value.includes(search),
-                    false
-                  )
-              )}
+              properties={getCurrentTabTableProperties()}
+              data={data}
+              searchQuery={search}
               sortFunction={sortingFunction}
               deleteRow={currentTab.deleteEntity ? deleteEntity : undefined}
               editRow={currentTab.editEntity ? editEntity : undefined}

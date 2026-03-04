@@ -21,13 +21,7 @@ const ReviewFlights: React.FC = () => {
       return (
         (selectedPlatforms.length == 0 ||
           selectedPlatforms.includes(dataSet.platform)) &&
-        (selectedDate == "" || getDate(dataSet.dateTime) == selectedDate) &&
-        Object.values(dataSet)
-          .map(String)
-          .reduce(
-            (accumulator, value) => accumulator || value.includes(searchQuery),
-            false
-          )
+          (selectedDate == "" || getDate(dataSet.dateTime) == selectedDate)
       );
     });
   };
@@ -84,6 +78,8 @@ const ReviewFlights: React.FC = () => {
         fetchCollection="PreservedFlights"
         color={false}
         objectFromFetch={objectFromFetch}
+        filterData={filterData}
+        searchQuery={searchQuery}
       />
     </PageWrapper>
   );

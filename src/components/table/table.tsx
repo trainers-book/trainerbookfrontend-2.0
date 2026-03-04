@@ -1,4 +1,4 @@
-﻿ import "./table.css";
+ import "./table.css";
 import "../../i18n";
 import React from "react";
 import {
@@ -19,6 +19,7 @@ import IssueData from "../../types/tables/issues";
 import { Severity } from "../../types/issuesSeverity";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { useTableSearch } from "../../common/tableSearch";
 
 interface TableProps {
   properties: string[];
@@ -32,6 +33,7 @@ interface TableProps {
   tableRef?: any;
   lengthOverride?: boolean;
   valuesOverride?: boolean;
+  searchQuery?: string;
 }
 
 const GenericTable: React.FC<TableProps> = ({
@@ -45,13 +47,15 @@ const GenericTable: React.FC<TableProps> = ({
   onScroll,
   tableRef,
   lengthOverride,
-  valuesOverride
+  valuesOverride,
+  searchQuery,
 }) => {
   const tableHeightPercent = 85;
   const tableRowHeight = 82;
   const { t } = useTranslation();
-  const sortedData = sortFunction ? data.sort(sortFunction) : data;
+  const { rowMatchesSearch } = useTableSearch();
   const columns = properties.slice();
+  const normalizedSearch = (searchQuery ?? "").trim();
 
   if (color != undefined) {
     columns.push("_color");
@@ -62,6 +66,25 @@ const GenericTable: React.FC<TableProps> = ({
   if (deleteRow != undefined) {
     columns.push("_delete");
   }
+
+  const filteredData = React.useMemo(() => {
+    const base = Array.isArray(data) ? data : [];
+    if (normalizedSearch === "") {
+      return base;
+    }
+
+    return base.filter((row) => rowMatchesSearch(row, properties, normalizedSearch));
+  }, [data, normalizedSearch, properties]);
+
+  const sortedData = React.useMemo(() => {
+    const base = [...filteredData];
+    
+    if (sortFunction) {
+      base.sort(sortFunction);
+    }
+
+    return base;
+  }, [filteredData, sortFunction]);
 
   const valueToMultipleLines = (
     value: Date | string | number | Status | Severity
