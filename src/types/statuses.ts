@@ -3,7 +3,12 @@ export enum Status {
   Closed = "סגור",
   Maintenance = "ייבדק ביום אחזקה", // יבדק באחזקה
   Maav = 'יבדק במא"ב',
-  Elbit = "פתוח להנדסה",
+  Elbit = "הנדסה",
   Waiting = "מחכה לחלקים",
-  Permit = "נפתח כהיתר"
-} // we can change the name in the db itself or in here (the name in hebrew that will be displayed in the table)
+}
+
+export enum PermitStatus {
+  Open = "פתוח",
+  Resolved = "סגור",
+  Expired = "פג תוקף",
+}

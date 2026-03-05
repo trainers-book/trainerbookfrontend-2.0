@@ -29,7 +29,7 @@ export default class IssueData {
     issueOpener = "מדריכה",
     issueDescription = "אין",
     platform = "בז",
-    issueSeverity = Severity.low,
+    issueSeverity = Severity.Low,
     status = Status.Active,
     category = undefined,
     subCategory = undefined,
@@ -64,3 +64,21 @@ export default class IssueData {
     this._responsibleFactor = responsibleFactor;
   }
 }
+
+export const IssueObjectFromFetch = (malf: any) => {  
+  return new IssueData({
+    ...malf,
+    dateTime: new Date(malf.dateTime),
+    issueNumber: malf._id,
+    status: Status[malf.failureStatus as typeof Status],
+    issueDescription: malf.failureDetails,
+    issueSeverity: malf.disruption,
+    issueOpener: malf.malfunctionOpener || malf.malfunctionOpener,
+  });
+};
+
+export const getIssueColor = (row: IssueData) => {  
+  return Object.keys(Status)
+    .filter((value) => Status[value as keyof typeof Status] === row.status)[0]
+    .toLocaleLowerCase();
+};

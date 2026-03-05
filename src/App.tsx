@@ -7,6 +7,7 @@ import PageWrapper from "./components/pageWrapper/PageWrapper";
 import { IssueProvider } from "./context/issueContext";
 import { LocalStorageProvider } from "./context/localStorageContext";
 import { PlatformsProvider } from "./context/platformsContext";
+import { PermitProvider } from "./context/permitContext";
 import { BackendProvider } from "./context/backendContext";
 
 function App() {
@@ -16,12 +17,14 @@ function App() {
         <LocalStorageProvider>
           <UserProvider>
             <PlatformsProvider>
-              <IssueProvider>
-                <Navbar />
-                <PageWrapper>
-                  <AppRoutes />
-                </PageWrapper>
-              </IssueProvider>
+            <PermitProvider>
+                <IssueProvider>
+                  <Navbar />
+                  <PageWrapper>
+                    <AppRoutes />
+                  </PageWrapper>
+                </IssueProvider>
+            </PermitProvider>
             </PlatformsProvider>
           </UserProvider>
         </LocalStorageProvider>

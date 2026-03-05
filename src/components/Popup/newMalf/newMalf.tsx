@@ -117,7 +117,7 @@ const NewMalfModel: React.FC = () => {
           </IconButton>
         </DialogTitle>
         <DialogTitle align="center" variant="h4">
-          {t("newMalf")}
+          {t("newMalf")} 🔨
         </DialogTitle>
 
         <DialogContent>

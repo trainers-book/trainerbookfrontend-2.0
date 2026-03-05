@@ -3,25 +3,32 @@ import "../../i18n";
 import React, { useEffect, useRef, useState } from "react";
 import IssueData from "../../types/tables/issues";
 import GenericTable from "./table";
+import FlightData from "../../types/tables/flight";
 
 interface InfinateScrollDataProps {
   properties: string[];
   data: any[];
+  getRowKey: (row: any) => string;
   sortFunction?: (val: any, nexVal: any) => number;
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
+  clickable?: (row: IssueData | FlightData) => void;
+  noHeight?: boolean;
 }
 
 const InfinateScrollData: React.FC<InfinateScrollDataProps> = ({
   properties,
   data,
+  getRowKey,
   sortFunction,
   getRowClass,
   color,
   deleteRow,
+  clickable,
+  noHeight,
 }) => {
-  const tableHeightPercent = 85;
+  const tableHeightPercent = noHeight ? Math.min(30, data.length * 14) : 85;
   const tableRowHeight = 82;
   const tableFetchExtra = 4;
   const tableHeadHeight = 56.5;
@@ -68,11 +75,14 @@ const InfinateScrollData: React.FC<InfinateScrollDataProps> = ({
     <GenericTable
       properties={properties}
       data={dataToShow}
+      getRowKey={getRowKey}
       getRowClass={getRowClass}
       color={color}
       deleteRow={deleteRow}
       onScroll={handleScroll}
       tableRef={tableRef}
+      clickable={clickable}
+      tableHeight={tableHeightPercent}
     />
   );
 };
