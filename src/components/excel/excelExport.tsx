@@ -14,24 +14,24 @@ const excelImage = (
       height="18"
       fill="#ffffff"
       stroke="#1F6E43"
-      stroke-width="1"
+      strokeWidth={1}
     />
     <polygon points="5,10 5,30 23,35 23,5" fill="#1F6E43" />
 
-    <line x1="22" y1="14" x2="26" y2="14" stroke="#1F6E43" stroke-width="2" />
-    <line x1="27" y1="14" x2="32" y2="14" stroke="#1F6E43" stroke-width="2" />
+    <line x1="22" y1="14" x2="26" y2="14" stroke="#1F6E43" strokeWidth={2} />
+    <line x1="27" y1="14" x2="32" y2="14" stroke="#1F6E43" strokeWidth={2} />
 
-    <line x1="22" y1="17" x2="26" y2="17" stroke="#1F6E43" stroke-width="2" />
-    <line x1="27" y1="17" x2="32" y2="17" stroke="#1F6E43" stroke-width="2" />
+    <line x1="22" y1="17" x2="26" y2="17" stroke="#1F6E43" strokeWidth={2} />
+    <line x1="27" y1="17" x2="32" y2="17" stroke="#1F6E43" strokeWidth={2} />
 
-    <line x1="22" y1="20" x2="26" y2="20" stroke="#1F6E43" stroke-width="2" />
-    <line x1="27" y1="20" x2="32" y2="20" stroke="#1F6E43" stroke-width="2" />
+    <line x1="22" y1="20" x2="26" y2="20" stroke="#1F6E43" strokeWidth={2} />
+    <line x1="27" y1="20" x2="32" y2="20" stroke="#1F6E43" strokeWidth={2} />
 
-    <line x1="22" y1="23" x2="26" y2="23" stroke="#1F6E43" stroke-width="2" />
-    <line x1="27" y1="23" x2="32" y2="23" stroke="#1F6E43" stroke-width="2" />
+    <line x1="22" y1="23" x2="26" y2="23" stroke="#1F6E43" strokeWidth={2} />
+    <line x1="27" y1="23" x2="32" y2="23" stroke="#1F6E43" strokeWidth={2} />
 
-    <line x1="22" y1="26" x2="26" y2="26" stroke="#1F6E43" stroke-width="2" />
-    <line x1="27" y1="26" x2="32" y2="26" stroke="#1F6E43" stroke-width="2" />
+    <line x1="22" y1="26" x2="26" y2="26" stroke="#1F6E43" strokeWidth={2} />
+    <line x1="27" y1="26" x2="32" y2="26" stroke="#1F6E43" strokeWidth={2} />
 
     <line
       x1="10"
@@ -39,8 +39,8 @@ const excelImage = (
       x2="17"
       y2="27"
       stroke="#ffffff"
-      stroke-width="2"
-      stroke-linecap="round"
+      strokeWidth={2}
+      strokeLinecap="round"
     />
     <line
       x1="17"
@@ -48,8 +48,8 @@ const excelImage = (
       x2="10"
       y2="26"
       stroke="#ffffff"
-      stroke-width="2"
-      stroke-linecap="round"
+      strokeWidth={2}
+      strokeLinecap="round"
     />
   </svg>
 );

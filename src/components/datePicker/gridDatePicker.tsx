@@ -20,6 +20,9 @@ interface GridDatePickerProps {
   invokeCallback: boolean;
   reset?: boolean;
   onClick?: (isPicked: boolean) => void;
+  smallestHeight?: boolean;
+  firstDate?: Date;
+  lastDate?: Date;
 }
 
 const GridDatePicker: React.FC<GridDatePickerProps> = ({
@@ -30,14 +33,19 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
   invokeCallback,
   reset,
   onClick,
+  smallestHeight,
+  firstDate = null,
+  lastDate = null,
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [dateHover, setDateHover] = useState<number>();
-  const [pickedDate, setPickedDate] = useState<Date | null>();
-  const [secondPickedDate, setSecondPickedDate] = useState<Date | null>();
+  const [pickedDate, setPickedDate] = useState<Date | null>(firstDate);
+  const [secondPickedDate, setSecondPickedDate] = useState<Date | null>(
+    lastDate
+  );
   const [daysGrid, setDaysGrid] = useState<number[]>([]);
-
+  const [clicked, setClicked] = useState<boolean>(false);
   const daysOfWeek = ["sun", "mon", "tue", "wen", "thu", "fri", "sat"];
 
   useEffect(() => {
@@ -59,18 +67,31 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
   }, [rangeDate]);
 
   useEffect(() => {
+    if (!clicked) {
+      return;
+    }
+    
     if (rangeDate) {
       if (pickedDate != null && secondPickedDate != null) {
         const maxTime = Math.max(
           pickedDate.getTime(),
           secondPickedDate.getTime()
         );
+
+        const maxDate = new Date(maxTime);
+        maxDate.setHours(23, 59, 59, 999);
+
         pickCallback({
           minDate:
             pickedDate.getTime() <= secondPickedDate.getTime()
               ? pickedDate
               : secondPickedDate,
-          maxDate: new Date(maxTime + 24 * 60 * 60 * 1000 - 1),
+          maxDate: maxDate,
+        });
+      } else if (pickedDate != null) {
+        pickCallback({
+          minDate: pickedDate,
+          maxDate: pickedDate,
         });
       }
     } else {
@@ -98,24 +119,28 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
   }, [invokeCallback]);
 
   const onDateClick = (day: number) => {
-    if (day == 0) {
+    let selectedDate = new Date(year, month - 1, day);
+    if (day == 0 || (minDate != undefined && selectedDate < minDate)) {
       return;
     }
 
+    setClicked(true);
+
     if (rangeDate) {
       if (pickedDate == null) {
-        setPickedDate(new Date(year, month - 1, day));
+        setPickedDate(selectedDate);
         onClick ? onClick(true) : undefined;
       } else if (secondPickedDate == null) {
-        setSecondPickedDate(new Date(year, month - 1, day));
+
+        setSecondPickedDate(selectedDate);
         onClick ? onClick(true) : undefined;
       } else {
-        setPickedDate(new Date(year, month - 1, day));
+        setPickedDate(selectedDate);
         setSecondPickedDate(null);
         onClick ? onClick(true) : undefined;
       }
     } else {
-      setPickedDate(new Date(year, month - 1, day));
+      setPickedDate(selectedDate);
       onClick ? onClick(true) : undefined;
     }
   };
@@ -130,6 +155,7 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
     for (let i = 0; i < spaces; i++) {
       finalDays.push(0);
     }
+
     finalDays.push(1);
 
     for (let i = 1; i < days; i++) {
@@ -137,6 +163,7 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
     }
 
     date.setDate(days);
+
     for (let i = 0; i < 6 - date.getDay(); i++) {
       finalDays.push(0);
     }
@@ -148,24 +175,55 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
     if (currentDay == 0) {
       return;
     }
-    if (rangeDate && pickedDate != null) {
+
+    const date = pickedDate == null ? firstDate : pickedDate;
+
+    if (rangeDate && date != null) {
       const dateTime = new Date(year, month - 1, currentDay).getTime();
       let secondTime: number;
-      if (secondPickedDate == null) {
+
+      if (secondPickedDate != null || (secondPickedDate == null && lastDate != null && !clicked)) {
+        secondTime = secondPickedDate?.getTime() || lastDate?.getTime();
+      } else {
         if (dateHover == 0) {
-          secondTime = pickedDate.getTime();
+          secondTime = date.getTime();
         } else {
           secondTime = new Date(year, month - 1, dateHover).getTime();
         }
-      } else {
-        secondTime = secondPickedDate.getTime();
       }
-      const minTime = Math.min(pickedDate.getTime(), secondTime);
-      const maxTime = Math.max(pickedDate.getTime(), secondTime);
+
+      const minTime = Math.min(date.getTime(), secondTime);
+      const maxTime = Math.max(date.getTime(), secondTime);
+
       return dateTime >= minTime && dateTime <= maxTime;
     }
 
     return false;
+  };
+
+  const getBackgroundPicked = (gridDayValue: number) => {
+    return (
+      (
+        pickedDate != null &&
+        pickedDate.getDate() == gridDayValue &&
+        pickedDate.getMonth() + 1 == month &&
+        pickedDate.getFullYear() == year) ||
+      (
+        pickedDate == null && firstDate != null &&
+        firstDate.getDate() == gridDayValue &&
+        firstDate.getMonth() + 1 == month &&
+        firstDate.getFullYear() == year) ||
+      (
+        secondPickedDate != null &&
+        secondPickedDate.getDate() == gridDayValue &&
+        secondPickedDate.getMonth() + 1 == month &&
+        secondPickedDate.getFullYear() == year) ||
+      (
+        secondPickedDate == null && lastDate != null && !clicked &&
+          lastDate?.getDate() == gridDayValue &&
+          lastDate.getMonth() + 1 == month &&
+          lastDate.getFullYear() == year)
+    );
   };
 
   const today = new Date();
@@ -180,7 +238,7 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
             maxWidth: "12vw",
             minWidth: "230px",
             maxHeight: "230px",
-            height: "20vh",
+            height: `${smallestHeight ? 3 + (daysGrid.length / 7) * 3 : 20}vh`,
           }}
         >
           <Grid container spacing={0} sx={{ borderRadius: 2 }}>
@@ -229,18 +287,11 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
                             ? "rgba(117, 180, 227, 0.4)"
                             : "",
                       },
-                      background:
-                        (pickedDate != null &&
-                          pickedDate.getDate() == gridDayValue &&
-                          pickedDate.getMonth() + 1 == month &&
-                          pickedDate.getFullYear() == year) ||
-                        (secondPickedDate?.getDate() == gridDayValue &&
-                          secondPickedDate.getMonth() + 1 == month &&
-                          secondPickedDate.getFullYear() == year)
-                          ? "rgba(57, 152, 224, 0.98)"
-                          : checkDateRange(gridDayValue)
-                            ? "rgba(131, 187, 230, 0.73)"
-                            : "",
+                      background: getBackgroundPicked(gridDayValue)
+                        ? "rgba(57, 152, 224, 0.98)"
+                        : checkDateRange(gridDayValue)
+                          ? "rgba(131, 187, 230, 0.73)"
+                          : "",
                       borderTopLeftRadius:
                         rangeDate && checkDateRange(gridDayValue - 1) ? 0 : 16,
                       borderBottomLeftRadius:

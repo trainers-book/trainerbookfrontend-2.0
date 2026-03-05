@@ -94,3 +94,21 @@ export default class FlightData {
     this._iafWeek = iafWeekFormat(this.dateTime);    
   }
 }
+
+export const flightObjectFromFetch = (flight: any) => {
+  return new FlightData({
+    ...flight,
+    dateTime: new Date(flight.dateTime),
+    flightNumber: flight._id,
+    instructorName: flight.instructor?.name,
+    observer: flight.observer?.name,
+    _130: flight["130"],
+    _131: flight["131"],
+    _132: flight["132"],
+    _133: flight["133"],
+    _140: flight["140"],
+    _141: flight["141"],
+    _142: flight["142"],
+    _143: flight["143"],
+  });
+};

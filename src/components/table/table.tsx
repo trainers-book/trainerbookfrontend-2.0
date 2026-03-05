@@ -19,17 +19,22 @@ import IssueData from "../../types/tables/issues";
 import { Severity } from "../../types/issuesSeverity";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import FlightData from "../../types/tables/flight";
+import PermitData from "../../types/tables/permits";
 
 interface TableProps {
   properties: string[];
   data: any[];
+  getRowKey: (row: any) => string;
   sortFunction?: (val: any, nexVal: any) => number;
-  getRowClass?: (row: IssueData) => string;
+  getRowClass?: (row: IssueData | PermitData) => string;
   color?: boolean;
   editRow?: (row: any) => void;
   deleteRow?: (row: any) => void;
   onScroll?: (event: any) => void;
   tableRef?: any;
+  clickable?: (row: IssueData | FlightData) => void;
+  tableHeight?: number;
   lengthOverride?: boolean;
   valuesOverride?: boolean;
 }
@@ -37,6 +42,7 @@ interface TableProps {
 const GenericTable: React.FC<TableProps> = ({
   properties,
   data,
+  getRowKey,
   sortFunction,
   getRowClass,
   color,
@@ -44,10 +50,12 @@ const GenericTable: React.FC<TableProps> = ({
   deleteRow,
   onScroll,
   tableRef,
+  clickable,
+  tableHeight,
   lengthOverride,
   valuesOverride
 }) => {
-  const tableHeightPercent = 85;
+  const tableHeightPercent = tableHeight ? tableHeight : 85;
   const tableRowHeight = 82;
   const { t } = useTranslation();
   const sortedData = sortFunction ? data.sort(sortFunction) : data;
@@ -144,17 +152,18 @@ const GenericTable: React.FC<TableProps> = ({
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead sx={{ background: "rgba(218, 218, 218, 1)" }}>
-            <TableRow>
+            <TableRow key={"header"}>
               {columns.map((column) => {
                 if (column.includes("_")) {
                   column = "";
                 }
                 return (
                   <TableCell
+                    key={column}
                     sx={{ fontWeight: "bold", fontSize: "1.3rem" }}
                     align="center"
                   >
-                    {t(column)}
+                    {t(column, {lng: "he"})}
                   </TableCell>
                 );
               })}
@@ -163,6 +172,7 @@ const GenericTable: React.FC<TableProps> = ({
           <TableBody ref={tableRef} id="table">
             {sortedData.map((dataSet) => (
               <TableRow
+                key={getRowKey(dataSet)}
                 sx={{
                   ":hover": { background: "rgba(212, 237, 255, 0.102)" },
                   "&:last-child td, &:last-child th": {
@@ -171,21 +181,31 @@ const GenericTable: React.FC<TableProps> = ({
                   },
                   height: tableRowHeight,
                 }}
+                onClick={() => {
+                  if (clickable) {
+                    clickable(dataSet);
+                  }
+                }}
               >
-                {properties
-                  .map((col) => valueToMultipleLines(dataSet[col]))
-                  .map((linesValues) => (
-                    <TableCell align="center">
-                      {linesValues.map((value) => (
-                        <Typography>
+                {properties.map((col) => {
+                  const splitedValue = valueToMultipleLines(dataSet[col]);
+
+                  return (
+                    <TableCell key={col} align="center">
+                      {splitedValue.map((value, index) => (
+                        <Typography
+                          key={getRowKey(dataSet) + " " + col + " " + index}
+                        >
                           {value}
                           <br></br>
                         </Typography>
                       ))}
                     </TableCell>
-                  ))}
+                  );
+                })}
                 {color != undefined && (
                   <TableCell
+                    key={"color"}
                     sx={{ width: 0 }}
                     align="center"
                     className={
@@ -201,7 +221,7 @@ const GenericTable: React.FC<TableProps> = ({
                   </TableCell>
                 )}
                 {deleteRow != undefined && (
-                  <TableCell sx={{ width: 0 }} align="center">
+                  <TableCell key={"delete"} sx={{ width: 0 }} align="center">
                     <IconButton onClick={() => deleteRow(dataSet)}>
                       <DeleteIcon />
                     </IconButton>

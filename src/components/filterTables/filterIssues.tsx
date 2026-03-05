@@ -19,8 +19,8 @@ interface FilterIssuesProps {
   setSelectedSeverities: (values: string[]) => void;
   search: string;
   setSearch: (value: string) => void;
-  dateSelected: string;
-  setDate: (value: string) => void;
+  dateSelected: { minDate: Date; maxDate: Date } | undefined;
+  setDate: (value: { minDate: Date; maxDate: Date } | undefined) => void;
 }
 
 const FilterIssues: React.FC<FilterIssuesProps> = ({
@@ -44,10 +44,10 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
     selectedStatuses.length != 0 ||
     selectedSeverities.length != 0 ||
     search != "" ||
-    dateSelected != "";
+    dateSelected != undefined;
 
   return (
-    <Box sx={{ mr: 1, display: "flex" }}>
+    <Box sx={{ mr: 1, display: "flex", gap: 1 }}>
       <FilterDropdown
         label={t("platform")}
         options={platforms}
@@ -58,7 +58,7 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
         isReset={isReset}
       />
       <FilterDropdown
-        label={t("status")}
+        label={t("issueStatus")}
         options={Object.values(Status)}
         selected={selectedStatuses}
         setSelected={setSelectedStatuses}
@@ -80,7 +80,7 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
         setSearch={setSearch}
         isReset={isReset}
       />
-      <FilterDate setDate={setDate} isReset={isReset} />
+      <FilterDate setDate={setDate} isReset={isReset} width="3.3rem" />
       {isFilterSelected && (
         <Button
           variant="contained"
