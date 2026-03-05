@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { Grid, Stack, Typography } from "@mui/material";
+import React, { ChangeEvent, useState } from "react";
+import { Grid, Stack, TextField, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import TimerModel from "../../timer/timer";
 import { iafWeekFormat } from "../../../common/iafWeek";
@@ -23,6 +23,13 @@ const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
   const [nextFlightNumber, setNextFlightNumber] = useState<number>(1);
   const { connection } = useBackend();
   const currentTime = React.useMemo(() => new Date(), []);
+  const [time, setTime] = useState(
+    currentTime.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })
+  );
 
   useEffect(() => {
     let mounted = true;
@@ -61,24 +68,30 @@ const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
         borderRadius: 4,
       }}
     >
-      <Grid container spacing={2}>
+      <Grid container spacing={2} alignItems="center">
         <Grid size={6}>
-          <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: "bold", textAlign: "right", width: "100%" }}
+          >
             {t("flightNumber")}
           </Typography>
         </Grid>
-        <Grid size={4}>
-          <Typography>{nextFlightNumber}</Typography>
+        <Grid size={6}>
+          <Typography>{t("later")}</Typography>
         </Grid>
       </Grid>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} alignItems="center">
         <Grid size={6}>
-          <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: "bold", textAlign: "right", width: "100%" }}
+          >
             {t("date")}
           </Typography>
         </Grid>
-        <Grid size={4}>
+        <Grid size={6}>
           <Typography>
             {currentTime.toLocaleDateString("en-GB", {
               day: "numeric",
@@ -89,39 +102,62 @@ const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
         </Grid>
       </Grid>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} alignItems="center">
         <Grid size={6}>
-          <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: "bold", textAlign: "right", width: "100%" }}
+          >
             {t("time")}
           </Typography>
         </Grid>
-        <Grid size={4}>
-          <Typography>
-            {currentTime.toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: false,
-            })}
-          </Typography>
+        <Grid size={5}>
+          <TextField
+            type="time"
+            size="small"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            inputProps={{
+              step: 60,
+              style: { direction: "ltr" },
+            }}
+            sx={{
+              "& .MuiInputBase-root": {
+                height: 32,
+                fontSize: "1rem",
+              },
+              "& input": {
+                textAlign: "center",
+                padding: "4px 8px",
+              },
+            }}
+            fullWidth
+          />
         </Grid>
       </Grid>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} alignItems="center">
         <Grid size={6}>
-          <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: "bold", textAlign: "right", width: "100%" }}
+          >
             {t("iafWeek")}
           </Typography>
         </Grid>
-        <Grid size={4}>
+        <Grid size={6}>
           <Typography>{iafWeekFormat(new Date())}</Typography>
         </Grid>
       </Grid>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} alignItems="center">
         <Grid size={6}>
-          <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: "bold", textAlign: "right", width: "100%" }}
+          >
             {t("goTime")}
           </Typography>
         </Grid>
-        <Grid size={4}>
+        <Grid size={6}>
           <Typography>{formatTime(seconds)}</Typography>
         </Grid>
       </Grid>
