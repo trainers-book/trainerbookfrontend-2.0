@@ -74,8 +74,6 @@ const LoginPage: React.FC = () => {
     }
 
     const loginResponse = await connection.login(username, password);
-    console.log(loginResponse);
-    
 
     if (loginResponse.status == HttpStatusCode.Accepted) {
       storeUser(loginResponse.data);

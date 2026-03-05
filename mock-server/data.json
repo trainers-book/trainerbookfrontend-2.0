@@ -227,7 +227,7 @@
     {
       "userName": "s99999",
       "name": "Admin User",
-      "authenticationLevel": "admin",
+      "authenticationLevel": "Admin",
       "platform": [
         "ברק"
       ],
@@ -977,7 +977,7 @@
       "show": [
         "Admin"
       ],
-      "collection": "platform",
+      "collection": "Aircraft",
       "delete": [
         "Admin"
       ],
@@ -992,14 +992,14 @@
     },
     {
       "_id": 2,
-      "name": "instructor",
+      "name": "instructors",
       "show": [
         "Instructor",
         "Commander",
         "Technician",
         "Admin"
       ],
-      "collection": "instructor",
+      "collection": "Instructor",
       "delete": [
         "Commander",
         "Admin"
@@ -1017,14 +1017,14 @@
     },
     {
       "_id": 3,
-      "name": "commander",
+      "name": "commanders",
       "show": [
         "Instructor",
         "Commander",
         "Technician",
         "Admin"
       ],
-      "collection": "commander",
+      "collection": "Commander",
       "delete": [
         "Admin"
       ],
@@ -1039,13 +1039,13 @@
     },
     {
       "_id": 4,
-      "name": "pilot",
+      "name": "airCrew1",
       "show": [
         "Instructor",
         "Commander",
         "Admin"
       ],
-      "collection": "pilot",
+      "collection": "Pilot",
       "delete": [
         "Admin"
       ],
@@ -1062,13 +1062,13 @@
     },
     {
       "_id": 5,
-      "name": "navigator",
+      "name": "airCrew2",
       "show": [
         "Instructor",
         "Commander",
         "Admin"
       ],
-      "collection": "navigator",
+      "collection": "Navigator",
       "delete": [
         "Admin"
       ],
@@ -1085,7 +1085,7 @@
     },
     {
       "_id": 6,
-      "name": "trainee",
+      "name": "trainees",
       "show": [
         "Instructor",
         "Commander",
@@ -1108,14 +1108,14 @@
     },
     {
       "_id": 7,
-      "name": "technition",
+      "name": "technicians",
       "show": [
         "Instructor",
         "Commander",
         "Technician",
         "Admin"
       ],
-      "collection": "technition",
+      "collection": "Technician",
       "delete": [
         "Admin"
       ],
@@ -1131,13 +1131,13 @@
     },
     {
       "_id": 8,
-      "name": "preservedFlightName",
+      "name": "flights",
       "show": [
         "Instructor",
         "Commander",
         "Admin"
       ],
-      "collection": "preservedFlightName",
+      "collection": "PreservedFlightNames",
       "delete": [
         "Admin"
       ],
@@ -1151,30 +1151,6 @@
       ],
       "type": "preservedFlightNameData",
       "userable": false
-    },
-    {
-      "role": "admin",
-      "id": 1772482414789
-    },
-    {
-      "role": "admin",
-      "id": 1772482415728
-    },
-    {
-      "role": "admin",
-      "id": 1772482510765
-    },
-    {
-      "role": "admin",
-      "id": 1772482511220
-    },
-    {
-      "role": "admin",
-      "id": 1772523304977
-    },
-    {
-      "role": "admin",
-      "id": 1772523304806
     }
   ],
   "FlightFailure": [
