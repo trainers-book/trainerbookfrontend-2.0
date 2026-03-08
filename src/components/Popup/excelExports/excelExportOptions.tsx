@@ -40,16 +40,18 @@ const ExcelExportOptions: React.FC<ExcelExportOptionsProps> = ({
   const [getMonth, setGetMonth] = useState<boolean>(false);
 
 
-  const handleChange = (event) => {
-    setExportChoice(event.target.value);    
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setExportChoice(event.target.value as ExportTypes);    
   };
 
   const handleClose = () => {
     setShow(false);
   };
 
-  const handleExport = (pickedDates: {minDate: Date, maxDate: Date}) => {
-    exportFunction(pickedDates);
+  const handleExport = (pickedDates: {minDate: Date, maxDate: Date} | undefined) => {
+    if (pickedDates) {
+      exportFunction(pickedDates);
+    }
   }
 
   return (

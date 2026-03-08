@@ -38,6 +38,7 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
   const theme = useTheme();
   const { t } = useTranslation();
   const currentYear = new Date().getFullYear();  
+  const maxYear = currentYear + 10; // Define maxYear as an example
   const [month, setMonth] = useState<number>(firstDate ? firstDate.getMonth() + 1 : new Date().getMonth() + 1);
   const [year, setYears] = useState<number>(firstDate ? firstDate.getFullYear() : currentYear);
   const [resetPick, setResetPick] = useState<boolean>(false);

@@ -8,7 +8,6 @@
   ListItemButton,
   Button,
 } from "@mui/material";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
@@ -154,7 +153,7 @@ const Navbar: React.FC = () => {
                   sx={{ opacity: "70%" }}
                   className="text"
                 >
-                  {t("hello")},{username} - {t(ls.getAuthorization())}
+                  {t("hello")},{username} - {t(ls.getAuthorization() || "defaultAuthorization")}
                 </Typography>
                 <Button
                   variant="contained"

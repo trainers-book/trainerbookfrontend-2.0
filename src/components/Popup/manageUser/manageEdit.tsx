@@ -72,7 +72,11 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
   const sendDataToUpdate = async (
     data: UsersAccountData | UsersData | PreservedFlightNameData
   ) => {
-    if (data.isEqual(manageObject)) {
+    if (
+      (data instanceof UsersAccountData && manageObject instanceof UsersAccountData && data.isEqual(manageObject)) ||
+      (data instanceof UsersData && manageObject instanceof UsersData && data.isEqual(manageObject as UsersData)) ||
+      (data instanceof PreservedFlightNameData && manageObject instanceof PreservedFlightNameData && data.isEqual(manageObject))
+    ) {
       return;
     }
 
@@ -106,7 +110,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
     } else if (data instanceof UsersData) {
       dataToDb = {
         _id: data.personalNumber,
-        lastId: manageObject.personalNumber,
+        lastId: manageObject instanceof UsersData || manageObject instanceof UsersAccountData ? manageObject.personalNumber : undefined,
         firstName: data.firstName,
         lastName: data.lastName,
         platform: data.platforms,
@@ -120,7 +124,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
     } else if (data instanceof PreservedFlightNameData) {
       dataToDb = {
         _id: data._id,
-        name: manageObject.name,
+        name: "name" in manageObject ? manageObject.name : undefined,
         platform: data.platform,
         date: data.date.getTime(),
       };
@@ -182,7 +186,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
             {manageObject instanceof UsersAccountData && (
               <EditAccount
                 accountData={manageObject}
-                invokeCallback={submitChanges}
+                {/* invokeCallback prop removed as it is not supported */}
                 objectCallback={sendDataToUpdate}
               />
             )}
@@ -203,7 +207,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
             )}
             {manageObject instanceof PlatformData && (
               <EditPlatform
-                PlatformData={manageObject}
+                platformData={manageObject}
                 invokeCallback={submitChanges}
               />
             )}

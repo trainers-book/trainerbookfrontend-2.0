@@ -69,7 +69,7 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
   const objectKeys = Object.keys(dataObject);
   const [showPopup, setShowPopup] = useState<boolean>(false);
 
-  const splitPlatformData = (data: any[]) => {
+  const splitPlatformData = (data: any[]): Record<string, any>[] => {
     return Object.values(
       data.reduce((acc, obj) => {
         const key = obj[t("platform")];
@@ -84,14 +84,14 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
 
   const excelExport = (pickedDates: {minDate: Date, maxDate: Date}) => {
     const copiedData = JSON.parse(JSON.stringify(data));
-    copiedData.forEach((value) => {
-      objectKeys.forEach((key) => {
-        value[t(key)] = value[key];
-        if (key == "dateTime") {
-          value[t(key)] = new Date(value[key]).toLocaleString("en-GB");
-        }
+    copiedData.forEach((value: Record<string, any>) => {
+      objectKeys.forEach((key: string) => {
+      value[t(key)] = value[key];
+      if (key === "dateTime") {
+        value[t(key)] = new Date(value[key]).toLocaleString("en-GB");
+      }
 
-        delete value[key];
+      delete value[key];
       });
     });
 
@@ -99,7 +99,7 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
     console.log(pickedDates);
     
     const platfromsData = splitPlatformData(copiedData);
-    platfromsData.forEach((platform) => {
+    platfromsData.forEach((platform: Record<string, any>) => {
       const platformName = Object.keys(platform)[0];
 
       const worksheet = XLSX.utils.json_to_sheet(platform[platformName], {

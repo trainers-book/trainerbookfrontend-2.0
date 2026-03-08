@@ -23,6 +23,7 @@ interface GridDatePickerProps {
   smallestHeight?: boolean;
   firstDate?: Date;
   lastDate?: Date;
+  minDate?: Date;
 }
 
 const GridDatePicker: React.FC<GridDatePickerProps> = ({
@@ -33,9 +34,10 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
   invokeCallback,
   reset,
   onClick,
-  smallestHeight,
   firstDate = null,
   lastDate = null,
+  minDate,
+  smallestHeight,
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -183,7 +185,7 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
       let secondTime: number;
 
       if (secondPickedDate != null || (secondPickedDate == null && lastDate != null && !clicked)) {
-        secondTime = secondPickedDate?.getTime() || lastDate?.getTime();
+        secondTime = secondPickedDate?.getTime() ?? lastDate?.getTime() ?? 0;
       } else {
         if (dateHover == 0) {
           secondTime = date.getTime();

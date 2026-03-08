@@ -26,10 +26,14 @@ const FilterDate: React.FC<FilterDateProps> = ({ width, setDate, isReset }) => {
     { minDate: Date; maxDate: Date } | undefined
   >();
   const [callback, setCallback] = useState<boolean>(false);
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
+  interface HandleClickEvent {
+    currentTarget: HTMLElement;
+  }
+
+  const handleClick = (event: HandleClickEvent) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {

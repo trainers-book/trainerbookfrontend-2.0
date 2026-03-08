@@ -7,7 +7,7 @@ interface NewPlatformProps {
   callback: (user: PlatformData) => void;
 }
 
-const NewPlatform: React.FC<NewPlatformProps> = ({ callback }) => {
+const NewPlatform: React.FC<NewPlatformProps> = ({  }) => {
   return (
     <NewEntity
       textInputs={[]}

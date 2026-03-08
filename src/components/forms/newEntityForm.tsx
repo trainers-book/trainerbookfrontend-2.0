@@ -52,6 +52,7 @@ const NewEntity: React.FC<NewEntityProps> = ({
             <FilterSearchBar
               label={textField.label}
               setSearch={textField.setter}
+              isReset={false}
             />
           ))}
           {dropdownInputs.map((dropdown) => (
