@@ -1,7 +1,6 @@
 import "./table.css";
 import "../../i18n";
 import React, { useEffect, useRef, useState } from "react";
-import IssueData from "../../types/tables/issues";
 import { useBackend } from "../../context/backendContext";
 import { usePlatforms } from "../../context/platformsContext";
 import { HttpStatusCode } from "axios";
@@ -12,7 +11,7 @@ interface InfinateScrollFetchProps {
   fetchCollection: string;
   getRowKey: (row: any) => string;
   sortFunction?: (val: any, nexVal: any) => number;
-  getRowClass?: (row: IssueData) => string;
+  getRowClass?: (row: any) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
   platformsAndFilters: { platforms: string[]; filters: any };

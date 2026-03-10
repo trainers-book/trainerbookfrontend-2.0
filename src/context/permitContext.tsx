@@ -23,7 +23,7 @@ export const PermitProvider = ({ children }: { children: React.ReactNode }) => {
       );
       const randomIndex = Math.floor(Math.random() * enumKeys.length);
       const randomKey = enumKeys[randomIndex];
-      return PermitStatus[randomKey as keyof T];
+      return PermitStatus[randomKey as keyof typeof PermitStatus];
     };
     const getDate = () => {
       const minDate = new Date("2023-01-01T00:00:00.000Z").getTime();

@@ -22,9 +22,8 @@ import NewUser from "../components/forms/newUserForm";
 import NewFlight from "../components/forms/newFlightForm";
 import NewPlatform from "../components/forms/newPlatformForm";
 import FilterSearchBar from "../components/Dynamics/filterSearchBar";
-import { useLocalStorage } from "../context/localStorageContext";
-import FlightData from "../types/tables/flight";
 import { API_Pathes, useBackend } from "../context/backendContext";
+import { useLocalStorage } from "../context/localStorageContext";
 import { HttpStatusCode } from "axios";
 import ManageEditModel from "../components/Popup/manageUser/manageEdit";
 
@@ -374,7 +373,7 @@ const ManageUsers: React.FC = () => {
               )}
             </Box>
             <GenericTable
-              properties={getCurrentTabTableProperties().filter((col) => true)}
+              properties={getCurrentTabTableProperties().filter(() => true)}
               data={data.filter((value) =>
                 Object.values(value)
                   .map(String)
@@ -384,6 +383,12 @@ const ManageUsers: React.FC = () => {
                     false
                   )
               )}
+              getRowKey={(row: any) => {
+                if (row instanceof PlatformData) return String(row.id);
+                if (row instanceof UsersData) return String(row.personalNumber);
+                if (row instanceof PreservedFlightNameData) return String(row["!id"] || row._id || Math.random());
+                return String(Math.random());
+              }}
               sortFunction={sortingFunction}
               deleteRow={currentTab.deleteEntity ? deleteEntity : undefined}
               editRow={currentTab.editEntity ? editEntity : undefined}

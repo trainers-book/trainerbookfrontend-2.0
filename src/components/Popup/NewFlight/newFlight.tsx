@@ -14,7 +14,6 @@ import TimerPanel from "./TimerPanel";
 import { useTranslation } from "react-i18next";
 import CloseIcon from "@mui/icons-material/Close";
 import FilterDropdown from "../../Dynamics/filterDropdown";
-import { platformTypes } from "../../../types/platformTypes";
 import NewMalfModel from "../newMalf/newMalf";
 import ClickedOutside from "../clickedOutside";
 import { fieldError } from "../../../types/errors/fields";
@@ -38,7 +37,7 @@ const NewFlightModel: React.FC = () => {
     flight: false,
   });
   const createFlightFields = "CreateFlightFields";
-  const [options, setOptions] = useState<string[]>([]);
+  const [options, setOptions] = useState<string[][]>([]);
   const malamPlatforms = ["סופה", "ברק", "רעם", "בז"];
   const malamDomes = [130, 131, 132, 133, 140, 141, 142, 143];
   const [selectedMalamDome, setSelectedMalamDome] = useState<string[][]>([]);

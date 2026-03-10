@@ -1,4 +1,4 @@
-﻿ import "./table.css";
+ import "./table.css";
 import "../../i18n";
 import React from "react";
 import {
@@ -15,19 +15,18 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Status } from "../../types/statuses";
-import IssueData from "../../types/tables/issues";
 import { Severity } from "../../types/issuesSeverity";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import IssueData from "../../types/tables/issues";
 import FlightData from "../../types/tables/flight";
-import PermitData from "../../types/tables/permits";
 
 interface TableProps {
   properties: string[];
   data: any[];
   getRowKey: (row: any) => string;
   sortFunction?: (val: any, nexVal: any) => number;
-  getRowClass?: (row: IssueData | PermitData) => string;
+  getRowClass?: (row: any) => string;
   color?: boolean;
   editRow?: (row: any) => void;
   deleteRow?: (row: any) => void;

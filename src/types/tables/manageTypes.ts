@@ -17,12 +17,15 @@ export class UsersData {
   }
 
   isEqual(user: UsersData) {
+    const p1 = Array.isArray(this.platforms) ? this.platforms : [this.platforms];
+    const p2 = Array.isArray(user.platforms) ? user.platforms : [user.platforms];
+
     return (
       this.firstName == user.firstName &&
       this.lastName == user.lastName &&
       this.personalNumber == user.personalNumber &&
-      this.platforms.length == user.platforms.length &&
-      this.platforms.every((value, index) => value == user.platforms[index])
+      p1.length == p2.length &&
+      p1.every((value, index) => value == p2[index])
     );
   }
 }
@@ -53,6 +56,9 @@ export class UsersAccountData extends UsersData {
   }
 
   isEqual(account: UsersAccountData) {
+    const p1 = Array.isArray(this.platforms) ? this.platforms : [this.platforms];
+    const p2 = Array.isArray(account.platforms) ? account.platforms : [account.platforms];
+
     return (
       this.firstName == account.firstName &&
       this.lastName == account.lastName &&
@@ -60,14 +66,15 @@ export class UsersAccountData extends UsersData {
       this.password == account.password &&
       this.role == account.role &&
       this.id == account.id &&
-      this.platforms.length == account.platforms.length &&
-      this.platforms.every((value, index) => value === account.platforms[index])
+      p1.length == p2.length &&
+      p1.every((value, index) => value === p2[index])
     );
   }
 }
 
 export class PreservedFlightNameData {
   _id: number;
+  "!id"?: number;
   date: Date;
   name: string;
   platform: string;

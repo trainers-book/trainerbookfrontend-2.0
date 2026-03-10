@@ -156,7 +156,7 @@ export const LocalStorageProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [ls, setLocalStorage] = useState(new LocalStorage());
+  const [ ls ] = useState(new LocalStorage());
 
   return (
     <LocalStorageContext.Provider value={{ ls }}>

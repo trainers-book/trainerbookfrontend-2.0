@@ -4,7 +4,6 @@ import {
   DialogContent,
   Typography,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
 
 interface ConfirmedPermitProps {
   open: boolean;
@@ -17,7 +16,6 @@ const ConfirmedPermit: React.FC<ConfirmedPermitProps> = ({
   title,
   content,
 }) => {
-  const { t } = useTranslation();
   return (
     <Dialog open={open}>
       <DialogTitle>{title}</DialogTitle>

@@ -13,7 +13,7 @@ const ManagePermits: React.FC = () => {
   const { t } = useTranslation();
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedDate, setSelectedDate] = useState<{ minDate: Date; maxDate: Date } | undefined>(undefined);
   const { connection } = useBackend();
   const [fields, setFields] = useState<string[]>([]);
   const [permits, setPermits] = useState<any[]>([]);
@@ -47,7 +47,7 @@ const ManagePermits: React.FC = () => {
     setSearchQuery(search);
   };
 
-  const changedate = (selected: string) => {
+  const changedate = (selected: { minDate: Date; maxDate: Date } | undefined) => {
     setSelectedDate(selected);
   };
 
@@ -84,6 +84,7 @@ const ManagePermits: React.FC = () => {
               )
             : permits
         }
+        getRowKey={(row: any) => String(row._id || row.id || Math.random())}
       ></GenericTable>
     </PageWrapper>
   );

@@ -74,7 +74,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
   ) => {
     if (
       (data instanceof UsersAccountData && manageObject instanceof UsersAccountData && data.isEqual(manageObject)) ||
-      (data instanceof UsersData && manageObject instanceof UsersData && data.isEqual(manageObject as UsersData)) ||
+      (data instanceof UsersData && !(data instanceof UsersAccountData) && manageObject instanceof UsersData && data.isEqual(manageObject as UsersData)) ||
       (data instanceof PreservedFlightNameData && manageObject instanceof PreservedFlightNameData && data.isEqual(manageObject))
     ) {
       return;
@@ -186,7 +186,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
             {manageObject instanceof UsersAccountData && (
               <EditAccount
                 accountData={manageObject}
-                {/* invokeCallback prop removed as it is not supported */}
+                invokeCallback={submitChanges}
                 objectCallback={sendDataToUpdate}
               />
             )}
@@ -208,7 +208,6 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
             {manageObject instanceof PlatformData && (
               <EditPlatform
                 platformData={manageObject}
-                invokeCallback={submitChanges}
               />
             )}
           </Box>

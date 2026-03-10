@@ -11,13 +11,15 @@ import { useEffect, useMemo, useState } from "react";
 import FilterIssues from "../components/filterTables/filterIssues";
 import NewMalfModel from "../components/Popup/newMalf/newMalf";
 import ExcelExport from "../components/excel/excelExport";
-import { useIssues } from "../context/issueContext";
 import { useTranslation } from "react-i18next";
 import { usePlatforms } from "../context/platformsContext";
 import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
 import Information from "../components/Popup/information/information";
+import { API_Pathes, useBackend } from "../context/backendContext";
+import { HttpStatusCode } from "axios";
 
 const ManageIssues: React.FC = () => {
+  const [issueData, setIssueData] = useState<any[]>([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedSeverity, setSelectedSeverity] = useState<string[]>([]);
@@ -30,30 +32,24 @@ const ManageIssues: React.FC = () => {
     IssueData | undefined
   >();
   const { t } = useTranslation();
-  const { issueData } = useIssues();
   const { platforms } = usePlatforms();
+  const { connection } = useBackend();
+
+  useEffect(() => {
+    const fetchAllData = async () => {
+      const response = await connection.getObjectsFilter(API_Pathes.FLIGHT_FAILURE, 0, platforms, { noLimit: true });
+      if (response && response.status === HttpStatusCode.Ok) {
+        setIssueData(response.data.map((obj: any) => IssueObjectFromFetch(obj)));
+      }
+    };
+    if (platforms && platforms.length > 0) {
+      fetchAllData();
+    }
+  }, [platforms]);
 
   useEffect(() => {
     setFilterChange(!filterChange);
   }, [selectedPlatforms, selectedStatuses, selectedSeverity, selectedDate]);
-
-  const getRowClass = (row: IssueData) => {
-    return Object.keys(Status)
-      .filter((value) => Status[value as keyof typeof Status] === row.status)[0]
-      .toLocaleLowerCase();
-  };
-
-  const objectFromFetch = (malf: any) => {
-    return new IssueData({
-      ...malf,
-      dateTime: new Date(malf.dateTime),
-      flightNumber: malf._id,
-      status: Status[malf.failureStatus as keyof typeof Status],
-      issueDescription: malf.failureDetails,
-      issueSeverity: malf.disruption,
-      issueOpener: malf.malfunctionOpener || malf.malfunctionOpener,
-    });
-  };
 
   const getPlatformsAndFilters = () => {
     const filters: {

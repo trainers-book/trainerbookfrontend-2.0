@@ -163,9 +163,9 @@ class Connection {
   }
 
   async getObjects(collection: string, index: number, platform: string[]) {        
-    platform = JSON.stringify(platform.map((platformName) => {return {name: platformName}}));    
+    const platformString = JSON.stringify(platform.map((platformName) => {return {name: platformName}}));    
     return axios
-      .get(`${this.appUrl}${collection}/Amount/${index}`, {params: {platform: platform}})
+      .get(`${this.appUrl}${collection}/Amount/${index}`, {params: {platform: platformString}})
       .then((response) => {
         return { status: response.status, data: response.data };
       })
@@ -182,6 +182,7 @@ class Connection {
     //   failureStatus: undefined,
     //   issueSeverity: undefined,
     //   search: undefined
+    //   noLimit: boolean|undefined
     // }
     return axios
       .get(`${this.appUrl}${collection}/getAmountByFilters/${index}`, {params: {platform: platform.map((platformName) => JSON.stringify(platformName)), filters: filters}})
@@ -306,7 +307,7 @@ export const BackendProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [connection, setConnection] = useState(new Connection());
+  const [ connection ] = useState(new Connection());
 
   return (
     <BackendContext.Provider value={{ connection }}>
@@ -338,7 +339,8 @@ export enum API_Pathes {
   GET_ENTITY_BUT_STRING = "FindEntityByString",
   GET_USER = "getUser",
   GET_NEXT_ID = "getNextId",
-  MANAGE = "Manage"
+  MANAGE = "Manage",
+  FLIGHT_FAILURE = "FlightFailure"
 }
 
 export enum CollectionIds {

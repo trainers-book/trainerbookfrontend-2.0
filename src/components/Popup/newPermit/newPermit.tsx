@@ -40,9 +40,8 @@ const NewPermitModel: React.FC = () => {
   const { connection } = useBackend();
   const [show, setShow] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [showConfirmPermit, setShowConfirmPermit] = useState(false);
+  const [showConfirmPermit] = useState(false);
   const [showInvalidSave, setInvalidSave] = useState(false);
-  const [isValidSave, setIsValidSave] = useState(false);
   const { t } = useTranslation();
   const [selectedPlatform, setSelectedPlatform] = useState<string[]>([]);
   const [permitNameValue, setPermitNameValue] = useState<string>("");
@@ -137,14 +136,19 @@ const NewPermitModel: React.FC = () => {
     setInvalidSave(false);
   };
 
-  const handleDateSelect = (pickedDates: { minDate: Date; maxDate: Date }) => {
+  const handleDateSelect = (
+    pickedDates: { minDate: Date; maxDate: Date } | undefined
+  ) => {
+    if (!pickedDates) {
+      setExpiredDate(undefined);
+      return;
+    }
     const selectedDate = new Date(
       pickedDates.minDate.getFullYear(),
       pickedDates.minDate.getMonth(),
       pickedDates.minDate.getDate()
     );
     setExpiredDate(selectedDate);
-    
   };
 
   const savePermit = async () => {
@@ -155,14 +159,14 @@ const NewPermitModel: React.FC = () => {
       permit.platform = selectedPlatform[0];
       permit.permissionName = permitNameValue;
       permit.permissionDescription = permitDescriptionValue;
-      permit.permissionOpener = ls.getDisplayName();
+      permit.permissionOpener = ls.getDisplayName() ?? "";
       permit.status = PermitStatus.Open;
-      permit.expirationDate = expiredDate;
+      permit.expirationDate = expiredDate!;
       const response = await connection.addEntity(permit, "Permissions");
-      if (response.success) {
+      if (response.status === 200 || response.status === 201) {
         console.log("Permit saved successfully");
       } else {
-        console.error("Error saving permit:", response.error);
+        console.error("Error saving permit:", response.data);
       }
     } catch (error) {
       console.error("Error saving permit:", error);
@@ -252,8 +256,7 @@ const NewPermitModel: React.FC = () => {
                     pickCallback={handleDateSelect}
                     rangeDate={false}
                     minYear={2019}
-                    maxYear={new Date().getFullYear() + 1}
-                    minDate={new Date()}
+                    firstDate={new Date()}
                   />
                 </Box>
               </Stack>
