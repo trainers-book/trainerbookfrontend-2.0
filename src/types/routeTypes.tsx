@@ -1,8 +1,6 @@
 export const routeItems = [
-    "reviewFlights",
-    "manageIssues", 
-    "permits" ,
-    "usersManagment" ,
-    "signCockpit",
+  "reviewFlights",
+  "manageIssues",
+  "permits",
+  "usersManagment",
 ];
-

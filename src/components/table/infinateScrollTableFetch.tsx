@@ -10,27 +10,31 @@ import GenericTable from "./table";
 interface InfinateScrollFetchProps {
   properties: string[];
   fetchCollection: string;
+  getRowKey: (row: any) => string;
   sortFunction?: (val: any, nexVal: any) => number;
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
   platformsAndFilters: { platforms: string[]; filters: any };
   objectFromFetch: (data: any) => any;
+  clickable?: (row: any) => void;
 }
 
 const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   properties,
   fetchCollection,
+  getRowKey,
   sortFunction,
   getRowClass,
   color,
   deleteRow,
   objectFromFetch,
   platformsAndFilters,
+  clickable,
 }) => {
   const tableRowHeight = 82;
   const tableHeadHeight = 56.5;
-  const tableRef = useRef(null);
+  const tableRef = useRef<HTMLDivElement>(null);
   const { connection } = useBackend();
   const { platforms } = usePlatforms();
   const [fetching, setFetching] = useState<boolean>(false);
@@ -65,6 +69,8 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
 
     if (platformsAndFilters == undefined) {
       platformsAndFilters = { platforms: platforms, filters: {} };
+    } else if (platformsAndFilters.platforms.length == 0) {
+      platformsAndFilters.platforms = platforms;
     }
 
     const newData = await connection.getObjectsFilter(
@@ -92,7 +98,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   };
 
   const handleScroll = (event: any) => {
-    if (!fetchMore) {
+    if (!fetchMore || !tableRef.current) {
       return;
     }
 
@@ -113,12 +119,15 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
     <GenericTable
       properties={properties}
       data={dataToShow}
+      getRowKey={getRowKey}
       sortFunction={sortFunction}
       getRowClass={getRowClass}
       color={color}
       deleteRow={deleteRow}
       onScroll={handleScroll}
       tableRef={tableRef}
+      clickable={clickable}
+      tableHeight={tableRowHeight}
     />
   );
 };

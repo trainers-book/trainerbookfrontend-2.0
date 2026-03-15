@@ -25,3 +25,23 @@
 .permit {
   background: rgba(65, 200, 166, 0.437);
 }
+
+.permit {
+  background: rgba(65, 200, 166, 0.437);
+}
+
+.permit {
+  background: rgba(65, 200, 166, 0.437);
+}
+
+.open {
+    background: rgb(38, 248, 49);
+}
+
+.resolved {
+  background: rgba(92, 92, 92, 0.545);
+}
+
+.expired {
+  background: rgba(255, 108, 95, 1);
+}

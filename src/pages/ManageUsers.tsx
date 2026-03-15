@@ -23,6 +23,7 @@ import NewFlight from "../components/forms/newFlightForm";
 import NewPlatform from "../components/forms/newPlatformForm";
 import FilterSearchBar from "../components/Dynamics/filterSearchBar";
 import { useLocalStorage } from "../context/localStorageContext";
+import FlightData from "../types/tables/flight";
 import { API_Pathes, useBackend } from "../context/backendContext";
 import { HttpStatusCode } from "axios";
 import ManageEditModel from "../components/Popup/manageUser/manageEdit";
@@ -34,13 +35,13 @@ const sunglassesIcon: React.ReactNode = (
         d="M 5, 5 m -2, 0 a 2,2 0 1,0 12,0"
         fill="#000000"
         stroke="black"
-        stroke-width="1"
+        strokeWidth={1}
       />
       <path
         d="M 22, 5 m -2, 0 a 2,2 0 1,0 12,0"
         fill="#000000"
         stroke="black"
-        stroke-width="1"
+        strokeWidth={1}
       />
       <rect x="0.5" y="4" width="34" height="1.5" fill="#000000" />
     </svg>
@@ -122,16 +123,16 @@ const nameToIcons: Record<string, React.ReactNode> = {
   flights: <AirplaneTicketIcon />,
 };
 
-const ManageUsers: React.FC = () => {
+const ManageUsers: React.FC = () => { 
   const { t } = useTranslation();
-  const [search, setSearch] = useState<string>("");
-  const { ls } = useLocalStorage();
   const { connection } = useBackend();
+  const { ls } = useLocalStorage();
   const [data, setData] = useState<any[]>([]);
   const [newData, setNewData] = useState<boolean>(false);
   const [editPopupObject, setEditPopupObject] = useState<any>(null);
   const [tabs, setTabs] = useState<Tab[]>([]);
   const [currentTab, setCurrentTab] = useState<Tab>();
+  const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
     const fetchTabs = async () => {
@@ -262,8 +263,8 @@ const ManageUsers: React.FC = () => {
       return new UsersData(entity["_id"], entity["firstName"], entity["lastName"], entity["platform"].join(", "));
     } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
       const flight = new PreservedFlightNameData(new Date(entity["date"]), entity["name"], entity["platform"], entity["_id"]);
-      flight["!id"] = flight["_id"];
-      delete flight["_id"];
+      (flight as any)["!id"] = (flight as any)["_id"];
+      delete (flight as any)["_id"];
 
       return flight;
     }
@@ -304,7 +305,9 @@ const ManageUsers: React.FC = () => {
     setData([]);
 
     fetchData(currentTab.collection).then((fetchedData) => {
-      setData(fetchedData);
+      if (fetchedData) {
+        setData(fetchedData);
+      }
     });
   };
 
@@ -331,6 +334,8 @@ const ManageUsers: React.FC = () => {
   useEffect(() => {
     fetchServerData();
   }, [newData]);
+
+
 
   return (
     currentTab && (
