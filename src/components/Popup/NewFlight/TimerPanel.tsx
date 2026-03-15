@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import TimerModel from "../../timer/timer";
 import { iafWeekFormat } from "../../../common/iafWeek";
 import { CollectionIds, useBackend } from "../../../context/backendContext";
+import { HttpStatusCode } from "axios";
 
 interface TimerPanel {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -22,28 +23,25 @@ const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
   // default to 1 so when there are no preserved flights the next number is 1
   const [flightNumber, setFlightNumber] = useState<number>(1);
   const { connection } = useBackend();
-    const currentTime = React.useMemo(() => new Date(), []);
+  const currentTime = React.useMemo(() => new Date(), []);
   const [time, setTime] = useState(
     currentTime.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
-    })
+    }),
   );
 
+  const fetchNextFlightId = async () => {
+    const response = await connection.getNextId(CollectionIds.FLIGHT_ID);
+
+    if (response.status === HttpStatusCode.Ok) {
+      const seq = response.data[0].sequenceValue;
+      setFlightNumber(typeof seq === "number" ? seq : 1);
+    }
+  };
+
   useEffect(() => {
-    const fetchNextFlightId = async () => {
-      const response = await connection.getNextId(CollectionIds.FLIGHT_ID);
-
-      if(response.status === 200) {
-        const seq = response.data[0].sequenceValue;
-        setFlightNumber(typeof seq === "number" ? seq : 1);
-      }
-      else{
-        setFlightNumber(1);
-      }
-    };
-
     fetchNextFlightId();
   }, [connection]);
 
