@@ -343,4 +343,5 @@ export enum API_Pathes {
 
 export enum CollectionIds {
   PRESERVED_FLIGHT_NAME_ID = "PreservedFlightNameId",
+  FLIGHT_ID = "FlightId",
 }

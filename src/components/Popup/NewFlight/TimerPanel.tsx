@@ -1,8 +1,10 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Grid, Stack, TextField, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import TimerModel from "../../timer/timer";
 import { iafWeekFormat } from "../../../common/iafWeek";
+import { CollectionIds, useBackend } from "../../../context/backendContext";
+import { HttpStatusCode } from "axios";
 
 interface TimerPanel {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -18,14 +20,30 @@ const formatTime = (totalSeconds: number): string => {
 const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
   const { t } = useTranslation();
   const [seconds, setSeconds] = useState(0);
+  // default to 1 so when there are no preserved flights the next number is 1
+  const [flightNumber, setFlightNumber] = useState<number>(1);
+  const { connection } = useBackend();
   const currentTime = React.useMemo(() => new Date(), []);
   const [time, setTime] = useState(
     currentTime.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
-    })
+    }),
   );
+
+  const fetchNextFlightId = async () => {
+    const response = await connection.getNextId(CollectionIds.FLIGHT_ID);
+
+    if (response.status === HttpStatusCode.Ok) {
+      const seq = response.data[0].sequenceValue;
+      setFlightNumber(typeof seq === "number" ? seq : 1);
+    }
+  };
+
+  useEffect(() => {
+    fetchNextFlightId();
+  }, [connection]);
 
   return (
     <Stack
@@ -45,8 +63,8 @@ const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
             {t("flightNumber")}
           </Typography>
         </Grid>
-        <Grid size={6}>
-          <Typography>{t("later")}</Typography>
+        <Grid size={4}>
+          <Typography>{flightNumber}</Typography>
         </Grid>
       </Grid>
 
