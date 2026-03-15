@@ -34,7 +34,7 @@ const LoginPage: React.FC = () => {
   const checkConnected = () => {
     if (ls.getIsAuthenticated()) {
       navigate("/manageIssues");
-    } 
+    }
   };
 
   const storeUser = async (user: User) => {
@@ -44,20 +44,20 @@ const LoginPage: React.FC = () => {
 
       if (platforms.status == HttpStatusCode.Ok) {
         const allPlatforms = platforms.data.map(
-          (platform: any) => platform.name
+          (platform: any) => platform.name,
         );
         ls.setPlatforms(allPlatforms);
         setPlatforms(allPlatforms);
       } else {
         ls.setPlatforms(user.platform);
         setPlatforms(
-          Array.isArray(user.platform) ? user.platform : [user.platform]
+          Array.isArray(user.platform) ? user.platform : [user.platform],
         );
       }
     } else {
       ls.setPlatforms(user.platform);
       setPlatforms(
-        Array.isArray(user.platform) ? user.platform : [user.platform]
+        Array.isArray(user.platform) ? user.platform : [user.platform],
       );
     }
     ls.setUserName(user.userName);
@@ -74,8 +74,6 @@ const LoginPage: React.FC = () => {
     }
 
     const loginResponse = await connection.login(username, password);
-    console.log(loginResponse);
-    
 
     if (loginResponse.status == HttpStatusCode.Accepted) {
       storeUser(loginResponse.data);
@@ -138,89 +136,90 @@ const LoginPage: React.FC = () => {
   checkConnected();
 
   return (
-    !ls.getIsAuthenticated() && 
-    <Box
-      component={"form"}
-      onSubmit={handleSubmit}
-      sx={{
-        bgcolor: "rgba(255, 255, 255, 1)",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        m: "auto",
-        mt: "10vh",
-        maxWidth: "22vw",
-        borderRadius: 3,
-        boxShadow: "0 0 15px rgba(0, 0, 0, 0.2)",
-        pr: 2,
-        pl: 2,
-      }}
-    >
-      <Typography sx={{ fontSize: "2rem", m: 2, mb: 4, fontWeight: "bold" }}>
-        {t("login")}
-      </Typography>
-      <TextField
+    !ls.getIsAuthenticated() && (
+      <Box
+        component={"form"}
+        onSubmit={handleSubmit}
         sx={{
-          mb: 2,
+          bgcolor: "rgba(255, 255, 255, 1)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          m: "auto",
+          mt: "10vh",
+          maxWidth: "22vw",
           borderRadius: 3,
-          "& .MuiOutlinedInput-root": {
-            borderRadius: 3,
-          },
-          width: "17vw",
+          boxShadow: "0 0 15px rgba(0, 0, 0, 0.2)",
+          pr: 2,
+          pl: 2,
         }}
-        error={wrongUser}
-        disabled={createPassword}
-        placeholder={t("userName")}
-        value={username}
-        onChange={(e) => {
-          setUsernameInput(e.target.value);
-          setWrongUser(false);
-          setcreatePassword(false);
-          setNoUser(false);
-        }}
-      ></TextField>
-      <TextField
-        sx={{
-          mb: 0.5,
-          borderRadius: 3,
-          "& .MuiOutlinedInput-root": {
-            borderRadius: 3,
-          },
-          width: "17vw",
-        }}
-        error={wrongPass}
-        placeholder={t("password")}
-        value={password}
-        onChange={(e) => {
-          setPassword(e.target.value);
-          setWrongPass(false);
-        }}
-        type="password"
-      ></TextField>
-      {createPassword && (
-        <Typography sx={{ fontSize: "0.7rem" }} color="primary">
-          {t("enterYourNewPassword")}
-        </Typography>
-      )}
-      {noUser && (
-        <Typography sx={{ fontSize: "0.7rem" }} color="error">
-          {t("thereIsNoUserAskYourCommander")}
-        </Typography>
-      )}
-      <Button
-        sx={{
-          bgcolor: "rgba(100, 153, 255, 1)",
-          color: "rgba(255, 255, 255, 1)",
-          width: "17vw",
-          borderRadius: 3,
-          mt: 2,
-          mb: 2,
-        }}
-        type="submit"
       >
-        {t("connect")}
-      </Button>
-    </Box>
+        <Typography sx={{ fontSize: "2rem", m: 2, mb: 4, fontWeight: "bold" }}>
+          {t("login")}
+        </Typography>
+        <TextField
+          sx={{
+            mb: 2,
+            borderRadius: 3,
+            "& .MuiOutlinedInput-root": {
+              borderRadius: 3,
+            },
+            width: "17vw",
+          }}
+          error={wrongUser}
+          disabled={createPassword}
+          placeholder={t("userName")}
+          value={username}
+          onChange={(e) => {
+            setUsernameInput(e.target.value);
+            setWrongUser(false);
+            setcreatePassword(false);
+            setNoUser(false);
+          }}
+        ></TextField>
+        <TextField
+          sx={{
+            mb: 0.5,
+            borderRadius: 3,
+            "& .MuiOutlinedInput-root": {
+              borderRadius: 3,
+            },
+            width: "17vw",
+          }}
+          error={wrongPass}
+          placeholder={t("password")}
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setWrongPass(false);
+          }}
+          type="password"
+        ></TextField>
+        {createPassword && (
+          <Typography sx={{ fontSize: "0.7rem" }} color="primary">
+            {t("enterYourNewPassword")}
+          </Typography>
+        )}
+        {noUser && (
+          <Typography sx={{ fontSize: "0.7rem" }} color="error">
+            {t("thereIsNoUserAskYourCommander")}
+          </Typography>
+        )}
+        <Button
+          sx={{
+            bgcolor: "rgba(100, 153, 255, 1)",
+            color: "rgba(255, 255, 255, 1)",
+            width: "17vw",
+            borderRadius: 3,
+            mt: 2,
+            mb: 2,
+          }}
+          type="submit"
+        >
+          {t("connect")}
+        </Button>
+      </Box>
+    )
   );
 };
 
