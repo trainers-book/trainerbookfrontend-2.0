@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Grid, Stack, TextField, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import TimerModel from "../../timer/timer";
@@ -19,17 +19,27 @@ const formatTime = (totalSeconds: number): string => {
 const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
   const { t } = useTranslation();
   const [seconds, setSeconds] = useState(0);
-  const currentTime = React.useMemo(() => new Date(), []);
+  // default to 1 so when there are no preserved flights the next number is 1
+  const [flightNumber, setFlightNumber] = useState<number>(1);
+  const { connection } = useBackend();
+    const currentTime = React.useMemo(() => new Date(), []);
+  const [time, setTime] = useState(
+    currentTime.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })
+  );
 
   useEffect(() => {
     const fetchNextFlightId = async () => {
-      if (!connection) return;
+      const response = await connection.getNextId(CollectionIds.FLIGHT_ID);
 
-      try {
-        const response = await connection.getNextId(CollectionIds.FLIGHT_ID);
+      if(response.status === 200) {
         const seq = response.data[0].sequenceValue;
         setFlightNumber(typeof seq === "number" ? seq : 1);
-      } catch (err) {
+      }
+      else{
         setFlightNumber(1);
       }
     };
