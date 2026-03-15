@@ -8,35 +8,31 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
-interface ClickedOutsideProps {
+interface MissingDataProps {
   open: boolean;
   title?: string;
   content?: string;
-  onConfirm: () => void;
   onCancel: () => void;
 }
 
-const ClickedOutside: React.FC<ClickedOutsideProps> = ({
+const MissingData: React.FC<MissingDataProps> = ({
   open,
   title,
   content,
-  onConfirm,
   onCancel,
 }) => {
   const { t } = useTranslation();
   return (
     <Dialog open={open} onClose={onCancel}>
       <DialogTitle
-        sx={{ display: "flex", justifyContent: "center", fontWeight: "bold" }}
-      >
-        {title}
-      </DialogTitle>
+      sx={{display: "flex", justifyContent: "center" ,
+        fontWeight: "bold"
+      }}>{title}</DialogTitle>
       <DialogContent>
         <Typography>{content}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onCancel}>{t("cancel")}</Button>
-        <Button onClick={onConfirm} color="error" variant="contained">
+        <Button onClick={onCancel} color="error" variant="contained">
           {t("confirm")}
         </Button>
       </DialogActions>
@@ -44,4 +40,4 @@ const ClickedOutside: React.FC<ClickedOutsideProps> = ({
   );
 };
 
-export default ClickedOutside;
+export default MissingData;

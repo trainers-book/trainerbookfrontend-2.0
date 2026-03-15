@@ -4,11 +4,12 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 import translationEN from "./locales/en/translation.json";
 import translationHE from "./locales/he/translation.json";
-
+import translationHeEn from "./locales/heEn/translation.json"
 // טיפוסים ל־resources
 const resources = {
   en: { translation: translationEN },
   he: { translation: translationHE },
+  heEn: {translation: translationHeEn}
 } as const;
 
 i18n
@@ -21,7 +22,7 @@ i18n
     interpolation: {
       escapeValue: false,
     },
-    supportedLngs: ["en", "he"],
+    supportedLngs: ["en", "he", "heEn"],
   });
 
 export default i18n;

@@ -15,11 +15,13 @@ const IssueContext = createContext<IssueContextType | null>(null);
 export const IssueProvider = ({ children }: { children: React.ReactNode }) => {
   const { t } = useTranslation();
   const { platforms } = usePlatforms();
-  
+
   const getTempData = () => {
     const temp: IssueData[] = [];
     const getStatus = () => {
-      const enumKeys = Object.keys(Status).filter((key) => isNaN(Number(key)));
+      const enumKeys = Object.keys(Status).filter((key) =>
+        isNaN(Number(key))
+      );
       const randomIndex = Math.floor(Math.random() * enumKeys.length);
       const randomKey = enumKeys[randomIndex];
       return Status[randomKey as keyof T];

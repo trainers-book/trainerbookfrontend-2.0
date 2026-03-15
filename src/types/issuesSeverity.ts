@@ -3,6 +3,5 @@ export enum Severity {
     Medium = "בינוני",
     High = "גבוהה", // יבדק באחזקה
     VeryHigh = "גבוהה מאוד",
-    StoppedFlight = 'עצר גיחה' // 
-
+    StoppedFlight = 'עצר גיחה'
 };

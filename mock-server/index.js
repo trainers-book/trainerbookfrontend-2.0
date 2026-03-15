@@ -50,11 +50,11 @@ function stripFields(obj, headerValue) {
 // GET /Authentication/:username/:password
 app.get("/Authentication/:username/:password", (req, res) => {
   const { username, password } = req.params;
-  ensureCollection("Authentication");  
+  ensureCollection("Authentication");
   const user = db.Authentication.find(
     (u) => u.userName === username && u.password === password,
   );
-  if (user) {    
+  if (user) {
     return res.status(202).json([user]);
   }
   return res.status(401).json({ ok: false, message: "Invalid credentials" });
@@ -87,6 +87,21 @@ app.put("/setPassword", (req, res) => {
   res.json({ ok: true });
 });
 
+// POST to /Manage with role body: { role }
+// returns items from Manage collection where the role appears in any of the
+// permission arrays (show/delete/edit/add) so front-end can query by auth level
+app.post("/Manage", (req, res) => {
+  const { role } = req.body || {};
+  ensureCollection("Manage");
+  if (!role) {
+    return res.status(400).json({ ok: false, message: "role is required" });
+  }
+  const matches = db.Manage.filter((item) => {    
+    return item.show.includes(role);
+  });
+  res.json(matches);
+});
+
 // POST /:collection  body: dbEntity
 app.post("/:collection", (req, res) => {
   const { collection } = req.params;
@@ -116,7 +131,7 @@ app.get("/Authentication/:personalNumber", (req, res) => {
   ensureCollection("Authentication");
   const user = db.Authentication.find(
     (u) => String(u.userName) === String(personalNumber),
-  );    
+  );
   if (!user) return res.status(404).json({ ok: false, message: "Not found" });
   const { password, ...safe } = user;
   res.status(200).json({ ok: true });
@@ -150,23 +165,22 @@ app.put("/:collectionName", (req, res) => {
 
 // GET collection list
 app.get("/:collection", (req, res) => {
-  const { collection } = req.params;
+  const { collection } = req.params;  
   ensureCollection(collection);
-  res.json(db[collection]);  
+  res.json(db[collection]);
 });
 
 // GET /:collection/getAmountByFilters/:index
 // params may be sent in the request body as { params: { platform: [...], filters: {...} } }
 // or as a JSON-encoded `params` query parameter. Returns 25 items at offset index*25
-app.get("/:collection/getAmountByFilters/:index", (req, res) => {  
-  
+app.get("/:collection/getAmountByFilters/:index", (req, res) => {
   const { collection, index } = req.params;
   ensureCollection(collection);
   console.log(index);
 
   // read params from body.params or query.params
   let params = (req.body && req.body.params) || undefined;
-  
+
   if (!params && req.query && req.query.params) {
     try {
       params = JSON.parse(req.query.params);
@@ -175,30 +189,29 @@ app.get("/:collection/getAmountByFilters/:index", (req, res) => {
     }
   }
   params = params || {};
-  
+
   const platforms = Array.isArray(req.query.platform)
     ? req.query.platform.map((p) => JSON.parse(p))
     : req.query.platform
       ? [JSON.parse(req.query.platform)]
-      : null;      
-          
+      : null;
 
-  const filters = req.query.filters || {};  
+  const filters = req.query.filters || {};
 
   let items = Array.isArray(db[collection]) ? db[collection].slice() : [];
 
   items = items.filter((obj) => {
     // platform membership: object must contain at least one of requested platforms
     if (platforms && platforms.length > 0) {
-      const objPlat = obj.platform;      
+      const objPlat = obj.platform;
       if (Array.isArray(objPlat)) {
         if (!objPlat.some((p) => platforms.includes(p))) return false;
       } else if (typeof objPlat === "string") {
-        if (!platforms.includes(objPlat)){
+        if (!platforms.includes(objPlat)) {
           // console.log(platforms.includes(objPlat));
-          
+
           return false;
-        } 
+        }
       } else {
         return false;
       }
@@ -239,7 +252,7 @@ app.get("/:collection/getAmountByFilters/:index", (req, res) => {
     }
 
     // search is intentionally ignored as requested
-    
+
     return true;
   });
 

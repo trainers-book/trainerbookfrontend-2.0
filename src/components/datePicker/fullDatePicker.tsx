@@ -17,25 +17,31 @@ const cacheRtl = createCache({
 interface FullDatePickerProps {
   rangeDate: boolean;
   pickCallback: (
-    picked: { minDate: Date; maxDate: Date }
+    picked: { minDate: Date; maxDate: Date } | undefined
   ) => void;
   minYear: number;
   invokeCallback: boolean;
+  smallestHeight?: boolean;
+  firstDate?: Date;
+  lastDate?: Date;
 }
 
 const FullDatePicker: React.FC<FullDatePickerProps> = ({
   rangeDate,
   pickCallback,
   minYear,
-  invokeCallback
+  invokeCallback,
+  smallestHeight,
+  firstDate,
+  lastDate
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const currentYear = new Date().getFullYear();
-  const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
-  const [year, setYears] = useState<number>(currentYear);
+  const currentYear = new Date().getFullYear();  
+  const [month, setMonth] = useState<number>(firstDate ? firstDate.getMonth() + 1 : new Date().getMonth() + 1);
+  const [year, setYears] = useState<number>(firstDate ? firstDate.getFullYear() : currentYear);
   const [resetPick, setResetPick] = useState<boolean>(false);
-  const [isDatePicked, setIsDatePicked] = useState<boolean>(false);
+  const [isDatePicked, setIsDatePicked] = useState<boolean>(firstDate ? true : false);
 
   return (
     <CacheProvider value={cacheRtl}>
@@ -69,7 +75,10 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
             <NumberInput
               label={t("year")}
               setValue={(value: number) => {
-                if (value >= minYear && value <= currentYear) {
+                if (
+                  value >= minYear &&
+                  value <= (maxYear != undefined ? maxYear : currentYear)
+                ) {
                   setYears(value);
                 }
               }}
@@ -81,6 +90,7 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
               onClick={() => {
                 setResetPick(!resetPick);
                 setIsDatePicked(false);
+                pickCallback(undefined);
               }}
               sx={{
                 minWidth: "20px",
@@ -93,7 +103,6 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
               X
             </Button>
           </Box>
-
           <GridDatePicker
             year={year}
             month={month}
@@ -104,6 +113,9 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
               setIsDatePicked(isPicked);
             }}
             invokeCallback={invokeCallback}
+            smallestHeight={smallestHeight}
+            firstDate={firstDate}
+            lastDate={lastDate}
           />
         </Box>
       </ThemeProvider>

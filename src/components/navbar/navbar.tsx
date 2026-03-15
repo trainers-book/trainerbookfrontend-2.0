@@ -105,7 +105,7 @@ const Navbar: React.FC = () => {
               disablePadding
             >
               {possibleRoutes.map((key) => (
-                <ListItem disablePadding>
+                <ListItem disablePadding key={key}>
                   <ListItemButton
                     sx={{
                       borderRadius: 6,
