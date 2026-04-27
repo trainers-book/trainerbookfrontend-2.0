@@ -389,6 +389,7 @@ const ManageUsers: React.FC = () => {
               editRow={currentTab.editEntity ? editEntity : undefined}
               lengthOverride={true}
               valuesOverride={true}
+              getRowKey={(row: any) => String(row.id || row.personalNumber || row["!id"] || row._id)}
             />
           </Box>
         </Box>
