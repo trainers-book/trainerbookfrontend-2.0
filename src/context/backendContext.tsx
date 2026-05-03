@@ -195,103 +195,15 @@ class Connection {
   
   async getFlightMalfs(platform: string, ids: number[]) {    
     return axios
-      .get(`${this.appUrl}flightRelatedMalfs/`, {params: {platform: platform, malfs: JSON.stringify(ids)}})
-  }
-
-  async getAllObjects(entityName: string) {
-    try {
-      const response = await fetch(
-        "http://localhost:3002/" + entityName
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getMPD() {
-    try {
-      const response = await fetch(
-        "http://localhost:3002/mpd"
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getAllPilots (){
-    try {
-      const response = await fetch(
-        "http://localhost:3002/Pilot"
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getFieldByName(entityName: string) {
-    try {
-      const response = await fetch(
-        "http://localhost:3002/" + entityName
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getAllPreservedFlights() {
-    try {
-      const response = await fetch(
-        "http://localhost:3002/PreservedFlights"
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getFlightTableFields() {
-    try {
-      const response = await fetch(
-        "http://localhost:3002/documentFields"
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getPermissionsTableFields() {
-    try {
-      const response = await fetch(
-        "http://localhost:3002/PermissionsFields"
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getAllPermissions() {
-    try {
-      const response = await fetch(
-        "http://localhost:3002/Permissions"
-      );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
+      .get(`${this.appUrl}${collection}/platform`, {
+        params: { platform: JSON.stringify(platform) },
+      })
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
   }
 }
 
@@ -338,7 +250,10 @@ export enum API_Pathes {
   GET_ENTITY_BUT_STRING = "FindEntityByString",
   GET_USER = "getUser",
   GET_NEXT_ID = "getNextId",
-  MANAGE = "Manage"
+  MANAGE = "Manage",
+  FLIGHT_FAILURE = "FlightFailure",
+  NEW_FLIGHT_FIELDS = "NewFlightFields",
+  MALAM_ENTITIES = "MalamEntities"
 }
 
 export enum CollectionIds {

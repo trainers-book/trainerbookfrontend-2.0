@@ -4,7 +4,7 @@ import FlightData, { flightObjectFromFetch } from "../types/tables/flight";
 import PageWrapper from "../components/pageWrapper/PageWrapper";
 import NewFlightModel from "../components/Popup/NewFlight/newFlight";
 import FilterFlights from "../components/filterTables/filterFlights";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useLocalStorage } from "../context/localStorageContext";
 import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
 import { usePlatforms } from "../context/platformsContext";
@@ -12,6 +12,7 @@ import FlightInformation from "../components/Popup/information/flightInformation
 import { useBackend } from "../context/backendContext";
 import { HttpStatusCode } from "axios";
 import IssueData, { IssueObjectFromFetch } from "../types/tables/issues";
+import { useTranslation } from "react-i18next";
 
 const ReviewFlights: React.FC = () => {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
@@ -29,6 +30,8 @@ const ReviewFlights: React.FC = () => {
     const [fields, setFields] = useState<string[]>([]);
   const [preservedFlights, setPreservedFlights] = useState<any[]>([]);
   const { ls } = useLocalStorage();
+  const [isNewFlightOpen, setIsNewFlightOpen] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setFilterChange(!filterChange);
@@ -181,7 +184,17 @@ const ReviewFlights: React.FC = () => {
             }}
           />
         </Box>
-        <NewFlightModel />
+        <Button
+          variant="contained"
+          onClick={() => setIsNewFlightOpen(true)}
+          sx={{ background: "rgb(114, 156, 240)", ml: 2, mb: 1 }}
+        >
+          {t("newFlight")}
+        </Button>
+        <NewFlightModel
+          open={isNewFlightOpen}
+          onClose={() => setIsNewFlightOpen(closed)}
+        />
       </Box>
       {memoTable}
       {selectedFlightPopup && (
