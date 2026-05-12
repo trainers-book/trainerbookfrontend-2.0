@@ -194,8 +194,16 @@ class Connection {
   }
   
   async getFlightMalfs(platform: string, ids: number[]) {    
+
+  async addPlatformToShowFor(collection: string, object: any) {
     return axios
-      .get(`${this.appUrl}flightRelatedMalfs/`, {params: {platform: platform, malfs: JSON.stringify(ids)}})
+      .patch(`${this.appUrl}${collection}`, object)
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
   }
 
   async getAllObjects(entityName: string) {
@@ -338,10 +346,12 @@ export enum API_Pathes {
   GET_ENTITY_BUT_STRING = "FindEntityByString",
   GET_USER = "getUser",
   GET_NEXT_ID = "getNextId",
-  MANAGE = "Manage"
+  MANAGE = "Manage",
+  NEW_FLIGHTS_FIELDS = "NewFlightFields",
 }
 
 export enum CollectionIds {
   PRESERVED_FLIGHT_NAME_ID = "PreservedFlightNameId",
   FLIGHT_ID = "FlightId",
+  AIRCRAFT_ID = "AircraftId",
 }

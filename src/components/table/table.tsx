@@ -154,7 +154,7 @@ const GenericTable: React.FC<TableProps> = ({
           <TableHead sx={{ background: "rgba(218, 218, 218, 1)" }}>
             <TableRow key={"header"}>
               {columns.map((column) => {
-                if (column.includes("_")) {
+                if (column.includes("_") && column != "_id") {
                   column = "";
                 }
                 return (
