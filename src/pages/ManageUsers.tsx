@@ -92,6 +92,7 @@ const entityToDbEntityFunction = (
 ) => {
   if (entity instanceof PlatformData) {
     return {
+      _id: entity._id,
       name: entity.name,
     };
   } else if (entity instanceof UsersData) {
