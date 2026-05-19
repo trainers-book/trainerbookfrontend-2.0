@@ -53,13 +53,12 @@ const NewPlatform: React.FC<NewPlatformType> = ({
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState<AlertColor>("success");
 
-  (useEffect(() => {
+  useEffect(() => {
     setHasChanges(
       platformNameVal === "" &&
         selectableFieldChecked.some((checked) => checked),
     );
-  }),
-    [platformNameVal, selectableFieldChecked]);
+  }, [platformNameVal, selectableFieldChecked]);
 
   useEffect(() => {
     getSelectableFields();
