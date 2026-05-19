@@ -174,5 +174,7 @@
   "newPlatform": "פלטפורמה חדשה",
   "platformId": "מספר פלטפורמה",
   "platformName": "שם פלטפורמה",
-  "idNumber": "מספר מזהה"
+  "idNumber": "מספר מזהה",
+  "platformCreationSuccess": "הפלטפורמה נוספה בהצלחה",
+  "platformCreationFailure": "הוספת הפלטפורמה נכשלה"
 }
