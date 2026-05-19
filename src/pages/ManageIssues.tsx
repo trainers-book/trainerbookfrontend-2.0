@@ -100,9 +100,10 @@ const ManageIssues: React.FC = () => {
         clickable={(row: IssueData) => {
           setSelectedIssuePopup(row);
         }}
+        searchValue= {searchQuery}
       />
     );
-  }, [selectedPlatforms]);
+  }, [selectedPlatforms,searchQuery]);
 
   return (
     <PageWrapper>

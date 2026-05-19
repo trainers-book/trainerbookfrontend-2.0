@@ -18,6 +18,7 @@ interface InfinateScrollFetchProps {
   platformsAndFilters: { platforms: string[]; filters: any };
   objectFromFetch: (data: any) => any;
   clickable?: (row: any) => void;
+  searchValue?: string;
 }
 
 const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
@@ -31,74 +32,93 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   objectFromFetch,
   platformsAndFilters,
   clickable,
+  searchValue,
 }) => {
   const tableRowHeight = 82;
   const tableHeadHeight = 56.5;
+
   const tableRef = useRef<HTMLDivElement>(null);
+
   const { connection } = useBackend();
   const { platforms } = usePlatforms();
+
   const [fetching, setFetching] = useState<boolean>(false);
   const [fetchMore, setFetchMore] = useState<boolean>(true);
   const [offset, setOffset] = useState(0);
   const [dataToShow, setDataToShow] = useState<any[]>([]);
 
-  useEffect(() => {
-    setFetching(false);
-  }, [dataToShow]);
-
+  // ✅ fetch on offset change
   useEffect(() => {
     fetchMoreData();
   }, [offset]);
 
-  useEffect(() => {
-    fetchMoreData();
-  }, [platforms]);
-
+  // ✅ reset when filters/platforms change
   useEffect(() => {
     setDataToShow([]);
     setOffset(0);
-    setFetching(false);
     setFetchMore(true);
-    fetchMoreData();
+    setFetching(false);
+
+    fetchMoreData(0);
   }, [platformsAndFilters]);
 
-  const fetchMoreData = async () => {
-    if (platforms.length == 0 || !fetchMore) {
+  // ✅ THIS FIXES YOUR SEARCH BUG
+  useEffect(() => {
+    setDataToShow([]);
+    setOffset(0);
+    setFetchMore(true);
+    setFetching(false);
+
+    fetchMoreData(0);
+  }, [searchValue]);
+
+  const fetchMoreData = async (forcedOffset?: number) => {
+    if (platforms.length === 0  || fetching) {
       return;
     }
 
-    if (platformsAndFilters == undefined) {
-      platformsAndFilters = { platforms: platforms, filters: {} };
-    } else if (platformsAndFilters.platforms.length == 0) {
-      platformsAndFilters.platforms = platforms;
+    setFetching(true);
+
+    let safePlatforms = platformsAndFilters?.platforms;
+
+    if (!safePlatforms || safePlatforms.length === 0) {
+      safePlatforms = platforms;
     }
+
+    const currentOffset = forcedOffset ?? offset;
 
     const newData = await connection.getObjectsFilter(
       fetchCollection,
-      offset * 25,
-      platformsAndFilters.platforms,
-      platformsAndFilters.filters
+      currentOffset * 25,
+      safePlatforms,
+      searchValue
     );
 
-    if (newData.status == HttpStatusCode.Ok) {
+    if (newData.status === HttpStatusCode.Ok) {
       const newFetchedData: any[] = newData.data;
-      if (newFetchedData.length != 0) {
-        setDataToShow([
-          ...new Set([
-            ...dataToShow,
-            ...newFetchedData
-              .map((data) => objectFromFetch(data))
-              .sort(sortFunction),
-          ]),
-        ]);
+
+      if (newFetchedData.length !== 0) {
+        setDataToShow((prev) => {
+          const existingKeys = new Set(prev.map(getRowKey));
+
+          const mapped = newFetchedData
+            .map(objectFromFetch)
+            .filter((item) => !existingKeys.has(getRowKey(item)));
+
+          const merged = [...prev, ...mapped];
+
+          return sortFunction ? merged.sort(sortFunction) : merged;
+        });
       } else {
         setFetchMore(false);
       }
     }
+
+    setFetching(false);
   };
 
   const handleScroll = (event: any) => {
-    if (!fetchMore || !tableRef.current) {
+    if (!fetchMore || !tableRef.current || fetching) {
       return;
     }
 
@@ -107,11 +127,9 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
 
     if (
       target.scrollTop + target.offsetHeight + tableHeadHeight >=
-        tableRowHeight * (children ? children : 1) &&
-      !fetching
+      tableRowHeight * (children ? children : 1)
     ) {
-      setFetching(true);
-      setOffset(offset + 1);
+      setOffset((prev) => prev + 1);
     }
   };
 

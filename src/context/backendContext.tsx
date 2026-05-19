@@ -184,7 +184,7 @@ class Connection {
     //   search: undefined
     // }
     return axios
-      .get(`${this.appUrl}${collection}/getAmountByFilters/${index}`, {params: {platform: platform.map((platformName) => JSON.stringify(platformName)), filters: filters}})
+      .get(`${this.appUrl}${collection}/search/:${filters}`, {params: {platform: platform.map((platformName) => JSON.stringify(platformName)), filters: filters}})
       .then((response) => {
         return { status: response.status, data: response.data };
       })

@@ -84,9 +84,10 @@ const ReviewFlights: React.FC = () => {
         clickable={(row: FlightData) => {
           setSelectedFlightPopup(row);
         }}
+        searchValue= {searchQuery}
       />
     );
-  }, [selectedPlatforms]);
+  }, [selectedPlatforms,searchQuery]);
 
   useEffect(() => {
     getTableFields();

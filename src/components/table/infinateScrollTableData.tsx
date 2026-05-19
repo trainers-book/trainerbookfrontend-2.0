@@ -29,45 +29,43 @@ const InfinateScrollData: React.FC<InfinateScrollDataProps> = ({
   noHeight,
 }) => {
   const tableHeightPercent = noHeight ? Math.min(30, data.length * 14) : 85;
+
   const tableRowHeight = 82;
   const tableFetchExtra = 4;
   const tableHeadHeight = 56.5;
-  const tableRef = useRef(null);
-  const [offset, setOffset] = useState(0);
-  const [sortedData, setSortedData] = useState(data.sort(sortFunction));
+
+  const tableRef = useRef<HTMLDivElement>(null);
+
   const limit = Math.round(
     (window.innerHeight * (tableHeightPercent / 100)) / tableRowHeight +
       tableFetchExtra
   );
-  const [dataToShow, setdataToShow] = useState(
-    sortedData.slice(offset, limit * offset)
-  );
 
-  useEffect(() => {
-    fetchMoreData();
-  }, [offset]);
+  const [sortedData, setSortedData] = useState<any[]>([]);
+  const [dataToShow, setDataToShow] = useState<any[]>([]);
 
+  // ✅ reset + sort whenever data changes
   useEffect(() => {
-    setOffset(0);
-    const sorted = data.sort(sortFunction);
+    const sorted = [...data].sort(sortFunction);
     setSortedData(sorted);
-    setdataToShow(sorted.slice(0, limit));
-  }, [data]);
+    setDataToShow(sorted.slice(0, limit));
+  }, [data, sortFunction, limit]);
 
-  const fetchMoreData = async () => {
-    const newData = sortedData.slice(offset * limit, (offset + 1) * limit);
-    setdataToShow([...new Set([...dataToShow, ...newData])]);
-  };
-
+  // ✅ load more on scroll
   const handleScroll = (event: any) => {
-    const children = document.getElementById("table")?.childElementCount;
     const target = event.target;
 
     if (
       target.scrollTop + target.offsetHeight + tableHeadHeight >=
-      tableRowHeight * (children ? children : 1)
+      tableRowHeight * dataToShow.length
     ) {
-      setOffset(offset + 1);
+      setDataToShow((prev) => {
+        const next = sortedData.slice(prev.length, prev.length + limit);
+
+        if (next.length === 0) return prev;
+
+        return [...prev, ...next];
+      });
     }
   };
 
