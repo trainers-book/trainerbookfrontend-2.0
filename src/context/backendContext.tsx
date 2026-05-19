@@ -5,7 +5,7 @@ class Connection {
   appUrl: string;
 
   constructor() {
-    this.appUrl = `http://${import.meta.env.VITE_API_URL}:${import.meta.env.VITE_API_PORT}/`;
+    this.appUrl = `/api/`;
   }
 
   async login(username: string, password: string) {
