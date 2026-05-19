@@ -27,7 +27,7 @@ import FilterSearchBar from "../../Dynamics/filterSearchBar";
 import CustomAlert from "../../Dynamics/CustomAlert";
 import ClickedOutside from "../clickedOutside";
 
-type NewPlatformType = {
+interface NewPlatformType {
   open: boolean;
   onClose: (closed: boolean) => void;
   callback: (platform: PlatformData) => void;
