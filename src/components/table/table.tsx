@@ -71,6 +71,10 @@ const GenericTable: React.FC<TableProps> = ({
     columns.push("_delete");
   }
 
+  const headerLabels = columns.map((col) =>
+    col.startsWith("_") && col !== "_id" ? "" : col,
+  );
+
   const valueToMultipleLines = (
     value: Date | string | number | Status | Severity
   ) => {
@@ -153,20 +157,15 @@ const GenericTable: React.FC<TableProps> = ({
         <Table sx={{ minWidth: 650 }}>
           <TableHead sx={{ background: "rgba(218, 218, 218, 1)" }}>
             <TableRow key={"header"}>
-              {columns.map((column) => {
-                if (column.includes("_") && column != "_id") {
-                  column = "";
-                }
-                return (
-                  <TableCell
-                    key={column}
-                    sx={{ fontWeight: "bold", fontSize: "1.3rem" }}
-                    align="center"
-                  >
-                    {t(column, {lng: "he"})}
-                  </TableCell>
-                );
-              })}
+              {headerLabels.map((label, colIndex) => (
+                <TableCell
+                  key={`header-${colIndex}`}
+                  sx={{ fontWeight: "bold", fontSize: "1.3rem" }}
+                  align="center"
+                >
+                  {label ? t(label, { lng: "he" }) : ""}
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody ref={tableRef} id="table">
