@@ -158,7 +158,7 @@ const NewPlatform: React.FC<NewPlatformType> = ({
   const getPlatformId = async () => {
     const id = await connection.getNextId(CollectionIds.AIRCRAFT_ID);
 
-    if (id.status !== HttpStatusCode.InternalServerError) {
+    if (id.status === HttpStatusCode.Ok) {
       return id.data[0].sequenceValue;
     } else {
       return -1;
