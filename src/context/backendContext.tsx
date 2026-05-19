@@ -191,9 +191,7 @@ class Connection {
       .catch((error) => {
         return error
       });
-  }
-  
-  async getFlightMalfs(platform: string, ids: number[]) {    
+  }   
 
   async addPlatformToShowFor(collection: string, object: any) {
     return axios
