@@ -104,6 +104,7 @@ const FilterDate: React.FC<FilterDateProps> = ({ width, setDate, isReset }) => {
                 borderRadius: 2,
                 pr: 2,
                 pl: 2,
+                pb: 5
               },
             }}
             anchorOrigin={{
