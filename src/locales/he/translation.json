@@ -173,5 +173,6 @@
   "changeDetails": "שינוי פרטים",
   "platformId": "מספר פלטפורמה",
   "platformName": "שם פלטפורמה",
-  "idNumber": "מספר מזהה"
+  "idNumber": "מספר מזהה",
+  "updateSuccess": "הפרטים עודכנו בהצלחה"
 }

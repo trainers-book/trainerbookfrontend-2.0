@@ -12,6 +12,7 @@ interface FilterSearchBarProps {
   value?: string;
   width?: string;
   isReset: boolean;
+  disabled?: boolean;
 }
 
 const cacheRtl = createCache({
@@ -24,7 +25,8 @@ const FilterSearchBar: React.FC<FilterSearchBarProps> = ({
   setSearch,
   width,
   isReset,
-  value
+  value,
+  disabled
 }) => {
   const theme = useTheme();
   const [searchValue, setSearchValue] = useState(value ? value : "");
@@ -70,6 +72,7 @@ const FilterSearchBar: React.FC<FilterSearchBarProps> = ({
             }}
             label={label}
             onChange={handleChange}
+            disabled={disabled}
             InputLabelProps={{
               sx: {
                 top: "-0.6rem",
