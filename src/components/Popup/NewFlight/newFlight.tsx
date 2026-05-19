@@ -22,7 +22,7 @@ import { usePlatforms } from "../../../context/platformsContext";
 import { API_Pathes, useBackend } from "../../../context/backendContext";
 import { HttpStatusCode } from "axios";
 
-type NewFlight = {
+interface NewFlight {
   open: boolean;
   onClose: (closed: boolean) => void;
 };
