@@ -79,8 +79,13 @@ const FilterDate: React.FC<FilterDateProps> = ({ width, setDate, isReset }) => {
               <DateRangeIcon sx={{ color: dateValue ? "#5fcced9e" : "" }} />
             }
             onClick={handleClick}
-            disabled
+            onKeyDown={(e) => e.preventDefault()}
+            onMouseDown={(e) => e.preventDefault()}
+            inputProps={{
+              style: { cursor: "pointer" },
+            }}
             InputLabelProps={{
+              shrink: false,
               sx: {
                 top: "-0.6rem",
                 "&.MuiInputLabel-shrink": {

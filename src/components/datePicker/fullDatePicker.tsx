@@ -24,6 +24,7 @@ interface FullDatePickerProps {
   smallestHeight?: boolean;
   firstDate?: Date;
   lastDate?: Date;
+  minDate?: Date;
 }
 
 const FullDatePicker: React.FC<FullDatePickerProps> = ({
@@ -33,7 +34,8 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
   invokeCallback,
   smallestHeight,
   firstDate,
-  lastDate
+  lastDate,
+  minDate
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -116,6 +118,7 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
             smallestHeight={smallestHeight}
             firstDate={firstDate}
             lastDate={lastDate}
+            minDate={minDate}
           />
         </Box>
       </ThemeProvider>
