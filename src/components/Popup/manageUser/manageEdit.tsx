@@ -22,7 +22,7 @@ import EditAccount from "../../edit/editAccount";
 import EditUser from "../../edit/editUser";
 import EditFlight from "../../edit/editFlight";
 import EditPlatform from "../../edit/editPlatform";
-import { useBackend } from "../../../context/backendContext";
+import { API_Pathes, useBackend } from "../../../context/backendContext";
 import { HttpStatusCode } from "axios";
 import { useLocalStorage } from "../../../context/localStorageContext";
 import ClickedOutside from "../clickedOutside";
@@ -142,6 +142,11 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
         currentCollection,
         dataToDb
       );
+      if (data._modifiedFields && data._modifiedFields.length > 0) {
+        for (const field of data._modifiedFields) {
+          await connection.updateEntity(API_Pathes.NEW_FLIGHTS_FIELDS, field);
+        }
+      }
     }
 
     if (updateResponse && updateResponse.status == HttpStatusCode.Ok) {
@@ -215,7 +220,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
           </Box>
         </DialogTitle>
 
-        <DialogContent sx={{ m: 2 }}>
+        <DialogContent>
           <Box sx={{ pt: 1 }}>
             {manageObject instanceof UsersAccountData && (
               <EditAccount
