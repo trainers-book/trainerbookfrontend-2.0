@@ -115,11 +115,11 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
   };
 
   const getSelectableFields = async () => {
-    const data = await connection.getAllEntities(API_Pathes.NEW_FLIGHT_FIELDS);
+    const newFlightSelectableFields = await connection.getAllEntities(API_Pathes.NEW_FLIGHT_FIELDS);
 
-    if (data.status === HttpStatusCode.Ok) {
+    if (newFlightSelectableFields.status === HttpStatusCode.Ok) {
     setSelectableField(
-        data.data.filter((field: any) =>
+        newFlightSelectableFields.data.filter((field: any) =>
           field.showFor.includes(t(selectedPlatform[0], { lng: "heEn" })),
         ),
     );
@@ -127,12 +127,12 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
   };
 
   const getPilots = async () => {
-    const data = await connection.getEntityByPlatform(API_Pathes.PILOT, [
+    const pilotsByPlatform = await connection.getEntityByPlatform(API_Pathes.PILOT, [
       { platform: selectedPlatform[0] },
     ]);
-    if (data.status === HttpStatusCode.Ok) {
+    if (pilotsByPlatform.status === HttpStatusCode.Ok) {
     setPilots(
-        data.data.map((field: any) => {
+        pilotsByPlatform.data.map((field: any) => {
           return field.name;
         }),
     );
@@ -140,10 +140,10 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
   };
 
   const getMalamEntities = async () => {
-    const data = await connection.getAllEntities(API_Pathes.MALAM_ENTITIES);
+    const allMalamEntities = await connection.getAllEntities(API_Pathes.MALAM_ENTITIES);
 
-    if (data.status === HttpStatusCode.Ok) {
-      setMalamEntities(data.data[0].domes);
+    if (allMalamEntities.status === HttpStatusCode.Ok) {
+      setMalamEntities(allMalamEntities.data[0].domes);
     }
   };
 
@@ -152,15 +152,15 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
       if (field.fieldOptions) {
         return field.fieldOptions;
       } else {
-        const data = await connection.getAllEntities(field.name);
+        const fieldVariables = await connection.getAllEntities(field.name);
         if (
           field.name === "MPD" &&
-          data.status === HttpStatusCode.Ok
+          fieldVariables.status === HttpStatusCode.Ok
         ) {
-          return data.data["data"].map((field: any) => Object.values(field)[0]);
+          return fieldVariables.data["data"].map((field: any) => Object.values(field)[0]);
         }
-        return data && data.status === HttpStatusCode.Ok
-          ? data.data.map((val: any) => val["name"])
+        return fieldVariables && fieldVariables.status === HttpStatusCode.Ok
+          ? fieldVariables.data.map((val: any) => val["name"])
           : [];
       }
     } else {
