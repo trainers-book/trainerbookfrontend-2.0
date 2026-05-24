@@ -117,7 +117,7 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
   const getSelectableFields = async () => {
     const data = await connection.getAllEntities(API_Pathes.NEW_FLIGHT_FIELDS);
 
-    if (data.status != HttpStatusCode.InternalServerError) {
+    if (data.status === HttpStatusCode.Ok) {
     setSelectableField(
         data.data.filter((field: any) =>
           field.showFor.includes(t(selectedPlatform[0], { lng: "heEn" })),
@@ -130,7 +130,7 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
     const data = await connection.getEntityByPlatform(API_Pathes.PILOT, [
       { platform: selectedPlatform[0] },
     ]);
-    if (data.status != HttpStatusCode.InternalServerError) {
+    if (data.status === HttpStatusCode.Ok) {
     setPilots(
         data.data.map((field: any) => {
           return field.name;
@@ -142,7 +142,7 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
   const getMalamEntities = async () => {
     const data = await connection.getAllEntities(API_Pathes.MALAM_ENTITIES);
 
-    if (data.status != HttpStatusCode.InternalServerError) {
+    if (data.status === HttpStatusCode.Ok) {
       setMalamEntities(data.data[0].domes);
     }
   };
@@ -155,11 +155,11 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
         const data = await connection.getAllEntities(field.name);
         if (
           field.name === "MPD" &&
-          data.status !== HttpStatusCode.InternalServerError
+          data.status === HttpStatusCode.Ok
         ) {
           return data.data["data"].map((field: any) => Object.values(field)[0]);
         }
-        return data && data.status !== HttpStatusCode.InternalServerError
+        return data && data.status === HttpStatusCode.Ok
           ? data.data.map((val: any) => val["name"])
           : [];
       }
