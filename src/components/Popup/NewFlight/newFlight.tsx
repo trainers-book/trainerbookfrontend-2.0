@@ -44,7 +44,7 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
   });
   const [options, setOptions] = useState<string[]>([]);
   const [malamEntities, setMalamEntities] = useState<number[]>([]);
-  const [selectedMalamDome, setSelectedMalamDome] = useState<string[][]>([]);
+  const [selectedMalamDome, setSelectedMalamDome] = useState<Record<number, string[]>>({});
   const [pilots, setPilots] = useState<string[]>([]);
 
   useEffect(() => {
