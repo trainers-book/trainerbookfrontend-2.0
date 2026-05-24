@@ -230,6 +230,7 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3.7 }}>
                   {selectableField.map((field: any, index: number) => (
                     <FilterDropdown
+                      key={field._id || index}
                       label={field.display}
                       options={
                         options[index] !== undefined ? options[index] : []
@@ -258,6 +259,7 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3.7 }}>
                     {malamEntities.map((field) => (
                       <FilterDropdown
+                        key={field}
                         label={field.toString()}
                         options={pilots}
                         selected={selectedMalamDome[field] || []}
