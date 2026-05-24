@@ -205,6 +205,19 @@ class Connection {
         return { status: error.response.status, data: error.response.data };
       });
   }
+
+  async getEntityByPlatform(collection: string, platform: any) {
+    return axios
+      .get(`${this.appUrl}${collection}/platform`, {
+        params: { platform: JSON.stringify(platform) },
+      })
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
+  }
 }
 
 interface BackendContextType {
