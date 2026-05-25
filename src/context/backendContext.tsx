@@ -338,7 +338,8 @@ export enum API_Pathes {
   GET_ENTITY_BUT_STRING = "FindEntityByString",
   GET_USER = "getUser",
   GET_NEXT_ID = "getNextId",
-  MANAGE = "Manage"
+  MANAGE = "Manage",
+  NEW_FLIGHTS_FIELDS = "NewFlightFields",
 }
 
 export enum CollectionIds {
