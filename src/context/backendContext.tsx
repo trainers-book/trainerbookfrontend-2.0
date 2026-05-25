@@ -338,10 +338,12 @@ export enum API_Pathes {
   GET_ENTITY_BUT_STRING = "FindEntityByString",
   GET_USER = "getUser",
   GET_NEXT_ID = "getNextId",
-  MANAGE = "Manage"
+  MANAGE = "Manage",
+  FLIGHT_FAILURE = "FlightFailure"
 }
 
 export enum CollectionIds {
   PRESERVED_FLIGHT_NAME_ID = "PreservedFlightNameId",
   FLIGHT_ID = "FlightId",
+  MALF_ID = "MalfunctionId"
 }
