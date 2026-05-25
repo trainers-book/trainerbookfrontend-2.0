@@ -6,13 +6,14 @@ import { useBackend } from "../../context/backendContext";
 import { usePlatforms } from "../../context/platformsContext";
 import { HttpStatusCode } from "axios";
 import GenericTable from "./table";
+import PermitData from "../../types/tables/permits";
 
 interface InfinateScrollFetchProps {
   properties: string[];
   fetchCollection: string;
   getRowKey: (row: any) => string;
   sortFunction?: (val: any, nexVal: any) => number;
-  getRowClass?: (row: IssueData) => string;
+  getRowClass?: (row: IssueData | PermitData) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
   platformsAndFilters: { platforms: string[]; filters: any };
@@ -107,7 +108,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
 
     if (
       target.scrollTop + target.offsetHeight + tableHeadHeight >=
-        tableRowHeight * (children ? children : 1) &&
+      tableRowHeight * (children ? children : 1) &&
       !fetching
     ) {
       setFetching(true);

@@ -1,55 +1,68 @@
 import type React from "react";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useEffect, useMemo, useState } from "react";
 import PageWrapper from "../components/pageWrapper/PageWrapper";
-import GenericTable from "../components/table/table";
-import FilterFlights from "../components/filterTables/filterFlights";
 import { Box } from "@mui/material";
-import { useBackend } from "../context/backendContext";
 import { usePlatforms } from "../context/platformsContext";
 import NewPermitModel from "../components/Popup/newPermit/newPermit";
+import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
+import PermitData, { getPermitColor, PermitObjectFromFetch } from "../types/tables/permits";
+import FilterPermits from "../components/filterTables/filterPermits";
+import { PermitStatus } from "../types/statuses";
 
 const ManagePermits: React.FC = () => {
-  const { t } = useTranslation();
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const { connection } = useBackend();
-  const [fields, setFields] = useState<string[]>([]);
-  const [permits, setPermits] = useState<any[]>([]);
+  const [selectedDate, setSelectedDate] = useState<
+      { minDate: Date; maxDate: Date } | undefined
+    >(undefined);
   const { platforms } = usePlatforms();
 
-  useEffect(() => {
-    getTableFields();
+  const getPlatformsAndFilters = () => {
+    const filters: {
+      status: (string | undefined)[];
+      minDate?: Date;
+      maxDate?: Date;
+    } = {
+      status:
+        selectedStatuses.length == 0
+          ? []
+          : selectedStatuses.map((status) => {
+            return Object.keys(PermitStatus).find(
+              (k) => PermitStatus[k as keyof typeof PermitStatus] === status,
+            );
+          }),
+    };
+
+    if (selectedDate) {
+      filters.minDate = selectedDate.minDate;
+      filters.maxDate = selectedDate.maxDate;
+    }
+
+    return {
+      platforms: selectedPlatforms.length == 0 ? platforms : selectedPlatforms,
+      filters: filters
+    };
+  };
+
+  const memoTable = useMemo(() => {
+    return (
+      <InfinateScrollFetch
+        properties={Object.keys(new PermitData({})).filter(
+          (property) => !property.includes("_"),
+        )}
+        getRowKey={(row: PermitData) => `${row._id}`}
+        sortFunction={(currentValue, nextValue) =>
+          nextValue.dateTime.getTime() - currentValue.dateTime.getTime()
+        }
+        fetchCollection="Permissions"
+        getRowClass={getPermitColor}
+        color={true}
+        objectFromFetch={PermitObjectFromFetch}
+        platformsAndFilters={getPlatformsAndFilters()}
+      />
+    );
   }, [selectedPlatforms]);
-
-  useEffect(() => {
-    getPermits();
-  }, [fields]);
-
-  const getPermits = async () => {
-    const data = await connection.getAllPermissions();
-
-    setPermits(data.filter((field: any) => platforms.includes(field.platform)));
-  };
-
-  const getTableFields = async () => {
-    const data = await connection.getPermissionsTableFields();
-
-    setFields(data["fields"].map((field: any) => field.display));
-  };
-
-  const changePlatform = (selected: string[]) => {
-    setSelectedPlatforms(selected);
-  };
-
-  const changeSearch = (search: string) => {
-    setSearchQuery(search);
-  };
-
-  const changedate = (selected: string) => {
-    setSelectedDate(selected);
-  };
 
   return (
     <PageWrapper>
@@ -64,27 +77,20 @@ const ManagePermits: React.FC = () => {
             mb: 1,
           }}
         >
-          <FilterFlights
+          <FilterPermits
             selectedPlatform={selectedPlatforms}
-            setSelectedPlatform={changePlatform}
+            setSelectedPlatform={setSelectedPlatforms}
+            selectedStatuses={selectedStatuses}
+            setSelectedStatuses={setSelectedStatuses}
             search={searchQuery}
-            setSearch={changeSearch}
+            setSearch={setSearchQuery}
             dateSelected={selectedDate}
-            setDate={changedate}
+            setDate={setSelectedDate}
           />
         </Box>
         <NewPermitModel />
       </Box>
-      <GenericTable
-        properties={fields.map((field: any) => t(field, { lng: "heEn" }))}
-        data={
-          selectedPlatforms.length > 0
-            ? permits.filter((field: any) =>
-                selectedPlatforms.includes(field.platform)
-              )
-            : permits
-        }
-      ></GenericTable>
+      {memoTable}
     </PageWrapper>
   );
 };

@@ -1,5 +1,6 @@
 import { Severity } from "../issuesSeverity";
 import { Status } from "../statuses";
+import PermitData from "./permits";
 
 export default class IssueData {
   issueNumber: number;
@@ -77,7 +78,7 @@ export const IssueObjectFromFetch = (malf: any) => {
   });
 };
 
-export const getIssueColor = (row: IssueData) => {  
+export const getIssueColor = (row: IssueData | PermitData) => {  
   return Object.keys(Status)
     .filter((value) => Status[value as keyof typeof Status] === row.status)[0]
     .toLocaleLowerCase();
