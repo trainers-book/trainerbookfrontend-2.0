@@ -66,7 +66,7 @@ const ManageIssues: React.FC = () => {
           ? []
           : selectedStatuses.map((status) => {
             return Object.keys(Status).find(
-              (k) => Status[k as keyof typeof Status] === status,
+              (statusKey) => Status[statusKey as keyof typeof Status] === status,
             );
           }),
     };

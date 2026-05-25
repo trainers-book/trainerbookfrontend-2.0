@@ -37,20 +37,12 @@ const FilterDate: React.FC<FilterDateProps> = ({ width, setDate, isReset }) => {
     setCallback(!callback);
   };
 
-  const handleChange = (event: any) => {
-    const {
-      target: { value },
-    } = event;
-    setDateValue(value);
-    setDate(value);
-  };
-
   useEffect(() => {
     if (isReset) {
       setDateValue(undefined);
       setDate(undefined);
     }
-  }, [isReset, handleChange]);
+  }, [isReset]);
 
   return (
     <CacheProvider value={cacheRtl}>
@@ -104,7 +96,7 @@ const FilterDate: React.FC<FilterDateProps> = ({ width, setDate, isReset }) => {
                 borderRadius: 2,
                 pr: 2,
                 pl: 2,
-                pb: 5
+                pb: 5,
               },
             }}
             anchorOrigin={{
