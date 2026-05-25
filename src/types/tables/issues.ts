@@ -65,19 +65,43 @@ export default class IssueData {
   }
 }
 
-export const IssueObjectFromFetch = (malf: any) => {  
+export const IssueObjectFromFetch = (malf: any) => {
+  // {
+  //   category: string,
+  //   configuration: string, 
+  //   dateTime : number,
+  //   flightName : string,
+  //   issueDescription : string,
+  //   issueNumber:17,
+  //   issueOpener:"Sarah Miller",
+  //   issueSeverity:"StoppedFlight",
+  //   malfSystem:"kcdiixuzsh",
+  //   operator:"bdtvhzjaik",
+  //   platform:"ברק",
+  //   responsibleFactor:"ooerpuvnij",
+  //   status:"Elbit",
+  //   subCategory:"qlttatouyq",
+  //   _id:17
+  // }
+
+  let date;
+  if (malf.date) {
+    date = new Date(malf.date);
+    date.setTime(date.time)
+  }
+  
   return new IssueData({
     ...malf,
-    dateTime: new Date(malf.dateTime),
+    dateTime: date || new Date(malf.dateTime),
     issueNumber: malf._id,
     status: Status[malf.failureStatus as typeof Status],
-    issueDescription: malf.failureDetails,
+    issueDescription: malf.failureDetails | malf.description,
     issueSeverity: malf.disruption,
-    issueOpener: malf.malfunctionOpener || malf.malfunctionOpener,
+    issueOpener: malf.malfunctionOpener || malf.instructorName,
   });
 };
 
-export const getIssueColor = (row: IssueData) => {  
+export const getIssueColor = (row: IssueData) => {
   return Object.keys(Status)
     .filter((value) => Status[value as keyof typeof Status] === row.status)[0]
     .toLocaleLowerCase();
