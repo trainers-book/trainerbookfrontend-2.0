@@ -16,9 +16,12 @@ interface InfinateScrollFetchProps {
   getRowClass?: (row: IssueData | PermitData) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
-  platformsAndFilters: { platforms: string[]; filters: any };
+  editRow?: (row: any) => void;
+  platformsAndFilters?: { platforms: string[]; filters: any };
   objectFromFetch: (data: any) => any;
   clickable?: (row: any) => void;
+  lengthOverride?: boolean;
+  valuesOverride?: boolean;
 }
 
 const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
@@ -29,9 +32,12 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   getRowClass,
   color,
   deleteRow,
+  editRow,
   objectFromFetch,
   platformsAndFilters,
   clickable,
+  lengthOverride,
+  valuesOverride,
 }) => {
   const tableRowHeight = 82;
   const tableHeadHeight = 56.5;
@@ -61,7 +67,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
     setFetching(false);
     setFetchMore(true);
     fetchMoreData();
-  }, [platformsAndFilters]);
+  }, [platformsAndFilters, fetchCollection]);
 
   const fetchMoreData = async () => {
     if (platforms.length == 0 || !fetchMore) {
@@ -125,10 +131,13 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
       getRowClass={getRowClass}
       color={color}
       deleteRow={deleteRow}
+      editRow={editRow}
       onScroll={handleScroll}
       tableRef={tableRef}
       clickable={clickable}
       tableHeight={tableRowHeight}
+      lengthOverride={lengthOverride}
+      valuesOverride={valuesOverride}
     />
   );
 };

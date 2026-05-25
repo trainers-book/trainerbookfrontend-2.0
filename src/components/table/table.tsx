@@ -153,13 +153,13 @@ const GenericTable: React.FC<TableProps> = ({
         <Table sx={{ minWidth: 650 }}>
           <TableHead sx={{ background: "rgba(218, 218, 218, 1)" }}>
             <TableRow key={"header"}>
-              {columns.map((column) => {
+              {columns.map((column, index) => {
                 if (column.includes("_")) {
                   column = "";
                 }
                 return (
                   <TableCell
-                    key={column}
+                    key={`${column} ${index}`}
                     sx={{ fontWeight: "bold", fontSize: "1.3rem" }}
                     align="center"
                   >
