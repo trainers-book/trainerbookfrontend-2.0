@@ -29,7 +29,7 @@ const ManagePermits: React.FC = () => {
           ? []
           : selectedStatuses.map((status) => {
             return Object.keys(PermitStatus).find(
-              (k) => PermitStatus[k as keyof typeof PermitStatus] === status,
+              (key) => PermitStatus[key as keyof typeof PermitStatus] === status,
             );
           }),
     };
