@@ -266,8 +266,7 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
         <DialogContent>
           <Grid container justifyContent="center" padding={1}>
             <Grid size={12}>
-              <Stack spacing={2}>
-                {platformOptions.length > 0 && (
+              <Stack spacing={2}> (
                   <FilterDropdown
                     label={t("choosePlatform")}
                     options={platformOptions}
@@ -276,7 +275,7 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
                     isMultiple={false}
                     width="100%"
                   />
-                )}
+                )
                 {selectedPlatform.length > 0 && (
                   <FilterDropdown
                     label={t("chooseFlight")}
