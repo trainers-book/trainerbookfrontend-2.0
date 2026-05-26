@@ -217,84 +217,15 @@ class Connection {
       });
   }
 
-  async getAllObjects(entityName: string) {
-    try {
-      const response = await fetch("http://localhost:3002/" + entityName);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getMPD() {
-    try {
-      const response = await fetch("http://localhost:3002/mpd");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getAllPilots() {
-    try {
-      const response = await fetch("http://localhost:3002/Pilot");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getFieldByName(entityName: string) {
-    try {
-      const response = await fetch("http://localhost:3002/" + entityName);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getAllPreservedFlights() {
-    try {
-      const response = await fetch("http://localhost:3002/PreservedFlights");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getFlightTableFields() {
-    try {
-      const response = await fetch("http://localhost:3002/documentFields");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getPermissionsTableFields() {
-    try {
-      const response = await fetch("http://localhost:3002/PermissionsFields");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getAllPermissions() {
-    try {
-      const response = await fetch("http://localhost:3002/Permissions");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
+  async getAllObjects(collection: string) {
+    return axios
+      .get(`${this.appUrl}${collection}`)
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return error;
+      });
   }
 }
 
