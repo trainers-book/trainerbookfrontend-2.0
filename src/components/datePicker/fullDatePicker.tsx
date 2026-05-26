@@ -24,6 +24,7 @@ interface FullDatePickerProps {
   smallestHeight?: boolean;
   firstDate?: Date;
   lastDate?: Date;
+  minDate?: Date;
 }
 
 const FullDatePicker: React.FC<FullDatePickerProps> = ({
@@ -33,13 +34,15 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
   invokeCallback,
   smallestHeight,
   firstDate,
-  lastDate
+  lastDate,
+  minDate
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const currentYear = new Date().getFullYear();  
+  const currentYear = new Date().getFullYear();
+  const [maxYear] = useState<number>(currentYear);
   const [month, setMonth] = useState<number>(firstDate ? firstDate.getMonth() + 1 : new Date().getMonth() + 1);
-  const [year, setYears] = useState<number>(firstDate ? firstDate.getFullYear() : currentYear);
+  const [year, setYear] = useState<number>(firstDate ? firstDate.getFullYear() : currentYear);
   const [resetPick, setResetPick] = useState<boolean>(false);
   const [isDatePicked, setIsDatePicked] = useState<boolean>(firstDate ? true : false);
 
@@ -53,6 +56,7 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
             alignItems: "center",
             borderRadius: 2,
             mt: 2,
+            pb: 5
           }}
         >
           <Box
@@ -79,7 +83,7 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
                   value >= minYear &&
                   value <= (maxYear != undefined ? maxYear : currentYear)
                 ) {
-                  setYears(value);
+                  setYear(value);
                 }
               }}
               value={year}
@@ -116,6 +120,7 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
             smallestHeight={smallestHeight}
             firstDate={firstDate}
             lastDate={lastDate}
+            minDate={minDate}
           />
         </Box>
       </ThemeProvider>

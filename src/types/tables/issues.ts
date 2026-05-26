@@ -71,10 +71,10 @@ export const IssueObjectFromFetch = (malf: any) => {
     ...malf,
     dateTime: new Date(malf.dateTime),
     issueNumber: malf._id,
-    status: Status[malf.failureStatus as typeof Status],
-    issueDescription: malf.failureDetails,
-    issueSeverity: malf.disruption,
-    issueOpener: malf.malfunctionOpener || malf.malfunctionOpener,
+    status: Status[malf.status as keyof typeof Status],
+    issueDescription: malf.issueDescription,
+    issueSeverity: malf.issueSeverity,
+    issueOpener: malf.issueOpener,
   });
 };
 
