@@ -65,10 +65,10 @@ const ManageIssues: React.FC = () => {
         selectedStatuses.length == 0
           ? []
           : selectedStatuses.map((status) => {
-              return Object.keys(Status).find(
-                (k) => Status[k as keyof typeof Status] === status,
-              );
-            }),
+            return Object.keys(Status).find(
+              (statusKey) => Status[statusKey as keyof typeof Status] === status,
+            );
+          }),
     };
 
     if (selectedDate) {
@@ -102,7 +102,14 @@ const ManageIssues: React.FC = () => {
         }}
       />
     );
-  }, [selectedPlatforms]);
+  }, [
+    selectedPlatforms,
+    selectedStatuses,
+    selectedDate,
+    selectedSeverity,
+    searchQuery,
+    platforms,
+  ]);
 
   return (
     <PageWrapper>
