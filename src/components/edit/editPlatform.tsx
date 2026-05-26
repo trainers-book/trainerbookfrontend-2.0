@@ -41,15 +41,15 @@ const EditPlatform: React.FC<EditPlatformProps> = ({ platformData, objectCallbac
 
   const getSelectableFields = async () => {
     if (selectableField.length === 0) {
-      const data = await connection.getAllEntities(
+      const fields = await connection.getAllEntities(
         API_Pathes.NEW_FLIGHTS_FIELDS,
       );
 
-      if (data.status === HttpStatusCode.Ok) {
-        setSelectableField(data.data);
+      if (fields.status === HttpStatusCode.Ok) {
+        setSelectableField(fields.data);
 
         setSelectableFieldChecked(
-          data.data.map((field: any) => {
+          fields.data.map((field: any) => {
             if (!field.showFor || !Array.isArray(field.showFor)) {
               return false;
             }
