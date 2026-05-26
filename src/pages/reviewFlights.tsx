@@ -16,17 +16,20 @@ import IssueData, { IssueObjectFromFetch } from "../types/tables/issues";
 const ReviewFlights: React.FC = () => {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedDate, setSelectedDate] = useState<{minDate?: number; maxDate?: number}>({});
+  const [selectedDate, setSelectedDate] = useState<{
+    minDate?: number;
+    maxDate?: number;
+  }>({});
   const [filterChange, setFilterChange] = useState<boolean>(true);
   const [selectedFlightPopup, setSelectedFlightPopup] = useState<
     FlightData | undefined
   >();
   const [selectedFlightMalfs, setSelectedFlightMalfs] = useState<IssueData[]>(
-    []
+    [],
   );
   const { platforms } = usePlatforms();
   const { connection } = useBackend();
-    const [fields, setFields] = useState<string[]>([]);
+  const [fields, setFields] = useState<string[]>([]);
   const [preservedFlights, setPreservedFlights] = useState<any[]>([]);
   const { ls } = useLocalStorage();
 
@@ -34,28 +37,34 @@ const ReviewFlights: React.FC = () => {
     setFilterChange(!filterChange);
   }, [selectedPlatforms, selectedDate]);
 
-  const getMalfsForFlight = async () => {
-    if (!selectedFlightPopup) {
-      return;
-    }
-
-    const response = await connection.getFlightMalfs(
-      selectedFlightPopup!.platform,
-      selectedFlightPopup!._malfNumbers
-    );
-
-    if (response.status == HttpStatusCode.Ok) {
-      setSelectedFlightMalfs(
-        response.data.map((malf: any) => IssueObjectFromFetch(malf))
-      );
-    }
-  };
-
   useEffect(() => {
-    getMalfsForFlight();
+    if (!selectedFlightPopup) {
+      setSelectedFlightMalfs([]);
+    }
   }, [selectedFlightPopup]);
 
-    const getPlatformsAndFilters = () => {
+  const fetchIssuesForFlight = async (flight: FlightData) => {
+  if (!flight) return;
+
+  const response = await connection.getObjectsFilter(
+    "FlightFailure",
+    0,
+    [flight.platform],
+    {
+      flightName: flight.flightName,
+    }
+  );
+
+  if (response.status === HttpStatusCode.Ok) {
+    setSelectedFlightMalfs(
+      (response.data ?? [])
+        .map((issue: any) => IssueObjectFromFetch(issue))
+        .filter((issue: IssueData) => issue.flightName === flight.flightName)
+    );
+  }
+};
+
+  const getPlatformsAndFilters = () => {
     const filters: { minDate?: number; maxDate?: number } = {};
 
     if (selectedDate) {
@@ -66,13 +75,13 @@ const ReviewFlights: React.FC = () => {
       platforms: selectedPlatforms.length == 0 ? platforms : selectedPlatforms,
       filters: filters,
     };
-    };
+  };
 
   const memoTable = useMemo(() => {
     return (
       <InfinateScrollFetch
         properties={Object.keys(new FlightData({})).filter(
-          (property) => !property.includes("_") && property != "dateTime"
+          (property) => !property.includes("_") && property != "dateTime",
         )}
         getRowKey={(row: FlightData) => `${row.flightNumber}`}
         sortFunction={(currentValue, nextValue) =>
@@ -82,6 +91,7 @@ const ReviewFlights: React.FC = () => {
         objectFromFetch={flightObjectFromFetch}
         platformsAndFilters={getPlatformsAndFilters()}
         clickable={(row: FlightData) => {
+          fetchIssuesForFlight(row);
           setSelectedFlightPopup(row);
         }}
       />
@@ -108,7 +118,7 @@ const ReviewFlights: React.FC = () => {
         pilot: field.pilot?.[0]?.name || field.pilot?.name || "",
         navigator: field.navigator?.[0]?.name || field.navigator?.name || "",
         inspector: field.inspector?.[0]?.name || field.inspector?.name || "",
-      }))
+      })),
     );
   };
 
@@ -122,9 +132,11 @@ const ReviewFlights: React.FC = () => {
     setFields(
       data["fields"]
         .filter((field: any) =>
-          field.showFor.some((platform: any) => platforms.includes(t(platform)))
+          field.showFor.some((platform: any) =>
+            platforms.includes(t(platform)),
+          ),
         )
-        .map((field: any) => field.display)
+        .map((field: any) => field.display),
     );
   };
 

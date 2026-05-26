@@ -30,12 +30,14 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
       open={true}
       onClose={handleClose}
       fullWidth={true}
-      maxWidth={flightMalfunctions.length != 0 ? "xl" : undefined}
+      maxWidth={flightMalfunctions.length !== 0 ? "xl" : undefined}
       slotProps={{
         paper: {
           sx: {
             borderRadius: 4,
-            maxHeight: "50vh",
+            maxHeight: "80vh",
+            display: "flex",
+            flexDirection: "column",
           },
         },
       }}
@@ -47,6 +49,7 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
         >
           <CloseIcon />
         </IconButton>
+
         <Grid
           container
           padding={1}
@@ -64,25 +67,33 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
           </Grid>
         </Grid>
       </DialogTitle>
+
       <DialogTitle align="center" variant="body1" sx={{ pt: 2, pb: 0.5 }}>
         {selectedRow.flightName}
       </DialogTitle>
-      <DialogContent>
+
+      <DialogContent
+        sx={{
+          overflowY: "auto",
+        }}
+      >
         <Typography sx={{ fontSize: 18, mb: 1, mr: 5 }}>
           {t("flightNumber")}: {selectedRow.flightNumber}
         </Typography>
+
         <Typography sx={{ fontSize: 18, mb: 1, mr: 5 }}>
           {t("platform")}: {selectedRow.platform}
         </Typography>
+
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
           {Object.keys(selectedRow).map(
             (key) =>
-              key != "flightNumber" &&
-              key != "dateTime" &&
-              key != "startTime" &&
-              key != "flightName" &&
-              key != "issueDescription" &&
-              key != "platform" &&
+              key !== "flightNumber" &&
+              key !== "dateTime" &&
+              key !== "startTime" &&
+              key !== "flightName" &&
+              key !== "issueDescription" &&
+              key !== "platform" &&
               !key.includes("_") && (
                 <Typography
                   key={key}
@@ -93,14 +104,19 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
               )
           )}
         </Box>
+
         <Typography sx={{ fontSize: 18, mr: 5, mt: 2 }}>
           {t("issueDescription")}: {selectedRow.issueDescription}
         </Typography>
-        {flightMalfunctions.length != 0 && (
+
+        {flightMalfunctions.length !== 0 && (
           <Box sx={{ mt: 5 }}>
             <InfinateScrollData
               properties={Object.keys(new IssueData({})).filter(
-                (property) => !property.includes("_") && property != "platform"
+                (property) =>
+                  !property.includes("_") && 
+                  property !== "platform" && 
+                  property !== "flightName" // KEY FIX: Excluded flightName from the table properties
               )}
               data={flightMalfunctions}
               getRowKey={(row: IssueData) => `${row.issueNumber}`}
