@@ -147,8 +147,8 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
     const response = await connection.getNextId(CollectionIds.MALF_ID);
 
     if (response.status === HttpStatusCode.Ok) {
-      const seq = response.data[0].sequenceValue;
-      setIssueId(typeof seq === "number" ? seq : 1);
+      const seq = Number(response.data[0].sequenceValue);
+      setIssueId(isNaN(seq) ? 1 : seq);
     }
   };
 
