@@ -93,20 +93,22 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
   }, [selectedPlatform, connection]);
 
   const fetchPreservedFlights = async () => {
-    const preserved = await connection.getAllPreservedFlights();
-    if (!Array.isArray(preserved)) {
+    const preserved = await connection.getAllEntities(
+      API_Pathes.PRESERVED_FLIGHTS,
+    );
+    if (preserved.status === HttpStatusCode.Ok) {
       setFlightOptions([]);
       return;
     }
 
-    const options = preserved
-      .filter((flight: any) => flight.platform === selectedPlatform[0])
-      .map((flight: any) => flight.name || flight.flightName || "")
-      .filter((name: string) => name)
-      .filter(
-        (name: string, index: number, array: string[]) =>
-          array.indexOf(name) === index,
-      );
+    const options = [
+      ...new Set(
+        preserved.data
+          .filter((flight: any) => flight.platform === selectedPlatform[0])
+          .map((flight: any) => flight.name || flight.flightName)
+          .filter(Boolean),
+      ),
+    ] as string[];
 
     setFlightOptions(options);
     setSelectedFlightName([]);

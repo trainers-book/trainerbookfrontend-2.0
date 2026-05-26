@@ -274,6 +274,7 @@ export enum API_Pathes {
   GET_NEXT_ID = "getNextId",
   MANAGE = "Manage",
   FLIGHT_FAILURE = "FlightFailure",
+  PRESERVED_FLIGHTS = "PreservedFlights",
 }
 
 export enum CollectionIds {
