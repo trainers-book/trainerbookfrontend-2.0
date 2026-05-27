@@ -79,7 +79,7 @@ class Connection {
   async updateEntity(
     collectionName: string,
     object: any,
-    fieldsToRemove = null
+    fieldsToRemove = null,
   ) {
     return axios
       .put(`${this.appUrl}${collectionName}`, object, {
@@ -92,11 +92,8 @@ class Connection {
         return { status: error.response.status, data: error.response.data };
       });
   }
-  
-  async updateAccount(
-    collectionName: string,
-    object: any,
-  ) {
+
+  async updateAccount(collectionName: string, object: any) {
     return axios
       .put(`${this.appUrl}Authentication/${collectionName}`, object)
       .then((response) => {
@@ -106,14 +103,17 @@ class Connection {
         return { status: error.response.status, data: error.response.data };
       });
   }
-  
+
   async updateAccountRole(
     collectionNameFrom: string,
     collectionNameTo: string,
     object: any,
   ) {
     return axios
-      .put(`${this.appUrl}Authentication/${collectionNameFrom}/${collectionNameTo}`, object)
+      .put(
+        `${this.appUrl}Authentication/${collectionNameFrom}/${collectionNameTo}`,
+        object,
+      )
       .then((response) => {
         return { status: response.status, data: response.data };
       })
@@ -121,10 +121,8 @@ class Connection {
         return { status: error.response.status, data: error.response.data };
       });
   }
-  
-  async getNextId(
-    collection: string,
-  ) {
+
+  async getNextId(collection: string) {
     return axios
       .get(`${this.appUrl}${API_Pathes.GET_NEXT_ID}/${collection}`)
       .then((response) => {
@@ -135,12 +133,9 @@ class Connection {
       });
   }
 
-  async deleteObject(
-    collection: string,
-    id: string
-  ) {
+  async deleteObject(collection: string, id: string) {
     return axios
-      .delete(`${this.appUrl}${collection}`, {params: {"_id": id}})
+      .delete(`${this.appUrl}${collection}`, { params: { _id: id } })
       .then((response) => {
         return { status: response.status, data: response.data };
       })
@@ -149,11 +144,9 @@ class Connection {
       });
   }
 
-  async getManageTabs(
-    authenticationLevel: string,
-  ) {
+  async getManageTabs(authenticationLevel: string) {
     return axios
-      .post(`${this.appUrl}${API_Pathes.MANAGE}`, {role: authenticationLevel})
+      .post(`${this.appUrl}${API_Pathes.MANAGE}`, { role: authenticationLevel })
       .then((response) => {
         return { status: response.status, data: response.data };
       })
@@ -162,10 +155,16 @@ class Connection {
       });
   }
 
-  async getObjects(collection: string, index: number, platform: string[]) {        
-    platform = JSON.stringify(platform.map((platformName) => {return {name: platformName}}));    
+  async getObjects(collection: string, index: number, platform: string[]) {
+    platform = JSON.stringify(
+      platform.map((platformName) => {
+        return { name: platformName };
+      }),
+    );
     return axios
-      .get(`${this.appUrl}${collection}/Amount/${index}`, {params: {platform: platform}})
+      .get(`${this.appUrl}${collection}/Amount/${index}`, {
+        params: { platform: platform },
+      })
       .then((response) => {
         return { status: response.status, data: response.data };
       })
@@ -173,10 +172,21 @@ class Connection {
         return { status: error.response.status, data: error.response.data[0] };
       });
   }
+
+  createObject = async (collection: string, data: any) => {
+  return axios.post(`${this.appUrl}${collection}`, data);
+};
+
   
-  async getObjectsFilter(collection: string, index: number, platform: string[], filters: any) {
+
+  async getObjectsFilter(
+    collection: string,
+    index: number,
+    platform: string[],
+    filters: any,
+  ) {
     // filter: {
-    //   date: undefined, 
+    //   date: undefined,
     //   minDate: undefined,
     //   maxDate: undefined,
     //   failureStatus: undefined,
@@ -184,25 +194,31 @@ class Connection {
     //   search: undefined
     // }
     return axios
-      .get(`${this.appUrl}${collection}/getAmountByFilters/${index}`, {params: {platform: platform.map((platformName) => JSON.stringify(platformName)), filters: filters}})
+      .get(`${this.appUrl}${collection}/getAmountByFilters/${index}`, {
+        params: {
+          platform: platform.map((platformName) =>
+            JSON.stringify(platformName),
+          ),
+          filters: filters,
+        },
+      })
       .then((response) => {
         return { status: response.status, data: response.data };
       })
       .catch((error) => {
-        return error
+        return error;
       });
   }
-  
-  async getFlightMalfs(platform: string, ids: number[]) {    
-    return axios
-      .get(`${this.appUrl}flightRelatedMalfs/`, {params: {platform: platform, malfs: JSON.stringify(ids)}})
+
+  async getFlightMalfs(platform: string, ids: number[]) {
+    return axios.get(`${this.appUrl}flightRelatedMalfs/`, {
+      params: { platform: platform, malfs: JSON.stringify(ids) },
+    });
   }
 
   async getAllObjects(entityName: string) {
     try {
-      const response = await fetch(
-        "http://localhost:3002/" + entityName
-      );
+      const response = await fetch("http://localhost:3002/" + entityName);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -212,9 +228,7 @@ class Connection {
 
   async getMPD() {
     try {
-      const response = await fetch(
-        "http://localhost:3002/mpd"
-      );
+      const response = await fetch("http://localhost:3002/mpd");
       const data = await response.json();
       return data;
     } catch (error) {
@@ -222,11 +236,9 @@ class Connection {
     }
   }
 
-  async getAllPilots (){
+  async getAllPilots() {
     try {
-      const response = await fetch(
-        "http://localhost:3002/Pilot"
-      );
+      const response = await fetch("http://localhost:3002/Pilot");
       const data = await response.json();
       return data;
     } catch (error) {
@@ -236,9 +248,7 @@ class Connection {
 
   async getFieldByName(entityName: string) {
     try {
-      const response = await fetch(
-        "http://localhost:3002/" + entityName
-      );
+      const response = await fetch("http://localhost:3002/" + entityName);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -248,9 +258,7 @@ class Connection {
 
   async getAllPreservedFlights() {
     try {
-      const response = await fetch(
-        "http://localhost:3002/PreservedFlights"
-      );
+      const response = await fetch("http://localhost:3002/PreservedFlights");
       const data = await response.json();
       return data;
     } catch (error) {
@@ -260,9 +268,7 @@ class Connection {
 
   async getFlightTableFields() {
     try {
-      const response = await fetch(
-        "http://localhost:3002/documentFields"
-      );
+      const response = await fetch("http://localhost:3002/documentFields");
       const data = await response.json();
       return data;
     } catch (error) {
@@ -272,9 +278,7 @@ class Connection {
 
   async getPermissionsTableFields() {
     try {
-      const response = await fetch(
-        "http://localhost:3002/PermissionsFields"
-      );
+      const response = await fetch("http://localhost:3002/PermissionsFields");
       const data = await response.json();
       return data;
     } catch (error) {
@@ -284,9 +288,7 @@ class Connection {
 
   async getAllPermissions() {
     try {
-      const response = await fetch(
-        "http://localhost:3002/Permissions"
-      );
+      const response = await fetch("http://localhost:3002/Permissions");
       const data = await response.json();
       return data;
     } catch (error) {
@@ -338,7 +340,7 @@ export enum API_Pathes {
   GET_ENTITY_BUT_STRING = "FindEntityByString",
   GET_USER = "getUser",
   GET_NEXT_ID = "getNextId",
-  MANAGE = "Manage"
+  MANAGE = "Manage",
 }
 
 export enum CollectionIds {
