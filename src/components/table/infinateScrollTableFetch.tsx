@@ -49,6 +49,10 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
 
   // ✅ fetch on offset change
   useEffect(() => {
+    setFetching(false);
+  }, [dataToShow]);
+
+  useEffect(() => {
     fetchMoreData();
   }, [offset]);
 
@@ -110,6 +114,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
           return sortFunction ? merged.sort(sortFunction) : merged;
         });
       } else {
+        if (reset) setDataToShow([]);
         setFetchMore(false);
       }
     }
