@@ -22,9 +22,10 @@ import EditAccount from "../../edit/editAccount";
 import EditUser from "../../edit/editUser";
 import EditFlight from "../../edit/editFlight";
 import EditPlatform from "../../edit/editPlatform";
-import { useBackend } from "../../../context/backendContext";
+import { API_Pathes, useBackend } from "../../../context/backendContext";
 import { HttpStatusCode } from "axios";
 import { useLocalStorage } from "../../../context/localStorageContext";
+import ClickedOutside from "../clickedOutside";
 
 interface ManageEditModelProps {
   name: string;
@@ -35,6 +36,7 @@ interface ManageEditModelProps {
   ) => void;
   updateData: (value: boolean) => void;
   updatedData: boolean;
+  onUpdateSuccess?: () => void;
 }
 
 const ManageEditModel: React.FC<ManageEditModelProps> = ({
@@ -44,11 +46,14 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
   currentCollection,
   updateData,
   updatedData,
+  onUpdateSuccess,
 }) => {
   const { t } = useTranslation();
   const { connection } = useBackend();
   const { ls } = useLocalStorage();
   const [submitChanges, setSubmitChanges] = useState(false);
+  const [showConfirmClose, setShowConfirmClose] = useState(false);
+  const [editedData, setEditedData] = useState<any>(manageObject);
 
   const loginAs = (user: UsersAccountData) => {
     const adminLoginDetails = {
@@ -70,14 +75,14 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
   };
 
   const sendDataToUpdate = async (
-    data: UsersAccountData | UsersData | PreservedFlightNameData
+    data: UsersAccountData | UsersData | PreservedFlightNameData | PlatformData,
   ) => {
     if (data.isEqual(manageObject)) {
       return;
     }
 
     let dataToDb;
-    let updateResponse;
+    let updateResponse: { status: number; data?: unknown } | undefined;
 
     if (data instanceof UsersAccountData) {
       dataToDb = {
@@ -128,19 +133,57 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
         "PreservedFlightNames",
         dataToDb
       );
+    } else if (data instanceof PlatformData) {
+      dataToDb = {
+        _id: data._id,
+        name: data.name,
+      };
+      updateResponse = await connection.updateEntity(
+        currentCollection,
+        dataToDb
+      );
+      if (data._modifiedFields && data._modifiedFields.length > 0) {
+        for (const field of data._modifiedFields) {
+          await connection.updateEntity(API_Pathes.NEW_FLIGHTS_FIELDS, field);
+        }
+      }
     }
 
     if (updateResponse && updateResponse.status == HttpStatusCode.Ok) {
+      onUpdateSuccess?.();
       updateData(!updatedData);
       setManageObject(null);
     }
+  };
+
+  const handleSave = () => {
+    sendDataToUpdate(editedData)
+  };
+
+  const handleClose = () => {
+    if (editedData.isEqual(manageObject)) {
+      setManageObject(null);
+      setSubmitChanges(false);
+    } else {
+      setShowConfirmClose(true); 
+    }
+  };
+
+  const handleCancelClose = () => {
+    setShowConfirmClose(false);
+  };
+
+  const handleConfirmClose = () => {
+    setShowConfirmClose(false);
+    setManageObject(null);
+    setSubmitChanges(false);
   };
 
   return (
     <>
       <Dialog
         open={true}
-        onClose={() => setManageObject(null)}
+        onClose={handleClose}
         fullWidth
         slotProps={{
           paper: {
@@ -153,9 +196,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
       >
         <DialogTitle>
           <IconButton
-            onClick={() => {
-              setManageObject(null);
-            }}
+            onClick={handleClose}
             sx={{ position: "absolute", right: 8, top: 8 }}
           >
             <CloseIcon />
@@ -172,12 +213,14 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
               </IconButton>
             </Tooltip>
           )}
-          <DialogTitle align="center" variant="h4">
+          <Box component="div" sx={{ textAlign: "center", mt: 1 }}>
+            <Box component="h4" sx={{ margin: 0 }}>
             {t("changeDetails")} - {t(name)}
-          </DialogTitle>
+            </Box>
+          </Box>
         </DialogTitle>
 
-        <DialogContent sx={{ m: 2 }}>
+        <DialogContent>
           <Box sx={{ pt: 1 }}>
             {manageObject instanceof UsersAccountData && (
               <EditAccount
@@ -203,8 +246,8 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
             )}
             {manageObject instanceof PlatformData && (
               <EditPlatform
-                PlatformData={manageObject}
-                invokeCallback={submitChanges}
+                platformData={manageObject}
+                objectCallback={setEditedData}
               />
             )}
           </Box>
@@ -216,9 +259,8 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
           }}
         >
           <Button
-            onClick={() => {
-              setSubmitChanges(!submitChanges);
-            }}
+            type="button"
+            onClick={handleSave}
             variant="contained"
             sx={{ background: "rgb(114, 156, 240)" }}
           >
@@ -226,6 +268,14 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
           </Button>
         </DialogActions>
       </Dialog>
+
+      <ClickedOutside
+        open={showConfirmClose}
+        onCancel={handleCancelClose}
+        onConfirm={handleConfirmClose}
+        title={t("confirmExit")}
+        content={t("areYouSureYouWantToExit")}
+      />
     </>
   );
 };
