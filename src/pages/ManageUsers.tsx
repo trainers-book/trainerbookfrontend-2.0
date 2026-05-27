@@ -200,6 +200,7 @@ const ManageUsers: React.FC = () => {
 
     if (updateResponse?.status == HttpStatusCode.Ok) {
       setNewData(!newData);
+      window.location.reload();
     }
   };
 
@@ -294,6 +295,9 @@ const ManageUsers: React.FC = () => {
 
     if (data.status == HttpStatusCode.Ok) {
       setNewData(!newData);
+      window.location.reload();
+    } else if (data.status == HttpStatusCode.Conflict) {
+      // add your custom alert that there is a user with this personal number
     }
   };
 
@@ -334,8 +338,6 @@ const ManageUsers: React.FC = () => {
   useEffect(() => {
     fetchServerData();
   }, [newData]);
-
-
 
   return (
     currentTab && (
