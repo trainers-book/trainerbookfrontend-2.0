@@ -37,20 +37,12 @@ const FilterDate: React.FC<FilterDateProps> = ({ width, setDate, isReset }) => {
     setCallback(!callback);
   };
 
-  const handleChange = (event: any) => {
-    const {
-      target: { value },
-    } = event;
-    setDateValue(value);
-    setDate(value);
-  };
-
   useEffect(() => {
     if (isReset) {
       setDateValue(undefined);
       setDate(undefined);
     }
-  }, [isReset, handleChange]);
+  }, [isReset]);
 
   return (
     <CacheProvider value={cacheRtl}>
@@ -79,8 +71,13 @@ const FilterDate: React.FC<FilterDateProps> = ({ width, setDate, isReset }) => {
               <DateRangeIcon sx={{ color: dateValue ? "#5fcced9e" : "" }} />
             }
             onClick={handleClick}
-            disabled
+            onKeyDown={(e) => e.preventDefault()}
+            onMouseDown={(e) => e.preventDefault()}
+            inputProps={{
+              style: { cursor: "pointer" },
+            }}
             InputLabelProps={{
+              shrink: false,
               sx: {
                 top: "-0.6rem",
                 "&.MuiInputLabel-shrink": {
@@ -99,6 +96,7 @@ const FilterDate: React.FC<FilterDateProps> = ({ width, setDate, isReset }) => {
                 borderRadius: 2,
                 pr: 2,
                 pl: 2,
+                pb: 5,
               },
             }}
             anchorOrigin={{
