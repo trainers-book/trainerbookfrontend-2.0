@@ -47,44 +47,36 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   const [offset, setOffset] = useState(0);
   const [dataToShow, setDataToShow] = useState<any[]>([]);
 
-  // ✅ fetch on offset change
+  // Reset fetching lock when state updates with new row elements
   useEffect(() => {
     setFetching(false);
   }, [dataToShow]);
 
+  // Handle standard pagination step changes
   useEffect(() => {
     fetchMoreData();
   }, [offset]);
 
-  // ✅ reset when filters/platforms change
+  // Reset the data collection entirely when layout filters, active platforms, or search terms change
   useEffect(() => {
     setDataToShow([]);
     setOffset(0);
     setFetchMore(true);
     setFetching(false);
 
+    // Forces immediate load of page 0 rather than waiting on async state cycle for offset
     fetchMoreData(0);
-  }, [platformsAndFilters]);
-
-  // ✅ THIS FIXES YOUR SEARCH BUG
-  useEffect(() => {
-    setDataToShow([]);
-    setOffset(0);
-    setFetchMore(true);
-    setFetching(false);
-
-    fetchMoreData(0);
-  }, [searchValue]);
+  }, [platformsAndFilters, searchValue, platforms]);
 
   const fetchMoreData = async (forcedOffset?: number) => {
-    if (platforms.length === 0  || fetching) {
+    if (platforms.length === 0 || fetching) {
       return;
     }
 
     setFetching(true);
 
+    // Safeguard props reading to prevent runtime object mutation breaks
     let safePlatforms = platformsAndFilters?.platforms;
-
     if (!safePlatforms || safePlatforms.length === 0) {
       safePlatforms = platforms;
     }
@@ -103,6 +95,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
 
       if (newFetchedData.length !== 0) {
         setDataToShow((prev) => {
+          // Robust deduplication using primary unique key references instead of raw JavaScript Object Sets
           const existingKeys = new Set(prev.map(getRowKey));
 
           const mapped = newFetchedData
@@ -114,7 +107,6 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
           return sortFunction ? merged.sort(sortFunction) : merged;
         });
       } else {
-        if (reset) setDataToShow([]);
         setFetchMore(false);
       }
     }
@@ -130,6 +122,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
     const children = tableRef.current.childElementCount;
     const target = event.target;
 
+    // Detect if container has scrolled close to bottom thresholds
     if (
       target.scrollTop + target.offsetHeight + tableHeadHeight >=
       tableRowHeight * (children ? children : 1)
