@@ -131,11 +131,7 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
       { platform: selectedPlatform[0] },
     ]);
     if (pilotsByPlatform.status === HttpStatusCode.Ok) {
-    setPilots(
-        pilotsByPlatform.data.map((field: any) => {
-          return field.name;
-        }),
-    );
+      setPilots(pilotsByPlatform.data.map((field: any) =>  field.name));
     }
   };
 
