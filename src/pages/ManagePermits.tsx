@@ -84,6 +84,7 @@ const ManagePermits: React.FC = () => {
               )
             : permits
         }
+        getRowKey={(row: any) => row._id || row.id}
       ></GenericTable>
     </PageWrapper>
   );
