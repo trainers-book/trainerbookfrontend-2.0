@@ -8,7 +8,7 @@ import {
   UsersAccountData,
   UsersData,
 } from "../types/tables/manageTypes";
-import { Box, SvgIcon } from "@mui/material";
+import { Box, SvgIcon, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import SchoolIcon from "@mui/icons-material/School";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
@@ -20,7 +20,7 @@ import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
 import SideBar from "../components/sidebar/sidebar";
 import NewUser from "../components/forms/newUserForm";
 import NewFlight from "../components/forms/newFlightForm";
-import NewPlatform from "../components/forms/newPlatformForm";
+import NewPlatform from "../components/Popup/newPlatform/newPlatform";
 import FilterSearchBar from "../components/Dynamics/filterSearchBar";
 import { useLocalStorage } from "../context/localStorageContext";
 import FlightData from "../types/tables/flight";
@@ -69,7 +69,7 @@ const sortingFunction = (
     currentValue instanceof PlatformData &&
     nextValue instanceof PlatformData
   ) {
-    return Number(currentValue.id) - Number(nextValue.id);
+    return Number(currentValue._id) - Number(nextValue._id);
   } else if (
     currentValue instanceof UsersData &&
     nextValue instanceof UsersData
@@ -92,6 +92,7 @@ const entityToDbEntityFunction = (
 ) => {
   if (entity instanceof PlatformData) {
     return {
+      _id: entity._id,
       name: entity.name,
     };
   } else if (entity instanceof UsersData) {
@@ -133,6 +134,7 @@ const ManageUsers: React.FC = () => {
   const [tabs, setTabs] = useState<Tab[]>([]);
   const [currentTab, setCurrentTab] = useState<Tab>();
   const [search, setSearch] = useState<string>("");
+  const [isNewPlatformOpen, setIsNewPlatformOpen] = useState(false);
 
   useEffect(() => {
     const fetchTabs = async () => {
@@ -335,8 +337,6 @@ const ManageUsers: React.FC = () => {
     fetchServerData();
   }, [newData]);
 
-
-
   return (
     currentTab && (
       <PageWrapper>
@@ -370,7 +370,14 @@ const ManageUsers: React.FC = () => {
                 <NewFlight callback={submitEntity} />
               )}
               {currentTab!.entityType == ManageTypes.PLATFORM && (
-                <NewPlatform callback={submitEntity} />
+                <>
+                  <Button
+                    variant="contained"
+                    onClick={() => setIsNewPlatformOpen(true)}
+                    sx={{ background: "rgb(114,165,240)", mr: 1, mb: 1 }}
+                  >{t("newPlatform")}</Button>
+                  <NewPlatform open={isNewPlatformOpen} onClose={() => setIsNewPlatformOpen(closed)} callback={submitEntity} />
+                </>
               )}
             </Box>
             <GenericTable
@@ -389,6 +396,7 @@ const ManageUsers: React.FC = () => {
               editRow={currentTab.editEntity ? editEntity : undefined}
               lengthOverride={true}
               valuesOverride={true}
+              getRowKey={(row: any) => String(row.id || row.personalNumber || row["!id"] || row._id)}
             />
           </Box>
         </Box>

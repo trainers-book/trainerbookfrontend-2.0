@@ -217,6 +217,17 @@ class Connection {
       });
   }
 
+  async addPlatformToShowFor(collection: string, object: any) {
+    return axios
+      .patch(`${this.appUrl}${collection}`, object)
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
+  }
+
   async getAllObjects(collection: string) {
     return axios
       .get(`${this.appUrl}${collection}`)
@@ -275,10 +286,12 @@ export enum API_Pathes {
   MANAGE = "Manage",
   FLIGHT_FAILURE = "FlightFailure",
   PRESERVED_FLIGHTS = "PreservedFlights",
+  NEW_FLIGHTS_FIELDS = "NewFlightFields",
 }
 
 export enum CollectionIds {
   PRESERVED_FLIGHT_NAME_ID = "PreservedFlightNameId",
   FLIGHT_ID = "FlightId",
   MALF_ID = "MalfunctionId",
+  AIRCRAFT_ID = "AircraftId",
 }

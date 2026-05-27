@@ -89,16 +89,16 @@ export class PreservedFlightNameData {
 }
 
 export class PlatformData {
-  id: number;
+  _id: number;
   name: string;
 
   constructor(name: string, id = 0) {
-    this.id = id;
+    this._id = id;
     this.name = name;
   }
 
   isEqual(platform: PlatformData) {
-    return this.id == platform.id && this.name == platform.name;
+    return this._id == platform._id && this.name == platform.name;
   }
 }
 
