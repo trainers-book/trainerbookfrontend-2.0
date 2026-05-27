@@ -27,6 +27,7 @@ import FlightData from "../types/tables/flight";
 import { API_Pathes, useBackend } from "../context/backendContext";
 import { HttpStatusCode } from "axios";
 import ManageEditModel from "../components/Popup/manageUser/manageEdit";
+import CustomAlert from "../components/Dynamics/CustomAlert";
 
 const sunglassesIcon: React.ReactNode = (
   <SvgIcon>
@@ -134,6 +135,7 @@ const ManageUsers: React.FC = () => {
   const [tabs, setTabs] = useState<Tab[]>([]);
   const [currentTab, setCurrentTab] = useState<Tab>();
   const [search, setSearch] = useState<string>("");
+  const [updateSuccessOpen, setUpdateSuccessOpen] = useState(false);
   const [isNewPlatformOpen, setIsNewPlatformOpen] = useState(false);
 
   useEffect(() => {
@@ -235,7 +237,7 @@ const ManageUsers: React.FC = () => {
         );
       }
     } else if (currentTab!.entityType == ManageTypes.PLATFORM) {
-      setEditPopupObject(new PlatformData(row.name, row.id));
+      setEditPopupObject(new PlatformData(row.name, row._id));
     } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
       setEditPopupObject(
         new PreservedFlightNameData(row.date, row.name, row.platform, row["!id"])
@@ -260,7 +262,7 @@ const ManageUsers: React.FC = () => {
     any
   ): any => {    
     if (currentTab!.entityType == ManageTypes.PLATFORM) {
-      return new PlatformData(entity["name"], Number(entity["_id"]));
+      return new PlatformData(entity["name"], entity["_id"]);
     } else if (currentTab!.entityType == ManageTypes.USERS) {
       return new UsersData(entity["_id"], entity["firstName"], entity["lastName"], entity["platform"].join(", "));
     } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
@@ -396,7 +398,9 @@ const ManageUsers: React.FC = () => {
               editRow={currentTab.editEntity ? editEntity : undefined}
               lengthOverride={true}
               valuesOverride={true}
-              getRowKey={(row: any) => String(row.id || row.personalNumber || row["!id"] || row._id)}
+              getRowKey={(row: any) =>
+                String(row.id || row.personalNumber || row["!id"] || row._id)
+              }
             />
           </Box>
         </Box>
@@ -408,8 +412,15 @@ const ManageUsers: React.FC = () => {
             setManageObject={setEditPopupObject}
             updateData={setNewData}
             updatedData={newData}
+            onUpdateSuccess={() => setUpdateSuccessOpen(true)}
           />
         )}
+        <CustomAlert
+          open={updateSuccessOpen}
+          onClose={() => setUpdateSuccessOpen(false)}
+          message={t("updateSuccess")}
+          severity="success"
+        />
       </PageWrapper>
     )
   );
