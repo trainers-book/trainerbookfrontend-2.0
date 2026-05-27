@@ -62,7 +62,7 @@ const ManagePermits: React.FC = () => {
         platformsAndFilters={getPlatformsAndFilters()}
       />
     );
-  }, [selectedPlatforms]);
+  }, [selectedPlatforms, selectedStatuses, selectedDate]);
 
   return (
     <PageWrapper>
