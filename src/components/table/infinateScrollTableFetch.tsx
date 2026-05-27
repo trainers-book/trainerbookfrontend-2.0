@@ -47,51 +47,56 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   }, [dataToShow]);
 
   useEffect(() => {
-    fetchMoreData();
+    if (offset > 0) {
+      fetchMoreData(false);
+    }
   }, [offset]);
 
   useEffect(() => {
-    fetchMoreData();
-  }, [platforms]);
-
-  useEffect(() => {
-    setDataToShow([]);
     setOffset(0);
     setFetching(false);
-    setFetchMore(true);
-    fetchMoreData();
-  }, [platformsAndFilters]);
+    fetchMoreData(true);
+  }, [platforms, platformsAndFilters]);
 
-  const fetchMoreData = async () => {
-    if (platforms.length == 0 || !fetchMore) {
+  const fetchMoreData = async (reset = false) => {
+    if (platforms.length == 0 || (!fetchMore && !reset)) {
       return;
     }
 
-    if (platformsAndFilters == undefined) {
-      platformsAndFilters = { platforms: platforms, filters: {} };
-    } else if (platformsAndFilters.platforms.length == 0) {
-      platformsAndFilters.platforms = platforms;
+    let currentFilters = platformsAndFilters;
+    if (currentFilters == undefined) {
+      currentFilters = { platforms: platforms, filters: {} };
+    } else if (currentFilters.platforms.length == 0) {
+      currentFilters.platforms = platforms;
     }
+
+    const currentOffset = reset ? 0 : offset;
 
     const newData = await connection.getObjectsFilter(
       fetchCollection,
-      offset * 25,
-      platformsAndFilters.platforms,
-      platformsAndFilters.filters
+      currentOffset * 25,
+      currentFilters.platforms,
+      currentFilters.filters
     );
 
     if (newData.status == HttpStatusCode.Ok) {
       const newFetchedData: any[] = newData.data;
       if (newFetchedData.length != 0) {
-        setDataToShow([
-          ...new Set([
-            ...dataToShow,
-            ...newFetchedData
-              .map((data) => objectFromFetch(data))
-              .sort(sortFunction),
-          ]),
-        ]);
+        const parsed = newFetchedData
+          .map((data) => objectFromFetch(data))
+          .sort(sortFunction);
+
+        setDataToShow((prev) => 
+          reset ? parsed : [
+            ...new Set([
+              ...prev,
+              ...parsed,
+            ]),
+          ]
+        );
+        setFetchMore(true);
       } else {
+        if (reset) setDataToShow([]);
         setFetchMore(false);
       }
     }
