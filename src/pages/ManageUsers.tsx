@@ -179,7 +179,12 @@ const ManageUsers: React.FC = () => {
   const deleteEntity = async (row: any) => {
     let updateResponse;
 
-    if (currentTab!.entityType == ManageTypes.FLIGHT) {
+    if (currentTab!.entityType == ManageTypes.PLATFORM) {      
+      updateResponse = await connection.deleteObject(
+        currentTab!.collection,
+        row["id"]
+      );
+    } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
       updateResponse = await connection.deleteObject(
         currentTab!.collection,
         row["!id"]
