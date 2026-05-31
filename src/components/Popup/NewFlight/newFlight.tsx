@@ -21,6 +21,7 @@ import { usePlatforms } from "../../../context/platformsContext";
 import { useBackend } from "../../../context/backendContext";
 import NewMalfModel from "../newMalf/newMalf";
 import ClickedOutside from "../clickedOutside";
+import FlightData from "../../../types/tables/flight";
 
 const NewFlightModel: React.FC = () => {
   const [show, setShow] = useState(false);
@@ -46,9 +47,14 @@ const NewFlightModel: React.FC = () => {
 
   const [hasChanges, setHasChanges] = useState(false);
 
+  // ✅ NEW: flight number comes from TimerPanel
+  const [flightNumber, setFlightNumber] = useState<number>(0);
+
   const createFlightFields = "CreateFlightFields";
 
   const handleShow = () => setShow(true);
+
+  const [flightTime, setFlightTime] = useState(0);
 
   const resetForm = () => {
     setShow(false);
@@ -60,6 +66,8 @@ const NewFlightModel: React.FC = () => {
     setSelectedField([]);
     setOptions([]);
     setTimerPanelValue(false);
+
+    setFlightNumber(0); // reset
 
     setTouched({
       platform: false,
@@ -89,13 +97,15 @@ const NewFlightModel: React.FC = () => {
     const data = await connection.getAllObjects(createFlightFields);
 
     const filteredFields = data["selectableField"].filter((field: any) =>
-      field.showFor.includes(t(selectedPlatform[0], { lng: "heEn" }))
+      field.showFor.includes(t(selectedPlatform[0], { lng: "heEn" })),
     );
 
     setSelectableField(filteredFields);
 
     setSelectedField(
-      Array(filteredFields.length).fill(null).map(() => [])
+      Array(filteredFields.length)
+        .fill(null)
+        .map(() => []),
     );
 
     const loadedOptions = await Promise.all(
@@ -106,7 +116,7 @@ const NewFlightModel: React.FC = () => {
         }
 
         return field.fieldOptions?.map((v: any) => v.name ?? v) || [];
-      })
+      }),
     );
 
     setOptions(loadedOptions);
@@ -115,9 +125,9 @@ const NewFlightModel: React.FC = () => {
   useEffect(() => {
     setHasChanges(
       selectedPlatform.length > 0 ||
-      flightName.trim().length > 0 ||
-      timerPanelValue ||
-      selectedField.length > 0
+        flightName.trim().length > 0 ||
+        timerPanelValue ||
+        selectedField.length > 0,
     );
   }, [selectedPlatform, flightName, timerPanelValue, selectedField]);
 
@@ -131,11 +141,19 @@ const NewFlightModel: React.FC = () => {
       dynamicFields[field.display] = selectedField[index] || [];
     });
 
-    const flightData = {
+    const flightData: FlightData = {
+      _id: flightNumber.toString(), // Use flight number as ID
       platform: selectedPlatform[0],
       flightName,
+      flightNumber: flightNumber, // ✅ USE FROM TIMER PANEL
       dateTime: new Date(),
-      ...dynamicFields,
+      pilot: dynamicFields["טייס"][0],
+      navigator: dynamicFields["נווט"][0],
+      technician: dynamicFields["טכנאי"][0],
+      observer: dynamicFields["מתצפתת"][0],
+      instructorName: dynamicFields["מדריכה"][0],
+      block: dynamicFields["בלוק"][0],
+      flightTime,
     };
 
     console.log("SAVE:", flightData);
@@ -183,7 +201,6 @@ const NewFlightModel: React.FC = () => {
                 />
               </Stack>
 
-              {/* SAME STYLE — ONLY ADD TEXTFIELD HERE */}
               <Stack spacing={2} padding={1}>
                 <TextField
                   fullWidth
@@ -219,6 +236,8 @@ const NewFlightModel: React.FC = () => {
             <Grid size={4}>
               <TimerPanel
                 onChange={(e) => setTimerPanelValue(e.target.checked)}
+                onFlightNumberChange={setFlightNumber}
+                onFlightTimeChange={setFlightTime}
               />
             </Grid>
           </Grid>

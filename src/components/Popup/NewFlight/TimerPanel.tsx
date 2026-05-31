@@ -3,11 +3,12 @@ import { Grid, Stack, TextField, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import TimerModel from "../../timer/timer";
 import { iafWeekFormat } from "../../../common/iafWeek";
-import { CollectionIds, useBackend } from "../../../context/backendContext";
-import { HttpStatusCode } from "axios";
+import { useBackend } from "../../../context/backendContext";
 
-interface TimerPanel {
+interface TimerPanelProps {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onFlightNumberChange?: (flightNumber: number) => void;
+  onFlightTimeChange?: (flightTime: number) => void;
 }
 
 const formatTime = (totalSeconds: number): string => {
@@ -17,13 +18,19 @@ const formatTime = (totalSeconds: number): string => {
   return `${hrs}:${mins}:${secs}`;
 };
 
-const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
+const TimerPanel: React.FC<TimerPanelProps> = ({
+  onChange,
+  onFlightNumberChange,
+  onFlightTimeChange,
+}) => {
   const { t } = useTranslation();
-  const [seconds, setSeconds] = useState(0);
-  // default to 1 so when there are no preserved flights the next number is 1
-  const [flightNumber, setFlightNumber] = useState<number>(1);
   const { connection } = useBackend();
+
+  const [seconds, setSeconds] = useState(0);
+  const [flightNumber, setFlightNumber] = useState<number>(1);
+
   const currentTime = React.useMemo(() => new Date(), []);
+
   const [time, setTime] = useState(
     currentTime.toLocaleTimeString([], {
       hour: "2-digit",
@@ -32,17 +39,34 @@ const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
     }),
   );
 
-  const fetchNextFlightId = async () => {
-    const response = await connection.getNextId(CollectionIds.FLIGHT_ID);
-
-    if (response.status === HttpStatusCode.Ok) {
-      const seq = response.data[0].sequenceValue;
-      setFlightNumber(typeof seq === "number" ? seq : 1);
-    }
-  };
-
   useEffect(() => {
-    fetchNextFlightId();
+  onFlightTimeChange?.(seconds);
+}, [seconds, onFlightTimeChange]);
+
+  // 🔥 ONLY CHANGE: get max flightNumber ONCE and compute +1
+  useEffect(() => {
+    const fetchMaxFlightNumber = async () => {
+      try {
+        const res = await connection.getAllObjects("PreservedFlights");
+
+        const flights = res?.data || res || [];
+
+        const max = flights.reduce(
+          (acc: number, f: any) => Math.max(acc, Number(f.flightNumber || 0)),
+          0,
+        );
+
+        const nextFlightNumber = max + 1;
+
+        setFlightNumber(nextFlightNumber);
+
+        onFlightNumberChange?.(nextFlightNumber);
+      } catch (err) {
+        setFlightNumber(1);
+      }
+    };
+
+    fetchMaxFlightNumber();
   }, [connection]);
 
   return (
@@ -56,10 +80,7 @@ const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
     >
       <Grid container spacing={2} alignItems="center">
         <Grid size={6}>
-          <Typography
-            variant="subtitle1"
-            sx={{ fontWeight: "bold", textAlign: "right", width: "100%" }}
-          >
+          <Typography sx={{ fontWeight: "bold", textAlign: "right" }}>
             {t("flightNumber")}
           </Typography>
         </Grid>
@@ -70,30 +91,18 @@ const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
 
       <Grid container spacing={2} alignItems="center">
         <Grid size={6}>
-          <Typography
-            variant="subtitle1"
-            sx={{ fontWeight: "bold", textAlign: "right", width: "100%" }}
-          >
+          <Typography sx={{ fontWeight: "bold", textAlign: "right" }}>
             {t("date")}
           </Typography>
         </Grid>
         <Grid size={6}>
-          <Typography>
-            {currentTime.toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "numeric",
-              year: "numeric",
-            })}
-          </Typography>
+          <Typography>{currentTime.toLocaleDateString("en-GB")}</Typography>
         </Grid>
       </Grid>
 
       <Grid container spacing={2} alignItems="center">
         <Grid size={6}>
-          <Typography
-            variant="subtitle1"
-            sx={{ fontWeight: "bold", textAlign: "right", width: "10rem" }}
-          >
+          <Typography sx={{ fontWeight: "bold", textAlign: "right" }}>
             {t("time")}
           </Typography>
         </Grid>
@@ -103,30 +112,14 @@ const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
             size="small"
             value={time}
             onChange={(e) => setTime(e.target.value)}
-            inputProps={{
-              step: 60,
-              style: { direction: "ltr" },
-            }}
-            sx={{
-              "& .MuiInputBase-root": {
-                height: 32,
-                fontSize: "1rem",
-              },
-              "& input": {
-                textAlign: "center",
-                padding: "4px 8px",
-              },
-            }}
             fullWidth
           />
         </Grid>
       </Grid>
+
       <Grid container spacing={2} alignItems="center">
         <Grid size={6}>
-          <Typography
-            variant="subtitle1"
-            sx={{ fontWeight: "bold", textAlign: "right", width: "100%" }}
-          >
+          <Typography sx={{ fontWeight: "bold", textAlign: "right" }}>
             {t("iafWeek")}
           </Typography>
         </Grid>
@@ -134,12 +127,10 @@ const TimerPanel: React.FC<TimerPanel> = ({ onChange }) => {
           <Typography>{iafWeekFormat(new Date())}</Typography>
         </Grid>
       </Grid>
+
       <Grid container spacing={2} alignItems="center">
         <Grid size={6}>
-          <Typography
-            variant="subtitle1"
-            sx={{ fontWeight: "bold", textAlign: "right", width: "100%" }}
-          >
+          <Typography sx={{ fontWeight: "bold", textAlign: "right" }}>
             {t("goTime")}
           </Typography>
         </Grid>

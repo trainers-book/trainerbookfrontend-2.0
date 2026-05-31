@@ -138,7 +138,7 @@ const ManageIssues: React.FC = () => {
             data={issueData}
             tableDataName={t("manageIssues")}
           />
-          <NewMalfModel />
+          <NewMalfModel platformOptions={platforms} />
         </Box>
       </Box>
       {memoTable}

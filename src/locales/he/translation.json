@@ -27,6 +27,7 @@
   "platform": "פלטפורמה",
   "platforms": "פלטפורמות",
   "choosePlatform": "בחר פלטפורמה",
+  "chooseFlight": "בחר שם גיחה",
   "baz": "בז",
   "raam": "רעם",
   "sufa": "סופה",
@@ -169,9 +170,15 @@
   "chooseExpiredDate": "בחר תאריך תפוגה",
   "missingData": "חסר מידע",
   "fillAllFields": "מלא את כל הפרטים במלואם !",
+  "malfSaved": "התקלה נשמרה בהצלחה",
+  "malfSaveError": "לא ניתן לשמור את התקלה",
   "role": "תפקיד",
   "changeDetails": "שינוי פרטים",
+  "newPlatform": "פלטפורמה חדשה",
   "platformId": "מספר פלטפורמה",
   "platformName": "שם פלטפורמה",
-  "idNumber": "מספר מזהה"
+  "idNumber": "מספר מזהה",
+  "updateSuccess": "הפרטים עודכנו בהצלחה",
+  "platformCreationSuccess": "הפלטפורמה נוספה בהצלחה",
+  "platformCreationFailure": "הוספת הפלטפורמה נכשלה"
 }

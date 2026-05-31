@@ -341,9 +341,14 @@ export enum API_Pathes {
   GET_USER = "getUser",
   GET_NEXT_ID = "getNextId",
   MANAGE = "Manage",
+  FLIGHT_FAILURE = "FlightFailure",
+  PRESERVED_FLIGHTS = "PreservedFlights",
+  NEW_FLIGHTS_FIELDS = "NewFlightFields",
 }
 
 export enum CollectionIds {
   PRESERVED_FLIGHT_NAME_ID = "PreservedFlightNameId",
   FLIGHT_ID = "FlightId",
+  MALF_ID = "MalfunctionId",
+  AIRCRAFT_ID = "AircraftId",
 }
