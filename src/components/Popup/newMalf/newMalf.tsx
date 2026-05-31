@@ -96,22 +96,19 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
     const preserved = await connection.getAllEntities(
       API_Pathes.PRESERVED_FLIGHTS,
     );
+
     if (preserved.status === HttpStatusCode.Ok) {
-      setFlightOptions([]);
-      return;
+      const options = [
+        ...new Set(
+          preserved.data
+            .filter((flight: any) => flight.platform === selectedPlatform[0])
+            .map((flight: any) => flight.name || flight.flightName)
+            .filter(Boolean),
+        ),
+      ] as string[];
+
+      setFlightOptions(options);
     }
-
-    const options = [
-      ...new Set(
-        preserved.data
-          .filter((flight: any) => flight.platform === selectedPlatform[0])
-          .map((flight: any) => flight.name || flight.flightName)
-          .filter(Boolean),
-      ),
-    ] as string[];
-
-    setFlightOptions(options);
-    setSelectedFlightName([]);
   };
 
   const handleShow = () => {
@@ -260,13 +257,13 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
           </IconButton>
         </DialogTitle>
         <DialogTitle align="center" variant="h4">
-          {t("newMalf")} 🔨
+          {t("newMalf")} 
         </DialogTitle>
 
         <DialogContent>
           <Grid container justifyContent="center" padding={1}>
             <Grid size={12}>
-              <Stack spacing={2}> (
+              <Stack spacing={2}>
                   <FilterDropdown
                     label={t("choosePlatform")}
                     options={platformOptions}
@@ -275,7 +272,6 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
                     isMultiple={false}
                     width="100%"
                   />
-                )
                 {selectedPlatform.length > 0 && (
                   <FilterDropdown
                     label={t("chooseFlight")}
