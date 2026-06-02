@@ -59,12 +59,10 @@ const excelImage = (
 
 interface ExcelExportProps {
   dataObject: any;
-  data: any[];
   tableDataName: string;
 }
 
 const ExcelExport: React.FC<ExcelExportProps> = ({
-  data,
   dataObject,
   tableDataName,
 }) => {

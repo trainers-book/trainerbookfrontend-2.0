@@ -11,7 +11,6 @@ import { useEffect, useMemo, useState } from "react";
 import FilterIssues from "../components/filterTables/filterIssues";
 import NewMalfModel from "../components/Popup/newMalf/newMalf";
 import ExcelExport from "../components/excel/excelExport";
-import { useIssues } from "../context/issueContext";
 import { useTranslation } from "react-i18next";
 import { usePlatforms } from "../context/platformsContext";
 import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
@@ -30,30 +29,11 @@ const ManageIssues: React.FC = () => {
     IssueData | undefined
   >();
   const { t } = useTranslation();
-  const { issueData } = useIssues();
   const { platforms } = usePlatforms();
 
   useEffect(() => {
     setFilterChange(!filterChange);
   }, [selectedPlatforms, selectedStatuses, selectedSeverity, selectedDate]);
-
-  const getRowClass = (row: IssueData) => {
-    return Object.keys(Status)
-      .filter((value) => Status[value as keyof typeof Status] === row.status)[0]
-      .toLocaleLowerCase();
-  };
-
-  const objectFromFetch = (malf: any) => {
-    return new IssueData({
-      ...malf,
-      dateTime: new Date(malf.dateTime),
-      flightNumber: malf._id,
-      status: Status[malf.failureStatus as keyof typeof Status],
-      issueDescription: malf.failureDetails,
-      issueSeverity: malf.disruption,
-      issueOpener: malf.malfunctionOpener || malf.malfunctionOpener,
-    });
-  };
 
   const getPlatformsAndFilters = () => {
     const filters: {
@@ -134,8 +114,7 @@ const ManageIssues: React.FC = () => {
         />
         <Box sx={{ display: "flex" }}>
           <ExcelExport
-            dataObject={new IssueData({})}
-            data={issueData}
+            dataObject={new IssueData({})} // might need future changes
             tableDataName={t("manageIssues")}
           />
           <NewMalfModel platformOptions={platforms} />
