@@ -238,6 +238,22 @@ class Connection {
         return error;
       });
   }
+
+  async getEntitiesByDate(collection: string, platforms: string[], dateRange: {minDate: Date, maxDate: Date}) {
+    return axios
+      .get(`${this.appUrl}${collection}/GetByDatesRange`, {
+        params: {
+          platform: platforms,
+          dateRange: JSON.stringify(dateRange),
+        },
+      })
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return error;
+      });
+  }
 }
 
 interface BackendContextType {
