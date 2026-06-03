@@ -1,20 +1,47 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import { Button, Grid, Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 interface TimerModelProps {
   onTick?: (seconds: number) => void;
   label: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  resetKey?: number;
 }
 
-const TimerModel: React.FC<TimerModelProps> = ({ onTick, label, onChange }) => {
+const TimerModel: React.FC<TimerModelProps> = ({
+  onTick,
+  label,
+  onChange,
+  resetKey,
+}) => {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [isPause, setPause] = useState(false);
   const [isReset, setReset] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const onTickRef = useRef(onTick);
+  const onChangeRef = useRef(onChange);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    onTickRef.current = onTick;
+    onChangeRef.current = onChange;
+  }, [onTick, onChange]);
+
+  useEffect(() => {
+    if (resetKey === undefined) return;
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = null;
+    setIsRunning(false);
+    setPause(false);
+    setReset(true);
+    setSeconds(0);
+    onTickRef.current?.(0);
+    onChangeRef.current?.({
+      target: { checked: false },
+    } as ChangeEvent<HTMLInputElement>);
+  }, [resetKey]);
 
   useEffect(() => {
     if (isRunning) {
@@ -73,39 +100,35 @@ const TimerModel: React.FC<TimerModelProps> = ({ onTick, label, onChange }) => {
     }, 1000);
   };
 
+  const buttonSx = {
+    minWidth: 62,
+    height: 36,
+    whiteSpace: "nowrap",
+    px: 1.5,
+  };
+
   return (
-    <Stack spacing={1} direction="row">
+    <Stack
+      spacing={1}
+      direction="row"
+      sx={{
+        alignItems: "center",
+        flexWrap: "nowrap",
+        "& .MuiButton-root": buttonSx,
+      }}
+    >
       {!isRunning && !isPause ? (
-        <Stack direction="row" spacing={2}>
-          <Grid size={18}>
-            <Button variant="contained" color="success" onClick={start}>
-              {label}
-            </Button>
-          </Grid>
+        <Stack
+          direction="row"
+          sx={{
+            flexWrap: "nowrap",
+            gap: "4px",
+          }}
+        >
+          <Button variant="contained" color="success" onClick={start}>
+            {label}
+          </Button>
           {!isRunning && seconds > 0 && (
-            <Grid size={7}>
-              <Button
-                variant="contained"
-                sx={{ background: "rgba(128, 128, 128, 1)" }}
-                onClick={reset}
-              >
-                {t("clear")}
-              </Button>
-            </Grid>
-          )}
-        </Stack>
-      ) : (
-        <Stack direction="row" spacing={1}>
-          <Grid size={5}>
-            <Button
-              variant="contained"
-              sx={{ background: "rgba(46, 45, 45, 1)" }}
-              onClick={isPause ? resume : pause}
-            >
-              {isPause ? t("resume") : t("stop")}
-            </Button>
-          </Grid>
-          <Grid size={4.5}>
             <Button
               variant="contained"
               sx={{ background: "rgba(128, 128, 128, 1)" }}
@@ -113,12 +136,33 @@ const TimerModel: React.FC<TimerModelProps> = ({ onTick, label, onChange }) => {
             >
               {t("clear")}
             </Button>
-          </Grid>
-          <Grid size={4.5}>
-            <Button variant="contained" color="error" onClick={stop}>
-              {t("done")}
-            </Button>
-          </Grid>
+          )}
+        </Stack>
+      ) : (
+        <Stack
+          direction="row"
+          sx={{
+            flexWrap: "nowrap",
+            gap: "4px",
+          }}
+        >
+          <Button
+            variant="contained"
+            sx={{ background: "rgba(46, 45, 45, 1)" }}
+            onClick={isPause ? resume : pause}
+          >
+            {isPause ? t("resume") : t("stop")}
+          </Button>
+          <Button
+            variant="contained"
+            sx={{ background: "rgba(128, 128, 128, 1)" }}
+            onClick={reset}
+          >
+            {t("clear")}
+          </Button>
+          <Button variant="contained" color="error" onClick={stop}>
+            {t("done")}
+          </Button>
         </Stack>
       )}
     </Stack>

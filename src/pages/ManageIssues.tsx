@@ -15,7 +15,7 @@ import { useIssues } from "../context/issueContext";
 import { useTranslation } from "react-i18next";
 import { usePlatforms } from "../context/platformsContext";
 import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
-import Information from "../components/Popup/information/information";
+import IssueInformation from "../components/Popup/information/issueInformation";
 
 const ManageIssues: React.FC = () => {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
@@ -29,6 +29,7 @@ const ManageIssues: React.FC = () => {
   const [selectedIssuePopup, setSelectedIssuePopup] = useState<
     IssueData | undefined
   >();
+  const [externalUpdate, setExternalUpdate] = useState<any>(null);
   const { t } = useTranslation();
   const { issueData } = useIssues();
   const { platforms } = usePlatforms();
@@ -68,7 +69,7 @@ const ManageIssues: React.FC = () => {
     return (
       <InfinateScrollFetch
         properties={Object.keys(new IssueData({})).filter(
-          (property) => !property.includes("_"),
+          (property) => !property.includes("_") && property !== "goTime",
         )}
         getRowKey={(row: IssueData) => `${row.issueNumber}`}
         sortFunction={(currentValue, nextValue) =>
@@ -79,6 +80,7 @@ const ManageIssues: React.FC = () => {
         color={true}
         objectFromFetch={IssueObjectFromFetch}
         platformsAndFilters={getPlatformsAndFilters()}
+        externalUpdate={externalUpdate}
         clickable={(row: IssueData) => {
           setSelectedIssuePopup(row);
         }}
@@ -91,6 +93,8 @@ const ManageIssues: React.FC = () => {
     selectedSeverity,
     searchQuery,
     platforms,
+    filterChange,
+    externalUpdate,
   ]);
 
   return (
@@ -125,10 +129,21 @@ const ManageIssues: React.FC = () => {
       </Box>
       {memoTable}
       {selectedIssuePopup && (
-        <Information
+        <IssueInformation
           isOpen={selectedIssuePopup != undefined}
           selectedRow={selectedIssuePopup}
           onClose={() => setSelectedIssuePopup(undefined)}
+          onSave={(updated: any) => {
+            try {
+              const mapped = IssueObjectFromFetch(updated);
+              setExternalUpdate(mapped);
+              setSelectedIssuePopup(mapped);
+            } catch {
+              setSelectedIssuePopup(updated as any);
+              setExternalUpdate(updated);
+            }
+            setFilterChange(!filterChange);
+          }}
         />
       )}
     </PageWrapper>

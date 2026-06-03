@@ -1,11 +1,11 @@
 import "./table.css";
 import "../../i18n";
 import React, { useEffect, useRef, useState } from "react";
-import IssueData from "../../types/tables/issues";
 import { useBackend } from "../../context/backendContext";
 import { usePlatforms } from "../../context/platformsContext";
 import { HttpStatusCode } from "axios";
 import GenericTable from "./table";
+import IssueData from "../../types/tables/issues";
 import PermitData from "../../types/tables/permits";
 
 interface InfinateScrollFetchProps {
@@ -22,6 +22,7 @@ interface InfinateScrollFetchProps {
   clickable?: (row: any) => void;
   lengthOverride?: boolean;
   valuesOverride?: boolean;
+  externalUpdate?: any;
 }
 
 const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
@@ -38,6 +39,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   clickable,
   lengthOverride,
   valuesOverride,
+  externalUpdate,
 }) => {
   const tableRowHeight = 82;
   const tableHeadHeight = 56.5;
@@ -48,6 +50,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   const [fetchMore, setFetchMore] = useState<boolean>(true);
   const [offset, setOffset] = useState(0);
   const [dataToShow, setDataToShow] = useState<any[]>([]);
+  const prevExternalRef = useRef<any>(null);
 
   useEffect(() => {
     setFetching(false);
@@ -59,7 +62,47 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
     }
   }, [offset]);
 
-    useEffect(() => {
+  useEffect(() => {
+    if (!externalUpdate) return;
+
+    if (prevExternalRef.current === externalUpdate) return;
+
+    prevExternalRef.current = externalUpdate;
+
+    setDataToShow((prev) => {
+      const key = getRowKey(externalUpdate);
+      const id = prev.findIndex((row) => getRowKey(row) === key);
+      if (id >= 0) {
+        const copy = prev.slice();
+        copy[id] = externalUpdate;
+        return copy;
+      }
+
+      return [externalUpdate, ...prev];
+    });
+  }, [externalUpdate]);
+
+  useEffect(() => {
+    if (!externalUpdate) return;
+
+    if (prevExternalRef.current === externalUpdate) return;
+
+    prevExternalRef.current = externalUpdate;
+
+    setDataToShow((prev) => {
+      const key = getRowKey(externalUpdate);
+      const id = prev.findIndex((row) => getRowKey(row) === key);
+      if (id >= 0) {
+        const copy = prev.slice();
+        copy[id] = externalUpdate;
+        return copy;
+      }
+
+      return [externalUpdate, ...prev];
+    });
+  }, [externalUpdate]);
+
+  useEffect(() => {
     fetchMoreData(true);
   }, [platforms]);
 
