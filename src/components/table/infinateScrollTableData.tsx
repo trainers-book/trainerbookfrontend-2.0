@@ -1,19 +1,17 @@
 import "./table.css";
 import "../../i18n";
 import React, { useEffect, useRef, useState } from "react";
-import IssueData from "../../types/tables/issues";
 import GenericTable from "./table";
-import FlightData from "../../types/tables/flight";
 
 interface InfinateScrollDataProps {
   properties: string[];
   data: any[];
   getRowKey: (row: any) => string;
   sortFunction?: (val: any, nexVal: any) => number;
-  getRowClass?: (row: IssueData) => string;
+  getRowClass?: (row: any) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
-  clickable?: (row: IssueData | FlightData) => void;
+  clickable?: (row: any) => void;
   noHeight?: boolean;
 }
 

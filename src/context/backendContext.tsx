@@ -156,14 +156,14 @@ class Connection {
   }
 
   async getObjects(collection: string, index: number, platform: string[]) {
-    platform = JSON.stringify(
+    const platformParam = JSON.stringify(
       platform.map((platformName) => {
         return { name: platformName };
       }),
     );
     return axios
       .get(`${this.appUrl}${collection}/Amount/${index}`, {
-        params: { platform: platform },
+        params: { platform: platformParam },
       })
       .then((response) => {
         return { status: response.status, data: response.data };
@@ -217,9 +217,31 @@ class Connection {
       });
   }
 
+  async addPlatformToShowFor(collection: string, object: any) {
+    return axios
+      .patch(`${this.appUrl}${collection}`, object)
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
+  }
+
   async getAllObjects(collection: string) {
     return axios
       .get(`${this.appUrl}${collection}`)
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return error;
+      });
+  }
+
+  async getFailureDetails() {
+    return axios
+      .get(`${this.appUrl}${API_Pathes.FAILURE_DETAILS}`)
       .then((response) => {
         return { status: response.status, data: response.data };
       })
@@ -275,10 +297,13 @@ export enum API_Pathes {
   MANAGE = "Manage",
   FLIGHT_FAILURE = "FlightFailure",
   PRESERVED_FLIGHTS = "PreservedFlights",
+  NEW_FLIGHTS_FIELDS = "NewFlightFields",
+  FAILURE_DETAILS = "FailureDetails",
 }
 
 export enum CollectionIds {
   PRESERVED_FLIGHT_NAME_ID = "PreservedFlightNameId",
   FLIGHT_ID = "FlightId",
   MALF_ID = "MalfunctionId",
+  AIRCRAFT_ID = "AircraftId",
 }
