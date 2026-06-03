@@ -1,7 +1,6 @@
 import "./table.css";
 import "../../i18n";
 import React, { useEffect, useRef, useState } from "react";
-import IssueData from "../../types/tables/issues";
 import { useBackend } from "../../context/backendContext";
 import { usePlatforms } from "../../context/platformsContext";
 import { HttpStatusCode } from "axios";
@@ -12,12 +11,13 @@ interface InfinateScrollFetchProps {
   fetchCollection: string;
   getRowKey: (row: any) => string;
   sortFunction?: (val: any, nexVal: any) => number;
-  getRowClass?: (row: IssueData) => string;
+  getRowClass?: (row: any) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
   platformsAndFilters: { platforms: string[]; filters: any };
   objectFromFetch: (data: any) => any;
   clickable?: (row: any) => void;
+  externalUpdate?: any;
 }
 
 const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
@@ -31,6 +31,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   objectFromFetch,
   platformsAndFilters,
   clickable,
+  externalUpdate,
 }) => {
   const tableRowHeight = 82;
   const tableHeadHeight = 56.5;
@@ -41,57 +42,83 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   const [fetchMore, setFetchMore] = useState<boolean>(true);
   const [offset, setOffset] = useState(0);
   const [dataToShow, setDataToShow] = useState<any[]>([]);
+  const prevExternalRef = useRef<any>(null);
 
   useEffect(() => {
     setFetching(false);
   }, [dataToShow]);
 
   useEffect(() => {
-    fetchMoreData();
+    if (offset > 0) {
+      fetchMoreData(false);
+    }
   }, [offset]);
 
   useEffect(() => {
-    fetchMoreData();
-  }, [platforms]);
+    if (!externalUpdate) return;
+
+    if (prevExternalRef.current === externalUpdate) return;
+
+    prevExternalRef.current = externalUpdate;
+
+    setDataToShow((prev) => {
+      const key = getRowKey(externalUpdate);
+      const id = prev.findIndex((row) => getRowKey(row) === key);
+      if (id >= 0) {
+        const copy = prev.slice();
+        copy[id] = externalUpdate;
+        return copy;
+      }
+
+      return [externalUpdate, ...prev];
+    });
+  }, [externalUpdate]);
 
   useEffect(() => {
-    setDataToShow([]);
     setOffset(0);
     setFetching(false);
-    setFetchMore(true);
-    fetchMoreData();
-  }, [platformsAndFilters]);
+    fetchMoreData(true);
+  }, [platforms, platformsAndFilters]);
 
-  const fetchMoreData = async () => {
-    if (platforms.length == 0 || !fetchMore) {
+  const fetchMoreData = async (reset = false) => {
+    if (platforms.length == 0 || (!fetchMore && !reset)) {
       return;
     }
 
-    if (platformsAndFilters == undefined) {
-      platformsAndFilters = { platforms: platforms, filters: {} };
-    } else if (platformsAndFilters.platforms.length == 0) {
-      platformsAndFilters.platforms = platforms;
+    let currentFilters = platformsAndFilters;
+    if (currentFilters == undefined) {
+      currentFilters = { platforms: platforms, filters: {} };
+    } else if (currentFilters.platforms.length == 0) {
+      currentFilters.platforms = platforms;
     }
+
+    const currentOffset = reset ? 0 : offset;
 
     const newData = await connection.getObjectsFilter(
       fetchCollection,
-      offset * 25,
-      platformsAndFilters.platforms,
-      platformsAndFilters.filters
+      currentOffset * 25,
+      currentFilters.platforms,
+      currentFilters.filters
     );
 
     if (newData.status == HttpStatusCode.Ok) {
       const newFetchedData: any[] = newData.data;
       if (newFetchedData.length != 0) {
-        setDataToShow([
-          ...new Set([
-            ...dataToShow,
-            ...newFetchedData
-              .map((data) => objectFromFetch(data))
-              .sort(sortFunction),
-          ]),
-        ]);
+        const parsed = newFetchedData
+          .map((data) => objectFromFetch(data))
+          .sort(sortFunction);
+
+        setDataToShow((prev) => 
+          reset ? parsed : [
+            ...new Set([
+              ...prev,
+              ...parsed,
+            ]),
+          ]
+        );
+        setFetchMore(true);
       } else {
+        if (reset) setDataToShow([]);
         setFetchMore(false);
       }
     }

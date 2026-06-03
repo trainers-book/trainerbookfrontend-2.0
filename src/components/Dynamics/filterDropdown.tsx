@@ -25,9 +25,16 @@ const MenuProps = {
   },
 };
 
+interface OptionItem {
+  value: string;
+  label: string;
+}
+
+type Option = string | OptionItem;
+
 interface FilterDropdownProps {
   label: string;
-  options: string[];
+  options: Option[];
   selected: string[];
   setSelected: (values: string[]) => void;
   isMultiple: boolean;
@@ -39,6 +46,7 @@ interface FilterDropdownProps {
   touched?: boolean;
   error?: string;
   errorColor?: boolean;
+  disabled?: boolean;
 }
 
 const cacheRtl = createCache({
@@ -57,16 +65,11 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   touched,
   error,
   onBlur,
-  errorColor
+  errorColor,
+  disabled,
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    if (options.length == 1 && selected.length == 0) {
-      setSelected(options);
-    }
-  });
 
   useEffect(() => {
     if (isReset) {
@@ -119,34 +122,42 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
                 }
               }}
               input={<OutlinedInput label={label} />}
-              renderValue={(selected) =>
-                selected.length === 1
-                  ? selected[0]
-                  : selected.length > 1
-                    ? `${t("selected")}: ${selected.length}`
-                    : ""
-              }
+              renderValue={(selected) => {
+                if (selected.length === 1 && options.length > 0) {
+                  const val = selected[0];
+                  const matchedOption = options.find((option: Option) =>
+                    typeof option === "string" ? option === val : option.value === val,
+                  );
+                  if (matchedOption) return typeof matchedOption === "string" ? matchedOption : matchedOption.label;
+                  return val;
+                }
+                return selected.length > 1 ? `${t("selected")}: ${selected.length}` : "";
+              }}
               MenuProps={MenuProps}
-              disabled={options.length == 1}
+              disabled={disabled ?? options.length == 1}
               sx={{
                 height: 36,
                 borderRadius: 2,
                 boxShadow: "0 1px 2px rgba(0, 0, 0, 0.2)",
               }}
             >
-              {options.map((option: string) => (
-                <MenuItem
-                  key={option}
-                  value={option}
-                  style={{
-                    fontWeight: selected.includes(option)
-                      ? theme.typography.fontWeightBold
-                      : theme.typography.fontWeightRegular,
-                  }}
-                >
-                  {option}
-                </MenuItem>
-              ))}
+              {options.map((option: Option) => {
+                const val = typeof option === "string" ? option : option.value;
+                const labelText = typeof option === "string" ? option : option.label;
+                return (
+                  <MenuItem
+                    key={val}
+                    value={val}
+                    style={{
+                      fontWeight: selected.includes(val)
+                        ? theme.typography.fontWeightBold
+                        : theme.typography.fontWeightRegular,
+                    }}
+                  >
+                    {labelText}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
         </div>

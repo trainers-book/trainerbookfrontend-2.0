@@ -23,6 +23,7 @@ interface GridDatePickerProps {
   smallestHeight?: boolean;
   firstDate?: Date;
   lastDate?: Date;
+  minDate?: Date;
 }
 
 const GridDatePicker: React.FC<GridDatePickerProps> = ({
@@ -36,6 +37,7 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
   smallestHeight,
   firstDate = null,
   lastDate = null,
+  minDate,
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
@@ -120,6 +122,7 @@ const GridDatePicker: React.FC<GridDatePickerProps> = ({
 
   const onDateClick = (day: number) => {
     let selectedDate = new Date(year, month - 1, day);
+    
     if (day == 0 || (minDate != undefined && selectedDate < minDate)) {
       return;
     }

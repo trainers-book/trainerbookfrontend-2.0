@@ -89,16 +89,22 @@ export class PreservedFlightNameData {
 }
 
 export class PlatformData {
-  id: number;
+  _id: number;
   name: string;
+  _modifiedFields: any[];
 
-  constructor(name: string, id = 0) {
-    this.id = id;
+  constructor(name: string, id = 0, modifiedFields: any[] = []) {
+    this._id = id;
     this.name = name;
+    this._modifiedFields = modifiedFields;
   }
 
   isEqual(platform: PlatformData) {
-    return this.id == platform.id && this.name == platform.name;
+    return (
+      this._id === platform._id &&
+      this.name === platform.name &&
+      this._modifiedFields.length === 0
+    );
   }
 }
 

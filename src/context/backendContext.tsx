@@ -79,7 +79,7 @@ class Connection {
   async updateEntity(
     collectionName: string,
     object: any,
-    fieldsToRemove = null
+    fieldsToRemove = null,
   ) {
     return axios
       .put(`${this.appUrl}${collectionName}`, object, {
@@ -92,11 +92,8 @@ class Connection {
         return { status: error.response.status, data: error.response.data };
       });
   }
-  
-  async updateAccount(
-    collectionName: string,
-    object: any,
-  ) {
+
+  async updateAccount(collectionName: string, object: any) {
     return axios
       .put(`${this.appUrl}Authentication/${collectionName}`, object)
       .then((response) => {
@@ -106,14 +103,17 @@ class Connection {
         return { status: error.response.status, data: error.response.data };
       });
   }
-  
+
   async updateAccountRole(
     collectionNameFrom: string,
     collectionNameTo: string,
     object: any,
   ) {
     return axios
-      .put(`${this.appUrl}Authentication/${collectionNameFrom}/${collectionNameTo}`, object)
+      .put(
+        `${this.appUrl}Authentication/${collectionNameFrom}/${collectionNameTo}`,
+        object,
+      )
       .then((response) => {
         return { status: response.status, data: response.data };
       })
@@ -121,10 +121,8 @@ class Connection {
         return { status: error.response.status, data: error.response.data };
       });
   }
-  
-  async getNextId(
-    collection: string,
-  ) {
+
+  async getNextId(collection: string) {
     return axios
       .get(`${this.appUrl}${API_Pathes.GET_NEXT_ID}/${collection}`)
       .then((response) => {
@@ -135,12 +133,9 @@ class Connection {
       });
   }
 
-  async deleteObject(
-    collection: string,
-    id: string
-  ) {
+  async deleteObject(collection: string, id: string) {
     return axios
-      .delete(`${this.appUrl}${collection}`, {params: {"_id": id}})
+      .delete(`${this.appUrl}${collection}`, { params: { _id: id } })
       .then((response) => {
         return { status: response.status, data: response.data };
       })
@@ -149,11 +144,9 @@ class Connection {
       });
   }
 
-  async getManageTabs(
-    authenticationLevel: string,
-  ) {
+  async getManageTabs(authenticationLevel: string) {
     return axios
-      .post(`${this.appUrl}${API_Pathes.MANAGE}`, {role: authenticationLevel})
+      .post(`${this.appUrl}${API_Pathes.MANAGE}`, { role: authenticationLevel })
       .then((response) => {
         return { status: response.status, data: response.data };
       })
@@ -162,10 +155,16 @@ class Connection {
       });
   }
 
-  async getObjects(collection: string, index: number, platform: string[]) {        
-    platform = JSON.stringify(platform.map((platformName) => {return {name: platformName}}));    
+  async getObjects(collection: string, index: number, platform: string[]) {
+    platform = JSON.stringify(
+      platform.map((platformName) => {
+        return { name: platformName };
+      }),
+    );
     return axios
-      .get(`${this.appUrl}${collection}/Amount/${index}`, {params: {platform: platform}})
+      .get(`${this.appUrl}${collection}/Amount/${index}`, {
+        params: { platform: platform },
+      })
       .then((response) => {
         return { status: response.status, data: response.data };
       })
@@ -173,10 +172,15 @@ class Connection {
         return { status: error.response.status, data: error.response.data[0] };
       });
   }
-  
-  async getObjectsFilter(collection: string, index: number, platform: string[], filters: any) {
+
+  async getObjectsFilter(
+    collection: string,
+    index: number,
+    platform: string[],
+    filters: any,
+  ) {
     // filter: {
-    //   date: undefined, 
+    //   date: undefined,
     //   minDate: undefined,
     //   maxDate: undefined,
     //   failureStatus: undefined,
@@ -184,20 +188,38 @@ class Connection {
     //   search: undefined
     // }
     return axios
-      .get(`${this.appUrl}${collection}/getAmountByFilters/${index}`, {params: {platform: platform.map((platformName) => JSON.stringify(platformName)), filters: filters}})
+      .get(`${this.appUrl}${collection}/getAmountByFilters/${index}`, {
+        params: {
+          platform: platform.map((platformName) =>
+            JSON.stringify(platformName),
+          ),
+          filters: filters,
+        },
+      })
       .then((response) => {
         return { status: response.status, data: response.data };
       })
       .catch((error) => {
-        return error
+        return error;
       });
   }
-  
-  async getFlightMalfs(platform: string, ids: number[]) {    
+
+  async getFlightMalfs(platform: string, ids: number[]) {
     return axios
-      .get(`${this.appUrl}${collection}/platform`, {
-        params: { platform: JSON.stringify(platform) },
+      .get(`${this.appUrl}flightRelatedMalfs/`, {
+        params: { platform: platform, malfs: JSON.stringify(ids) },
       })
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return error;
+      });
+  }
+
+  async addPlatformToShowFor(collection: string, object: any) {
+    return axios
+      .patch(`${this.appUrl}${collection}`, object)
       .then((response) => {
         return { status: response.status, data: response.data };
       })
@@ -206,7 +228,17 @@ class Connection {
       });
   }
 
-  async getEntityByPlatform(collection: string, platform: any) {
+  async getAllObjects(collection: string) {
+    return axios
+      .get(`${this.appUrl}${collection}`)
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return error;
+      });
+  }
+   async getEntityByPlatform(collection: string, platform: any) {
     return axios
       .get(`${this.appUrl}${collection}/platform`, {
         params: { platform: JSON.stringify(platform) },
@@ -217,7 +249,7 @@ class Connection {
       .catch((error) => {
         return { status: error.response.status, data: error.response.data };
       });
-  }
+    }
 }
 
 interface BackendContextType {
@@ -265,6 +297,8 @@ export enum API_Pathes {
   GET_NEXT_ID = "getNextId",
   MANAGE = "Manage",
   FLIGHT_FAILURE = "FlightFailure",
+  PRESERVED_FLIGHTS = "PreservedFlights",
+  NEW_FLIGHTS_FIELDS = "NewFlightFields",
   NEW_FLIGHT_FIELDS = "NewFlightFields",
   MALAM_ENTITIES = "MalamEntities"
 }
@@ -272,4 +306,6 @@ export enum API_Pathes {
 export enum CollectionIds {
   PRESERVED_FLIGHT_NAME_ID = "PreservedFlightNameId",
   FLIGHT_ID = "FlightId",
+  MALF_ID = "MalfunctionId",
+  AIRCRAFT_ID = "AircraftId",
 }
