@@ -1,7 +1,6 @@
 import "./table.css";
 import "../../i18n";
 import React, { useEffect, useRef, useState } from "react";
-import IssueData from "../../types/tables/issues";
 import { useBackend } from "../../context/backendContext";
 import { usePlatforms } from "../../context/platformsContext";
 import { HttpStatusCode } from "axios";
@@ -12,12 +11,13 @@ interface InfinateScrollFetchProps {
   fetchCollection: string;
   getRowKey: (row: any) => string;
   sortFunction?: (val: any, nexVal: any) => number;
-  getRowClass?: (row: IssueData) => string;
+  getRowClass?: (row: any) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
   platformsAndFilters: { platforms: string[]; filters: any };
   objectFromFetch: (data: any) => any;
   clickable?: (row: any) => void;
+  externalUpdate?: any;
 }
 
 const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
@@ -31,6 +31,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   objectFromFetch,
   platformsAndFilters,
   clickable,
+  externalUpdate,
 }) => {
   const tableRowHeight = 82;
   const tableHeadHeight = 56.5;
@@ -41,6 +42,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   const [fetchMore, setFetchMore] = useState<boolean>(true);
   const [offset, setOffset] = useState(0);
   const [dataToShow, setDataToShow] = useState<any[]>([]);
+  const prevExternalRef = useRef<any>(null);
 
   useEffect(() => {
     setFetching(false);
@@ -51,6 +53,26 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
       fetchMoreData(false);
     }
   }, [offset]);
+
+  useEffect(() => {
+    if (!externalUpdate) return;
+
+    if (prevExternalRef.current === externalUpdate) return;
+
+    prevExternalRef.current = externalUpdate;
+
+    setDataToShow((prev) => {
+      const key = getRowKey(externalUpdate);
+      const id = prev.findIndex((row) => getRowKey(row) === key);
+      if (id >= 0) {
+        const copy = prev.slice();
+        copy[id] = externalUpdate;
+        return copy;
+      }
+
+      return [externalUpdate, ...prev];
+    });
+  }, [externalUpdate]);
 
   useEffect(() => {
     setOffset(0);
