@@ -17,8 +17,11 @@ export default class IssueData {
   _closedTime: Date | undefined;
   _fixPeriod: Date | string | undefined;
   _isVerified: string | boolean | undefined;
+  _isAirborneComponent: boolean | undefined;
   _maintenanceActions: string | undefined;
   _malfSystem: string | undefined;
+  _malfClassification: string | undefined;
+  goTime: number;
   _operator: string | undefined;
   _responsibleFactor: string | undefined;
 
@@ -38,8 +41,11 @@ export default class IssueData {
     closedTime = undefined,
     fixPeriod = undefined,
     isVerified = undefined,
+    isAirborneComponent = undefined,
     maintenanceActions = undefined,
     malfSystem = undefined,
+    malfClassification = undefined,
+    goTime = 0,
     operator = undefined,
     responsibleFactor = undefined,
   }) {
@@ -58,8 +64,11 @@ export default class IssueData {
     this._closedTime = closedTime;
     this._fixPeriod = fixPeriod;
     this._isVerified = isVerified;
+    this._isAirborneComponent = isAirborneComponent;
     this._maintenanceActions = maintenanceActions;
     this._malfSystem = malfSystem;
+    this._malfClassification = malfClassification;
+    this.goTime = goTime;
     this._operator = operator;
     this._responsibleFactor = responsibleFactor;
   }
@@ -72,7 +81,7 @@ export const IssueObjectFromFetch = (malf: any) => {
     issueNumber: malf._id,
     status: Status[malf.status as keyof typeof Status],
     issueDescription: malf.issueDescription,
-    issueSeverity: malf.issueSeverity,
+    issueSeverity: Severity[malf.issueSeverity as keyof typeof Severity],
     issueOpener: malf.issueOpener,
   });
 };
