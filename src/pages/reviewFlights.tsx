@@ -32,7 +32,7 @@ const ReviewFlights: React.FC = () => {
 
   useEffect(() => {
     setFilterChange(!filterChange);
-  }, [selectedPlatforms, selectedDate]);
+  }, [selectedPlatforms, selectedDate, searchQuery]);
 
   const getMalfsForFlight = async () => {
     if (!selectedFlightPopup) {
@@ -56,11 +56,14 @@ const ReviewFlights: React.FC = () => {
   }, [selectedFlightPopup]);
 
     const getPlatformsAndFilters = () => {
-    const filters: { minDate?: number; maxDate?: number } = {};
+    const filters: { minDate?: number; maxDate?: number ;search?: string} = {};
 
     if (selectedDate) {
       filters.minDate = selectedDate.minDate;
       filters.maxDate = selectedDate.maxDate;
+    }
+    if (searchQuery) {
+      filters.search = searchQuery;
     }
     return {
       platforms: selectedPlatforms.length == 0 ? platforms : selectedPlatforms,
@@ -86,7 +89,7 @@ const ReviewFlights: React.FC = () => {
         }}
       />
     );
-  }, [selectedPlatforms]);
+  }, [selectedPlatforms,searchQuery, selectedDate]);
 
   useEffect(() => {
     getTableFields();
@@ -130,7 +133,7 @@ const ReviewFlights: React.FC = () => {
 
   useEffect(() => {
     setFilterChange(!filterChange);
-  }, [selectedPlatforms, selectedDate]);
+  }, [selectedPlatforms, selectedDate, searchQuery]);
 
   const objectFromFetch = (flight: any) => {
     return new FlightData({

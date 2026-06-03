@@ -15,7 +15,7 @@ interface InfinateScrollFetchProps {
   getRowClass?: (row: IssueData) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
-  platformsAndFilters: { platforms: string[]; filters: any };
+  platformsAndFilters: { platforms: string[]; filters: any ;search?: string} | undefined;
   objectFromFetch: (data: any) => any;
   clickable?: (row: any) => void;
 }
