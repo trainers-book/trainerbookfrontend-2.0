@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import PageWrapper from "../components/pageWrapper/PageWrapper";
-import GenericTable from "../components/table/table";
 import {
   PreservedFlightNameData,
   ManageTypes,
@@ -9,7 +8,7 @@ import {
   UsersData,
 } from "../types/tables/manageTypes";
 import { Box, SvgIcon, Button } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SchoolIcon from "@mui/icons-material/School";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
 import AccessibleIcon from "@mui/icons-material/Accessible";
@@ -23,10 +22,10 @@ import NewFlight from "../components/forms/newFlightForm";
 import NewPlatform from "../components/Popup/newPlatform/newPlatform";
 import FilterSearchBar from "../components/Dynamics/filterSearchBar";
 import { useLocalStorage } from "../context/localStorageContext";
-import FlightData from "../types/tables/flight";
 import { API_Pathes, useBackend } from "../context/backendContext";
 import { HttpStatusCode } from "axios";
 import ManageEditModel from "../components/Popup/manageUser/manageEdit";
+import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
 import CustomAlert from "../components/Dynamics/CustomAlert";
 
 const sunglassesIcon: React.ReactNode = (
@@ -125,11 +124,10 @@ const nameToIcons: Record<string, React.ReactNode> = {
   flights: <AirplaneTicketIcon />,
 };
 
-const ManageUsers: React.FC = () => { 
+const ManageUsers: React.FC = () => {
   const { t } = useTranslation();
   const { connection } = useBackend();
   const { ls } = useLocalStorage();
-  const [data, setData] = useState<any[]>([]);
   const [newData, setNewData] = useState<boolean>(false);
   const [editPopupObject, setEditPopupObject] = useState<any>(null);
   const [tabs, setTabs] = useState<Tab[]>([]);
@@ -173,7 +171,7 @@ const ManageUsers: React.FC = () => {
             }
           }
         );
-      }      
+      }
 
       setTabs(mappedTabs);
       setCurrentTab(mappedTabs[0]);
@@ -255,12 +253,12 @@ const ManageUsers: React.FC = () => {
   };
 
   const dataManipulationFunction = (
-    entity: 
-    { _id: string; name: string } |
-    { _id: string, firstName: string, lastName: string, platform: string[], name: string } |
-    { _id: string, name: string, platform: string, date: number } |
-    any
-  ): any => {    
+    entity:
+      { _id: string; name: string } |
+      { _id: string, firstName: string, lastName: string, platform: string[], name: string } |
+      { _id: string, name: string, platform: string, date: number } |
+      any
+  ): any => {
     if (currentTab!.entityType == ManageTypes.PLATFORM) {
       return new PlatformData(entity["name"], entity["_id"]);
     } else if (currentTab!.entityType == ManageTypes.USERS) {
@@ -271,18 +269,6 @@ const ManageUsers: React.FC = () => {
       delete (flight as any)["_id"];
 
       return flight;
-    }
-  };
-
-  const fetchData = async (collection: string) => {
-    const entities: { status: number; data: any } =
-      await connection.getAllEntities(collection);
-
-    if (entities.status == HttpStatusCode.Ok) {
-      const formattedEntities: PlatformData[] | UsersData[] | PreservedFlightNameData[] = [];
-      entities.data.forEach((entity: any) => {formattedEntities.push(dataManipulationFunction(entity))});      
-
-      return formattedEntities;
     }
   };
 
@@ -301,20 +287,6 @@ const ManageUsers: React.FC = () => {
     }
   };
 
-  const fetchServerData = () => {
-    if (!currentTab) {
-      return;
-    }
-
-    setData([]);
-
-    fetchData(currentTab.collection).then((fetchedData) => {
-      if (fetchedData) {
-        setData(fetchedData);
-      }
-    });
-  };
-
   const submitEntity = (entity: any) => {
     addData(currentTab!.collection, entity, entityToDbEntityFunction);
   };
@@ -331,13 +303,27 @@ const ManageUsers: React.FC = () => {
     return [];
   };
 
-  useEffect(() => {
-    fetchServerData();
-  }, [currentTab]);
+  const getRowKey = (row: any) => {    
+    return `${row._id || row.id || row.personalNumber}`;
+  }
 
-  useEffect(() => {
-    fetchServerData();
-  }, [newData]);
+  const memoTable = useMemo(() => {    
+    return (
+      currentTab && <InfinateScrollFetch
+        properties={getCurrentTabTableProperties().filter(
+          (property) => !property.includes("_"),
+        )}
+        getRowKey={getRowKey}
+        sortFunction={sortingFunction}
+        fetchCollection={currentTab.collection}
+        objectFromFetch={dataManipulationFunction}
+        deleteRow={currentTab.deleteEntity ? deleteEntity : undefined}
+        editRow={currentTab.editEntity ? editEntity : undefined}
+        lengthOverride={true}
+        valuesOverride={true}
+      />
+    );
+  }, [currentTab, newData]);
 
   return (
     currentTab && (
@@ -382,26 +368,7 @@ const ManageUsers: React.FC = () => {
                 </>
               )}
             </Box>
-            <GenericTable
-              properties={getCurrentTabTableProperties().filter((col) => true)}
-              data={data.filter((value) =>
-                Object.values(value)
-                  .map(String)
-                  .reduce(
-                    (accumulator, value) =>
-                      accumulator || value.includes(search),
-                    false
-                  )
-              )}
-              sortFunction={sortingFunction}
-              deleteRow={currentTab.deleteEntity ? deleteEntity : undefined}
-              editRow={currentTab.editEntity ? editEntity : undefined}
-              lengthOverride={true}
-              valuesOverride={true}
-              getRowKey={(row: any) =>
-                String(row.id || row.personalNumber || row["!id"] || row._id)
-              }
-            />
+            {memoTable}
           </Box>
         </Box>
         {editPopupObject != null && (

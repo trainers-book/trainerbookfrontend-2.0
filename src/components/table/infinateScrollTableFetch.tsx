@@ -5,18 +5,23 @@ import { useBackend } from "../../context/backendContext";
 import { usePlatforms } from "../../context/platformsContext";
 import { HttpStatusCode } from "axios";
 import GenericTable from "./table";
+import IssueData from "../../types/tables/issues";
+import PermitData from "../../types/tables/permits";
 
 interface InfinateScrollFetchProps {
   properties: string[];
   fetchCollection: string;
   getRowKey: (row: any) => string;
   sortFunction?: (val: any, nexVal: any) => number;
-  getRowClass?: (row: any) => string;
+  getRowClass?: (row: IssueData | PermitData) => string;
   color?: boolean;
   deleteRow?: (row: any) => void;
-  platformsAndFilters: { platforms: string[]; filters: any };
+  editRow?: (row: any) => void;
+  platformsAndFilters?: { platforms: string[]; filters: any };
   objectFromFetch: (data: any) => any;
   clickable?: (row: any) => void;
+  lengthOverride?: boolean;
+  valuesOverride?: boolean;
   externalUpdate?: any;
 }
 
@@ -28,9 +33,12 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   getRowClass,
   color,
   deleteRow,
+  editRow,
   objectFromFetch,
   platformsAndFilters,
   clickable,
+  lengthOverride,
+  valuesOverride,
   externalUpdate,
 }) => {
   const tableRowHeight = 82;
@@ -75,10 +83,36 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   }, [externalUpdate]);
 
   useEffect(() => {
+    if (!externalUpdate) return;
+
+    if (prevExternalRef.current === externalUpdate) return;
+
+    prevExternalRef.current = externalUpdate;
+
+    setDataToShow((prev) => {
+      const key = getRowKey(externalUpdate);
+      const id = prev.findIndex((row) => getRowKey(row) === key);
+      if (id >= 0) {
+        const copy = prev.slice();
+        copy[id] = externalUpdate;
+        return copy;
+      }
+
+      return [externalUpdate, ...prev];
+    });
+  }, [externalUpdate]);
+
+  useEffect(() => {
+    fetchMoreData(true);
+  }, [platforms]);
+
+  useEffect(() => {
+    setDataToShow([]);
     setOffset(0);
     setFetching(false);
+    setFetchMore(true);
     fetchMoreData(true);
-  }, [platforms, platformsAndFilters]);
+  }, [platformsAndFilters, fetchCollection]);
 
   const fetchMoreData = async (reset = false) => {
     if (platforms.length == 0 || (!fetchMore && !reset)) {
@@ -134,7 +168,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
 
     if (
       target.scrollTop + target.offsetHeight + tableHeadHeight >=
-        tableRowHeight * (children ? children : 1) &&
+      tableRowHeight * (children ? children : 1) &&
       !fetching
     ) {
       setFetching(true);
@@ -151,10 +185,13 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
       getRowClass={getRowClass}
       color={color}
       deleteRow={deleteRow}
+      editRow={editRow}
       onScroll={handleScroll}
       tableRef={tableRef}
       clickable={clickable}
       tableHeight={tableRowHeight}
+      lengthOverride={lengthOverride}
+      valuesOverride={valuesOverride}
     />
   );
 };
