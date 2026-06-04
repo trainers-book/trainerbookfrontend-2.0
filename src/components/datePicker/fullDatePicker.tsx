@@ -56,7 +56,7 @@ const FullDatePicker: React.FC<FullDatePickerProps> = ({
             alignItems: "center",
             borderRadius: 2,
             mt: 2,
-            pb: 5
+            // pb: 5 // on purpose, i dont know if we need it or no, will check in prod
           }}
         >
           <Box
