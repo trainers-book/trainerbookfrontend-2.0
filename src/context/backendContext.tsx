@@ -289,7 +289,7 @@ export enum API_Pathes {
   INSPECTOR = "Inspector",
   TRAINER = "Trainer",
   TECHNICIAN = "Technician",
-  PRESERVED_FLIGHTNAME = "PreservedFlightNames",
+  PRESERVED_FLIGHT_NAME = "PreservedFlightNames",
   AUTHENTICATION = "Authentication",
   SET_PASSWORD = "setPassword",
   GET_ENTITY_BUT_STRING = "FindEntityByString",

@@ -38,24 +38,6 @@ const ManageIssues: React.FC = () => {
     setFilterChange(!filterChange);
   }, [selectedPlatforms, selectedStatuses, selectedSeverity, selectedDate]);
 
-  const getRowClass = (row: IssueData) => {
-    return Object.keys(Status)
-      .filter((value) => Status[value as keyof typeof Status] === row.status)[0]
-      .toLocaleLowerCase();
-  };
-
-  const objectFromFetch = (malf: any) => {
-    return new IssueData({
-      ...malf,
-      dateTime: new Date(malf.dateTime),
-      flightNumber: malf._id,
-      status: Status[malf.failureStatus as keyof typeof Status],
-      issueDescription: malf.failureDetails,
-      issueSeverity: malf.disruption,
-      issueOpener: malf.malfunctionOpener || malf.malfunctionOpener,
-    });
-  };
-
   const getPlatformsAndFilters = () => {
     const filters: {
       failureStatus: (string | undefined)[];
