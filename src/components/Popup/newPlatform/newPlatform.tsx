@@ -8,7 +8,6 @@ import {
 import { PlatformData } from "../../../types/tables/manageTypes";
 import { HttpStatusCode } from "axios";
 import {
-  AlertColor,
   Box,
   Button,
   Checkbox,
@@ -24,7 +23,6 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import FilterSearchBar from "../../Dynamics/filterSearchBar";
-import CustomAlert from "../../Dynamics/CustomAlert";
 import ClickedOutside from "../clickedOutside";
 
 interface NewPlatformType {
@@ -49,9 +47,6 @@ const NewPlatform: React.FC<NewPlatformType> = ({
   >([]);
   const [selectableFieldCheckedIndex, setSelectableFieldCheckedIndex] =
     useState<number[]>([]);
-  const [alertOpen, setAlertOpen] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertSeverity, setAlertSeverity] = useState<AlertColor>("success");
 
   useEffect(() => {
     setHasChanges(
@@ -79,18 +74,8 @@ const NewPlatform: React.FC<NewPlatformType> = ({
       setShowConfirm(true);
     } else {
       if (platformNameVal !== "") {
-        const addToShowForSuccess = await addPlatformToShowFor();
-        const createSuccess = await createPlatform();
-
-        if (addToShowForSuccess && createSuccess) {
-          setAlertMessage(t("platformCreationSuccess"));
-          setAlertSeverity("success");
-        } else {
-          setAlertMessage(t("platformCreationFailure"));
-          setAlertSeverity("error");
-        }
-
-        setAlertOpen(true);
+        await addPlatformToShowFor();
+        await createPlatform();
       }
 
       onClose(true);
@@ -240,13 +225,6 @@ const NewPlatform: React.FC<NewPlatformType> = ({
           </Button>
         </DialogActions>
       </Dialog>
-
-      <CustomAlert
-        open={alertOpen}
-        onClose={() => setAlertOpen(false)}
-        message={alertMessage}
-        severity={alertSeverity}
-      />
 
       <ClickedOutside
         open={showConfirm}

@@ -173,26 +173,12 @@ class Connection {
       });
   }
 
-  createObject = async (collection: string, data: any) => {
-  return axios.post(`${this.appUrl}${collection}`, data);
-};
-
-  
-
   async getObjectsFilter(
     collection: string,
     index: number,
     platform: string[],
     filters: any,
   ) {
-    // filter: {
-    //   date: undefined,
-    //   minDate: undefined,
-    //   maxDate: undefined,
-    //   failureStatus: undefined,
-    //   issueSeverity: undefined,
-    //   search: undefined
-    // }
     return axios
       .get(`${this.appUrl}${collection}/getAmountByFilters/${index}`, {
         params: {
@@ -211,89 +197,51 @@ class Connection {
   }
 
   async getFlightMalfs(platform: string, ids: number[]) {
-    return axios.get(`${this.appUrl}flightRelatedMalfs/`, {
-      params: { platform: platform, malfs: JSON.stringify(ids) },
-    });
+    return axios
+      .get(`${this.appUrl}flightRelatedMalfs/`, {
+        params: { platform: platform, malfs: JSON.stringify(ids) },
+      })
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return error;
+      });
   }
 
-  async getAllObjects(entityName: string) {
-    try {
-      const response = await fetch("http://localhost:3002/" + entityName);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
+  async addPlatformToShowFor(collection: string, object: any) {
+    return axios
+      .patch(`${this.appUrl}${collection}`, object)
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
   }
 
-  async getMPD() {
-    try {
-      const response = await fetch("http://localhost:3002/mpd");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
+  async getAllObjects(collection: string) {
+    return axios
+      .get(`${this.appUrl}${collection}`)
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return error;
+      });
   }
 
-  async getAllPilots() {
-    try {
-      const response = await fetch("http://localhost:3002/Pilot");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getFieldByName(entityName: string) {
-    try {
-      const response = await fetch("http://localhost:3002/" + entityName);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getAllPreservedFlights() {
-    try {
-      const response = await fetch("http://localhost:3002/PreservedFlights");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getFlightTableFields() {
-    try {
-      const response = await fetch("http://localhost:3002/documentFields");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getPermissionsTableFields() {
-    try {
-      const response = await fetch("http://localhost:3002/PermissionsFields");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
-  }
-
-  async getAllPermissions() {
-    try {
-      const response = await fetch("http://localhost:3002/Permissions");
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return "unexpected error";
-    }
+  async getEntityByPlatform(collection: string, platform: any) {
+    return axios
+      .get(`${this.appUrl}${collection}/platform`, {
+        params: { platform: JSON.stringify(platform) },
+      })
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
   }
 }
 
@@ -334,7 +282,7 @@ export enum API_Pathes {
   INSPECTOR = "Inspector",
   TRAINER = "Trainer",
   TECHNICIAN = "Technician",
-  PRESERVED_FLIGHTNAME = "PreservedFlightNames",
+  PRESERVED_FLIGHT_NAME = "PreservedFlightNames",
   AUTHENTICATION = "Authentication",
   SET_PASSWORD = "setPassword",
   GET_ENTITY_BUT_STRING = "FindEntityByString",
@@ -344,6 +292,8 @@ export enum API_Pathes {
   FLIGHT_FAILURE = "FlightFailure",
   PRESERVED_FLIGHTS = "PreservedFlights",
   NEW_FLIGHTS_FIELDS = "NewFlightFields",
+  NEW_FLIGHT_FIELDS = "NewFlightFields",
+  MALAM_ENTITIES = "MalamEntities",
 }
 
 export enum CollectionIds {
