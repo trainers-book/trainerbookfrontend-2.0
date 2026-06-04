@@ -19,10 +19,15 @@ import NewMalfModel from "../newMalf/newMalf";
 import ClickedOutside from "../clickedOutside";
 import { fieldError } from "../../../types/errors/fields";
 import { usePlatforms } from "../../../context/platformsContext";
-import { useBackend } from "../../../context/backendContext";
+import { API_Pathes, useBackend } from "../../../context/backendContext";
+import { HttpStatusCode } from "axios";
 
-const NewFlightModel: React.FC = () => {
-  const [show, setShow] = useState(false);
+interface NewFlight {
+  open: boolean;
+  onClose: (closed: boolean) => void;
+};
+
+const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
   const [showConfirm, setShowConfirm] = useState(false);
   const { t } = useTranslation();
   const { platforms } = usePlatforms();
@@ -37,39 +42,37 @@ const NewFlightModel: React.FC = () => {
     platform: false,
     flight: false,
   });
-  const createFlightFields = "CreateFlightFields";
   const [options, setOptions] = useState<string[]>([]);
-  const malamPlatforms = ["סופה", "ברק", "רעם", "בז"];
-  const malamDomes = [130, 131, 132, 133, 140, 141, 142, 143];
-  const [selectedMalamDome, setSelectedMalamDome] = useState<string[][]>([]);
-  const [selectedConfiguration, setSelectedConfiguration] = useState<string[]>(
-    []
-  );
-  const [MPD, setMPD] = useState<string[]>([]);
-  const [selectedMPD, setSelectedMPD] = useState<string[]>([]);
+  const [malamEntities, setMalamEntities] = useState<number[]>([]);
+  const [selectedMalamDome, setSelectedMalamDome] = useState<Record<number, string[]>>({});
   const [pilots, setPilots] = useState<string[]>([]);
+  const [platformFlights, setPlatformFlights] = useState<string[]>([]);
 
   useEffect(() => {
+    setSelectableField([]);
+
     if (selectedPlatform.length !== 0) {
-      const newSelectedField = Array(selectableField.length).fill([]);
-      setSelectedField(newSelectedField);
+      setSelectedField([]);
+      setSelectedFlight([]);
       getSelectableFields();
-      
-      if (selectedPlatform[0] === t("eitam")) {
-        getMPD();
-      } else if (selectedPlatform[0] === t("malam")) {
+      getPlatformFlights(selectedPlatform[0]);
+
+      if (selectedPlatform[0] === t("MALAM")) {
+        getMalamEntities();
         getPilots();
       }
     } else {
-     // setSelectableField([]);
+      setSelectableField([]);
       setSelectedField([]);
+      setSelectedFlight([]);
+      setPlatformFlights([]);
     }
-  }, [selectedPlatform, selectableField]);
+  }, [selectedPlatform]);
 
   useEffect(() => {
     if (selectableField.length > 0) {
       Promise.all(
-        selectableField.map((field: any) => getVariables(field))
+        selectableField.map((field: any) => getVariables(field)),
       ).then((results) => {
         setOptions(results);
       });
@@ -91,15 +94,30 @@ const NewFlightModel: React.FC = () => {
     }
   }, [selectedFlight, selectedPlatform, timerPanelValue]);
 
-  const handleShow = () => {
-    setShow(true);
+  const getPlatformFlights = async (platform: string) => {
+    const platformFlights = await connection.getAllEntities(
+      API_Pathes.PRESERVED_FLIGHT_NAME,
+    );
+    
+    if (platformFlights.status === HttpStatusCode.Ok) {
+      const translatedPlatform = t(platform, { lng: "heEn" });
+      setPlatformFlights(
+        platformFlights.data
+          .filter(
+            (flight: any) =>
+              flight.platform === platform ||
+              flight.platform === translatedPlatform,
+          )
+          .map((flight: any) => flight.name || flight.flightName)
+      );
+    }
   };
 
   const handleClose = () => {
     if (hasChanges) {
       setShowConfirm(true);
     } else {
-      setShow(false);
+      onClose(true);
       setShowConfirm(false);
     }
     setTimerPanelValue(false);
@@ -110,7 +128,7 @@ const NewFlightModel: React.FC = () => {
   };
 
   const handleConfirmClose = () => {
-    setShow(false);
+    onClose(true);
     setShowConfirm(false);
     setSelectedPlatform([]);
     setSelectedFlight([]);
@@ -121,33 +139,50 @@ const NewFlightModel: React.FC = () => {
   };
 
   const getSelectableFields = async () => {
-    const data = await connection.getAllObjects(createFlightFields);
+    const newFlightSelectableFields = await connection.getAllEntities(API_Pathes.NEW_FLIGHT_FIELDS);
 
+    if (newFlightSelectableFields.status === HttpStatusCode.Ok) {
     setSelectableField(
-      data["selectableField"].filter((field: any) =>
-        field.showFor.includes(t(selectedPlatform[0], { lng: "heEn" }))
-      )
+        newFlightSelectableFields.data.filter((field: any) =>
+          field.showFor.includes(t(selectedPlatform[0], { lng: "heEn" })),
+        ),
     );
+    }
   };
 
   const getPilots = async () => {
-    const data = await connection.getAllPilots();
-    setPilots(
-      data
-        .filter((field: any) => field.platform.includes(selectedPlatform[0]))
-        .map((field: any) => field.name)
-    );
+    const pilotsByPlatform = await connection.getEntityByPlatform(API_Pathes.PILOT, [
+      { platform: selectedPlatform[0] },
+    ]);
+    if (pilotsByPlatform.status === HttpStatusCode.Ok) {
+      setPilots(pilotsByPlatform.data.map((field: any) =>  field.name));
+    }
   };
 
-  const getMPD = async () => {
-    const data = await connection.getMPD();
-    setMPD(data["data"].map((field: any) => Object.values(field)[0]));
+  const getMalamEntities = async () => {
+    const allMalamEntities = await connection.getAllEntities(API_Pathes.MALAM_ENTITIES);
+
+    if (allMalamEntities.status === HttpStatusCode.Ok) {
+      setMalamEntities(allMalamEntities.data[0].domes);
+    }
   };
 
   const getVariables = async (field: any) => {
     if (field.name !== undefined) {
-      const data = await connection.getFieldByName(field.name);
-      return data ? data.map((val: any) => val["name"]) : [];
+      if (field.fieldOptions) {
+        return field.fieldOptions;
+      } else {
+        const fieldVariables = await connection.getAllEntities(field.name);
+        if (
+          field.name === "MPD" &&
+          fieldVariables.status === HttpStatusCode.Ok
+        ) {
+          return fieldVariables.data["data"].map((field: any) => Object.values(field)[0]);
+        }
+        return fieldVariables && fieldVariables.status === HttpStatusCode.Ok
+          ? fieldVariables.data.map((val: any) => val["name"])
+          : [];
+      }
     } else {
       return field.fieldOptions.map((val: any) => (val.name ? val.name : val));
     }
@@ -155,16 +190,8 @@ const NewFlightModel: React.FC = () => {
 
   return (
     <>
-      <Button
-        variant="contained"
-        onClick={handleShow}
-        sx={{ background: "rgb(114, 156, 240)", mr: 1, mb: 1 }}
-      >
-        {t("newFlight")}
-      </Button>
-
       <Dialog
-        open={show}
+        open={open}
         onClose={handleClose}
         fullWidth
         maxWidth="lg"
@@ -206,23 +233,26 @@ const NewFlightModel: React.FC = () => {
                   onBlur={() => setTouched({ ...touched, platform: true })}
                 />
               </Stack>
-              <Stack spacing={2} padding={1}>
-                <FilterDropdown
-                  label={t("flightName")}
-                  options={["flightName"]}
-                  selected={selectedFlight}
-                  setSelected={setSelectedFlight}
-                  isMultiple={false}
-                  width="43rem"
-                  error={fieldError.flightName}
-                  touched={touched.flight}
-                  onBlur={() => setTouched({ ...touched, flight: true })}
-                />
-              </Stack>
-              <Stack spacing={2} padding={1}>
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
+              {selectedPlatform.length > 0 && (
+                <Stack spacing={2} padding={1}>
+                  <FilterDropdown
+                    label={t("flightName")}
+                    options={platformFlights}
+                    selected={selectedFlight}
+                    setSelected={setSelectedFlight}
+                    isMultiple={false}
+                    width="43rem"
+                    error={fieldError.flightName}
+                    touched={touched.flight}
+                    onBlur={() => setTouched({ ...touched, flight: true })}
+                  />
+                </Stack>
+              )}
+              <Stack padding={1} sx={{ mb: 2 }}>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3.7 }}>
                   {selectableField.map((field: any, index: number) => (
                     <FilterDropdown
+                      key={field._id || index}
                       label={field.display}
                       options={
                         options[index] !== undefined ? options[index] : []
@@ -246,32 +276,12 @@ const NewFlightModel: React.FC = () => {
                   ))}
                 </Box>
               </Stack>
-              {selectedPlatform[0] === t("eitam") && (
-                <Stack spacing={2} padding={1}>
-                  <FilterDropdown
-                    label={"MPD"}
-                    options={MPD}
-                    selected={selectedMPD}
-                    setSelected={setSelectedMPD}
-                    isMultiple={false}
-                    width="43rem"
-                  />
-                </Stack>
-              )}
-              {selectedPlatform[0] === t("malam") && (
+              {selectedPlatform[0] === t("MALAM") && (
                 <Stack spacing={2} padding={1} sx={{ mb: 2 }}>
-                  <FilterDropdown
-                    label={t("configuration")}
-                    options={malamPlatforms}
-                    selected={selectedConfiguration}
-                    setSelected={setSelectedConfiguration}
-                    isMultiple={false}
-                    width="43rem"
-                  />
-
-                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
-                    {malamDomes.map((field) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3.7 }}>
+                    {malamEntities.map((field) => (
                       <FilterDropdown
+                        key={field}
                         label={field.toString()}
                         options={pilots}
                         selected={selectedMalamDome[field] || []}
