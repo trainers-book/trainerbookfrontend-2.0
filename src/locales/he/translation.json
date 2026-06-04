@@ -202,5 +202,8 @@
   "closedTime": "זמן סגירה",
   "yes": "כן",
   "no": "לא",
-  "issueName": "שם תקלה"
+  "issueName": "שם תקלה",
+  "addSuccess": "נוסף בהצלחה",
+  "entityAlreadyExist": "משתמש קיים",
+  "deleted": "נמחק בהצלחה"
 }
