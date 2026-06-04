@@ -27,6 +27,7 @@ import { HttpStatusCode } from "axios";
 import ManageEditModel from "../components/Popup/manageUser/manageEdit";
 import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
 import CustomAlert from "../components/Dynamics/CustomAlert";
+import { usePlatforms } from "../context/platformsContext";
 
 const sunglassesIcon: React.ReactNode = (
   <SvgIcon>
@@ -128,6 +129,7 @@ const ManageUsers: React.FC = () => {
   const { t } = useTranslation();
   const { connection } = useBackend();
   const { ls } = useLocalStorage();
+  const { platforms, setPlatforms } = usePlatforms();
   const [newData, setNewData] = useState<boolean>(false);
   const [editPopupObject, setEditPopupObject] = useState<any>(null);
   const [tabs, setTabs] = useState<Tab[]>([]);
@@ -206,6 +208,15 @@ const ManageUsers: React.FC = () => {
     }
 
     if (updateResponse?.status == HttpStatusCode.Ok) {
+      if (currentTab!.entityType == ManageTypes.PLATFORM) {
+        const deletedPlatform = row.name;
+        const updatedPlatforms = platforms.filter(
+          (platform) => platform !== deletedPlatform,
+        );
+
+        setPlatforms(updatedPlatforms);
+        ls.setPlatforms(updatedPlatforms);
+      }
       setNewData(!newData);
       setAlert({open: true, message: "deleted", severity: "success"});
     }
