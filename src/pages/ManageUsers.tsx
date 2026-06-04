@@ -7,7 +7,7 @@ import {
   UsersAccountData,
   UsersData,
 } from "../types/tables/manageTypes";
-import { Box, SvgIcon } from "@mui/material";
+import { Box, SvgIcon, Button } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import SchoolIcon from "@mui/icons-material/School";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
@@ -19,13 +19,14 @@ import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
 import SideBar from "../components/sidebar/sidebar";
 import NewUser from "../components/forms/newUserForm";
 import NewFlight from "../components/forms/newFlightForm";
-import NewPlatform from "../components/forms/newPlatformForm";
+import NewPlatform from "../components/Popup/newPlatform/newPlatform";
 import FilterSearchBar from "../components/Dynamics/filterSearchBar";
 import { useLocalStorage } from "../context/localStorageContext";
 import { API_Pathes, useBackend } from "../context/backendContext";
 import { HttpStatusCode } from "axios";
 import ManageEditModel from "../components/Popup/manageUser/manageEdit";
 import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
+import CustomAlert from "../components/Dynamics/CustomAlert";
 
 const sunglassesIcon: React.ReactNode = (
   <SvgIcon>
@@ -68,7 +69,7 @@ const sortingFunction = (
     currentValue instanceof PlatformData &&
     nextValue instanceof PlatformData
   ) {
-    return Number(currentValue.id) - Number(nextValue.id);
+    return Number(currentValue._id) - Number(nextValue._id);
   } else if (
     currentValue instanceof UsersData &&
     nextValue instanceof UsersData
@@ -91,6 +92,7 @@ const entityToDbEntityFunction = (
 ) => {
   if (entity instanceof PlatformData) {
     return {
+      _id: entity._id,
       name: entity.name,
     };
   } else if (entity instanceof UsersData) {
@@ -131,6 +133,8 @@ const ManageUsers: React.FC = () => {
   const [tabs, setTabs] = useState<Tab[]>([]);
   const [currentTab, setCurrentTab] = useState<Tab>();
   const [search, setSearch] = useState<string>("");
+  const [updateSuccessOpen, setUpdateSuccessOpen] = useState(false);
+  const [isNewPlatformOpen, setIsNewPlatformOpen] = useState(false);
 
   useEffect(() => {
     const fetchTabs = async () => {
@@ -237,7 +241,7 @@ const ManageUsers: React.FC = () => {
         );
       }
     } else if (currentTab!.entityType == ManageTypes.PLATFORM) {
-      setEditPopupObject(new PlatformData(row.name, row.id));
+      setEditPopupObject(new PlatformData(row.name, row._id));
     } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
       setEditPopupObject(
         new PreservedFlightNameData(row.date, row.name, row.platform, row["!id"])
@@ -262,7 +266,7 @@ const ManageUsers: React.FC = () => {
       any
   ): any => {
     if (currentTab!.entityType == ManageTypes.PLATFORM) {
-      return new PlatformData(entity["name"], Number(entity["_id"]));
+      return new PlatformData(entity["name"], entity["_id"]);
     } else if (currentTab!.entityType == ManageTypes.USERS) {
       return new UsersData(entity["_id"], entity["firstName"], entity["lastName"], entity["platform"].join(", "));
     } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
@@ -363,7 +367,14 @@ const ManageUsers: React.FC = () => {
                 <NewFlight callback={submitEntity} />
               )}
               {currentTab!.entityType == ManageTypes.PLATFORM && (
-                <NewPlatform callback={submitEntity} />
+                <>
+                  <Button
+                    variant="contained"
+                    onClick={() => setIsNewPlatformOpen(true)}
+                    sx={{ background: "rgb(114,165,240)", mr: 1, mb: 1 }}
+                  >{t("newPlatform")}</Button>
+                  <NewPlatform open={isNewPlatformOpen} onClose={() => setIsNewPlatformOpen(closed)} callback={submitEntity} />
+                </>
               )}
             </Box>
             {memoTable}
@@ -377,8 +388,15 @@ const ManageUsers: React.FC = () => {
             setManageObject={setEditPopupObject}
             updateData={setNewData}
             updatedData={newData}
+            onUpdateSuccess={() => setUpdateSuccessOpen(true)}
           />
         )}
+        <CustomAlert
+          open={updateSuccessOpen}
+          onClose={() => setUpdateSuccessOpen(false)}
+          message={t("updateSuccess")}
+          severity="success"
+        />
       </PageWrapper>
     )
   );
