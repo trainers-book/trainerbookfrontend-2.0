@@ -46,14 +46,17 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
   const [malamEntities, setMalamEntities] = useState<number[]>([]);
   const [selectedMalamDome, setSelectedMalamDome] = useState<Record<number, string[]>>({});
   const [pilots, setPilots] = useState<string[]>([]);
+  const [platformFlights, setPlatformFlights] = useState<string[]>([]);
 
   useEffect(() => {
     setSelectableField([]);
 
     if (selectedPlatform.length !== 0) {
       setSelectedField([]);
+      setSelectedFlight([]);
       getSelectableFields();
-      
+      getPlatformFlights(selectedPlatform[0]);
+
       if (selectedPlatform[0] === t("MALAM")) {
         getMalamEntities();
         getPilots();
@@ -61,6 +64,8 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
     } else {
       setSelectableField([]);
       setSelectedField([]);
+      setSelectedFlight([]);
+      setPlatformFlights([]);
     }
   }, [selectedPlatform]);
 
@@ -88,6 +93,25 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
       setHasChanges(false);
     }
   }, [selectedFlight, selectedPlatform, timerPanelValue]);
+
+  const getPlatformFlights = async (platform: string) => {
+    const platformFlights = await connection.getAllEntities(
+      API_Pathes.PRESERVED_FLIGHT_NAME,
+    );
+    
+    if (platformFlights.status === HttpStatusCode.Ok) {
+      const translatedPlatform = t(platform, { lng: "heEn" });
+      setPlatformFlights(
+        platformFlights.data
+          .filter(
+            (flight: any) =>
+              flight.platform === platform ||
+              flight.platform === translatedPlatform,
+          )
+          .map((flight: any) => flight.name || flight.flightName)
+      );
+    }
+  };
 
   const handleClose = () => {
     if (hasChanges) {
@@ -209,19 +233,21 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose }) => {
                   onBlur={() => setTouched({ ...touched, platform: true })}
                 />
               </Stack>
-              <Stack spacing={2} padding={1}>
-                <FilterDropdown
-                  label={t("flightName")}
-                  options={["flightName"]}
-                  selected={selectedFlight}
-                  setSelected={setSelectedFlight}
-                  isMultiple={false}
-                  width="43rem"
-                  error={fieldError.flightName}
-                  touched={touched.flight}
-                  onBlur={() => setTouched({ ...touched, flight: true })}
-                />
-              </Stack>
+              {selectedPlatform.length > 0 && (
+                <Stack spacing={2} padding={1}>
+                  <FilterDropdown
+                    label={t("flightName")}
+                    options={platformFlights}
+                    selected={selectedFlight}
+                    setSelected={setSelectedFlight}
+                    isMultiple={false}
+                    width="43rem"
+                    error={fieldError.flightName}
+                    touched={touched.flight}
+                    onBlur={() => setTouched({ ...touched, flight: true })}
+                  />
+                </Stack>
+              )}
               <Stack padding={1} sx={{ mb: 2 }}>
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3.7 }}>
                   {selectableField.map((field: any, index: number) => (
