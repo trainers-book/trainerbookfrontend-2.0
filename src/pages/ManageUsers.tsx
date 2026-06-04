@@ -203,6 +203,7 @@ const ManageUsers: React.FC = () => {
 
     if (updateResponse?.status == HttpStatusCode.Ok) {
       setNewData(!newData);
+      window.location.reload();
     }
   };
 
@@ -285,6 +286,9 @@ const ManageUsers: React.FC = () => {
 
     if (data.status == HttpStatusCode.Ok) {
       setNewData(!newData);
+      window.location.reload();
+    } else if (data.status == HttpStatusCode.Conflict) {
+      
     }
   };
 
