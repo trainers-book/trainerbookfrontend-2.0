@@ -300,6 +300,12 @@ const ManageUsers: React.FC = () => {
     );
 
     if (data.status == HttpStatusCode.Ok) {
+      if (currentTab!.entityType == ManageTypes.PLATFORM) {
+        const updatedPlatforms = [...platforms, entity.name];
+
+        setPlatforms(updatedPlatforms);
+        ls.setPlatforms(updatedPlatforms);
+      }
       setNewData(!newData);
       setAlert({open: true, message: "addSuccess", severity: "success"});
     } else if (data.status == HttpStatusCode.Conflict) {
