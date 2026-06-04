@@ -7,6 +7,7 @@ import ExcelExportOptions from "../Popup/excelExports/excelExportOptions";
 import { useBackend } from "../../context/backendContext";
 import { usePlatforms } from "../../context/platformsContext";
 import { HttpStatusCode } from "axios";
+import CustomAlert from "../Dynamics/CustomAlert";
 
 const excelImage = (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
@@ -71,6 +72,8 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
   const { platforms } = usePlatforms();
   const objectKeys = Object.keys(dataObject);
   const [showPopup, setShowPopup] = useState<boolean>(false);
+    const [alertOpen, setAlertOpen] = useState(false);
+  
 
   const splitPlatformData = (data: any[]) => {
     return Object.values(
@@ -85,12 +88,17 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
     );
   };
 
-  const excelExport = async (pickedDates: {minDate: Date, maxDate: Date}) => {
+  const excelExport = async (pickedDates: { minDate: Date, maxDate: Date }) => {
     const issues = await connection.getEntitiesByDate("FlightFailure", platforms, pickedDates);
-    if (issues.status == HttpStatusCode.Ok) {  
+    if (issues.status == HttpStatusCode.Ok) {
+      if (issues.data.length == 0) {
+        setAlertOpen(true);
+        return;
+      }
+
       const workbook = XLSX.utils.book_new();
       const platfromsData = splitPlatformData(issues.data);
-      
+
       platfromsData.forEach((platform) => {
         const platformName = Object.keys(platform)[0];
 
@@ -99,7 +107,7 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
           skipHeader: false,
         });
         XLSX.utils.book_append_sheet(workbook, worksheet, platformName);
-      });                                                                                                                                                                                                                                                                                                                                                               
+      });
 
       XLSX.writeFile(workbook, tableDataName + ".xlsx");
     }
@@ -113,6 +121,12 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
         </SvgIcon>
       </IconButton>
       <ExcelExportOptions show={showPopup} setShow={setShowPopup} exportFunction={excelExport} />
+      <CustomAlert
+        open={alertOpen}
+        onClose={() => setAlertOpen(false)}
+        message={t("no data")}
+        severity={"warning"}
+      />
     </Box>
   );
 };
