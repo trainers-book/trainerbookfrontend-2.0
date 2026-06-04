@@ -7,7 +7,7 @@ import {
   UsersAccountData,
   UsersData,
 } from "../types/tables/manageTypes";
-import { Box, SvgIcon, Button } from "@mui/material";
+import { Box, SvgIcon, Button, AlertColor } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import SchoolIcon from "@mui/icons-material/School";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
@@ -133,7 +133,7 @@ const ManageUsers: React.FC = () => {
   const [tabs, setTabs] = useState<Tab[]>([]);
   const [currentTab, setCurrentTab] = useState<Tab>();
   const [search, setSearch] = useState<string>("");
-  const [updateSuccessOpen, setUpdateSuccessOpen] = useState(false);
+  const [alert, setAlert] = useState<{open: boolean, message: string, severity: AlertColor}>({open: false, message: "", severity: "success"});
   const [isNewPlatformOpen, setIsNewPlatformOpen] = useState(false);
 
   useEffect(() => {
@@ -186,7 +186,7 @@ const ManageUsers: React.FC = () => {
     if (currentTab!.entityType == ManageTypes.PLATFORM) {      
       updateResponse = await connection.deleteObject(
         currentTab!.collection,
-        row["id"]
+        row["id"] || row["_id"]
       );
     } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
       updateResponse = await connection.deleteObject(
@@ -207,7 +207,7 @@ const ManageUsers: React.FC = () => {
 
     if (updateResponse?.status == HttpStatusCode.Ok) {
       setNewData(!newData);
-      window.location.reload();
+      setAlert({open: true, message: "deleted", severity: "success"});
     }
   };
 
@@ -290,9 +290,9 @@ const ManageUsers: React.FC = () => {
 
     if (data.status == HttpStatusCode.Ok) {
       setNewData(!newData);
-      window.location.reload();
+      setAlert({open: true, message: "addSuccess", severity: "success"});
     } else if (data.status == HttpStatusCode.Conflict) {
-      
+      setAlert({open: true, message: "entityAlreadyExist", severity: "error"});
     }
   };
 
@@ -330,6 +330,7 @@ const ManageUsers: React.FC = () => {
         editRow={currentTab.editEntity ? editEntity : undefined}
         lengthOverride={true}
         valuesOverride={true}
+        externalUpdate={newData}
       />
     );
   }, [currentTab, newData]);
@@ -388,14 +389,14 @@ const ManageUsers: React.FC = () => {
             setManageObject={setEditPopupObject}
             updateData={setNewData}
             updatedData={newData}
-            onUpdateSuccess={() => setUpdateSuccessOpen(true)}
+            onUpdateSuccess={() => setAlert({open: true, message: "updateSuccess", severity: "success"})}
           />
         )}
         <CustomAlert
-          open={updateSuccessOpen}
-          onClose={() => setUpdateSuccessOpen(false)}
-          message={t("updateSuccess")}
-          severity="success"
+          open={alert.open}
+          onClose={() => setAlert({open: false, message: "", severity: "success"})}
+          message={t(alert.message)}
+          severity={alert.severity}
         />
       </PageWrapper>
     )
