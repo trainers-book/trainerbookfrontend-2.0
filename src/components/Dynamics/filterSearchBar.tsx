@@ -12,6 +12,9 @@ interface FilterSearchBarProps {
   value?: string;
   width?: string;
   isReset: boolean;
+  disabled?: boolean;
+  multiline?: boolean;
+  rows?: number;
 }
 
 const cacheRtl = createCache({
@@ -24,7 +27,10 @@ const FilterSearchBar: React.FC<FilterSearchBarProps> = ({
   setSearch,
   width,
   isReset,
-  value
+  value,
+  disabled,
+  multiline,
+  rows,
 }) => {
   const theme = useTheme();
   const [searchValue, setSearchValue] = useState(value ? value : "");
@@ -70,6 +76,9 @@ const FilterSearchBar: React.FC<FilterSearchBarProps> = ({
             }}
             label={label}
             onChange={handleChange}
+            disabled={disabled}
+            multiline={multiline}
+            rows={rows}
             InputLabelProps={{
               sx: {
                 top: "-0.6rem",

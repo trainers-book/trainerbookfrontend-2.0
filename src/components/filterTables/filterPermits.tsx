@@ -16,8 +16,8 @@ interface FilterPermitsProps {
   setSelectedStatuses: (values: string[]) => void;
   search: string;
   setSearch: (value: string) => void;
-  dateSelected: string;
-  setDate: (value: string) => void;
+  dateSelected: { minDate: Date; maxDate: Date } | undefined;
+  setDate: (value: { minDate: Date; maxDate: Date } | undefined) => void;
 }
 
 const FilterPermits: React.FC<FilterPermitsProps> = ({
@@ -38,7 +38,7 @@ const FilterPermits: React.FC<FilterPermitsProps> = ({
     (selectedPlatform.length != 0 && platforms.length > 1) ||
     selectedStatuses.length != 0 ||
     search != "" ||
-    dateSelected != "";
+    dateSelected != undefined;
 
   return (
     <Box sx={{ mr: 1, display: "flex", gap: 1 }}>
@@ -66,7 +66,7 @@ const FilterPermits: React.FC<FilterPermitsProps> = ({
         isReset={isReset}
       />
       {/*TODO: add second date selector in order to select a open date or expired date */}
-      <FilterDate setDate={setDate} isReset={isReset} />
+      <FilterDate setDate={setDate} isReset={isReset} width="3.3rem"/>
       {isFilterSelected && (
         <Button
           variant="contained"

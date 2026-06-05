@@ -39,7 +39,7 @@ const LoginPage: React.FC = () => {
 
   const storeUser = async (user: User) => {
     ls.setAuthorization(user.authenticationLevel);
-    if (user.authenticationLevel == "admin") {
+    if (user.authenticationLevel == "Admin") {
       const platforms = await connection.getAllEntities(API_Pathes.PLATFORM);
 
       if (platforms.status == HttpStatusCode.Ok) {
