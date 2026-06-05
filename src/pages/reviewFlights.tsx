@@ -33,6 +33,7 @@ const ReviewFlights: React.FC = () => {
   const [preservedFlights, setPreservedFlights] = useState<any[]>([]);
   const { ls } = useLocalStorage();
   const [isNewFlightOpen, setIsNewFlightOpen] = useState(false);
+  const [externalUpdate, setExternalUpdate] = useState<FlightData>();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -87,12 +88,13 @@ const ReviewFlights: React.FC = () => {
         fetchCollection="PreservedFlights"
         objectFromFetch={flightObjectFromFetch}
         platformsAndFilters={getPlatformsAndFilters()}
+        externalUpdate={externalUpdate}
         clickable={(row: FlightData) => {
           setSelectedFlightPopup(row);
         }}
       />
     );
-  }, [selectedPlatforms]);
+  }, [selectedPlatforms, externalUpdate]);
 
   return (
     <PageWrapper>
@@ -126,6 +128,7 @@ const ReviewFlights: React.FC = () => {
         <NewFlightModel
           open={isNewFlightOpen}
           onClose={() => setIsNewFlightOpen(closed)}
+          onSave={(flight) => setExternalUpdate(flightObjectFromFetch(flight))}
         />
       </Box>
       {memoTable}
