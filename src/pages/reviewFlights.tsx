@@ -9,7 +9,7 @@ import { useLocalStorage } from "../context/localStorageContext";
 import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
 import { usePlatforms } from "../context/platformsContext";
 import FlightInformation from "../components/Popup/information/flightInformation";
-import { useBackend } from "../context/backendContext";
+import { API_Pathes, useBackend } from "../context/backendContext";
 import { HttpStatusCode } from "axios";
 import IssueData, { IssueObjectFromFetch } from "../types/tables/issues";
 import { useTranslation } from "react-i18next";
@@ -46,25 +46,26 @@ const ReviewFlights: React.FC = () => {
   }, [selectedFlightPopup]);
 
   const fetchIssuesForFlight = async (flight: FlightData) => {
-  if (!flight) return;
+    if (!flight) return;
 
-  const response = await connection.getObjectsFilter(
-    "FlightFailure",
-    0,
-    [flight.platform],
-    {
-      flightName: flight.flightName,
+    const response = await connection.getAllEntities(API_Pathes.FLIGHT_FAILURE);
+
+    if (response.status === HttpStatusCode.Ok) {
+      const normalize = (value: unknown) => String(value ?? "").trim();
+      const flightName = normalize(flight.flightName);
+      const platform = normalize(flight.platform);
+
+      setSelectedFlightMalfs(
+        (response.data ?? [])
+          .filter(
+            (issue: any) =>
+              normalize(issue.flightName) === flightName &&
+              normalize(issue.platform) === platform,
+          )
+          .map((issue: any) => IssueObjectFromFetch(issue)),
+      );
     }
-  );
-
-  if (response.status === HttpStatusCode.Ok) {
-    setSelectedFlightMalfs(
-      (response.data ?? [])
-        .map((issue: any) => IssueObjectFromFetch(issue))
-        .filter((issue: IssueData) => issue.flightName === flight.flightName)
-    );
-  }
-};
+  };
 
     const getPlatformsAndFilters = () => {
       const filters: { minDate?: Date; maxDate?: Date } = {};
@@ -110,10 +111,10 @@ const ReviewFlights: React.FC = () => {
   }, [fields]);
 
   const getPreservedFlights = async () => {
-    const data = await connection.getAllPreservedFlights();
+    const data = await connection.getAllEntities(API_Pathes.PRESERVED_FLIGHTS);
 
     setPreservedFlights(
-      data.map((field: any) => ({
+      data.data.map((field: any) => ({
         ...field,
         instructor: field.instructor?.[0]?.name || field.instructor?.name || "",
         technician: field.technician?.[0]?.name || field.technician?.name || "",
@@ -126,14 +127,14 @@ const ReviewFlights: React.FC = () => {
   };
 
   const getTableFields = async () => {
-    const data = await connection.getFlightTableFields();
+    const data = await connection.getAllEntities(API_Pathes.NEW_FLIGHT_FIELDS);
     const platforms =
       selectedPlatforms.length > 0
         ? selectedPlatforms
         : (ls.getPlatforms()?.split(",") ?? []);
 
     setFields(
-      data["fields"]
+      data.data["fields"]
         .filter((field: any) =>
           field.showFor.some((platform: any) =>
             platforms.includes(t(platform)),

@@ -7,10 +7,15 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CloseIcon from "@mui/icons-material/Close";
 import InfinateScrollData from "../../table/infinateScrollTableData";
-import IssueData, { getIssueColor } from "../../../types/tables/issues";
+import IssueData, {
+  getIssueColor,
+  IssueObjectFromFetch,
+} from "../../../types/tables/issues";
+import IssueInformation from "./issueInformation";
 
 interface FlightInformationProps {
   selectedRow: any;
@@ -24,24 +29,31 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
   flightMalfunctions,
 }) => {
   const { t } = useTranslation();
+  const [issues, setIssues] = useState<IssueData[]>(flightMalfunctions);
+  const [selectedIssue, setSelectedIssue] = useState<IssueData | undefined>();
+
+  useEffect(() => {
+    setIssues(flightMalfunctions);
+  }, [flightMalfunctions]);
 
   return (
-    <Dialog
-      open={true}
-      onClose={handleClose}
-      fullWidth={true}
-      maxWidth={flightMalfunctions.length !== 0 ? "xl" : undefined}
-      slotProps={{
-        paper: {
-          sx: {
-            borderRadius: 4,
-            maxHeight: "80vh",
-            display: "flex",
-            flexDirection: "column",
+    <>
+      <Dialog
+        open={true}
+        onClose={handleClose}
+        fullWidth={true}
+        maxWidth={issues.length !== 0 ? "xl" : undefined}
+        slotProps={{
+          paper: {
+            sx: {
+              borderRadius: 4,
+              maxHeight: "80vh",
+              display: "flex",
+              flexDirection: "column",
+            },
           },
-        },
-      }}
-    >
+        }}
+      >
       <DialogTitle>
         <IconButton
           onClick={handleClose}
@@ -109,25 +121,62 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
           {t("issueDescription")}: {selectedRow.issueDescription}
         </Typography>
 
-        {flightMalfunctions.length !== 0 && (
+        {issues.length !== 0 && (
           <Box sx={{ mt: 5 }}>
             <InfinateScrollData
               properties={Object.keys(new IssueData({})).filter(
                 (property) =>
                   !property.includes("_") && 
                   property !== "platform" && 
-                  property !== "flightName" // KEY FIX: Excluded flightName from the table properties
+                  property !== "flightName" &&
+                  property !== "goTime"
               )}
-              data={flightMalfunctions}
+              data={issues}
               getRowKey={(row: IssueData) => `${row.issueNumber}`}
               noHeight={true}
               color={true}
               getRowClass={getIssueColor}
+              clickable={(row) => setSelectedIssue(row as IssueData)}
             />
           </Box>
         )}
       </DialogContent>
-    </Dialog>
+      </Dialog>
+      {selectedIssue && (
+        <IssueInformation
+          isOpen={selectedIssue !== undefined}
+          selectedRow={selectedIssue}
+          onClose={() => setSelectedIssue(undefined)}
+          onSave={(updated: any) => {
+            const mapped = IssueObjectFromFetch({
+              ...selectedIssue,
+              ...updated,
+              _id:
+                updated?._id ??
+                updated?.issueNumber ??
+                selectedIssue.issueNumber,
+            });
+            setSelectedIssue(mapped);
+            const belongsToFlight =
+              String(mapped.flightName).trim() ===
+                String(selectedRow.flightName).trim() &&
+              String(mapped.platform).trim() ===
+                String(selectedRow.platform).trim();
+            setIssues((prev) => {
+              if (!belongsToFlight) {
+                return prev.filter(
+                  (issue) => issue.issueNumber !== mapped.issueNumber,
+                );
+              }
+
+              return prev.map((issue) =>
+                issue.issueNumber === mapped.issueNumber ? mapped : issue,
+              );
+            });
+          }}
+        />
+      )}
+    </>
   );
 };
 

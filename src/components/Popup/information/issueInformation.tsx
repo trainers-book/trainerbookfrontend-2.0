@@ -543,8 +543,12 @@ const IssueInformation: React.FC<IssueInformationProps> = ({
       setAlertMessage(t("saveSuccessful"));
       setAlertOpen(true);
       setTimeout(() => {
-        // Use server response, or fallback to original body (with Hebrew values)
-        onSave?.(update.data ?? body);
+        const savedIssue = {
+          ...body,
+          ...bodyToSend,
+          ...(update.data ?? {}),
+        };
+        onSave?.(savedIssue);
         onClose();
       }, 700);
     } else {
