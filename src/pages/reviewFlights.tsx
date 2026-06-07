@@ -57,15 +57,17 @@ const ReviewFlights: React.FC = () => {
   }, [selectedFlightPopup]);
 
   const getPlatformsAndFilters = () => {
-    const filters: { minDate?: number; maxDate?: number ;search?: string} = {};
+    const filters: { minDate?: Date; maxDate?: Date ;search?: string} = {};
 
     if (selectedDate) {
       filters.minDate = selectedDate.minDate;
       filters.maxDate = selectedDate.maxDate;
     }
+
     if (searchQuery) {
       filters.search = searchQuery;
     }
+    
     return {
       platforms: selectedPlatforms.length == 0 ? platforms : selectedPlatforms,
       filters: filters,
