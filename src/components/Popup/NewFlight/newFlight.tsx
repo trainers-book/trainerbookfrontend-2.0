@@ -175,10 +175,25 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose, onSave }) => {
     );
 
     if (newFlightSelectableFields.status === HttpStatusCode.Ok) {
+      const selectedPlatformValue = selectedPlatform[0];
+      const translatedPlatform = t(selectedPlatformValue, { lng: "heEn" });
+      const platformMatches = (value: any) => {
+        const normalizedValue = String(value ?? "").trim().toLowerCase();
+        const platformOptions = [selectedPlatformValue, translatedPlatform].map(
+          (platform) => String(platform ?? "").trim().toLowerCase(),
+        );
+
+        return platformOptions.includes(normalizedValue);
+      };
+
       setSelectableField(
-        newFlightSelectableFields.data.filter((field: any) =>
-          field.showFor.includes(t(selectedPlatform[0], { lng: "heEn" })),
-        ),
+        newFlightSelectableFields.data.filter((field: any) => {
+          if (!Array.isArray(field.showFor)) {
+            return platformMatches(field.showFor);
+          }
+
+          return field.showFor.some(platformMatches);
+        }),
       );
     }
   };
@@ -229,6 +244,17 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose, onSave }) => {
     return index >= 0 ? selectedField[index]?.[0] : undefined;
   };
 
+  const getSelectedDynamicFields = () => {
+    return Object.fromEntries(
+      selectableField
+        .map((field, index) => [
+          field.fieldName ?? field.display,
+          field.isMultiple ? selectedField[index] : selectedField[index]?.[0],
+        ])
+        .filter(([key, value]) => key && value !== undefined),
+    );
+  };
+
   const handleSaveFlight = async () => {
     if (selectedPlatform.length === 0) {
       setTouched((prev) => ({ ...prev, platform: true }));
@@ -253,6 +279,7 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose, onSave }) => {
       instructorName: getSelectedFieldValue("מדריכה"),
       block: getSelectedFieldValue("בלוק"),
       flightTime,
+      ...getSelectedDynamicFields(),
       ...Object.fromEntries(
         Object.entries(selectedMalamDome).map(([key, value]) => [
           key,
