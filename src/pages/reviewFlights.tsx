@@ -24,6 +24,7 @@ const ReviewFlights: React.FC = () => {
   const [selectedFlightPopup, setSelectedFlightPopup] = useState<
     FlightData | undefined
   >();
+  const [updatedFlight, setUpdatedFlight] = useState<FlightData | undefined>();
   const [selectedFlightMalfs, setSelectedFlightMalfs] = useState<IssueData[]>(
     [],
   );
@@ -51,16 +52,16 @@ const ReviewFlights: React.FC = () => {
     const response = await connection.getAllEntities(API_Pathes.FLIGHT_FAILURE);
 
     if (response.status === HttpStatusCode.Ok) {
-      const normalize = (value: unknown) => String(value ?? "").trim();
-      const flightName = normalize(flight.flightName);
-      const platform = normalize(flight.platform);
+      const malfNumbers = (
+        (flight as any)._malfNumbers ??
+        (flight as any).malfNumbers ??
+        []
+      ).map((malfNumber: unknown) => String(malfNumber));
 
       setSelectedFlightMalfs(
         (response.data ?? [])
-          .filter(
-            (issue: any) =>
-              normalize(issue.flightName) === flightName &&
-              normalize(issue.platform) === platform,
+          .filter((issue: any) =>
+            malfNumbers.includes(String(issue._id ?? issue.issueNumber)),
           )
           .map((issue: any) => IssueObjectFromFetch(issue)),
       );
@@ -94,13 +95,14 @@ const ReviewFlights: React.FC = () => {
         fetchCollection="PreservedFlights"
         objectFromFetch={flightObjectFromFetch}
         platformsAndFilters={getPlatformsAndFilters()}
+        externalUpdate={updatedFlight}
         clickable={(row: FlightData) => {
           fetchIssuesForFlight(row);
           setSelectedFlightPopup(row);
         }}
       />
     );
-  }, [selectedPlatforms]);
+  }, [selectedPlatforms, selectedDate, updatedFlight]);
 
   useEffect(() => {
     getTableFields();
@@ -206,6 +208,10 @@ const ReviewFlights: React.FC = () => {
           selectedRow={selectedFlightPopup}
           handleClose={() => setSelectedFlightPopup(undefined)}
           flightMalfunctions={selectedFlightMalfs}
+          onSave={(flight) => {
+            setSelectedFlightPopup(flight);
+            setUpdatedFlight(flight);
+          }}
         />
       )}
     </PageWrapper>
