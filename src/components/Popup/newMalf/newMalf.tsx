@@ -301,7 +301,7 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
             ? customMalfSystem
             : selectedMalfSystem[0] || malfNameValue,
         flightName: selectedFlightName[0] || undefined,
-        status: Status.Active,
+        status: "Active",
         isVerified: false,
         goTime: seconds,
       };
