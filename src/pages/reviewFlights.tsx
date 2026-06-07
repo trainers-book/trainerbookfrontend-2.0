@@ -23,12 +23,14 @@ const ReviewFlights: React.FC = () => {
   const [selectedFlightPopup, setSelectedFlightPopup] = useState<
     FlightData | undefined
   >();
+  const [updatedFlight, setUpdatedFlight] = useState<FlightData | undefined>();
   const [selectedFlightMalfs, setSelectedFlightMalfs] = useState<IssueData[]>(
     []
   );
   const { platforms } = usePlatforms();
   const { connection } = useBackend();
   const [isNewFlightOpen, setIsNewFlightOpen] = useState(false);
+  const [externalUpdate, setExternalUpdate] = useState<FlightData>();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -87,12 +89,13 @@ const ReviewFlights: React.FC = () => {
         fetchCollection="PreservedFlights"
         objectFromFetch={flightObjectFromFetch}
         platformsAndFilters={getPlatformsAndFilters()}
+        externalUpdate={updatedFlight}
         clickable={(row: FlightData) => {
           setSelectedFlightPopup(row);
         }}
       />
     );
-  }, [selectedPlatforms, searchQuery, selectedDate]);
+  }, [selectedPlatforms, selectedDate, updatedFlight, searchQuery]);
 
 
   useEffect(() => {
@@ -131,6 +134,7 @@ const ReviewFlights: React.FC = () => {
         <NewFlightModel
           open={isNewFlightOpen}
           onClose={() => setIsNewFlightOpen(closed)}
+          onSave={(flight) => setExternalUpdate(flightObjectFromFetch(flight))}
         />
       </Box>
       {memoTable}
@@ -139,6 +143,10 @@ const ReviewFlights: React.FC = () => {
           selectedRow={selectedFlightPopup}
           handleClose={() => setSelectedFlightPopup(undefined)}
           flightMalfunctions={selectedFlightMalfs}
+          onSave={(flight) => {
+            setSelectedFlightPopup(flight);
+            setUpdatedFlight(flight);
+          }}
         />
       )}
     </PageWrapper>

@@ -47,15 +47,28 @@ export const PermitObjectFromFetch = (permit: {
   permissionDescription: string, 
   permissionOpener: string, 
   openingDate: string, 
+  expirationDate?: string | number | Date,
+  closedBy?: string,
+  closeDate?: string | number | Date,
   status: string,
 }) => {  
+  const status =
+    permit.status && permit.status in PermitStatus
+      ? PermitStatus[permit.status as keyof typeof PermitStatus]
+      : permit.status;
+
   return new PermitData({
     ...permit,
     dateTime: new Date(permit.openingDate),
     permitName: permit.permissionName,
     permitDescription: permit.permissionDescription,
     openBy: permit.permissionOpener,
-    permitStatus: PermitStatus[permit.status as keyof PermitStatus],
+    expiredDate: permit.expirationDate
+      ? new Date(permit.expirationDate)
+      : undefined,
+    closedBy: permit.closedBy,
+    closeDate: permit.closeDate ? new Date(permit.closeDate) : undefined,
+    permitStatus: status as PermitStatus,
   });
 };
 
