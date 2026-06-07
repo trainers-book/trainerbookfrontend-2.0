@@ -120,7 +120,6 @@ const nameToIcons: Record<string, React.ReactNode> = {
   commanders: <KeyboardCommandKeyIcon />,
   airCrew1: sunglassesIcon,
   airCrew2: <MenuBookIcon />,
-  trainees: <TrainIcon />,
   technicians: <AccessibleIcon />,
   flights: <AirplaneTicketIcon />,
 };
