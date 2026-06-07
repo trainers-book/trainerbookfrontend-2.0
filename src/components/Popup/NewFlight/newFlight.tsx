@@ -271,7 +271,7 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose, onSave }) => {
       platform: selectedPlatform[0],
       flightName: selectedFlight[0],
       flightNumber,
-      dateTime,
+      dateTime: dateTime.getTime(),
       pilot: getSelectedFieldValue("טייס"),
       navigator: getSelectedFieldValue("נווט"),
       technician: getSelectedFieldValue("טכנאי"),
