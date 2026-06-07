@@ -22,10 +22,7 @@ import { fieldError } from "../../../types/errors/fields";
 import FullDatePicker from "../../datePicker/fullDatePicker";
 import { useLocalStorage } from "../../../context/localStorageContext";
 import { PermitStatus } from "../../../types/statuses";
-import {
-  CollectionIds,
-  useBackend,
-} from "../../../context/backendContext";
+import { CollectionIds, useBackend } from "../../../context/backendContext";
 import MissingData from "../missingData";
 import CustomAlert from "../../Dynamics/CustomAlert";
 import { HttpStatusCode } from "axios";
@@ -70,7 +67,12 @@ const NewPermitModel: React.FC<NewPermitModelProps> = ({ onSave }) => {
   const { platforms } = usePlatforms();
   const [isClicked, setIsClicked] = useState(false);
   const { ls } = useLocalStorage();
-
+  useEffect(() => {
+    if (show && platforms.length === 1 && selectedPlatform.length === 0) {
+      setSelectedPlatform(platforms);
+    }
+  }, [show, platforms, selectedPlatform]);
+  
   useEffect(() => {
     if (
       (selectedPlatform.length > 0 && platforms.length != 1) ||
@@ -184,7 +186,9 @@ const NewPermitModel: React.FC<NewPermitModelProps> = ({ onSave }) => {
       return (
         Math.max(
           0,
-          ...permits.data.map((savedPermit: any) => Number(savedPermit._id) || 0),
+          ...permits.data.map(
+            (savedPermit: any) => Number(savedPermit._id) || 0,
+          ),
         ) + 1
       );
     }
@@ -260,7 +264,7 @@ const NewPermitModel: React.FC<NewPermitModelProps> = ({ onSave }) => {
         sx={{
           background: "rgb(114, 156, 240)",
           mb: 1.5,
-          ml: 2
+          ml: 2,
         }}
       >
         {t("newPermit")}
@@ -288,7 +292,7 @@ const NewPermitModel: React.FC<NewPermitModelProps> = ({ onSave }) => {
           </IconButton>
         </DialogTitle>
         <DialogTitle align="center" variant="h4">
-          {t("newPermit")} 
+          {t("newPermit")}
         </DialogTitle>
         <DialogContent>
           <Grid container justifyContent="center" padding={1}>
