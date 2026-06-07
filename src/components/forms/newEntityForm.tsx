@@ -8,6 +8,7 @@ import rtlPlugin from "@mui/stylis-plugin-rtl";
 import { prefixer } from "stylis";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
+import { useState } from "react";
 import FilterSearchBar from "../Dynamics/filterSearchBar";
 import FilterDropdown from "../Dynamics/filterDropdown";
 
@@ -20,7 +21,7 @@ interface NewEntityProps {
     setter: (fields: string[]) => void;
     multiple: boolean;
   }[];
-  callback: () => void;
+  callback: () => void | boolean | Promise<void | boolean>;
   width?: string;
 }
 
@@ -37,6 +38,8 @@ const NewEntity: React.FC<NewEntityProps> = ({
 }) => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const [isReset, setIsReset] = useState(false);
+  const [resetKey, setResetKey] = useState(0);
 
   return (
     <CacheProvider value={cacheRtl}>
@@ -50,8 +53,10 @@ const NewEntity: React.FC<NewEntityProps> = ({
         >
           {textInputs.map((textField) => (
             <FilterSearchBar
+              key={`${textField.label}-${resetKey}`}
               label={textField.label}
               setSearch={textField.setter}
+              isReset={isReset}
             />
           ))}
           {dropdownInputs.map((dropdown) => (
@@ -71,9 +76,17 @@ const NewEntity: React.FC<NewEntityProps> = ({
               borderRadius: 2,
               ":hover": { bgcolor: "#d4edff7a" },
             }}
-            onClick={() => {
-              callback();
+            onClick={async () => {
+              const shouldReset = await callback();
+              if (shouldReset === false) {
+                return;
+              }
+
+              textInputs.forEach((input) => input.setter(""));
               dropdownInputs.forEach((input) => input.setter([]));
+              setResetKey((key) => key + 1);
+              setIsReset(true);
+              window.setTimeout(() => setIsReset(false), 0);
             }}
           >
             {t("add")}

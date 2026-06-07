@@ -207,5 +207,6 @@
   "issueName": "שם תקלה",
   "addSuccess": "נוסף בהצלחה",
   "entityAlreadyExist": "משתמש קיים",
+  "flightAlreadyExists": "גיחה קיימת לפלטפורמה זו",
   "deleted": "נמחק בהצלחה"
 }
