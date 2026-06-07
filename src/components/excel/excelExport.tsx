@@ -4,6 +4,10 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import * as XLSX from "xlsx";
 import ExcelExportOptions from "../Popup/excelExports/excelExportOptions";
+import { useBackend } from "../../context/backendContext";
+import { usePlatforms } from "../../context/platformsContext";
+import { HttpStatusCode } from "axios";
+import CustomAlert from "../Dynamics/CustomAlert";
 
 const excelImage = (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
@@ -56,23 +60,25 @@ const excelImage = (
 
 interface ExcelExportProps {
   dataObject: any;
-  data: any[];
   tableDataName: string;
 }
 
 const ExcelExport: React.FC<ExcelExportProps> = ({
-  data,
   dataObject,
   tableDataName,
 }) => {
   const { t } = useTranslation();
+  const { connection } = useBackend();
+  const { platforms } = usePlatforms();
   const objectKeys = Object.keys(dataObject);
   const [showPopup, setShowPopup] = useState<boolean>(false);
+    const [alertOpen, setAlertOpen] = useState(false);
+  
 
   const splitPlatformData = (data: any[]) => {
     return Object.values(
       data.reduce((acc, obj) => {
-        const key = obj[t("platform")];
+        const key = obj["platform"];
         if (!acc[key]) {
           acc[key] = { [key]: [] };
         }
@@ -82,34 +88,29 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
     );
   };
 
-  const excelExport = (pickedDates: {minDate: Date, maxDate: Date}) => {
-    const copiedData = JSON.parse(JSON.stringify(data));
-    copiedData.forEach((value) => {
-      objectKeys.forEach((key) => {
-        value[t(key)] = value[key];
-        if (key == "dateTime") {
-          value[t(key)] = new Date(value[key]).toLocaleString("en-GB");
-        }
+  const excelExport = async (pickedDates: { minDate: Date, maxDate: Date }) => {
+    const issues = await connection.getEntitiesByDate("FlightFailure", platforms, pickedDates);
+    if (issues.status == HttpStatusCode.Ok) {
+      if (issues.data.length == 0) {
+        setAlertOpen(true);
+        return;
+      }
 
-        delete value[key];
+      const workbook = XLSX.utils.book_new();
+      const platfromsData = splitPlatformData(issues.data);
+
+      platfromsData.forEach((platform) => {
+        const platformName = Object.keys(platform)[0];
+
+        const worksheet = XLSX.utils.json_to_sheet(platform[platformName], {
+          header: objectKeys.map((val) => t(val)),
+          skipHeader: false,
+        });
+        XLSX.utils.book_append_sheet(workbook, worksheet, platformName);
       });
-    });
 
-    const workbook = XLSX.utils.book_new();
-    console.log(pickedDates);
-    
-    const platfromsData = splitPlatformData(copiedData);
-    platfromsData.forEach((platform) => {
-      const platformName = Object.keys(platform)[0];
-
-      const worksheet = XLSX.utils.json_to_sheet(platform[platformName], {
-        header: objectKeys.map((val) => t(val)),
-        skipHeader: false,
-      });
-      XLSX.utils.book_append_sheet(workbook, worksheet, platformName);
-    });                                                                                                                                                                                                                                                                                                                                                               
-
-    XLSX.writeFile(workbook, tableDataName + ".xlsx");
+      XLSX.writeFile(workbook, tableDataName + ".xlsx");
+    }
   };
 
   return (
@@ -120,6 +121,12 @@ const ExcelExport: React.FC<ExcelExportProps> = ({
         </SvgIcon>
       </IconButton>
       <ExcelExportOptions show={showPopup} setShow={setShowPopup} exportFunction={excelExport} />
+      <CustomAlert
+        open={alertOpen}
+        onClose={() => setAlertOpen(false)}
+        message={t("no data")}
+        severity={"warning"}
+      />
     </Box>
   );
 };

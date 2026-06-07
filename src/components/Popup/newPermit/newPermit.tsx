@@ -10,6 +10,7 @@ import {
   Stack,
   IconButton,
   Typography,
+  AlertColor,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import DynamicTextField from "../../Dynamics/DynamicTextField";
@@ -21,9 +22,20 @@ import { fieldError } from "../../../types/errors/fields";
 import FullDatePicker from "../../datePicker/fullDatePicker";
 import { useLocalStorage } from "../../../context/localStorageContext";
 import { PermitStatus } from "../../../types/statuses";
-import { useBackend } from "../../../context/backendContext";
+import {
+  CollectionIds,
+  useBackend,
+} from "../../../context/backendContext";
 import MissingData from "../missingData";
-import ConfirmedPermit from "../confirmedPermit";
+import CustomAlert from "../../Dynamics/CustomAlert";
+import { HttpStatusCode } from "axios";
+import PermitData, {
+  PermitObjectFromFetch,
+} from "../../../types/tables/permits";
+
+interface NewPermitModelProps {
+  onSave?: (permit: PermitData) => void;
+}
 
 const permit = {
   _id: "",
@@ -36,19 +48,21 @@ const permit = {
   expirationDate: new Date(),
 };
 
-const NewPermitModel: React.FC = () => {
+const NewPermitModel: React.FC<NewPermitModelProps> = ({ onSave }) => {
   const { connection } = useBackend();
   const [show, setShow] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [showConfirmPermit, setShowConfirmPermit] = useState(false);
   const [showInvalidSave, setInvalidSave] = useState(false);
-  const [isValidSave, setIsValidSave] = useState(false);
+  const [pendingSave, setPendingSave] = useState(false);
   const { t } = useTranslation();
   const [selectedPlatform, setSelectedPlatform] = useState<string[]>([]);
   const [permitNameValue, setPermitNameValue] = useState<string>("");
   const [permitDescriptionValue, setPermitDescriptionValue] =
     useState<string>("");
   const [expiredDate, setExpiredDate] = useState<Date>();
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState<AlertColor>("success");
   const [hasChanges, setHasChanges] = useState(false);
   const [touched, setTouched] = useState({
     platform: false,
@@ -108,66 +122,134 @@ const NewPermitModel: React.FC = () => {
   };
 
   const handleValidSave = () => {
-      if (
-        selectedPlatform != undefined &&
-        permitNameValue != "" &&
-        permitDescriptionValue != "" &&
-        expiredDate != undefined
-      ) {
-        handleConfirmClose();
-        savePermit();
-        setInvalidSave(false);
-        setShow(false);
-      } else {
-        console.log(
-          selectedPlatform +
-            permitNameValue +
-            permitDescriptionValue +
-            expiredDate
-        );
-        setInvalidSave(true);
-        setShow(true);
+    setPendingSave(true);
+    setIsClicked((prev) => !prev);
 
-        
-      }
-     // wait for 2 frames
+    window.setTimeout(() => {
+      setPendingSave((stillPending) => {
+        if (stillPending) {
+          savePermit(expiredDate);
+        }
+
+        return false;
+      });
+    }, 50);
   };
 
   const handleCancelSave = () => {
     setInvalidSave(false);
   };
 
-  const handleDateSelect = (pickedDates: { minDate: Date; maxDate: Date }) => {
+  const handleDateSelect = (
+    pickedDates: { minDate: Date; maxDate: Date } | undefined,
+  ) => {
+    if (!pickedDates) {
+      setExpiredDate(undefined);
+      return;
+    }
+
     const selectedDate = new Date(
       pickedDates.minDate.getFullYear(),
       pickedDates.minDate.getMonth(),
-      pickedDates.minDate.getDate()
+      pickedDates.minDate.getDate(),
     );
     setExpiredDate(selectedDate);
-    
+
+    if (pendingSave) {
+      setPendingSave(false);
+      savePermit(selectedDate);
+    }
   };
 
-  const savePermit = async () => {
-    console.log(expiredDate);
+  const resetForm = () => {
+    setSelectedPlatform([]);
+    setPermitNameValue("");
+    setPermitDescriptionValue("");
+    setExpiredDate(undefined);
+    setHasChanges(false);
+  };
+
+  const fetchNextPermitId = async () => {
+    const response = await connection.getNextId(CollectionIds.PERMIT_ID);
+
+    if (response.status === HttpStatusCode.Ok) {
+      const seq = Number(response.data?.[0]?.sequenceValue);
+      if (!Number.isNaN(seq)) {
+        return seq;
+      }
+    }
+
+    const permits = await connection.getAllEntities("Permissions");
+    if (permits.status === HttpStatusCode.Ok && Array.isArray(permits.data)) {
+      return (
+        Math.max(
+          0,
+          ...permits.data.map((savedPermit: any) => Number(savedPermit._id) || 0),
+        ) + 1
+      );
+    }
+
+    return Date.now();
+  };
+
+  const savePermit = async (selectedExpiredDate = expiredDate) => {
+    if (
+      selectedPlatform.length === 0 ||
+      permitNameValue.trim() === "" ||
+      permitDescriptionValue.trim() === "" ||
+      selectedExpiredDate === undefined
+    ) {
+      setInvalidSave(true);
+      setShow(true);
+      return;
+    }
 
     try {
-      permit._id = "1";
-      permit.platform = selectedPlatform[0];
-      permit.permissionName = permitNameValue;
-      permit.permissionDescription = permitDescriptionValue;
-      permit.permissionOpener = ls.getDisplayName();
-      permit.status = PermitStatus.Open;
-      permit.expirationDate = expiredDate;
-      const response = await connection.addEntity(permit, "Permissions");
-      if (response.success) {
-        console.log("Permit saved successfully");
+      const permitId = await fetchNextPermitId();
+      const permitToSave = {
+        ...permit,
+        _id: permitId,
+        platform: selectedPlatform[0],
+        permissionName: permitNameValue,
+        permissionDescription: permitDescriptionValue,
+        permissionOpener: ls.getDisplayName(),
+        openingDate: new Date(),
+        status: PermitStatus.Open,
+        expirationDate: selectedExpiredDate,
+      };
+      const response = await connection.addEntity(permitToSave, "Permissions");
+
+      if (
+        response.status === HttpStatusCode.Ok ||
+        response.status === HttpStatusCode.Created
+      ) {
+        const responsePermit = Array.isArray(response.data)
+          ? response.data[0]
+          : response.data;
+        const savedPermit = PermitObjectFromFetch({
+          ...permitToSave,
+          ...(responsePermit ?? {}),
+          _id: responsePermit?._id ?? permitToSave._id,
+          openingDate: responsePermit?.openingDate ?? permitToSave.openingDate,
+        } as any);
+        setInvalidSave(false);
+        setShow(false);
+        setShowConfirm(false);
+        resetForm();
+        onSave?.(savedPermit);
+        setAlertSeverity("success");
+        setAlertMessage(t("saveSuccessful"));
+        setAlertOpen(true);
       } else {
-        console.error("Error saving permit:", response.error);
+        setAlertSeverity("error");
+        setAlertMessage(t("saveFailed"));
+        setAlertOpen(true);
       }
     } catch (error) {
-      console.error("Error saving permit:", error);
+      setAlertSeverity("error");
+      setAlertMessage(t("saveFailed"));
+      setAlertOpen(true);
     }
-    console.log(permit);
   };
 
   return (
@@ -206,7 +288,7 @@ const NewPermitModel: React.FC = () => {
           </IconButton>
         </DialogTitle>
         <DialogTitle align="center" variant="h4">
-          {t("newPermit")} ✍
+          {t("newPermit")} 
         </DialogTitle>
         <DialogContent>
           <Grid container justifyContent="center" padding={1}>
@@ -267,10 +349,7 @@ const NewPermitModel: React.FC = () => {
           }}
         >
           <Button
-            onClick={() => {
-              setIsClicked(!isClicked);
-              handleValidSave();
-            }}
+            onClick={handleValidSave}
             variant="contained"
             size="large"
             sx={{
@@ -288,17 +367,18 @@ const NewPermitModel: React.FC = () => {
         content={t("fillAllFields")}
         onCancel={handleCancelSave}
       />
-      <ConfirmedPermit
-        open={showConfirmPermit}
-        title={t("confirmExit")}
-        content={t("areYouSureYouWantToExit")}
-      />
       <ClickedOutside
         open={showConfirm}
         onCancel={handleCancelClose}
         onConfirm={handleConfirmClose}
         title={t("confirmExit")}
         content={t("areYouSureYouWantToExit")}
+      />
+      <CustomAlert
+        open={alertOpen}
+        onClose={() => setAlertOpen(false)}
+        message={alertMessage}
+        severity={alertSeverity}
       />
     </>
   );

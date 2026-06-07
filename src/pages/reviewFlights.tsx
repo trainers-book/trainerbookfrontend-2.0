@@ -5,7 +5,6 @@ import PageWrapper from "../components/pageWrapper/PageWrapper";
 import NewFlightModel from "../components/Popup/NewFlight/newFlight";
 import FilterFlights from "../components/filterTables/filterFlights";
 import { Box, Button } from "@mui/material";
-import { useLocalStorage } from "../context/localStorageContext";
 import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
 import { usePlatforms } from "../context/platformsContext";
 import FlightInformation from "../components/Popup/information/flightInformation";
@@ -30,15 +29,13 @@ const ReviewFlights: React.FC = () => {
   );
   const { platforms } = usePlatforms();
   const { connection } = useBackend();
-    const [fields, setFields] = useState<string[]>([]);
-  const [preservedFlights, setPreservedFlights] = useState<any[]>([]);
-  const { ls } = useLocalStorage();
   const [isNewFlightOpen, setIsNewFlightOpen] = useState(false);
+  const [externalUpdate, setExternalUpdate] = useState<FlightData>();
   const { t } = useTranslation();
 
   useEffect(() => {
     setFilterChange(!filterChange);
-  }, [selectedPlatforms, selectedDate]);
+  }, [selectedPlatforms, selectedDate, searchQuery]);
 
   const getMalfsForFlight = async () => {
     if (!selectedFlightPopup) {
@@ -61,19 +58,23 @@ const ReviewFlights: React.FC = () => {
     getMalfsForFlight();
   }, [selectedFlightPopup]);
 
-    const getPlatformsAndFilters = () => {
-      const filters: { minDate?: Date; maxDate?: Date } = {};
+  const getPlatformsAndFilters = () => {
+    const filters: { minDate?: Date; maxDate?: Date ;search?: string} = {};
 
-      if (selectedDate) {
-        filters.minDate = selectedDate.minDate;
-        filters.maxDate = selectedDate.maxDate;
-      }
-      
-      return {
-        platforms: selectedPlatforms.length == 0 ? platforms : selectedPlatforms,
-        filters: filters,
-      };
+    if (selectedDate) {
+      filters.minDate = selectedDate.minDate;
+      filters.maxDate = selectedDate.maxDate;
+    }
+
+    if (searchQuery) {
+      filters.search = searchQuery;
+    }
+    
+    return {
+      platforms: selectedPlatforms.length == 0 ? platforms : selectedPlatforms,
+      filters: filters,
     };
+  };
 
   const memoTable = useMemo(() => {
     return (
@@ -94,7 +95,12 @@ const ReviewFlights: React.FC = () => {
         }}
       />
     );
-  }, [selectedPlatforms, selectedDate, updatedFlight]);
+  }, [selectedPlatforms, selectedDate, updatedFlight, searchQuery]);
+
+
+  useEffect(() => {
+    setFilterChange(!filterChange);
+  }, [selectedPlatforms, selectedDate]);
 
   return (
     <PageWrapper>
@@ -128,6 +134,7 @@ const ReviewFlights: React.FC = () => {
         <NewFlightModel
           open={isNewFlightOpen}
           onClose={() => setIsNewFlightOpen(closed)}
+          onSave={(flight) => setExternalUpdate(flightObjectFromFetch(flight))}
         />
       </Box>
       {memoTable}

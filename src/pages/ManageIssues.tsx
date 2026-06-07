@@ -11,7 +11,6 @@ import { useEffect, useMemo, useState } from "react";
 import FilterIssues from "../components/filterTables/filterIssues";
 import NewMalfModel from "../components/Popup/newMalf/newMalf";
 import ExcelExport from "../components/excel/excelExport";
-import { useIssues } from "../context/issueContext";
 import { useTranslation } from "react-i18next";
 import { usePlatforms } from "../context/platformsContext";
 import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
@@ -31,7 +30,6 @@ const ManageIssues: React.FC = () => {
   >();
   const [externalUpdate, setExternalUpdate] = useState<any>(null);
   const { t } = useTranslation();
-  const { issueData } = useIssues();
   const { platforms } = usePlatforms();
 
   useEffect(() => {
@@ -43,6 +41,7 @@ const ManageIssues: React.FC = () => {
       failureStatus: (string | undefined)[];
       minDate?: Date;
       maxDate?: Date;
+      search?: string;
     } = {
       failureStatus:
         selectedStatuses.length == 0
@@ -57,6 +56,10 @@ const ManageIssues: React.FC = () => {
     if (selectedDate) {
       filters.minDate = selectedDate.minDate;
       filters.maxDate = selectedDate.maxDate;
+    }
+
+    if (searchQuery) {
+      filters.search = searchQuery;
     }
 
     return {
@@ -120,8 +123,7 @@ const ManageIssues: React.FC = () => {
         />
         <Box sx={{ display: "flex" }}>
           <ExcelExport
-            dataObject={new IssueData({})}
-            data={issueData}
+            dataObject={new IssueData({})} // might need future changes
             tableDataName={t("manageIssues")}
           />
           <NewMalfModel platformOptions={platforms} />
