@@ -8,7 +8,7 @@ import { Box, Button } from "@mui/material";
 import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
 import { usePlatforms } from "../context/platformsContext";
 import FlightInformation from "../components/Popup/information/flightInformation";
-import { useBackend } from "../context/backendContext";
+import { API_Pathes, useBackend } from "../context/backendContext";
 import { HttpStatusCode } from "axios";
 import IssueData, { IssueObjectFromFetch } from "../types/tables/issues";
 import { useTranslation } from "react-i18next";
@@ -17,15 +17,15 @@ const ReviewFlights: React.FC = () => {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<
-      { minDate: Date; maxDate: Date } | undefined
-    >(undefined);
+    { minDate: Date; maxDate: Date } | undefined
+  >(undefined);
   const [filterChange, setFilterChange] = useState<boolean>(true);
   const [selectedFlightPopup, setSelectedFlightPopup] = useState<
     FlightData | undefined
   >();
   const [updatedFlight, setUpdatedFlight] = useState<FlightData | undefined>();
   const [selectedFlightMalfs, setSelectedFlightMalfs] = useState<IssueData[]>(
-    []
+    [],
   );
   const { platforms } = usePlatforms();
   const { connection } = useBackend();
@@ -37,29 +37,36 @@ const ReviewFlights: React.FC = () => {
     setFilterChange(!filterChange);
   }, [selectedPlatforms, selectedDate, searchQuery]);
 
-  const getMalfsForFlight = async () => {
+  useEffect(() => {
     if (!selectedFlightPopup) {
-      return;
+      setSelectedFlightMalfs([]);
     }
+  }, [selectedFlightPopup]);
 
-    const response = await connection.getFlightMalfs(
-      selectedFlightPopup!.platform,
-      selectedFlightPopup!._malfNumbers
-    );
+  const fetchIssuesForFlight = async (flight: FlightData) => {
+    if (!flight) return;
 
-    if (response.status == HttpStatusCode.Ok) {
+    const response = await connection.getAllEntities(API_Pathes.FLIGHT_FAILURE);
+
+    if (response.status === HttpStatusCode.Ok) {
+      const malfNumbers = (
+        (flight as any)._malfNumbers ??
+        (flight as any).malfNumbers ??
+        []
+      ).map((malfNumber: unknown) => String(malfNumber));
+
       setSelectedFlightMalfs(
-        response.data.map((malf: any) => IssueObjectFromFetch(malf))
+        (response.data ?? [])
+          .filter((issue: any) =>
+            malfNumbers.includes(String(issue._id ?? issue.issueNumber)),
+          )
+          .map((issue: any) => IssueObjectFromFetch(issue)),
       );
     }
   };
 
-  useEffect(() => {
-    getMalfsForFlight();
-  }, [selectedFlightPopup]);
-
   const getPlatformsAndFilters = () => {
-    const filters: { minDate?: Date; maxDate?: Date ;search?: string} = {};
+    const filters: { minDate?: Date; maxDate?: Date; search?: string } = {};
 
     if (selectedDate) {
       filters.minDate = selectedDate.minDate;
@@ -69,7 +76,7 @@ const ReviewFlights: React.FC = () => {
     if (searchQuery) {
       filters.search = searchQuery;
     }
-    
+
     return {
       platforms: selectedPlatforms.length == 0 ? platforms : selectedPlatforms,
       filters: filters,
@@ -80,7 +87,7 @@ const ReviewFlights: React.FC = () => {
     return (
       <InfinateScrollFetch
         properties={Object.keys(new FlightData({})).filter(
-          (property) => !property.includes("_") && property != "dateTime"
+          (property) => !property.includes("_") && property != "dateTime",
         )}
         getRowKey={(row: FlightData) => `${row.flightNumber}`}
         sortFunction={(currentValue, nextValue) =>
@@ -89,18 +96,14 @@ const ReviewFlights: React.FC = () => {
         fetchCollection="PreservedFlights"
         objectFromFetch={flightObjectFromFetch}
         platformsAndFilters={getPlatformsAndFilters()}
-        externalUpdate={updatedFlight}
+        externalUpdate={updatedFlight ?? externalUpdate}
         clickable={(row: FlightData) => {
+          fetchIssuesForFlight(row);
           setSelectedFlightPopup(row);
         }}
       />
     );
-  }, [selectedPlatforms, selectedDate, updatedFlight, searchQuery]);
-
-
-  useEffect(() => {
-    setFilterChange(!filterChange);
-  }, [selectedPlatforms, selectedDate]);
+  }, [selectedPlatforms, selectedDate, updatedFlight, externalUpdate, searchQuery]);
 
   return (
     <PageWrapper>

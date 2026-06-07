@@ -267,7 +267,7 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose, onSave }) => {
     }
 
     const flightData = {
-      _id: flightNumber.toString(),
+      _id: flightNumber,
       platform: selectedPlatform[0],
       flightName: selectedFlight[0],
       flightNumber,
@@ -277,6 +277,7 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose, onSave }) => {
       technician: getSelectedFieldValue("טכנאי"),
       observer: getSelectedFieldValue("מתצפתת"),
       block: getSelectedFieldValue("בלוק"),
+      _malfNumbers: draftMalfunctions.map((malf) => malf.issueNumber),
       flightTime,
       ...getSelectedDynamicFields(),
       ...Object.fromEntries(

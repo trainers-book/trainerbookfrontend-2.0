@@ -12,13 +12,17 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { HttpStatusCode } from "axios";
 import InfinateScrollData from "../../table/infinateScrollTableData";
-import IssueData, { getIssueColor } from "../../../types/tables/issues";
+import IssueData, {
+  getIssueColor,
+  IssueObjectFromFetch,
+} from "../../../types/tables/issues";
 import FlightData from "../../../types/tables/flight";
 import { API_Pathes, useBackend } from "../../../context/backendContext";
 import FilterDateTime from "../../Dynamics/filterDateTime";
 import FilterDropdown from "../../Dynamics/filterDropdown";
 import FilterSearchBar from "../../Dynamics/filterSearchBar";
 import CustomAlert from "../../Dynamics/CustomAlert";
+import IssueInformation from "./issueInformation";
 
 interface FlightInformationProps {
   selectedRow: any;
@@ -27,10 +31,7 @@ interface FlightInformationProps {
   onSave?: (updatedRow: FlightData) => void;
 }
 
-const EXCLUDE_FIELDS = new Set([
-  "date",
-  "startTime",
-]);
+const EXCLUDE_FIELDS = new Set(["date", "startTime"]);
 
 const FlightInformation: React.FC<FlightInformationProps> = ({
   selectedRow,
@@ -53,11 +54,17 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
   const [fieldOptions, setFieldOptions] = useState<Record<string, string[]>>(
     {},
   );
+  const [issues, setIssues] = useState<IssueData[]>(flightMalfunctions);
+  const [selectedIssue, setSelectedIssue] = useState<IssueData | undefined>();
 
   useEffect(() => {
     setIsEditing(false);
     loadRawFlight();
   }, [selectedRow]);
+
+  useEffect(() => {
+    setIssues(flightMalfunctions);
+  }, [flightMalfunctions]);
 
   useEffect(() => {
     loadFlightNameOptions();
@@ -145,7 +152,10 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
       connection.getAllEntities(API_Pathes.PILOT),
     ]);
 
-    if (instructors.status === HttpStatusCode.Ok && Array.isArray(instructors.data)) {
+    if (
+      instructors.status === HttpStatusCode.Ok &&
+      Array.isArray(instructors.data)
+    ) {
       setInstructorOptions(
         instructors.data
           .filter((person: any) =>
@@ -237,7 +247,12 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
 
     const translatedPlatform = t(formValues.platform, { lng: "heEn" });
     const fieldsForPlatform = response.data.filter((field: any) => {
-      if (!Array.isArray(field.showFor)) return true;
+      if (!Array.isArray(field.showFor)) {
+        return (
+          field.showFor === formValues.platform ||
+          field.showFor === translatedPlatform
+        );
+      }
       return (
         field.showFor.includes(formValues.platform) ||
         field.showFor.includes(translatedPlatform)
@@ -386,6 +401,12 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
       )
     : [];
 
+  const getFlightMalfNumbers = (flight: any) => {
+    return (flight?._malfNumbers ?? flight?.malfNumbers ?? []).map(
+      (malfNumber: unknown) => String(malfNumber),
+    );
+  };
+
   const saveChanges = async () => {
     if (!formValues) return;
     const nextDateTime =
@@ -436,11 +457,9 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
         pilot: savedFlight._pilot ?? savedFlight.pilot,
         technician: savedFlight._technician ?? savedFlight.technician,
         timeOffFlight: savedFlight._timeOffFlight ?? savedFlight.timeOffFlight,
-        configuration:
-          savedFlight._configuration ?? savedFlight.configuration,
+        configuration: savedFlight._configuration ?? savedFlight.configuration,
         inspectorInstructor:
-          savedFlight._inspectorInstructor ??
-          savedFlight.inspectorInstructor,
+          savedFlight._inspectorInstructor ?? savedFlight.inspectorInstructor,
       });
 
       setFormValues(savedFlight);
@@ -472,7 +491,7 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
         open={true}
         onClose={handleClose}
         fullWidth={true}
-        maxWidth={flightMalfunctions.length != 0 ? "xl" : "md"}
+        maxWidth={issues.length !== 0 ? "xl" : "md"}
         slotProps={{
           paper: {
             sx: {
@@ -604,9 +623,7 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
                     <FilterSearchBar
                       label={label}
                       value={
-                        Array.isArray(value)
-                          ? value.join(", ")
-                          : displayValue
+                        Array.isArray(value) ? value.join(", ") : displayValue
                       }
                       setSearch={(newValue) => handleChange(key, newValue)}
                       width="100%"
@@ -618,18 +635,22 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
               );
             })}
           </Box>
-          {flightMalfunctions.length != 0 && (
+          {issues.length !== 0 && (
             <Box sx={{ mt: 5 }}>
               <InfinateScrollData
                 properties={Object.keys(new IssueData({})).filter(
                   (property) =>
-                    !property.includes("_") && property != "platform",
+                    !property.includes("_") &&
+                    property !== "platform" &&
+                    property !== "flightName" &&
+                    property !== "goTime",
                 )}
-                data={flightMalfunctions}
+                data={issues}
                 getRowKey={(row: IssueData) => `${row.issueNumber}`}
                 noHeight={true}
                 color={true}
                 getRowClass={getIssueColor}
+                clickable={(row) => setSelectedIssue(row as IssueData)}
               />
             </Box>
           )}
@@ -653,6 +674,38 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
           </Button>
         </DialogActions>
       </Dialog>
+      {selectedIssue && (
+        <IssueInformation
+          isOpen={selectedIssue !== undefined}
+          selectedRow={selectedIssue}
+          onClose={() => setSelectedIssue(undefined)}
+          onSave={(updated: any) => {
+            const mapped = IssueObjectFromFetch({
+              ...selectedIssue,
+              ...updated,
+              _id:
+                updated?._id ??
+                updated?.issueNumber ??
+                selectedIssue.issueNumber,
+            });
+            setSelectedIssue(mapped);
+            const belongsToFlight = getFlightMalfNumbers(formValues).includes(
+              String(mapped.issueNumber),
+            );
+            setIssues((prev) => {
+              if (!belongsToFlight) {
+                return prev.filter(
+                  (issue) => issue.issueNumber !== mapped.issueNumber,
+                );
+              }
+
+              return prev.map((issue) =>
+                issue.issueNumber === mapped.issueNumber ? mapped : issue,
+              );
+            });
+          }}
+        />
+      )}
       <CustomAlert
         open={alertOpen}
         onClose={() => setAlertOpen(false)}
