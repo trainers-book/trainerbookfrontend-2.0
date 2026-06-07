@@ -28,6 +28,7 @@ const ManagePermits: React.FC = () => {
       status: (string | undefined)[];
       minDate?: Date;
       maxDate?: Date;
+      search?: string
     } = {
       status:
         selectedStatuses.length == 0
@@ -42,6 +43,10 @@ const ManagePermits: React.FC = () => {
     if (selectedDate) {
       filters.minDate = selectedDate.minDate;
       filters.maxDate = selectedDate.maxDate;
+    }
+
+    if (searchQuery) {
+      filters.search = searchQuery;
     }
 
     return {
@@ -71,7 +76,7 @@ const ManagePermits: React.FC = () => {
         }}
       />
     );
-  }, [selectedPlatforms, selectedStatuses, selectedDate, updatedPermit]);
+  }, [selectedPlatforms, selectedStatuses, selectedDate, updatedPermit, searchQuery]);
 
   return (
     <PageWrapper>

@@ -129,7 +129,7 @@ const ManageUsers: React.FC = () => {
   const { t } = useTranslation();
   const { connection } = useBackend();
   const { ls } = useLocalStorage();
-  const { platforms, setPlatforms } = usePlatforms();
+  const { platforms } = usePlatforms();
   const [newData, setNewData] = useState<boolean>(false);
   const [editPopupObject, setEditPopupObject] = useState<any>(null);
   const [tabs, setTabs] = useState<Tab[]>([]);
@@ -333,6 +333,21 @@ const ManageUsers: React.FC = () => {
     return `${row._id || row.id || row.personalNumber}`;
   }
 
+  const getPlatformsAndFilters = () => {
+    const filters: {
+      search?: string
+    } = {};
+
+    if (search) {
+      filters.search = search;
+    }
+
+    return {
+      platforms: platforms,
+      filters: filters
+    };
+  }
+
   const memoTable = useMemo(() => {    
     return (
       currentTab && <InfinateScrollFetch
@@ -347,10 +362,10 @@ const ManageUsers: React.FC = () => {
         editRow={currentTab.editEntity ? editEntity : undefined}
         lengthOverride={true}
         valuesOverride={true}
-        externalUpdate={newData}
+        platformsAndFilters={getPlatformsAndFilters()}
       />
     );
-  }, [currentTab, newData]);
+  }, [currentTab, newData, search]);
 
   return (
     currentTab && (
