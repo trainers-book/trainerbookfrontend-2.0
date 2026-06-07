@@ -46,6 +46,7 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState<AlertColor>("success");
+  const [isEditing, setIsEditing] = useState(false);
   const [flightNameOptions, setFlightNameOptions] = useState<string[]>([]);
   const [instructorOptions, setInstructorOptions] = useState<string[]>([]);
   const [pilotOptions, setPilotOptions] = useState<string[]>([]);
@@ -54,6 +55,7 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
   );
 
   useEffect(() => {
+    setIsEditing(false);
     loadRawFlight();
   }, [selectedRow]);
 
@@ -443,6 +445,7 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
 
       setFormValues(savedFlight);
       setInitialValues(savedFlight);
+      setIsEditing(false);
       onSave?.(mapped);
       setAlertSeverity("success");
       setAlertMessage(t("saveSuccessful"));
@@ -496,7 +499,8 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
             {visibleKeys.map((key) => {
               const value = formValues[key];
               const displayValue = getDisplayValue(value);
-              const editable = key !== "platform" && key !== "flightNumber";
+              const editable =
+                isEditing && key !== "platform" && key !== "flightNumber";
               const label = t(key);
               const dropdownOptions = getDropdownOptions(key, displayValue);
 
@@ -631,13 +635,19 @@ const FlightInformation: React.FC<FlightInformationProps> = ({
           )}
         </DialogContent>
         <DialogActions sx={{ justifyContent: "flex-end", gap: 2, p: 3 }}>
+          <Button
+            onClick={() => setIsEditing((prev) => !prev)}
+            disabled={loading}
+          >
+            {t("edit")}
+          </Button>
           <Button onClick={handleClose} disabled={loading}>
             {t("cancel")}
           </Button>
           <Button
             onClick={saveChanges}
             variant="contained"
-            disabled={loading || !isFormDirty}
+            disabled={!isEditing || loading || !isFormDirty}
           >
             {t("save")}
           </Button>
