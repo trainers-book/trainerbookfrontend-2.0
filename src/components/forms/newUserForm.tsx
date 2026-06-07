@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import NewEntity from "./newEntityForm";
 import { usePlatforms } from "../../context/platformsContext";
 import { UsersData } from "../../types/tables/manageTypes";
+import CustomAlert from "../Dynamics/CustomAlert";
 
 interface NewUserProps {
   callback: (user: any) => void;
@@ -16,6 +17,10 @@ const NewUser: React.FC<NewUserProps> = ({ callback }) => {
   const [lastName, setLastName] = useState<string>("");
   const [idNumber, setIdNumber] = useState<string>("");
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
+  const [alertOpen, setAlertOpen] = useState(false);
+
+  const isValidIdNumber = (value: string) =>
+    value.replace(/\D/g, "").length >= 7;
 
   useEffect(() => {
     if (platforms.length === 1 && selectedPlatforms.length === 0) {
@@ -24,33 +29,51 @@ const NewUser: React.FC<NewUserProps> = ({ callback }) => {
   }, [platforms, selectedPlatforms]);
 
   return (
-    <NewEntity
-      textInputs={[
-        { label: t("firstName"), setter: setName },
-        { label: t("lastName"), setter: setLastName },
-        { label: t("idNumber"), setter: setIdNumber },
-      ]}
-      dropdownInputs={[
-        {
-          label: t("platforms"),
-          options: platforms,
-          selected: selectedPlatforms,
-          setter: setSelectedPlatforms,
-          multiple: true,
-        },
-      ]}
-      callback={() => {
-        console.log(selectedPlatforms);
-        
-        if (
-          name.replace(/\s/g, "") != "" &&
-          lastName.replace(/\s/g, "") != "" &&
-          idNumber.replace(/\s/g, "") != "" &&
-          selectedPlatforms.length != 0
-        )
-          callback(new UsersData(idNumber, name, lastName, selectedPlatforms));
-      }}
-    />
+    <>
+      <NewEntity
+        textInputs={[
+          { label: t("firstName"), setter: setName },
+          { label: t("lastName"), setter: setLastName },
+          { label: t("idNumber"), setter: setIdNumber },
+        ]}
+        dropdownInputs={[
+          {
+            label: t("platforms"),
+            options: platforms,
+            selected: selectedPlatforms,
+            setter: setSelectedPlatforms,
+            multiple: true,
+          },
+        ]}
+        callback={() => {
+          if (
+            name.replace(/\s/g, "") != "" &&
+            lastName.replace(/\s/g, "") != "" &&
+            idNumber.replace(/\s/g, "") != "" &&
+            selectedPlatforms.length != 0 &&
+            !isValidIdNumber(idNumber)
+          ) {
+            setAlertOpen(true);
+            return false;
+          }
+
+          if (
+            name.replace(/\s/g, "") != "" &&
+            lastName.replace(/\s/g, "") != "" &&
+            idNumber.replace(/\s/g, "") != "" &&
+            selectedPlatforms.length != 0
+          ) {
+            callback(new UsersData(idNumber, name, lastName, selectedPlatforms));
+          }
+        }}
+      />
+      <CustomAlert
+        open={alertOpen}
+        onClose={() => setAlertOpen(false)}
+        message="מספר מזהה חייב להכיל לפחות 7 ספרות"
+        severity="warning"
+      />
+    </>
   );
 };
 
