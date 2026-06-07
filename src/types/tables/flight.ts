@@ -119,5 +119,6 @@ export const flightObjectFromFetch = (flight: any) => {
     _141: flight["141"],
     _142: flight["142"],
     _143: flight["143"],
+    malfNumbers: flight._malfNumbers ?? flight.malfNumbers ?? [],
   });
 };
