@@ -8,6 +8,7 @@ import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
 import PermitData, { getPermitColor, PermitObjectFromFetch } from "../types/tables/permits";
 import FilterPermits from "../components/filterTables/filterPermits";
 import { PermitStatus } from "../types/statuses";
+import PermitInformation from "../components/Popup/information/permitInformation";
 
 const ManagePermits: React.FC = () => {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
@@ -16,6 +17,10 @@ const ManagePermits: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<
       { minDate: Date; maxDate: Date } | undefined
     >(undefined);
+  const [selectedPermitPopup, setSelectedPermitPopup] = useState<
+    PermitData | undefined
+  >();
+  const [updatedPermit, setUpdatedPermit] = useState<PermitData | undefined>();
   const { platforms } = usePlatforms();
 
   const getPlatformsAndFilters = () => {
@@ -23,6 +28,7 @@ const ManagePermits: React.FC = () => {
       status: (string | undefined)[];
       minDate?: Date;
       maxDate?: Date;
+      search?: string
     } = {
       status:
         selectedStatuses.length == 0
@@ -37,6 +43,10 @@ const ManagePermits: React.FC = () => {
     if (selectedDate) {
       filters.minDate = selectedDate.minDate;
       filters.maxDate = selectedDate.maxDate;
+    }
+
+    if (searchQuery) {
+      filters.search = searchQuery;
     }
 
     return {
@@ -60,9 +70,13 @@ const ManagePermits: React.FC = () => {
         color={true}
         objectFromFetch={PermitObjectFromFetch}
         platformsAndFilters={getPlatformsAndFilters()}
+        externalUpdate={updatedPermit}
+        clickable={(row: PermitData) => {
+          setSelectedPermitPopup(row);
+        }}
       />
     );
-  }, [selectedPlatforms, selectedStatuses, selectedDate]);
+  }, [selectedPlatforms, selectedStatuses, selectedDate, updatedPermit, searchQuery]);
 
   return (
     <PageWrapper>
@@ -88,9 +102,24 @@ const ManagePermits: React.FC = () => {
             setDate={setSelectedDate}
           />
         </Box>
-        <NewPermitModel />
+        <NewPermitModel
+          onSave={(permit) => {
+            setUpdatedPermit(permit);
+          }}
+        />
       </Box>
       {memoTable}
+      {selectedPermitPopup && (
+        <PermitInformation
+          isOpen={selectedPermitPopup !== undefined}
+          selectedRow={selectedPermitPopup}
+          onClose={() => setSelectedPermitPopup(undefined)}
+          onSave={(permit) => {
+            setSelectedPermitPopup(permit);
+            setUpdatedPermit(permit);
+          }}
+        />
+      )}
     </PageWrapper>
   );
 };

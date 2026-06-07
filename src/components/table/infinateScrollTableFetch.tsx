@@ -50,7 +50,7 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   const [fetchMore, setFetchMore] = useState<boolean>(true);
   const [offset, setOffset] = useState(0);
   const [dataToShow, setDataToShow] = useState<any[]>([]);
-  const prevExternalRef = useRef<any>(null);
+  const prevExternalRef = useRef<any>(externalUpdate);
 
   useEffect(() => {
     setFetching(false);
@@ -63,31 +63,20 @@ const InfinateScrollFetch: React.FC<InfinateScrollFetchProps> = ({
   }, [offset]);
 
   useEffect(() => {
-    if (!externalUpdate) return;
+    if (externalUpdate === undefined || externalUpdate === null) return;
 
     if (prevExternalRef.current === externalUpdate) return;
 
     prevExternalRef.current = externalUpdate;
 
-    setDataToShow((prev) => {
-      const key = getRowKey(externalUpdate);
-      const id = prev.findIndex((row) => getRowKey(row) === key);
-      if (id >= 0) {
-        const copy = prev.slice();
-        copy[id] = externalUpdate;
-        return copy;
-      }
-
-      return [externalUpdate, ...prev];
-    });
-  }, [externalUpdate]);
-
-  useEffect(() => {
-    if (!externalUpdate) return;
-
-    if (prevExternalRef.current === externalUpdate) return;
-
-    prevExternalRef.current = externalUpdate;
+    if (typeof externalUpdate !== "object") {
+      setDataToShow([]);
+      setOffset(0);
+      setFetching(false);
+      setFetchMore(true);
+      fetchMoreData(true);
+      return;
+    }
 
     setDataToShow((prev) => {
       const key = getRowKey(externalUpdate);

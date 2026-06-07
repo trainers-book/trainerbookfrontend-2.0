@@ -41,6 +41,7 @@ const ManageIssues: React.FC = () => {
       failureStatus: (string | undefined)[];
       minDate?: Date;
       maxDate?: Date;
+      search?: string;
     } = {
       failureStatus:
         selectedStatuses.length == 0
@@ -55,6 +56,10 @@ const ManageIssues: React.FC = () => {
     if (selectedDate) {
       filters.minDate = selectedDate.minDate;
       filters.maxDate = selectedDate.maxDate;
+    }
+
+    if (searchQuery) {
+      filters.search = searchQuery;
     }
 
     return {

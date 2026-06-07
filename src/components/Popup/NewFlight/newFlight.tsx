@@ -9,67 +9,83 @@ import {
   Stack,
   IconButton,
   Box,
+  AlertColor,
 } from "@mui/material";
 import TimerPanel from "./TimerPanel";
 import { useTranslation } from "react-i18next";
 import CloseIcon from "@mui/icons-material/Close";
 import FilterDropdown from "../../Dynamics/filterDropdown";
-import { platformTypes } from "../../../types/platformTypes";
 import NewMalfModel from "../newMalf/newMalf";
 import ClickedOutside from "../clickedOutside";
 import { fieldError } from "../../../types/errors/fields";
 import { usePlatforms } from "../../../context/platformsContext";
-import { useBackend } from "../../../context/backendContext";
+import { API_Pathes, useBackend } from "../../../context/backendContext";
+import { HttpStatusCode } from "axios";
+import CustomAlert from "../../Dynamics/CustomAlert";
 
-const NewFlightModel: React.FC = () => {
-  const [show, setShow] = useState(false);
+interface NewFlight {
+  open: boolean;
+  onClose: (closed: boolean) => void;
+  onSave?: (flight: any) => void;
+}
+
+const NewFlightModel: React.FC<NewFlight> = ({ open, onClose, onSave }) => {
   const [showConfirm, setShowConfirm] = useState(false);
   const { t } = useTranslation();
   const { platforms } = usePlatforms();
   const { connection } = useBackend();
   const [selectedPlatform, setSelectedPlatform] = useState<string[]>([]);
   const [selectedField, setSelectedField] = useState<string[][]>([]);
-  const [selectableField, setSelectableField] = useState<any>([]);
+  const [selectableField, setSelectableField] = useState<any[]>([]);
   const [selectedFlight, setSelectedFlight] = useState<string[]>([]);
-  const [timerPanelValue, setTimerPanelValue] = useState<boolean>(false);
+  const [timerPanelValue, setTimerPanelValue] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [touched, setTouched] = useState({
     platform: false,
     flight: false,
   });
-  const createFlightFields = "CreateFlightFields";
-  const [options, setOptions] = useState<string[]>([]);
-  const malamPlatforms = ["סופה", "ברק", "רעם", "בז"];
-  const malamDomes = [130, 131, 132, 133, 140, 141, 142, 143];
-  const [selectedMalamDome, setSelectedMalamDome] = useState<string[][]>([]);
-  const [selectedConfiguration, setSelectedConfiguration] = useState<string[]>(
-    []
-  );
-  const [MPD, setMPD] = useState<string[]>([]);
-  const [selectedMPD, setSelectedMPD] = useState<string[]>([]);
+  const [options, setOptions] = useState<string[][]>([]);
+  const [malamEntities, setMalamEntities] = useState<number[]>([]);
+  const [selectedMalamDome, setSelectedMalamDome] = useState<
+    Record<number, string[]>
+  >({});
   const [pilots, setPilots] = useState<string[]>([]);
+  const [platformFlights, setPlatformFlights] = useState<string[]>([]);
+  const [flightNumber, setFlightNumber] = useState(0);
+  const [flightTime, setFlightTime] = useState(0);
+  const [dateTime, setDateTime] = useState(new Date());
+  const [draftMalfunctions, setDraftMalfunctions] = useState<any[]>([]);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState<AlertColor>("success");
 
   useEffect(() => {
+    setSelectableField([]);
+
     if (selectedPlatform.length !== 0) {
-      const newSelectedField = Array(selectableField.length).fill([]);
-      setSelectedField(newSelectedField);
+      setSelectedField([]);
+      setSelectedFlight([]);
+      setDraftMalfunctions([]);
       getSelectableFields();
-      
-      if (selectedPlatform[0] === t("eitam")) {
-        getMPD();
-      } else if (selectedPlatform[0] === t("malam")) {
+      getPlatformFlights(selectedPlatform[0]);
+
+      if (selectedPlatform[0] === t("MALAM")) {
+        getMalamEntities();
         getPilots();
       }
     } else {
-     // setSelectableField([]);
+      setSelectableField([]);
       setSelectedField([]);
+      setSelectedFlight([]);
+      setPlatformFlights([]);
+      setDraftMalfunctions([]);
     }
-  }, [selectedPlatform, selectableField]);
+  }, [selectedPlatform]);
 
   useEffect(() => {
     if (selectableField.length > 0) {
       Promise.all(
-        selectableField.map((field: any) => getVariables(field))
+        selectableField.map((field: any) => getVariables(field)),
       ).then((results) => {
         setOptions(results);
       });
@@ -79,41 +95,74 @@ const NewFlightModel: React.FC = () => {
   }, [selectableField]);
 
   useEffect(() => {
-    if (
-      selectedFlight.length > 0 ||
-      selectedPlatform.length > 0 ||
-      timerPanelValue ||
-      (selectedFlight.length > 0 && selectedPlatform.length > 0)
-    ) {
-      setHasChanges(true);
-    } else {
-      setHasChanges(false);
-    }
-  }, [selectedFlight, selectedPlatform, timerPanelValue]);
+    setHasChanges(
+        selectedFlight.length > 0 ||
+        selectedPlatform.length > 0 ||
+        draftMalfunctions.length > 0 ||
+        timerPanelValue ||
+        selectedField.some((field) => field.length > 0),
+    );
+  }, [
+    selectedFlight,
+    selectedPlatform,
+    draftMalfunctions,
+    timerPanelValue,
+    selectedField,
+  ]);
 
-  const handleShow = () => {
-    setShow(true);
-  };
-
-  const handleClose = () => {
-    if (hasChanges) {
-      setShowConfirm(true);
-    } else {
-      setShow(false);
-      setShowConfirm(false);
-    }
+  const resetForm = () => {
+    onClose(true);
+    setShowConfirm(false);
+    setSelectedPlatform([]);
+    setSelectedFlight([]);
+    setSelectableField([]);
+    setSelectedField([]);
+    setOptions([]);
+    setPlatformFlights([]);
+    setSelectedMalamDome({});
+    setPilots([]);
+    setMalamEntities([]);
     setTimerPanelValue(false);
+    setFlightNumber(0);
+    setFlightTime(0);
+    setDateTime(new Date());
+    setDraftMalfunctions([]);
     setTouched({
       platform: false,
       flight: false,
     });
   };
 
+  const getPlatformFlights = async (platform: string) => {
+    const platformFlights = await connection.getAllEntities(
+      API_Pathes.PRESERVED_FLIGHT_NAME,
+    );
+
+    if (platformFlights.status === HttpStatusCode.Ok) {
+      const translatedPlatform = t(platform, { lng: "heEn" });
+      setPlatformFlights(
+        platformFlights.data
+          .filter(
+            (flight: any) =>
+              flight.platform === platform ||
+              flight.platform === translatedPlatform,
+          )
+          .map((flight: any) => flight.name || flight.flightName)
+          .filter(Boolean),
+      );
+    }
+  };
+
+  const handleClose = () => {
+    if (hasChanges) {
+      setShowConfirm(true);
+    } else {
+      resetForm();
+    }
+  };
+
   const handleConfirmClose = () => {
-    setShow(false);
-    setShowConfirm(false);
-    setSelectedPlatform([]);
-    setSelectedFlight([]);
+    resetForm();
   };
 
   const handleCancelClose = () => {
@@ -121,50 +170,171 @@ const NewFlightModel: React.FC = () => {
   };
 
   const getSelectableFields = async () => {
-    const data = await connection.getAllObjects(createFlightFields);
-
-    setSelectableField(
-      data["selectableField"].filter((field: any) =>
-        field.showFor.includes(t(selectedPlatform[0], { lng: "heEn" }))
-      )
+    const newFlightSelectableFields = await connection.getAllEntities(
+      API_Pathes.NEW_FLIGHT_FIELDS,
     );
+
+    if (newFlightSelectableFields.status === HttpStatusCode.Ok) {
+      const selectedPlatformValue = selectedPlatform[0];
+      const translatedPlatform = t(selectedPlatformValue, { lng: "heEn" });
+      const platformMatches = (value: any) => {
+        const normalizedValue = String(value ?? "").trim().toLowerCase();
+        const platformOptions = [selectedPlatformValue, translatedPlatform].map(
+          (platform) => String(platform ?? "").trim().toLowerCase(),
+        );
+
+        return platformOptions.includes(normalizedValue);
+      };
+
+      setSelectableField(
+        newFlightSelectableFields.data.filter((field: any) => {
+          if (!Array.isArray(field.showFor)) {
+            return platformMatches(field.showFor);
+          }
+
+          return field.showFor.some(platformMatches);
+        }),
+      );
+    }
   };
 
   const getPilots = async () => {
-    const data = await connection.getAllPilots();
-    setPilots(
-      data
-        .filter((field: any) => field.platform.includes(selectedPlatform[0]))
-        .map((field: any) => field.name)
+    const pilotsByPlatform = await connection.getEntityByPlatform(
+      API_Pathes.PILOT,
+      [{ platform: selectedPlatform[0] }],
     );
+    if (pilotsByPlatform.status === HttpStatusCode.Ok) {
+      setPilots(pilotsByPlatform.data.map((field: any) => field.name));
+    }
   };
 
-  const getMPD = async () => {
-    const data = await connection.getMPD();
-    setMPD(data["data"].map((field: any) => Object.values(field)[0]));
+  const getMalamEntities = async () => {
+    const allMalamEntities = await connection.getAllEntities(
+      API_Pathes.MALAM_ENTITIES,
+    );
+
+    if (allMalamEntities.status === HttpStatusCode.Ok) {
+      setMalamEntities(allMalamEntities.data[0].domes);
+    }
   };
 
   const getVariables = async (field: any) => {
     if (field.name !== undefined) {
-      const data = await connection.getFieldByName(field.name);
-      return data ? data.map((val: any) => val["name"]) : [];
-    } else {
-      return field.fieldOptions.map((val: any) => (val.name ? val.name : val));
+      if (field.fieldOptions) {
+        return field.fieldOptions;
+      }
+
+      const fieldVariables = await connection.getAllEntities(field.name);
+      if (field.name === "MPD" && fieldVariables.status === HttpStatusCode.Ok) {
+        return fieldVariables.data["data"].map(
+          (field: any) => Object.values(field)[0],
+        );
+      }
+
+      return fieldVariables && fieldVariables.status === HttpStatusCode.Ok
+        ? fieldVariables.data.map((val: any) => val["name"])
+        : [];
     }
+
+    return field.fieldOptions.map((val: any) => (val.name ? val.name : val));
+  };
+
+  const getSelectedFieldValue = (display: string) => {
+    const index = selectableField.findIndex((field) => field.display === display);
+    return index >= 0 ? selectedField[index]?.[0] : undefined;
+  };
+
+  const getSelectedDynamicFields = () => {
+    return Object.fromEntries(
+      selectableField
+        .map((field, index) => [
+          field.fieldName ?? field.display,
+          field.isMultiple ? selectedField[index] : selectedField[index]?.[0],
+        ])
+        .filter(([key, value]) => key && value !== undefined),
+    );
+  };
+
+  const handleSaveFlight = async () => {
+    if (selectedPlatform.length === 0) {
+      setTouched((prev) => ({ ...prev, platform: true }));
+      return;
+    }
+
+    if (selectedFlight.length === 0) {
+      setTouched((prev) => ({ ...prev, flight: true }));
+      return;
+    }
+
+    const flightData = {
+      _id: flightNumber.toString(),
+      platform: selectedPlatform[0],
+      flightName: selectedFlight[0],
+      flightNumber,
+      dateTime: dateTime.getTime(),
+      pilot: getSelectedFieldValue("טייס"),
+      navigator: getSelectedFieldValue("נווט"),
+      technician: getSelectedFieldValue("טכנאי"),
+      observer: getSelectedFieldValue("מתצפתת"),
+      block: getSelectedFieldValue("בלוק"),
+      flightTime,
+      ...getSelectedDynamicFields(),
+      ...Object.fromEntries(
+        Object.entries(selectedMalamDome).map(([key, value]) => [
+          key,
+          value[0],
+        ]),
+      ),
+    };
+
+    const response = await connection.addEntity(
+      flightData,
+      API_Pathes.PRESERVED_FLIGHTS
+    );
+
+    if (response.status === HttpStatusCode.Ok) {
+      const malfunctionResponses = await Promise.all(
+        draftMalfunctions.map((malfunction) =>
+          connection.addEntity(
+            {
+              ...malfunction,
+              platform: selectedPlatform[0],
+              flightName: selectedFlight[0],
+            },
+            API_Pathes.FLIGHT_FAILURE,
+          ),
+        ),
+      );
+
+      if (
+        malfunctionResponses.some(
+          (malfunctionResponse) =>
+            malfunctionResponse.status !== HttpStatusCode.Ok,
+        )
+      ) {
+        setAlertSeverity("error");
+        setAlertMessage(t("malfSaveError"));
+        setAlertOpen(true);
+        return;
+      }
+
+      resetForm();
+      onSave?.(flightData);
+      setAlertSeverity("success");
+      setAlertMessage(t("saveSuccessful"));
+      setAlertOpen(true);
+      return;
+    }
+
+    setAlertSeverity("error");
+    setAlertMessage(t("malfSaveError"));
+    setAlertOpen(true);
   };
 
   return (
     <>
-      <Button
-        variant="contained"
-        onClick={handleShow}
-        sx={{ background: "rgb(114, 156, 240)", mr: 1, mb: 1 }}
-      >
-        {t("newFlight")}
-      </Button>
-
       <Dialog
-        open={show}
+        open={open}
         onClose={handleClose}
         fullWidth
         maxWidth="lg"
@@ -186,7 +356,7 @@ const NewFlightModel: React.FC = () => {
           </IconButton>
         </DialogTitle>
         <DialogTitle align="center" variant="h4" sx={{ pt: 0, pb: 0.5 }}>
-          {t("newFlight")} 🛫
+          {t("newFlight")}
         </DialogTitle>
 
         <DialogContent>
@@ -206,27 +376,28 @@ const NewFlightModel: React.FC = () => {
                   onBlur={() => setTouched({ ...touched, platform: true })}
                 />
               </Stack>
-              <Stack spacing={2} padding={1}>
-                <FilterDropdown
-                  label={t("flightName")}
-                  options={["flightName"]}
-                  selected={selectedFlight}
-                  setSelected={setSelectedFlight}
-                  isMultiple={false}
-                  width="43rem"
-                  error={fieldError.flightName}
-                  touched={touched.flight}
-                  onBlur={() => setTouched({ ...touched, flight: true })}
-                />
-              </Stack>
-              <Stack spacing={2} padding={1}>
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
+              {selectedPlatform.length > 0 && (
+                <Stack spacing={2} padding={1}>
+                  <FilterDropdown
+                    label={t("flightName")}
+                    options={platformFlights}
+                    selected={selectedFlight}
+                    setSelected={setSelectedFlight}
+                    isMultiple={false}
+                    width="43rem"
+                    error={fieldError.flightName}
+                    touched={touched.flight}
+                    onBlur={() => setTouched({ ...touched, flight: true })}
+                  />
+                </Stack>
+              )}
+              <Stack padding={1} sx={{ mb: 2 }}>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3.7 }}>
                   {selectableField.map((field: any, index: number) => (
                     <FilterDropdown
+                      key={field._id || index}
                       label={field.display}
-                      options={
-                        options[index] !== undefined ? options[index] : []
-                      }
+                      options={options[index] !== undefined ? options[index] : []}
                       selected={selectedField[index] || []}
                       setSelected={(currField) => {
                         setSelectedField((prevSelectedField) => {
@@ -238,7 +409,7 @@ const NewFlightModel: React.FC = () => {
                           }
                           return newSelectedField;
                         });
-                      }}                    
+                      }}
                       isMultiple={field.isMultiple}
                       width="13rem"
                       isReset={false}
@@ -246,32 +417,12 @@ const NewFlightModel: React.FC = () => {
                   ))}
                 </Box>
               </Stack>
-              {selectedPlatform[0] === t("eitam") && (
-                <Stack spacing={2} padding={1}>
-                  <FilterDropdown
-                    label={"MPD"}
-                    options={MPD}
-                    selected={selectedMPD}
-                    setSelected={setSelectedMPD}
-                    isMultiple={false}
-                    width="43rem"
-                  />
-                </Stack>
-              )}
-              {selectedPlatform[0] === t("malam") && (
+              {selectedPlatform[0] === t("MALAM") && (
                 <Stack spacing={2} padding={1} sx={{ mb: 2 }}>
-                  <FilterDropdown
-                    label={t("configuration")}
-                    options={malamPlatforms}
-                    selected={selectedConfiguration}
-                    setSelected={setSelectedConfiguration}
-                    isMultiple={false}
-                    width="43rem"
-                  />
-
-                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
-                    {malamDomes.map((field) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3.7 }}>
+                    {malamEntities.map((field) => (
                       <FilterDropdown
+                        key={field}
                         label={field.toString()}
                         options={pilots}
                         selected={selectedMalamDome[field] || []}
@@ -293,18 +444,29 @@ const NewFlightModel: React.FC = () => {
             <Grid size={4}>
               <TimerPanel
                 onChange={(e) => setTimerPanelValue(e.target.checked)}
+                onFlightNumberChange={setFlightNumber}
+                onFlightTimeChange={setFlightTime}
+                onDateTimeChange={setDateTime}
               />
             </Grid>
           </Grid>
-          <NewMalfModel />
+          {selectedPlatform.length > 0 && (
+            <NewMalfModel
+              fixedPlatform={selectedPlatform[0]}
+              fixedFlightName={selectedFlight[0]}
+              onDraftSave={(malfunction) =>
+                setDraftMalfunctions((prev) => [...prev, malfunction])
+              }
+            />
+          )}
         </DialogContent>
         <DialogActions sx={{ paddingLeft: 5 }}>
           <Button
-            onClick={handleClose}
+            onClick={handleSaveFlight}
             variant="contained"
             sx={{ background: "rgb(114, 156, 240)" }}
           >
-            {t("finishFlight")}
+            {t("save")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -315,6 +477,12 @@ const NewFlightModel: React.FC = () => {
         onConfirm={handleConfirmClose}
         title={t("confirmExit")}
         content={t("areYouSureYouWantToExit")}
+      />
+      <CustomAlert
+        open={alertOpen}
+        onClose={() => setAlertOpen(false)}
+        message={alertMessage}
+        severity={alertSeverity}
       />
     </>
   );

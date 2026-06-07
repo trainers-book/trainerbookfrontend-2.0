@@ -7,7 +7,7 @@ import {
   UsersAccountData,
   UsersData,
 } from "../types/tables/manageTypes";
-import { Box, SvgIcon, Button } from "@mui/material";
+import { Box, SvgIcon, Button, AlertColor } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import SchoolIcon from "@mui/icons-material/School";
 import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
@@ -27,6 +27,7 @@ import { HttpStatusCode } from "axios";
 import ManageEditModel from "../components/Popup/manageUser/manageEdit";
 import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
 import CustomAlert from "../components/Dynamics/CustomAlert";
+import { usePlatforms } from "../context/platformsContext";
 
 const sunglassesIcon: React.ReactNode = (
   <SvgIcon>
@@ -128,12 +129,13 @@ const ManageUsers: React.FC = () => {
   const { t } = useTranslation();
   const { connection } = useBackend();
   const { ls } = useLocalStorage();
+  const { platforms } = usePlatforms();
   const [newData, setNewData] = useState<boolean>(false);
   const [editPopupObject, setEditPopupObject] = useState<any>(null);
   const [tabs, setTabs] = useState<Tab[]>([]);
   const [currentTab, setCurrentTab] = useState<Tab>();
   const [search, setSearch] = useState<string>("");
-  const [updateSuccessOpen, setUpdateSuccessOpen] = useState(false);
+  const [alert, setAlert] = useState<{open: boolean, message: string, severity: AlertColor}>({open: false, message: "", severity: "success"});
   const [isNewPlatformOpen, setIsNewPlatformOpen] = useState(false);
 
   useEffect(() => {
@@ -183,7 +185,12 @@ const ManageUsers: React.FC = () => {
   const deleteEntity = async (row: any) => {
     let updateResponse;
 
-    if (currentTab!.entityType == ManageTypes.FLIGHT) {
+    if (currentTab!.entityType == ManageTypes.PLATFORM) {      
+      updateResponse = await connection.deleteObject(
+        currentTab!.collection,
+        row["id"] || row["_id"]
+      );
+    } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
       updateResponse = await connection.deleteObject(
         currentTab!.collection,
         row["!id"]
@@ -201,7 +208,17 @@ const ManageUsers: React.FC = () => {
     }
 
     if (updateResponse?.status == HttpStatusCode.Ok) {
+      if (currentTab!.entityType == ManageTypes.PLATFORM) {
+        const deletedPlatform = row.name;
+        const updatedPlatforms = platforms.filter(
+          (platform) => platform !== deletedPlatform,
+        );
+
+        setPlatforms(updatedPlatforms);
+        ls.setPlatforms(updatedPlatforms);
+      }
       setNewData(!newData);
+      setAlert({open: true, message: "deleted", severity: "success"});
     }
   };
 
@@ -283,7 +300,16 @@ const ManageUsers: React.FC = () => {
     );
 
     if (data.status == HttpStatusCode.Ok) {
+      if (currentTab!.entityType == ManageTypes.PLATFORM) {
+        const updatedPlatforms = [...platforms, entity.name];
+
+        setPlatforms(updatedPlatforms);
+        ls.setPlatforms(updatedPlatforms);
+      }
       setNewData(!newData);
+      setAlert({open: true, message: "addSuccess", severity: "success"});
+    } else if (data.status == HttpStatusCode.Conflict) {
+      setAlert({open: true, message: "entityAlreadyExist", severity: "error"});
     }
   };
 
@@ -307,6 +333,21 @@ const ManageUsers: React.FC = () => {
     return `${row._id || row.id || row.personalNumber}`;
   }
 
+  const getPlatformsAndFilters = () => {
+    const filters: {
+      search?: string
+    } = {};
+
+    if (search) {
+      filters.search = search;
+    }
+
+    return {
+      platforms: platforms,
+      filters: filters
+    };
+  }
+
   const memoTable = useMemo(() => {    
     return (
       currentTab && <InfinateScrollFetch
@@ -321,9 +362,10 @@ const ManageUsers: React.FC = () => {
         editRow={currentTab.editEntity ? editEntity : undefined}
         lengthOverride={true}
         valuesOverride={true}
+        platformsAndFilters={getPlatformsAndFilters()}
       />
     );
-  }, [currentTab, newData]);
+  }, [currentTab, newData, search]);
 
   return (
     currentTab && (
@@ -379,14 +421,14 @@ const ManageUsers: React.FC = () => {
             setManageObject={setEditPopupObject}
             updateData={setNewData}
             updatedData={newData}
-            onUpdateSuccess={() => setUpdateSuccessOpen(true)}
+            onUpdateSuccess={() => setAlert({open: true, message: "updateSuccess", severity: "success"})}
           />
         )}
         <CustomAlert
-          open={updateSuccessOpen}
-          onClose={() => setUpdateSuccessOpen(false)}
-          message={t("updateSuccess")}
-          severity="success"
+          open={alert.open}
+          onClose={() => setAlert({open: false, message: "", severity: "success"})}
+          message={t(alert.message)}
+          severity={alert.severity}
         />
       </PageWrapper>
     )

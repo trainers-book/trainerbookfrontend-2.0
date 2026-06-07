@@ -16,7 +16,6 @@ interface EditUserProps {
 const EditUser: React.FC<EditUserProps> = ({
   userData,
   objectCallback,
-  invokeCallback,
 }) => {
   const { t } = useTranslation();
   const { ls } = useLocalStorage();
@@ -30,15 +29,10 @@ const EditUser: React.FC<EditUserProps> = ({
   );
 
   useEffect(() => {
-      objectCallback(
-        new UsersData(
-          personalNumber,
-          firstName,
-          lastName,
-          userPlatforms,
-        )
-      );
-    }, [invokeCallback]);
+    objectCallback(
+      new UsersData(personalNumber, firstName, lastName, userPlatforms),
+    );
+  }, [personalNumber, firstName, lastName, userPlatforms, objectCallback]);
 
   return (
     <Box sx={{ mr: 1, display: "flex", flexDirection: "column" }}>

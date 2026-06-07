@@ -66,7 +66,7 @@ const FilterPermits: React.FC<FilterPermitsProps> = ({
         isReset={isReset}
       />
       {/*TODO: add second date selector in order to select a open date or expired date */}
-      <FilterDate setDate={setDate} isReset={isReset} width="3.3rem"/>
+      {/* <FilterDate setDate={setDate} isReset={isReset} width="3.3rem"/> */}
       {isFilterSelected && (
         <Button
           variant="contained"

@@ -4,13 +4,14 @@ import FlightData, { flightObjectFromFetch } from "../types/tables/flight";
 import PageWrapper from "../components/pageWrapper/PageWrapper";
 import NewFlightModel from "../components/Popup/NewFlight/newFlight";
 import FilterFlights from "../components/filterTables/filterFlights";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import InfinateScrollFetch from "../components/table/infinateScrollTableFetch";
 import { usePlatforms } from "../context/platformsContext";
 import FlightInformation from "../components/Popup/information/flightInformation";
 import { useBackend } from "../context/backendContext";
 import { HttpStatusCode } from "axios";
 import IssueData, { IssueObjectFromFetch } from "../types/tables/issues";
+import { useTranslation } from "react-i18next";
 
 const ReviewFlights: React.FC = () => {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
@@ -18,14 +19,23 @@ const ReviewFlights: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<
       { minDate: Date; maxDate: Date } | undefined
     >(undefined);
+  const [filterChange, setFilterChange] = useState<boolean>(true);
   const [selectedFlightPopup, setSelectedFlightPopup] = useState<
     FlightData | undefined
   >();
+  const [updatedFlight, setUpdatedFlight] = useState<FlightData | undefined>();
   const [selectedFlightMalfs, setSelectedFlightMalfs] = useState<IssueData[]>(
     []
   );
   const { platforms } = usePlatforms();
   const { connection } = useBackend();
+  const [isNewFlightOpen, setIsNewFlightOpen] = useState(false);
+  const [externalUpdate, setExternalUpdate] = useState<FlightData>();
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    setFilterChange(!filterChange);
+  }, [selectedPlatforms, selectedDate, searchQuery]);
 
   const getMalfsForFlight = async () => {
     if (!selectedFlightPopup) {
@@ -48,19 +58,23 @@ const ReviewFlights: React.FC = () => {
     getMalfsForFlight();
   }, [selectedFlightPopup]);
 
-    const getPlatformsAndFilters = () => {
-      const filters: { minDate?: Date; maxDate?: Date } = {};
+  const getPlatformsAndFilters = () => {
+    const filters: { minDate?: Date; maxDate?: Date ;search?: string} = {};
 
-      if (selectedDate) {
-        filters.minDate = selectedDate.minDate;
-        filters.maxDate = selectedDate.maxDate;
-      }
-      
-      return {
-        platforms: selectedPlatforms.length == 0 ? platforms : selectedPlatforms,
-        filters: filters,
-      };
+    if (selectedDate) {
+      filters.minDate = selectedDate.minDate;
+      filters.maxDate = selectedDate.maxDate;
+    }
+
+    if (searchQuery) {
+      filters.search = searchQuery;
+    }
+    
+    return {
+      platforms: selectedPlatforms.length == 0 ? platforms : selectedPlatforms,
+      filters: filters,
     };
+  };
 
   const memoTable = useMemo(() => {
     return (
@@ -75,12 +89,18 @@ const ReviewFlights: React.FC = () => {
         fetchCollection="PreservedFlights"
         objectFromFetch={flightObjectFromFetch}
         platformsAndFilters={getPlatformsAndFilters()}
+        externalUpdate={updatedFlight}
         clickable={(row: FlightData) => {
           setSelectedFlightPopup(row);
         }}
       />
     );
-  }, [selectedPlatforms]);
+  }, [selectedPlatforms, selectedDate, updatedFlight, searchQuery]);
+
+
+  useEffect(() => {
+    setFilterChange(!filterChange);
+  }, [selectedPlatforms, selectedDate]);
 
   return (
     <PageWrapper>
@@ -104,7 +124,18 @@ const ReviewFlights: React.FC = () => {
             setDate={setSelectedDate}
           />
         </Box>
-        <NewFlightModel />
+        <Button
+          variant="contained"
+          onClick={() => setIsNewFlightOpen(true)}
+          sx={{ background: "rgb(114, 156, 240)", ml: 2, mb: 1 }}
+        >
+          {t("newFlight")}
+        </Button>
+        <NewFlightModel
+          open={isNewFlightOpen}
+          onClose={() => setIsNewFlightOpen(closed)}
+          onSave={(flight) => setExternalUpdate(flightObjectFromFetch(flight))}
+        />
       </Box>
       {memoTable}
       {selectedFlightPopup && (
@@ -112,6 +143,10 @@ const ReviewFlights: React.FC = () => {
           selectedRow={selectedFlightPopup}
           handleClose={() => setSelectedFlightPopup(undefined)}
           flightMalfunctions={selectedFlightMalfs}
+          onSave={(flight) => {
+            setSelectedFlightPopup(flight);
+            setUpdatedFlight(flight);
+          }}
         />
       )}
     </PageWrapper>

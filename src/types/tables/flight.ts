@@ -8,7 +8,7 @@ export default class FlightData {
   instructorName: string;
   _observer: string;
   startTime: string;
-  flightTime: number;
+  flightTime: number | string;
   platform: string;
   _malfNumbers: number[];
   _airCrew1: string | undefined;
@@ -70,7 +70,7 @@ export default class FlightData {
       hour: "2-digit",
       minute: "2-digit",
     });
-    this.flightTime = flightTime;
+    this.flightTime = formatSecondsToTime(flightTime);
     this.platform = platform;
     this._malfNumbers = malfNumbers;
     this._airCrew1 = airCrew1;
@@ -95,12 +95,21 @@ export default class FlightData {
   }
 }
 
+const formatSecondsToTime = (totalSeconds: number | string): string => {
+  const parsedSeconds = Number(totalSeconds) || 0;
+  const hours = Math.floor(parsedSeconds / 3600);
+  const minutes = Math.floor((parsedSeconds % 3600) / 60);
+  const seconds = parsedSeconds % 60;
+
+  return `${hours}:${minutes}:${seconds}`;
+};
+
 export const flightObjectFromFetch = (flight: any) => {
   return new FlightData({
     ...flight,
     dateTime: new Date(flight.dateTime),
     flightNumber: flight._id,
-    instructorName: flight.instructor?.name,
+    instructorName: flight.instructorName||flight.instructorName || flight.instructor || "" || flight.instructor?.name,
     observer: flight.observer?.name,
     _130: flight["130"],
     _131: flight["131"],

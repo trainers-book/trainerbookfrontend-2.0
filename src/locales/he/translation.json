@@ -1,4 +1,5 @@
 {
+  "permitNumber": "מספר היתר",
   "welcome": "ברוך הבא",
   "login": "התחברות",
   "manageIssues": "ניהול תקלות",
@@ -72,6 +73,7 @@
   "instructors": "מדריכות",
   "save": "שמור",
   "editIssue": "ערוך תקלה",
+  "edit": "עריכה",
   "startMalfTimer": "התחל למדוד זמן תקלה",
   "confirm": "אישור",
   "cancel": "ביטול",
@@ -203,5 +205,8 @@
   "yes": "כן",
   "no": "לא",
   "issueName": "שם תקלה",
+  "addSuccess": "נוסף בהצלחה",
+  "entityAlreadyExist": "משתמש קיים",
+  "deleted": "נמחק בהצלחה",
   "no data": "אין נתונים להציג"
 }
