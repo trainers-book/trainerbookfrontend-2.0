@@ -31,10 +31,16 @@ import { Status } from "../../../types/statuses";
 
 interface NewMalfModelProps {
   platformOptions?: string[];
+  fixedPlatform?: string;
+  fixedFlightName?: string;
+  onDraftSave?: (malfunction: any) => void;
 }
 
 const NewMalfModel: React.FC<NewMalfModelProps> = ({
   platformOptions = [],
+  fixedPlatform,
+  fixedFlightName,
+  onDraftSave,
 }) => {
   const { t } = useTranslation();
   const { ls } = useLocalStorage();
@@ -60,6 +66,10 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState<AlertColor>("success");
   const [issueId, setIssueId] = useState<number>(1);
+  const isFromNewFlight = Boolean(fixedPlatform);
+  const savesAsDraft = Boolean(onDraftSave);
+  const hasFixedPlatform = Boolean(fixedPlatform);
+  const hasFixedFlightName = Boolean(fixedFlightName);
 
   useEffect(() => {
     if (
@@ -97,6 +107,19 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
   }, []);
 
   useEffect(() => {
+    if (fixedPlatform) {
+      setSelectedPlatform([fixedPlatform]);
+    }
+  }, [fixedPlatform]);
+
+  useEffect(() => {
+    if (fixedFlightName) {
+      setSelectedOpenerType(["fixedFlight"]);
+      setSelectedFlightName([fixedFlightName]);
+    }
+  }, [fixedFlightName]);
+
+  useEffect(() => {
     if (selectedPlatform.length === 0) {
       setSelectedOpenerType([]);
       setSelectedFlightName([]);
@@ -111,10 +134,17 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
   }, [selectedPlatform, connection]);
 
   useEffect(() => {
-    setSelectedFlightName([]);
+    if (fixedFlightName) {
+      setSelectedFlightName([fixedFlightName]);
+      setSelectedMalfSystem([]);
+      setCustomMalfSystem("");
+      return;
+    }
+
+    setSelectedFlightName(fixedFlightName ? [fixedFlightName] : []);
     setSelectedMalfSystem([]);
     setCustomMalfSystem("");
-  }, [selectedOpenerType]);
+  }, [selectedOpenerType, fixedFlightName]);
 
   const fetchPreservedFlights = async () => {
     const preserved = await connection.getAllEntities(
@@ -157,9 +187,9 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
     setSelectedDisturbance([]);
     setMalfNameValue("");
     setMalfDescriptionValue("");
-    setSelectedPlatform([]);
-    setSelectedOpenerType([]);
-    setSelectedFlightName([]);
+    setSelectedPlatform(fixedPlatform ? [fixedPlatform] : []);
+    setSelectedOpenerType(fixedFlightName ? ["fixedFlight"] : []);
+    setSelectedFlightName(fixedFlightName ? [fixedFlightName] : []);
     setSelectedMalfSystem([]);
     setCustomMalfSystem("");
     setFlightOptions([]);
@@ -168,6 +198,13 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
   };
 
   const handleShow = () => {
+    if (fixedPlatform) {
+      setSelectedPlatform([fixedPlatform]);
+    }
+    if (fixedFlightName) {
+      setSelectedOpenerType(["fixedFlight"]);
+      setSelectedFlightName([fixedFlightName]);
+    }
     setShow(true);
   };
 
@@ -202,14 +239,22 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
   };
 
   const handleValidSave = async () => {
-    if (platformOptions.length > 0 && selectedPlatform.length === 0) {
+    if (
+      !hasFixedPlatform &&
+      platformOptions.length > 0 &&
+      selectedPlatform.length === 0
+    ) {
       setAlertSeverity("warning");
       setAlertMessage(t("choosePlatform"));
       setAlertOpen(true);
       return;
     }
 
-    if (platformOptions.length > 0 && selectedOpenerType.length === 0) {
+    if (
+      !isFromNewFlight &&
+      (platformOptions.length > 0 || hasFixedPlatform) &&
+      selectedOpenerType.length === 0
+    ) {
       setAlertSeverity("warning");
       setAlertMessage("בחר פותח תקלה");
       setAlertOpen(true);
@@ -217,7 +262,8 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
     }
 
     if (
-      platformOptions.length > 0 &&
+      !isFromNewFlight &&
+      (platformOptions.length > 0 || hasFixedPlatform) &&
       selectedOpenerType[0] === "מדריכה" &&
       selectedFlightName.length === 0
     ) {
@@ -228,7 +274,8 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
     }
 
     if (
-      platformOptions.length > 0 &&
+      !isFromNewFlight &&
+      (platformOptions.length > 0 || hasFixedPlatform) &&
       selectedOpenerType[0] === "טכנאי" &&
       (selectedMalfSystem.length === 0 ||
         (selectedMalfSystem[0] === "אחר" && customMalfSystem === ""))
@@ -258,6 +305,18 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
         isVerified: false,
         goTime: seconds,
       };
+
+      if (savesAsDraft) {
+        onDraftSave?.(malfObj);
+        setShow(false);
+        setShowConfirm(false);
+        resetForm();
+        setIssueId((prev) => prev + 1);
+        setAlertSeverity("success");
+        setAlertMessage(t("malfSaved"));
+        setAlertOpen(true);
+        return;
+      }
 
       try {
         const response = await connection.addEntity(
@@ -342,15 +401,17 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
           <Grid container justifyContent="center" padding={1}>
             <Grid size={12}>
               <Stack spacing={2}>
-                <FilterDropdown
-                  label={t("choosePlatform")}
-                  options={platformOptions}
-                  selected={selectedPlatform}
-                  setSelected={setSelectedPlatform}
-                  isMultiple={false}
-                  width="100%"
-                />
-                {selectedPlatform.length > 0 && (
+                {!hasFixedPlatform && (
+                  <FilterDropdown
+                    label={t("choosePlatform")}
+                    options={platformOptions}
+                    selected={selectedPlatform}
+                    setSelected={setSelectedPlatform}
+                    isMultiple={false}
+                    width="100%"
+                  />
+                )}
+                {!isFromNewFlight && selectedPlatform.length > 0 && (
                   <FilterDropdown
                     label={"בחר פותח תקלה"}
                     options={["מדריכה", "טכנאי"]}
@@ -394,7 +455,8 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
                     )}
                   </>
                 )}
-                {(platformOptions.length === 0 ||
+                {(isFromNewFlight ||
+                  (platformOptions.length === 0 && !hasFixedPlatform) ||
                   selectedFlightName.length > 0 ||
                   (selectedMalfSystem.length > 0 &&
                     (selectedMalfSystem[0] !== "אחר" ||

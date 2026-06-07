@@ -179,14 +179,6 @@ class Connection {
     platform: string[],
     filters: any,
   ) {
-    // filter: {
-    //   date: undefined,
-    //   minDate: undefined,
-    //   maxDate: undefined,
-    //   failureStatus: undefined,
-    //   issueSeverity: undefined,
-    //   search: undefined
-    // }
     return axios
       .get(`${this.appUrl}${collection}/getAmountByFilters/${index}`, {
         params: {
@@ -238,7 +230,8 @@ class Connection {
         return error;
       });
   }
-   async getEntityByPlatform(collection: string, platform: any) {
+
+  async getEntityByPlatform(collection: string, platform: any) {
     return axios
       .get(`${this.appUrl}${collection}/platform`, {
         params: { platform: JSON.stringify(platform) },
@@ -249,7 +242,7 @@ class Connection {
       .catch((error) => {
         return { status: error.response.status, data: error.response.data };
       });
-    }
+  }
 }
 
 interface BackendContextType {
@@ -300,7 +293,7 @@ export enum API_Pathes {
   PRESERVED_FLIGHTS = "PreservedFlights",
   NEW_FLIGHTS_FIELDS = "NewFlightFields",
   NEW_FLIGHT_FIELDS = "NewFlightFields",
-  MALAM_ENTITIES = "MalamEntities"
+  MALAM_ENTITIES = "MalamEntities",
 }
 
 export enum CollectionIds {
@@ -308,4 +301,5 @@ export enum CollectionIds {
   FLIGHT_ID = "FlightId",
   MALF_ID = "MalfunctionId",
   AIRCRAFT_ID = "AircraftId",
+  PERMIT_ID = "PermissionId",
 }

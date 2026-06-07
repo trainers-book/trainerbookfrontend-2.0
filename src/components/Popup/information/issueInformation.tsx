@@ -281,13 +281,13 @@ const IssueInformation: React.FC<IssueInformationProps> = ({
     const platformValue = formValues.platform;
 
     const preservedFlights = await connection.getAllEntities(
-      API_Pathes.PRESERVED_FLIGHTS,
+      API_Pathes.PRESERVED_FLIGHT_NAME,
     );
 
     if (preservedFlights.status === HttpStatusCode.Ok) {
       const filteredFlights = preservedFlights.data
         .filter((flight: any) => flight.platform === platformValue)
-        .map((flight: any) => flight.flightName);
+        .map((flight: any) => flight.name);
       setFlightOptions(Array.from(new Set(filteredFlights)));
     } else {
       setFlightOptions([]);

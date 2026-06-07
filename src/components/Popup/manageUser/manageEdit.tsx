@@ -54,6 +54,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
   const [submitChanges, setSubmitChanges] = useState(false);
   const [showConfirmClose, setShowConfirmClose] = useState(false);
   const [editedData, setEditedData] = useState<any>(manageObject);
+  const hasChanges = !editedData.isEqual(manageObject);
 
   const loginAs = (user: UsersAccountData) => {
     const adminLoginDetails = {
@@ -226,7 +227,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
               <EditAccount
                 accountData={manageObject}
                 invokeCallback={submitChanges}
-                objectCallback={sendDataToUpdate}
+                objectCallback={setEditedData}
               />
             )}
             {manageObject instanceof UsersData &&
@@ -234,14 +235,14 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
                 <EditUser
                   userData={manageObject}
                   invokeCallback={submitChanges}
-                  objectCallback={sendDataToUpdate}
+                  objectCallback={setEditedData}
                 />
               )}
             {manageObject instanceof PreservedFlightNameData && (
               <EditFlight
                 preservedFlightNameData={manageObject}
                 invokeCallback={submitChanges}
-                objectCallback={sendDataToUpdate}
+                objectCallback={setEditedData}
               />
             )}
             {manageObject instanceof PlatformData && (
@@ -262,7 +263,10 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
             type="button"
             onClick={handleSave}
             variant="contained"
-            sx={{ background: "rgb(114, 156, 240)" }}
+            disabled={!hasChanges}
+            sx={{
+              background: hasChanges ? "rgb(114, 156, 240)" : undefined,
+            }}
           >
             {t("save")}
           </Button>
