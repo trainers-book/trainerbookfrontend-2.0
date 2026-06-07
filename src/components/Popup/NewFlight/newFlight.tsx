@@ -276,7 +276,6 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose, onSave }) => {
       navigator: getSelectedFieldValue("נווט"),
       technician: getSelectedFieldValue("טכנאי"),
       observer: getSelectedFieldValue("מתצפתת"),
-      instructorName: getSelectedFieldValue("מדריכה"),
       block: getSelectedFieldValue("בלוק"),
       flightTime,
       ...getSelectedDynamicFields(),

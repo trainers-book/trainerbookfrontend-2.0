@@ -109,7 +109,7 @@ export const flightObjectFromFetch = (flight: any) => {
     ...flight,
     dateTime: new Date(flight.dateTime),
     flightNumber: flight._id,
-    instructorName: flight.instructor?.name||flight.instructorName,
+    instructorName: flight.instructor?.name||flight.instructorName || flight.instructor || "",
     observer: flight.observer?.name,
     _130: flight["130"],
     _131: flight["131"],

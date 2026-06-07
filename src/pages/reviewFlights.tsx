@@ -24,6 +24,7 @@ const ReviewFlights: React.FC = () => {
   const [selectedFlightPopup, setSelectedFlightPopup] = useState<
     FlightData | undefined
   >();
+  const [updatedFlight, setUpdatedFlight] = useState<FlightData | undefined>();
   const [selectedFlightMalfs, setSelectedFlightMalfs] = useState<IssueData[]>(
     []
   );
@@ -88,13 +89,13 @@ const ReviewFlights: React.FC = () => {
         fetchCollection="PreservedFlights"
         objectFromFetch={flightObjectFromFetch}
         platformsAndFilters={getPlatformsAndFilters()}
-        externalUpdate={externalUpdate}
+        externalUpdate={updatedFlight}
         clickable={(row: FlightData) => {
           setSelectedFlightPopup(row);
         }}
       />
     );
-  }, [selectedPlatforms, externalUpdate]);
+  }, [selectedPlatforms, selectedDate, updatedFlight]);
 
   return (
     <PageWrapper>
@@ -137,6 +138,10 @@ const ReviewFlights: React.FC = () => {
           selectedRow={selectedFlightPopup}
           handleClose={() => setSelectedFlightPopup(undefined)}
           flightMalfunctions={selectedFlightMalfs}
+          onSave={(flight) => {
+            setSelectedFlightPopup(flight);
+            setUpdatedFlight(flight);
+          }}
         />
       )}
     </PageWrapper>
