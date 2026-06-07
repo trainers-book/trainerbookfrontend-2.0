@@ -308,4 +308,5 @@ export enum CollectionIds {
   FLIGHT_ID = "FlightId",
   MALF_ID = "MalfunctionId",
   AIRCRAFT_ID = "AircraftId",
+  PERMIT_ID = "PermissionId",
 }
