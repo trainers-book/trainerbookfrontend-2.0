@@ -77,6 +77,12 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
     }
   }, [isReset]);
 
+  useEffect(() => {
+    if (options.length === 1 && selected.length === 0) {
+      setSelected([options[0]]);
+    }
+  }, []);
+
   const handleChange = (event: SelectChangeEvent<typeof selected>) => {
     const {
       target: { value },
