@@ -97,7 +97,11 @@ const ManagePermits: React.FC = () => {
             setDate={setSelectedDate}
           />
         </Box>
-        <NewPermitModel />
+        <NewPermitModel
+          onSave={(permit) => {
+            setUpdatedPermit(permit);
+          }}
+        />
       </Box>
       {memoTable}
       {selectedPermitPopup && (
