@@ -69,7 +69,12 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
   const isFromNewFlight = Boolean(fixedPlatform);
   const savesAsDraft = Boolean(onDraftSave);
   const hasFixedPlatform = Boolean(fixedPlatform);
-  const hasFixedFlightName = Boolean(fixedFlightName);
+
+  useEffect(() => {
+    if (show && platformOptions.length === 1 && selectedPlatform.length === 0 && !hasFixedPlatform) {
+      setSelectedPlatform(platformOptions);
+    }
+  }, [show, platformOptions, selectedPlatform, hasFixedPlatform]);
 
   useEffect(() => {
     if (
