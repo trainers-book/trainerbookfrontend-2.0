@@ -2,7 +2,7 @@ import FilterDropdown from "../Dynamics/filterDropdown";
 import FilterSearchBar from "../Dynamics/filterSearchBar";
 import FilterDate from "../Dynamics/filterDate";
 import "../../i18n";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Box } from "@mui/material";
 import { Button } from "@mui/material";
@@ -33,6 +33,12 @@ const FilterFlights: React.FC<FilterFlightsProps> = ({
     (selectedPlatform.length != 0 && platforms.length > 1) ||
     search != "" ||
     dateSelected != undefined;
+
+  useEffect(() => {
+    if (platforms.length === 1 && selectedPlatform.length === 0) {
+      setSelectedPlatform(platforms);
+    }
+  }, [platforms, selectedPlatform, setSelectedPlatform]);
 
   return (
     <Box sx={{ mr: 1, display: "flex", gap: 1 }}>

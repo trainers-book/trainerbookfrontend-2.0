@@ -110,6 +110,12 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose, onSave }) => {
     selectedField,
   ]);
 
+  useEffect(() => {
+    if (open && platforms.length === 1 && selectedPlatform.length === 0) {
+      setSelectedPlatform(platforms);
+    }
+  }, [open, platforms, selectedPlatform]);
+
   const resetForm = () => {
     onClose(true);
     setShowConfirm(false);
@@ -330,7 +336,7 @@ const NewFlightModel: React.FC<NewFlight> = ({ open, onClose, onSave }) => {
     setAlertSeverity("error");
     setAlertMessage(t("malfSaveError"));
     setAlertOpen(true);
-  };
+  }; 
 
   return (
     <>

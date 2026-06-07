@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
 import FilterDropdown from "../Dynamics/filterDropdown";
 import FilterSearchBar from "../Dynamics/filterSearchBar";
@@ -39,6 +39,12 @@ const FilterPermits: React.FC<FilterPermitsProps> = ({
     selectedStatuses.length != 0 ||
     search != "" ||
     dateSelected != undefined;
+
+  useEffect(() => {
+    if (platforms.length === 1 && selectedPlatform.length === 0) {
+      setSelectedPlatform(platforms);
+    }
+  }, [platforms, selectedPlatform, setSelectedPlatform]);
 
   return (
     <Box sx={{ mr: 1, display: "flex", gap: 1 }}>
