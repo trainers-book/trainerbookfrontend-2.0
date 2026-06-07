@@ -126,7 +126,7 @@ const ManageEditModel: React.FC<ManageEditModelProps> = ({
     } else if (data instanceof PreservedFlightNameData) {
       dataToDb = {
         _id: data._id,
-        name: manageObject.name,
+        name: data.name,
         platform: data.platform,
         date: data.date.getTime(),
       };

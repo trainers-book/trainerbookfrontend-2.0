@@ -106,7 +106,7 @@ const entityToDbEntityFunction = (
     };
   } else if (entity instanceof PreservedFlightNameData) {
     return {
-      _id: JSON.stringify(entity._id),
+      _id: entity._id,
       name: entity.name,
       platform: entity.platform,
       date: entity.date.getTime(),
@@ -184,6 +184,10 @@ const ManageUsers: React.FC = () => {
 
   const deleteEntity = async (row: any) => {
     let updateResponse;
+    const isDeleteSuccess = (response: any) =>
+      response?.status == HttpStatusCode.Ok ||
+      response?.status == HttpStatusCode.NoContent ||
+      response?.status == HttpStatusCode.Accepted;
 
     if (currentTab!.entityType == ManageTypes.PLATFORM) {      
       updateResponse = await connection.deleteObject(
@@ -191,10 +195,19 @@ const ManageUsers: React.FC = () => {
         row["id"] || row["_id"]
       );
     } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
+      const flightId = row["!id"] || row["_id"] || row["id"];
       updateResponse = await connection.deleteObject(
         currentTab!.collection,
-        row["!id"]
+        flightId
       );
+
+      const stringifiedFlightId = JSON.stringify(flightId);
+      if (!isDeleteSuccess(updateResponse) && stringifiedFlightId !== flightId) {
+        updateResponse = await connection.deleteObject(
+          currentTab!.collection,
+          stringifiedFlightId,
+        );
+      }
     } else if (currentTab!.entityType == ManageTypes.USERS) {
       updateResponse = await connection.deleteObject(
         currentTab!.collection,
@@ -207,7 +220,7 @@ const ManageUsers: React.FC = () => {
       );
     }
 
-    if (updateResponse?.status == HttpStatusCode.Ok) {
+    if (isDeleteSuccess(updateResponse)) {
       if (currentTab!.entityType == ManageTypes.PLATFORM) {
         const deletedPlatform = row.name;
         const updatedPlatforms = platforms.filter(
@@ -219,6 +232,8 @@ const ManageUsers: React.FC = () => {
       }
       setNewData(!newData);
       setAlert({open: true, message: "deleted", severity: "success"});
+    } else {
+      setAlert({open: true, message: "saveFailed", severity: "error"});
     }
   };
 
@@ -255,7 +270,12 @@ const ManageUsers: React.FC = () => {
       setEditPopupObject(new PlatformData(row.name, row._id));
     } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
       setEditPopupObject(
-        new PreservedFlightNameData(row.date, row.name, row.platform, row["!id"])
+        new PreservedFlightNameData(
+          row.date,
+          row.name,
+          row.platform,
+          row["_id"] || row["id"] || row["!id"],
+        )
       );
     } else {
       setEditPopupObject(
@@ -281,8 +301,13 @@ const ManageUsers: React.FC = () => {
     } else if (currentTab!.entityType == ManageTypes.USERS) {
       return new UsersData(entity["_id"], entity["firstName"], entity["lastName"], entity["platform"].join(", "));
     } else if (currentTab!.entityType == ManageTypes.FLIGHT) {
-      const flight = new PreservedFlightNameData(new Date(entity["date"]), entity["name"], entity["platform"], entity["_id"]);
-      (flight as any)["!id"] = (flight as any)["_id"];
+      const flight = new PreservedFlightNameData(
+        new Date(entity["date"]),
+        entity["name"],
+        entity["platform"],
+        entity["_id"],
+      );
+      (flight as any)["!id"] = entity["_id"];
       delete (flight as any)["_id"];
 
       return flight;
@@ -299,7 +324,10 @@ const ManageUsers: React.FC = () => {
       collection
     );
 
-    if (data.status == HttpStatusCode.Ok) {
+    if (
+      data.status == HttpStatusCode.Ok ||
+      data.status == HttpStatusCode.Created
+    ) {
       if (currentTab!.entityType == ManageTypes.PLATFORM) {
         const updatedPlatforms = [...platforms, entity.name];
 
@@ -309,7 +337,14 @@ const ManageUsers: React.FC = () => {
       setNewData(!newData);
       setAlert({open: true, message: "addSuccess", severity: "success"});
     } else if (data.status == HttpStatusCode.Conflict) {
-      setAlert({open: true, message: "entityAlreadyExist", severity: "error"});
+      setAlert({
+        open: true,
+        message:
+          currentTab!.entityType == ManageTypes.FLIGHT
+            ? "flightAlreadyExists"
+            : "entityAlreadyExist",
+        severity: "error",
+      });
     }
   };
 
@@ -330,7 +365,7 @@ const ManageUsers: React.FC = () => {
   };
 
   const getRowKey = (row: any) => {    
-    return `${row._id || row.id || row.personalNumber}`;
+    return `${row._id || row.id || row["!id"] || row.personalNumber}`;
   }
 
   const getPlatformsAndFilters = () => {
