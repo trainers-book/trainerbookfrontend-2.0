@@ -66,7 +66,7 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
         width="9rem"
         isReset={isReset}
       />
-      <FilterDropdown
+      {/* <FilterDropdown
         label={t("severity")}
         options={Object.values(Severity)}
         selected={selectedSeverities}
@@ -74,7 +74,7 @@ const FilterIssues: React.FC<FilterIssuesProps> = ({
         isMultiple={true}
         width="9rem"
         isReset={isReset}
-      />
+      /> */}
       <FilterSearchBar
         label={t("search")}
         setSearch={setSearch}
