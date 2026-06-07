@@ -140,7 +140,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
                 return selected.length > 1 ? `${t("selected")}: ${selected.length}` : "";
               }}
               MenuProps={MenuProps}
-              // disabled={disabled ?? options.length == 1}
+              disabled={disabled/* ?? options.length == 1*/}
               sx={{
                 height: 36,
                 borderRadius: 2,
