@@ -1,6 +1,6 @@
 import "../../i18n";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NewEntity from "./newEntityForm";
 import { usePlatforms } from "../../context/platformsContext";
 import { UsersData } from "../../types/tables/manageTypes";
@@ -16,6 +16,12 @@ const NewUser: React.FC<NewUserProps> = ({ callback }) => {
   const [lastName, setLastName] = useState<string>("");
   const [idNumber, setIdNumber] = useState<string>("");
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (platforms.length === 1 && selectedPlatforms.length === 0) {
+      setSelectedPlatforms([platforms[0]]);
+    }
+  }, [platforms, selectedPlatforms]);
 
   return (
     <NewEntity
@@ -34,6 +40,8 @@ const NewUser: React.FC<NewUserProps> = ({ callback }) => {
         },
       ]}
       callback={() => {
+        console.log(selectedPlatforms);
+        
         if (
           name.replace(/\s/g, "") != "" &&
           lastName.replace(/\s/g, "") != "" &&
