@@ -16,7 +16,6 @@ interface EditAccountProps {
 const EditAccount: React.FC<EditAccountProps> = ({
   accountData,
   objectCallback,
-  invokeCallback,
 }) => {
   const { t } = useTranslation();
   const { ls } = useLocalStorage();
@@ -43,7 +42,16 @@ const EditAccount: React.FC<EditAccountProps> = ({
         accountData.id
       )
     );
-  }, [invokeCallback]);
+  }, [
+    personalNumber,
+    firstName,
+    lastName,
+    accountPlatforms,
+    password,
+    role,
+    accountData.id,
+    objectCallback,
+  ]);
 
   return (
     <Box sx={{ mr: 1, display: "flex", flexDirection: "column" }}>
