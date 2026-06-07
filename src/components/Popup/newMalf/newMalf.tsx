@@ -17,6 +17,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import TimerModel from "../../timer/timer";
 import ClickedOutside from "../clickedOutside";
 import FilterDropdown from "../../Dynamics/filterDropdown";
+import FilterSearchBar from "../../Dynamics/filterSearchBar";
 import CustomAlert from "../../Dynamics/CustomAlert";
 import { Severity } from "../../../types/issuesSeverity";
 import {
@@ -26,6 +27,7 @@ import {
 } from "../../../context/backendContext";
 import { useLocalStorage } from "../../../context/localStorageContext";
 import { HttpStatusCode } from "axios";
+import { Status } from "../../../types/statuses";
 
 interface NewMalfModelProps {
   platformOptions?: string[];
@@ -41,12 +43,17 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
   const [show, setShow] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [seconds, setSeconds] = useState(0);
+  const [timerResetKey, setTimerResetKey] = useState(0);
   const [timerValue, setTimerValue] = useState<boolean>(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [selectedDisturbance, setSelectedDisturbance] = useState<string[]>([]);
   const [selectedPlatform, setSelectedPlatform] = useState<string[]>([]);
+  const [selectedOpenerType, setSelectedOpenerType] = useState<string[]>([]);
   const [selectedFlightName, setSelectedFlightName] = useState<string[]>([]);
+  const [selectedMalfSystem, setSelectedMalfSystem] = useState<string[]>([]);
+  const [customMalfSystem, setCustomMalfSystem] = useState<string>("");
   const [flightOptions, setFlightOptions] = useState<string[]>([]);
+  const [malfSystemOptions, setMalfSystemOptions] = useState<string[]>([]);
   const [malfNameValue, setMalfNameValue] = useState<string>("");
   const [malfDescriptionValue, setMalfDescriptionValue] = useState<string>("");
   const [alertOpen, setAlertOpen] = useState(false);
@@ -58,6 +65,10 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
     if (
       selectedDisturbance.length > 0 ||
       selectedPlatform.length > 0 ||
+      selectedOpenerType.length > 0 ||
+      selectedFlightName.length > 0 ||
+      selectedMalfSystem.length > 0 ||
+      customMalfSystem !== "" ||
       malfNameValue !== "" ||
       malfDescriptionValue !== "" ||
       timerValue ||
@@ -72,7 +83,10 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
   }, [
     selectedDisturbance,
     selectedPlatform,
+    selectedOpenerType,
     selectedFlightName,
+    selectedMalfSystem,
+    customMalfSystem,
     malfNameValue,
     malfDescriptionValue,
     timerValue,
@@ -84,13 +98,23 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
 
   useEffect(() => {
     if (selectedPlatform.length === 0) {
+      setSelectedOpenerType([]);
       setSelectedFlightName([]);
+      setSelectedMalfSystem([]);
+      setCustomMalfSystem("");
       setFlightOptions([]);
       return;
     }
 
     fetchPreservedFlights();
+    fetchMalfSystems();
   }, [selectedPlatform, connection]);
+
+  useEffect(() => {
+    setSelectedFlightName([]);
+    setSelectedMalfSystem([]);
+    setCustomMalfSystem("");
+  }, [selectedOpenerType]);
 
   const fetchPreservedFlights = async () => {
     const preserved = await connection.getAllEntities(
@@ -111,6 +135,38 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
     }
   };
 
+  const fetchMalfSystems = async () => {
+    const systems = await connection.getAllEntities("MalfunctionedSystems");
+
+    if (systems.status === HttpStatusCode.Ok && Array.isArray(systems.data)) {
+      const options = systems.data
+        .map((system: any) =>
+          system && typeof system === "object"
+            ? (system.name ?? system.value)
+            : system,
+        )
+        .filter(Boolean);
+      setMalfSystemOptions(Array.from(new Set(options)));
+    } else {
+      setMalfSystemOptions([]);
+    }
+  };
+
+  const resetForm = () => {
+    setSeconds(0);
+    setSelectedDisturbance([]);
+    setMalfNameValue("");
+    setMalfDescriptionValue("");
+    setSelectedPlatform([]);
+    setSelectedOpenerType([]);
+    setSelectedFlightName([]);
+    setSelectedMalfSystem([]);
+    setCustomMalfSystem("");
+    setFlightOptions([]);
+    setTimerValue(false);
+    setTimerResetKey((prev) => prev + 1);
+  };
+
   const handleShow = () => {
     setShow(true);
   };
@@ -118,22 +174,18 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
   const handleClose = () => {
     if (hasChanges) {
       setShowConfirm(true);
-    } else {
-      setShow(false);
-      setShowConfirm(false);
+      return;
     }
-    setMalfNameValue("");
-    setMalfDescriptionValue("");
-    setSelectedPlatform([]);
-    setSelectedFlightName([]);
-    setFlightOptions([]);
-    setTimerValue(false);
+
+    setShow(false);
+    setShowConfirm(false);
+    resetForm();
   };
 
   const handleConfirmClose = () => {
     setShow(false);
     setShowConfirm(false);
-    setSeconds(0);
+    resetForm();
   };
 
   const handleCancelClose = () => {
@@ -157,9 +209,32 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
       return;
     }
 
-    if (platformOptions.length > 0 && selectedFlightName.length === 0) {
+    if (platformOptions.length > 0 && selectedOpenerType.length === 0) {
+      setAlertSeverity("warning");
+      setAlertMessage("בחר פותח תקלה");
+      setAlertOpen(true);
+      return;
+    }
+
+    if (
+      platformOptions.length > 0 &&
+      selectedOpenerType[0] === "מדריכה" &&
+      selectedFlightName.length === 0
+    ) {
       setAlertSeverity("warning");
       setAlertMessage(t("chooseFlight"));
+      setAlertOpen(true);
+      return;
+    }
+
+    if (
+      platformOptions.length > 0 &&
+      selectedOpenerType[0] === "טכנאי" &&
+      (selectedMalfSystem.length === 0 ||
+        (selectedMalfSystem[0] === "אחר" && customMalfSystem === ""))
+    ) {
+      setAlertSeverity("warning");
+      setAlertMessage(t("malfSystem"));
       setAlertOpen(true);
       return;
     }
@@ -167,14 +242,21 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
     if (malfNameValue !== "" && malfDescriptionValue !== "") {
       const malfObj: any = {
         _id: issueId,
+        issueNumber: issueId,
+        issueName: malfNameValue,
         dateTime: Date.now(),
-        issueDescription: malfDescriptionValue,
-        issueSeverity: selectedDisturbance[0] || undefined,
-        issueOpener: ls.getDisplayName ? ls.getDisplayName() : undefined,
-        malfSystem: malfNameValue,
         platform: selectedPlatform[0] || undefined,
+        issueDescription: malfDescriptionValue,
+        issueSeverity: selectedDisturbance[0] || Severity.Low,
+        issueOpener: ls.getDisplayName ? ls.getDisplayName() : undefined,
+        malfSystem:
+          selectedMalfSystem[0] === "אחר"
+            ? customMalfSystem
+            : selectedMalfSystem[0] || malfNameValue,
         flightName: selectedFlightName[0] || undefined,
-        failureStatus: "Active",
+        status: Status.Active,
+        isVerified: false,
+        goTime: seconds,
       };
 
       try {
@@ -186,12 +268,8 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
         if (response.status === HttpStatusCode.Ok) {
           setShow(false);
           setShowConfirm(false);
-          setSeconds(0);
-          setMalfNameValue("");
-          setMalfDescriptionValue("");
-          setTimerValue(false);
-          setSelectedDisturbance([]);
-          setSelectedPlatform([]);
+          resetForm();
+          fetchNextMalfId();
           setAlertSeverity("success");
           setAlertMessage(t("malfSaved"));
           setAlertOpen(true);
@@ -216,7 +294,7 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
     const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
     const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
       2,
-      "0"
+      "0",
     );
     const secs = String(totalSeconds % 60).padStart(2, "0");
     return `${hrs}:${mins}:${secs}`;
@@ -257,22 +335,32 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
           </IconButton>
         </DialogTitle>
         <DialogTitle align="center" variant="h4">
-          {t("newMalf")} 
+          {t("newMalf")}
         </DialogTitle>
 
         <DialogContent>
           <Grid container justifyContent="center" padding={1}>
             <Grid size={12}>
               <Stack spacing={2}>
+                <FilterDropdown
+                  label={t("choosePlatform")}
+                  options={platformOptions}
+                  selected={selectedPlatform}
+                  setSelected={setSelectedPlatform}
+                  isMultiple={false}
+                  width="100%"
+                />
+                {selectedPlatform.length > 0 && (
                   <FilterDropdown
-                    label={t("choosePlatform")}
-                    options={platformOptions}
-                    selected={selectedPlatform}
-                    setSelected={setSelectedPlatform}
+                    label={"בחר פותח תקלה"}
+                    options={["מדריכה", "טכנאי"]}
+                    selected={selectedOpenerType}
+                    setSelected={setSelectedOpenerType}
                     isMultiple={false}
                     width="100%"
                   />
-                {selectedPlatform.length > 0 && (
+                )}
+                {selectedOpenerType[0] === "מדריכה" && (
                   <FilterDropdown
                     label={t("chooseFlight")}
                     options={flightOptions}
@@ -282,8 +370,35 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
                     width="100%"
                   />
                 )}
+                {selectedOpenerType[0] === "טכנאי" && (
+                  <>
+                    <FilterDropdown
+                      label={t("malfSystem")}
+                      options={[...malfSystemOptions, "אחר"]}
+                      selected={selectedMalfSystem}
+                      setSelected={(values) => {
+                        setSelectedMalfSystem(values);
+                        setCustomMalfSystem("");
+                      }}
+                      isMultiple={false}
+                      width="100%"
+                    />
+                    {selectedMalfSystem[0] === "אחר" && (
+                      <FilterSearchBar
+                        label={"מערכת תקלה אחר"}
+                        value={customMalfSystem}
+                        setSearch={setCustomMalfSystem}
+                        isReset={false}
+                        width="100%"
+                      />
+                    )}
+                  </>
+                )}
                 {(platformOptions.length === 0 ||
-                  selectedFlightName.length > 0) && (
+                  selectedFlightName.length > 0 ||
+                  (selectedMalfSystem.length > 0 &&
+                    (selectedMalfSystem[0] !== "אחר" ||
+                      customMalfSystem !== ""))) && (
                   <>
                     <DynamicTextField
                       label={t("malfName")}
@@ -305,24 +420,63 @@ const NewMalfModel: React.FC<NewMalfModelProps> = ({
                       isMultiple={false}
                       width="100%"
                     />
+                    <Grid
+                      container
+                      spacing={2}
+                      sx={{
+                        mt: 0.5,
+                        p: 1.5,
+                        alignItems: "center",
+                        border: "1px solid",
+                        borderColor: "divider",
+                        borderRadius: 2,
+                        backgroundColor: "background.paper",
+                      }}
+                    >
+                      <Grid size={2.5}>
+                        <Typography
+                          variant="subtitle1"
+                          sx={{ fontWeight: 700, textAlign: "right" }}
+                        >
+                          זמן תקלה
+                        </Typography>
+                      </Grid>
+                      <Grid size={2.5}>
+                        <Typography
+                          sx={{
+                            direction: "ltr",
+                            fontVariantNumeric: "tabular-nums",
+                            textAlign: "center",
+                            px: 1.5,
+                            py: 0.75,
+                            borderRadius: 1.5,
+                            backgroundColor: "background.default",
+                            border: "1px solid",
+                            borderColor: "divider",
+                          }}
+                        >
+                          {formatTime(seconds)}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        size={7}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "flex-start",
+                          minWidth: 0,
+                        }}
+                      >
+                        <TimerModel
+                          onTick={(val) => setSeconds(val)}
+                          label={t("startMalfTimer")}
+                          onChange={(e) => setTimerValue(e.target.checked)}
+                          resetKey={timerResetKey}
+                        />
+                      </Grid>
+                    </Grid>
                   </>
                 )}
               </Stack>
-            </Grid>
-            <Grid container spacing={1} padding={2} justifyContent="center">
-              <Grid size={5}>
-                <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                  {t("goTime")}
-                </Typography>
-              </Grid>
-              <Grid size={2.5}>
-                <Typography>{formatTime(seconds)}</Typography>
-              </Grid>
-              <TimerModel
-                onTick={(val) => setSeconds(val)}
-                label={t("startMalfTimer")}
-                onChange={(e) => setTimerValue(e.target.checked)}
-              />
             </Grid>
           </Grid>
         </DialogContent>

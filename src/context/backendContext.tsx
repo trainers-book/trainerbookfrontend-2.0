@@ -238,6 +238,18 @@ class Connection {
         return error;
       });
   }
+   async getEntityByPlatform(collection: string, platform: any) {
+    return axios
+      .get(`${this.appUrl}${collection}/platform`, {
+        params: { platform: JSON.stringify(platform) },
+      })
+      .then((response) => {
+        return { status: response.status, data: response.data };
+      })
+      .catch((error) => {
+        return { status: error.response.status, data: error.response.data };
+      });
+    }
 }
 
 interface BackendContextType {
@@ -277,7 +289,7 @@ export enum API_Pathes {
   INSPECTOR = "Inspector",
   TRAINER = "Trainer",
   TECHNICIAN = "Technician",
-  PRESERVED_FLIGHTNAME = "PreservedFlightNames",
+  PRESERVED_FLIGHT_NAME = "PreservedFlightNames",
   AUTHENTICATION = "Authentication",
   SET_PASSWORD = "setPassword",
   GET_ENTITY_BUT_STRING = "FindEntityByString",
@@ -287,6 +299,8 @@ export enum API_Pathes {
   FLIGHT_FAILURE = "FlightFailure",
   PRESERVED_FLIGHTS = "PreservedFlights",
   NEW_FLIGHTS_FIELDS = "NewFlightFields",
+  NEW_FLIGHT_FIELDS = "NewFlightFields",
+  MALAM_ENTITIES = "MalamEntities"
 }
 
 export enum CollectionIds {
